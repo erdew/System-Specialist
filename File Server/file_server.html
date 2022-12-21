@@ -113,7 +113,7 @@
         <hr>
 
         <h4 class="mt-4">Dosya uzantılarına göre kısıtlama</h4>
-        <span class="d-block"><b>Dosya tipi kısıtlamasında dosyaları kopyalayamama yaklaşımı;</b></span>
+        <span class="d-block"><b>Dosya tipi kısıtlamasında dosyaları kopyalayamalayı engelleme yaklaşımı;</b></span>
         <span>İzinler genel olarak ana klasörlere değil, alt klasörlere verilirler.</span> 
         <span class="d-block">
           Server Manager > File Server Resource Manager(FSRM) > File Screen Management > File Screen Templates
@@ -122,6 +122,62 @@
           Yukarıdaki yolda ilişkilendireceğimiz klasörün içerisine dosya tipini kısıtlayabileceğimiz hazır "File Screen Templates"ler vardır.
         </p>
         <p>İstersek "File Screen Templates"e sağ tıklayıp "Create File Screen Template" ile yeni "Block"lar oluşturabiliriz.</p>
+        <p>
+          Yukarıdaki gibi ürettiğimiz File Screen Template'e çift tıklayarak içeriğine içeriğine erişebiliriz. <br>
+          Bu noktada "Setting" sekmesinde karşımıza iki tane seçenek çıkar. <br>
+          İlki "Active screening", ikincisi ise "Passive screening". <br>
+          "Active screening": Direkt yasakalar. <br>
+          "Passive screening": Kaydetmesini sağlar fakat bir uyarı mesajı üretir. Mesaj Block'ladığımız içeriğin klasöre kopyalandığını belirtir ve Admin'e ait bir mail'e gönderilir. <br>
+        </p>
+        <p>File Screens > Right Click > Create > Browse(Yasağın uygulanacağı klasör seçilir) > File Screen Template(Ürettiğimiz kopya veya sıfırdan oluşturduğum Template seçilir) > Create</p>
+        <p>
+          Bu noktadan sonra artık seçtiğimiz klasöre yasak uygulamış olduk. <br>
+          Eğer "Active screening" seçeneğini seçtiysek bu durumda yasakladığımız tipte bir dosya bu klasöre kopyalanamaz.
+        </p>
+        <span class="d-block"><b>Sadece ".x" türünden bir dosya kopyalanabilsin yaklaşımı;</b></span>
+        <p>
+          File Screen Templates > Right Click > Create File Screen Template > Template Name, Active, Create > File Group Name, Files include: "."(Önce her şeyi yasaklıyoruz) > Files exclude: "*.txt"(.txt hariç).
+        </p>
+        <p>
+          Yukarıdaki işlemden sonra aşağıdaki yoldan ilişkilendiriyoruz; <br>
+          File Screens > Right Click > Create File Screen > Browse(İlgili klasör), Derive Properties(Sadece text dosyaları) > Create. 
+        </p>
+        <p>
+          Storage Reports Management > Schedule a New Report Task > 
+        </p>
+
+        <hr>
+
+        <h4>Yer kazanmak için yapılabilecek şeyler</h4>
+        <p>
+          Sıklıkla kullanılan dosyalarla arşiv olarak tutulacak klasörlerin konumlandırılması önemlidir. <br>
+          Arşiv bilgiler başka bir konumda yani Disk'te tutulabilir fakat bunu yapmak yerine "Compres" de yapılabilirler. <br>
+          Verileri "Compress" etmek, konumlarını değiştirmemek ve oldukları yerde daha az yer kaplamalarını sağlamak demektir. <br>
+        </p>
+
+        <h5>Compress yapmak</h5>
+        <p>
+          Disk'teki tekrar eden küçük hacimleri birleştirir. <br>
+          Dosyalar, RAM'e yüklenebilmeleri için Uncompress edilmelidir. <br>
+          Compress'lenmiş dosylar açılmazlar. <br>
+          Direkt C'yi Compress'lersek Windows dosyaları da Compress'lenir. <br>
+          Buna, içerisinde o anda "Execute" edilmiş durumda olan dosyalar olduğu için izin vermez fakat yapılabilecek olsaydı bu durumda Windows'un çökmesine sebep olurdu. <br>
+          Dolayısıya "Compress" işlemini spesifik olarak belli başlı dosyalara uygulamak gereklidir. <br>
+        </p>
+        <p>
+          Text dosyaları ya da text bazlı dosyalar oldukça fazla Compress'lenebilirler. <br>
+          Ancak bazı tipledeki dosyalar kendiliğinden aslında Compress'li gibi çalışırlar dolayısıyla onları Compress'lemek pek bir işe yaramaz. <br>
+          Örneğin .mp4 aslında bir sıkıştırma formatıdır, .mp4 zaten sıkıştırılmış bir dosya olduğu için tekrar Compress yapılamaz. <br>
+          Sürekli kullanılan ve işletim sisteminin bulunduğu dosyaları sıkıştırmamalıyız. <br>
+          Arşiv dosyalarını sıkıştırmak mantıklıdır. <br>
+          Compress işlemi NTFS File Type'a sahip Disk'lerin bir özelliğidir. <br>
+          Sadece Driver, Folder ya da File Compress edilebilir.
+        </p>
+        <p>
+          Disk > Right Click > General > Compress this drive to save disk space <br>
+          Folder > Right Click > General > Advance > Compress this drive to save disk space, Subfolder'ları da dahil edebilir. <br>
+          File > Right Click > General > Advance > Compress this drive to save disk space
+        </p>
     </div>
 
     
