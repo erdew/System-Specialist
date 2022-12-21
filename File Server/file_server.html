@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>File Server</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'EB Garamond', serif;
+        font-size: 18px;
+      }
+
+      .container {
+        max-width: 720px;
+      }
+
+    </style>
   </head>
   <body class="bg-dark text-light">
     <div class="container mt-5">
@@ -13,62 +26,102 @@
 
         <h4>17.12.2022</h4>
         <p>
-            Diyelim ki bir dosya paylaşımı yaptık, bu paylaşıma yalnızca istediğimiz kişilerin erişmesini sağlayabiliriz.
-            Bunu yapabilmek için öncelikle ilgili klasörden inheritance'ı kaldırmalıyız.
-            Sonra erişmesini istemediğimiz kişi ya da grup silinir.
+            Bir dosya paylaşımı yaptığımızda, bu paylaşıma yalnızca istediğimiz kişilerin erişmesini sağlayabiliriz.
+            Bunu yapabilmek için öncelikle ilgili klasörden "Inheritance" özelliğini kaldırmalıyız.
+            Sonra erişmesini istemediğimiz kişileri ya da grupları "Remove" etmeliyiz.
+            "Inheritance" özelliğini kaldırabilmek için; ilgili klasöre sağ tıklanır, "Security" sekmesinden "Advanced" ayarlarına girilir ve "Disable Inheritance" seçilir. Ardından yukarıdaki listeden bu paylaşım ile ilişkisini kesmek istediğimiz kişi ya da grupları seçip, "Remove" butonuna tıklayarak kaldırırız.
         </p>
         <p>
-            Server Manger > File and S. > Shares > Bu File Server'da kaç tane Share edilen klasör var ise gösterir. > Rigth Click > Settings > Access-Based Enumeration(ABE) = Enable Kullanıcılara paylaşım içindeki izni olmayan klasörler gösterilmez.
-            O kullanıcıların hiç bir Allow Permission'u olmamalıdır.
-            Fakat dolaylı yoldan bir gruba dahilse ve o gruptan Read vs. Permission alıyorsa eğer "ABE" bu durumda çalışamaz çünkü dolaylı yoldan Allow Permission'ları var demektir.
+          Server Manger > File and S. > Shares > Bu File Server'da kaç tane Share edilen klasör var ise gösterir. > Rigth Click > Settings > Access-Based Enumeration(ABE) = Enable Kullanıcılara paylaşım içindeki izni olmayan klasörler gösterilmez.
         </p>
         <p>
-            Eğer bu konu ile alakalı Sanal Makinede bir sorun yaşıyorsak;
+          O kullanıcıların hiç bir Allow Permission'u olmamalıdır.
+          Fakat dolaylı yoldan bir gruba dahilse ve o gruptan Read vs. Permission alıyorsa eğer "ABE" bu durumda çalışamaz çünkü dolaylı yoldan Allow Permission'ları var demektir.
+        </p>
+        <p>
+            Eğer bu konu ile alakalı Sanal Makine'de bir sorun yaşıyorsak;
             File Server > Computer Management > Shared Folder || Sessions > Open Files > Close
             Yukardaki konumda bulunan dosyalar kapatılırsa eğer Cache temizlenmiş olur ve kullanıcı tekrardan Log-on olduğunda geçerli izinler göz önünde bulundurulara Log-on yapılır.
         </p>
 
-        <h4 class="h4">Disk Quota</h4>
-
+        <h4>Disk Quota</h4>
         <p>
-        Her makinenin, User'ın veya User Group'un ne kadarlık hafızalara sahip olacağı ayarlayanabilir.
-        Hangi durumlarda kullanmak gerekir?
-        Örneğin ortak kullanılan bir makinemiz var ve giriş yapan her kullanıcı için maksimum ne kadar hafıza kullanabileceğini belirlemek istiyoruz, bu durumda "Disk Quota" kullanmalıyız.
-        Kota belirlemek demek aslında belli bir kapasiteden daha fazlasında kopyalama yapmayı engellemektir.
-        File Server'ın Disk'lerine ayrı şekilde kota oluşturabiliriz.
-        !Kotalar direkt olarak sürücülere verilir.
+          Her makinenin, User'ın veya User Group'un ne kadarlık hafızalara sahip olacağı ayarlayanabilir. <br>
+          Peki hangi durumlarda bunu uygulamak gereklidir? <br>
+          Örnek verecek olursak ortak kullanılan bir makinemiz var ise ve giriş yapan her kullanıcının aynı oranda Disk Kapasitesi kullanmasını istemiyorsak, bu durumda "Disk Quota" kullanabiliriz. <br>
+          Kota belirlemek aslında bir kullanıcının Disk'e belli bir kapasiteden daha fazla kopyalama yapmasını engellemektir. <br>
+          Bir klasör paylaşımı yapan makine otomatik olarak File Server olur ve istersek File Server'ın Disk'lerine de "Disk Quota" atanabilir. <br>
+          Tabiki eğer istenirse herhangi bir makinenin herhangi bir Disk'ine "Disk Quota" atabilir, "File Server" olmak zorunda değil. <br>
         </p>
-        <h6 class="h6">Disk Kotası nasıl verilir?</h6>
+        <h4>Disk Kotası nasıl verilir?</h4>
         <p>
-        Disk Kotası özelliği NTFS Dosya Sisteminde çalışan bir özelliktir.
-        NTFS Disk > Rigth Click > Properties > Quota > Enable Quota Management(Sadece uyarı verir.) || Deny Disk Space(Kota dolduğunda hem rapor verilir hem de artık kopya yapmaya devam edilemez.) > Limit Disk Space to x MB(Her bir User'a kaç MB kapasite ayrılacağı yazılır.)
-        Son olarak alttaki iki seçenek Log'ları Enable eder.
-        Admin'ler kota atanmasına rağmen bir kotaya sahip olmazlar.
+          Disk Kotası özelliği NTFS Dosya Sisteminde çalışan bir özelliktir. <br>
+          NTFS Disk > Rigth Click > Properties > Quota > Enable Quota Management(Sadece uyarı verir.) || Deny Disk Space(Kota dolduğunda hem rapor verilir hem de artık kopya yapmaya devam edilemez.) > Limit Disk Space to x MB(Her bir User'a kaç MB kapasite ayrılacağı yazılır.) <br>
+          Alttaki iki seçenek Log'ları "Enable" eder. <br>
+          Admin'ler kota atanmasına rağmen bir kotaya sahip olmazlar.
         </p>
 
-        <h6 class="h6">Quota Entries</h6>
+        <h4>Quota Entries</h4>
         <p>
-        Tüm User'ların ne kadar yazdırdığını, limitini görebiliriz.
-        Kişiye özel limit atamak için bu listeden ilgili kullanıcıya çift taklanıp, değer girilir.
+          Tüm User'ların ne kadar yazdırdığını, limitini görebiliriz.
+          Kişiye özel limit atamak için bu listeden ilgili kullanıcıya çift taklanıp, değer girilir.
         </p>
 
         <p>
         <b>Ekstra not 1</b>
-        Server Manager > Active Directort Users > sirket.com > Rigth Click > New > Organizational Unit
-        (Bu konumdan direkt olarak birimler üretilerek şirketteki departmanlarda bulunan çalışanları net bir şekilde gruplandırarak düzenli bir yapı oluşturulabilir)
+          Server Manager > Active Directort Users > sirket.com > Rigth Click > New > Organizational Unit
+          (Bu konumdan direkt olarak birimler üretilerek şirketteki departmanlarda bulunan çalışanları net bir şekilde gruplandırarak düzenli bir yapı oluşturulabilir)
         </p>
 
         <p>
         <b>Ekstra not 2</b>,
-        fsutil file createnew textfile.txt 1024000
-        (1 MB yer kaplayan textfile isimde txt formatında bir dosya üretir)
-        Bu tarz dosyaları gerçek bir veri kopyalamadan test etmek için kullanabilirsin.
+          fsutil file createnew textfile.txt 1024000
+          (1 MB yer kaplayan textfile isimde txt formatında bir dosya üretir)
+          Bu tarz dosyaları gerçek bir veri kopyalamadan test etmek için kullanabilirsin.
         </p>
         
         <hr>
 
+        <p>
+          Yukarıda bahsettiklerimiz direkt olarak Disk'e verilen kotalardı. Aslında sadece klasörlere de kota atanabilir.
+          Doğal olarak Disk'in kapasitesi o klasör için maksimum kapasiteyi belirler.
+          Disk'in kapasitesinden daha az bir kapasite belirleyeceksek o klasör için kota verilebilir.
+          Klasörlere kapasite verebildiğimiz gibi aynı zamanda içersine kopyalanacak olan dosyaların da uzantılarını sınırlandırabiliriz.
+          Örneğin paylaşılan klasöre belli bir grup ya da user'ın o klasöre .mp4 tipinde dosya kopyalamasını engelleyebiliriz.
+          Bunu yapabilmek için Server'a Feauture yüklemek gerekiyor.
+        </p>
+        <p>
+          Server Manager > Add Roles and Features > Select Server Roles > File and Storage > File and iSCSI Server > |+|File Server Resource Manager(FSRM) -> Enable yaptığımızda artık File Uzantılarına kısıtlama getirmemize imkan vermiş olur.
+        </p>
+        <p>
+          Eğer Disk'te Kota var ise bunu yapmak mümkün değildir, kotayı kaldırdıktan sonra bu işlem yapılır.
+        </p>
+        <p>
+          Yükleme tamamlandıktan sonra; <br>
+          Tools > File Server Resource Manager > Quota Management > Quota Templates > (Örneğin) 10 GB Limit > Double Click > Hard Quota || Soft Quota <br>
+          Diretk Quota bağlamak, kopyalama yapmadan oluşturmak için herhangi birine sağ tıklayıp "Create Quota from Template".
+        </p>
+        <p>
+          Kopya oluşturmak için; <br>
+          Herhangi birine sağ tıkla > Name gir > Space Limit = 50.000(Örneğin) > OK > |+|Do not apply template to derived Quotes -> Enable
+        </p>
+        <p>
+          Sıfırdan bir kota oluşturmak için; <br>
+          Quotes > Right > Click > Create Quote > Browse(Kota yapılacak klasör seçilir) > |+|Auto Apply Template -> Enable(Kota uyguladığımız klasörlerin de alt klasörlerine kota uygular) > |+|Derive Properties from This Quota Template(Recommented)(Klasöre erişebilen her bir User için örneğin 50'şer MB'lık kota oluşur)
+        </p>
 
+        <hr>
 
+        <h4 class="mt-4">Dosya uzantılarına göre kısıtlama</h4>
+        <span class="d-block"><b>Dosya tipi kısıtlamasında dosyaları kopyalayamama yaklaşımı;</b></span>
+        <span>İzinler genel olarak ana klasörlere değil, alt klasörlere verilirler.</span> 
+        <span class="d-block">
+          Server Manager > File Server Resource Manager(FSRM) > File Screen Management > File Screen Templates
+        </span>
+        <p>
+          Yukarıdaki yolda ilişkilendireceğimiz klasörün içerisine dosya tipini kısıtlayabileceğimiz hazır "File Screen Templates"ler vardır.
+        </p>
+        <p>İstersek "File Screen Templates"e sağ tıklayıp "Create File Screen Template" ile yeni "Block"lar oluşturabiliriz.</p>
     </div>
 
     
