@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>File Server</title>
+    <title>17.12.2022</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +20,7 @@
 
     </style>
   </head>
-  <body class="bg-dark text-light">
+  <body class="container">
     <div class="container mt-5">
         <h1 class="h1">File Server</h1>
 
@@ -178,6 +178,26 @@
           Folder > Right Click > General > Advance > Compress this drive to save disk space, Subfolder'ları da dahil edebilir. <br>
           File > Right Click > General > Advance > Compress this drive to save disk space
         </p>
+
+        <h4>Veri Güvenliği</h4>
+        <p>
+          Disk'leri yazılımsal olarak korumaktan ziyade burada bahsedeceğimiz veri güvenliği, fiziksel olarak direkt Disk'in çalınması üzerine olacak. <br>
+          Disk çalınsa bile o disk'in başka bir cihaza bağlandığında verilere erişimini imkansız hale getirmek mümkündür. <br>
+          Bunu mümkün hale getiren teknolojiye "Bit Locker" adıverilir. <br>
+          Bu teknoloji heme "Client" hem de "Server"larda kullanılabilir. <br>
+          Bit Locker diskteki verileri kriptolar. Anakartın üzerinde TPM adıverlen bir Chip vardır. Bu anakarta lehimli bir parçadır. Bit Locker açıldığında diski kriptolarken TPM çipindeki Unique verileri baz alarak kriptolar. Eğer BitLocker uyguladıysak PC'yi çalıştırdığımızda TPM kriptosunu çözerek makine başlatılır. Eğer makinenin üzerindeki anakart eski tip bir anakart ise üzerinde TPM Chip bulunmaz. Bu durumda bile aslında Bit Locker uygulamak mümkündür. TPM olmadığı için Bit Locker uyguladığımızda bir şifre üretmemizi sağlar. Bu şifreyi unutmamıza karşın bir önem için başka bir şifre daha üretir. TPM olan makinede paraloya ihtiyaç yoktur. Üzerinde TPM olan bir anakartta bulunan diske Bit Locker uygulanırsa ancak ve ancak o disk sadece bu diske bağlandığında kullanılabilir anlamına gelir.
+        </p>
+        <p>
+          Hyper-V'de TPM yoktur. Server İşletim Sistem'lerinde bu Feature yüklü değildir. <br>
+          BitLocker'ın çalışabilmesi için bu özelliğini aşağıdaki konumdan yüklüyoruz; <br>
+          Server Manager > Add Feature > Features > |+|BitLocker Drive Encryption <br>
+          Yükledikten sonra sistem otomatik olarak "Restart" yapmazsa bile yine de bizim "Restart" yapmamız gerekir. Yeniden başladıktan sonra yükleme devam eder. Özelliği yüklemiş olmamıza rağmen TPM olmadığı için BitLocker Manager'dan özelliği aktif edemeyiz. Bunu çözmek için "Microsoft Console" ayarlarına erişmek gerekiyor. Bunu yapabilmek için; <br>
+          Run > gpedit.msc >  Local Group Policy Editor > Local Computer Policy > Computer Configuration > Administrative Templates > Windows Components > BitLocker Drive Encryption > Operating System Drives > Require additional autheentication at startup > Çift Tıkla > Enable > |+|Allow BitLocker without a compatible TPM. <br>
+          Bu noktadan itibaren TPM'i bulunmayan makineye de BitLocker yapılabilir durumda olur. Manage BitLocker'a gidilip bu aşamadan sonra direkt bir Flash Disk'i anahtar olarak kullanmazı ya da bir Şifre oluşturmamızı ister. Şifre girdikten sonra bir de "Recovery Key" oluşturulur. Bu "Recovery Key" çok önemli bir anahtırdır çünkü kriptoyu yalnızca bu anahtar çözebilir, dolayısıyla bize bu anahtarı nerede saklamak istediğimizi sorar. Aynı şekilde yine bir USB Flash Drive'a veya bir File olarak ya da direkt yazıcıdan yazdırarak yedekleyebiliriz. File olarak yazdırma seçeneği de tabiki başka bir Disk'e yazılır, yani ikinci bir Disk'e ihtiyacımız vardır. Daha  sonra "New Encrpto Mode" aktif edilir. Aktif edilebilmesi için en eski Windows 10 bir "Client" işletim sistemine ihtiyaç vardır. Hatta 1511 versiyon numaralı Windows 10 olmalıdır. Diğer bir seçenek ise "Compatible Mode" başka bir sürüm Windows'umuz var ise kullanacağımız seçenektir. Yani Windows 7 vs gibi çok dahah eski sürümler için geçerlidir. Sonunda "Run BitLocker System Check" seçeneğini de aktif ederek süreci başlatmış oluruz. <br>
+          Bu sürecin uzunluğu diskin boyutuna göre değişebilir. Bu süreç tamamlanana kadar disk hala güvende sayılmaz. Sürecin tamamlandığını "BitLocker On" durumunu gördüğümüzde anlarız. Süreç tamamlandığında makine her çalıştırıldığında daha önceden bizim atadığımız şifreyi sorar, o şifreyi girerek diski kullanmaya başlayabiliriz.
+        </p>
+        <a href="18-12-2022.html">18.12.2022 notlarına bu link gider.</a>
+        <div class="mt-4"></div>
     </div>
 
     
