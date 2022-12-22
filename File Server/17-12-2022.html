@@ -33,8 +33,6 @@
         </p>
         <p>
           Server Manger > File and S. > Shares > Bu File Server'da kaç tane Share edilen klasör var ise gösterir. > Rigth Click > Settings > Access-Based Enumeration(ABE) = Enable Kullanıcılara paylaşım içindeki izni olmayan klasörler gösterilmez.
-        </p>
-        <p>
           O kullanıcıların hiç bir Allow Permission'u olmamalıdır.
           Fakat dolaylı yoldan bir gruba dahilse ve o gruptan Read vs. Permission alıyorsa eğer "ABE" bu durumda çalışamaz çünkü dolaylı yoldan Allow Permission'ları var demektir.
         </p>
@@ -46,13 +44,12 @@
 
         <h4>Disk Quota</h4>
         <p>
-          Her makinenin, User'ın veya User Group'un ne kadarlık hafızalara sahip olacağı ayarlayanabilir. <br>
-          Peki hangi durumlarda bunu uygulamak gereklidir? <br>
-          Örnek verecek olursak ortak kullanılan bir makinemiz var ise ve giriş yapan her kullanıcının aynı oranda Disk Kapasitesi kullanmasını istemiyorsak, bu durumda "Disk Quota" kullanabiliriz. <br>
-          Kota belirlemek aslında bir kullanıcının Disk'e belli bir kapasiteden daha fazla kopyalama yapmasını engellemektir. <br>
-          Bir klasör paylaşımı yapan makine otomatik olarak File Server olur ve istersek File Server'ın Disk'lerine de "Disk Quota" atanabilir. <br>
-          Tabiki eğer istenirse herhangi bir makinenin herhangi bir Disk'ine "Disk Quota" atabilir, "File Server" olmak zorunda değil. <br>
+          Her makinenin, User'ın veya User Group'un ne kadarlık hafızalara sahip olacağı ayarlayanabilir. Peki hangi durumlarda bunu uygulamak gereklidir? Örnek verecek olursak ortak kullanılan bir makinemiz var ise ve giriş yapan her kullanıcının aynı oranda Disk Kapasitesi kullanmasını istemiyorsak, bu durumda "Disk Quota" kullanabiliriz. 
         </p>
+        <p>
+          Kota belirlemek aslında bir kullanıcının Disk'e belli bir kapasiteden daha fazla kopyalama yapmasını engellemektir. Bir klasör paylaşımı yapan makine otomatik olarak File Server olur ve istersek File Server'ın Disk'lerine de "Disk Quota" atanabilir. Tabiki eğer istenirse herhangi bir makinenin herhangi bir Disk'ine "Disk Quota" atabilir, "File Server" olmak zorunda değil.
+        </p>
+        
         <h4>Disk Kotası nasıl verilir?</h4>
         <p>
           Disk Kotası özelliği NTFS Dosya Sisteminde çalışan bir özelliktir. <br>
