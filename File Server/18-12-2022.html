@@ -117,9 +117,25 @@
           DFS Management > Replication > Doomain System Volume(Gelmeli)
        </p>
 
-       <h6>Senkronize etmek</h6>
-       <p>Namespaces > sirket > New Folder > </p>
        BU AŞAMAYA GELDİKTEN SONRA NOTLARA DEVAM ET.
+       <h6>Senkronize etmek</h6>
+       <p>
+        Namespaces > sirket > New Folder > İki farklı makineden aynı olmasını istediğimiz iki makineyi ve Folder'ı seçeriz > Media adında ikisini aynı klasörde paylaşırız > OK(Okay'a basınca Replikasyon yapılmasını sorar) > OK 
+       </p>
+       <p>
+        Yukarıdaki işlemi yapabilmek için replikasyona muhattap olacak sunuculara da DFS Replication servisi yüklenmiş olmalıdır. Yüklü olduğu durumda yukarıdaki senkronizasyon işleminden sonra bir Wizard başlatır. Wizard başladıktan sonra replikasyona bir isim vermemizi ister. İsim vassayılanda bırakılabilir, zaten Folder Name vermiştik. Hangisinin Primary olacağını sorar, File Server'lardan herhangi birisini seçebiliriz. Topology Selection yapmamızı ister. Bir önceki adımda seçtiğimiz Primary'inin önemini görmüş olacağız. İkiden fazla File Server olsaydı yani minimum 3 File Server olsaydı bu drumda "Hub and Spoke" yapabilirdik. Bu durumda Hub seçtiğimiz Primary olurdu ve diğerleri ile Primary bağlı olurlardır. Paylaşılan değişiklikler önce Primary File Server'a ve onun aracılığıyla diğer File Server'lara aktarılırdı. Diğer bir seçenek ise Cross Referance yani Full Mash'tir. Bu File Server'ların paylaşımları karışık olarak birbirlerine göndermesini sağlar. Son olarak "No Topology" ise replikasyon yapmaz. Replikasyon yapabilmek için daha sonradan ekstra işlemler yapılması gerekir. "Topology" belirlendikten sonra "Bandwith" girilir. Uzakta bir File Server'dan diğer File Server'a çok hızlı bir hat girilirse, iletişim diğer işler için durma noktasına gelebilir. Bandwith ayarı için bir "Schedule" ayarlanabilir. Ayın şu haftasında, şu günlerin, şu saatlerinde hız şu kadar olsun tarzında bir plan oluşturabiliriz. Bu noktada girilen saat önemlidir. Çünkü Server'lar aynı saat diliminde olmayabilirler. Örneğin kendimize göre gece saat 2'yi ayarlamak istiyorsak; Local'i seçmeliyiz. Diğer bir seçenek ise bizim ayarladığımız saat bizde 2 iken onlarda ne zaman 2 olacaksa o zaman çalışır. Replikasyon işlemi Active Directory'nin Topology'i ayarlaması ile gerçekleşir.
+       </p>
+       <p>
+        Replikasyon tamamlandıktan sonra; <br>
+        Media klasörü yeşil işaret alır. <br>
+        DFS Management > Replication > sirket.com\Tüm Paylaşımlar\Media -> Görünür durumda olur. <br>
+        Son kullanıcı paylaşmak istediği veriyi önce Media klasörüne atar. Bu veri seçilen Topology'e göre hareket eder.
+       </p>
+       <p>
+        Son kullanıcı için direkt Media'nın bir kısayolunu oluşturup masaüstüne koyabiliriz. <br>
+        This PC > Right Click > Map Network Drive > Drive Letter > Path -> Path direkt Media'nın yolunu ifade eder. <br>
+        Bu noktadan sonra bu kısayola kullanıcı sadece çift tıklayak Media konumuna gidebilir.
+       </p>
     </div>
 
     
