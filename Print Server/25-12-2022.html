@@ -22,8 +22,49 @@
   </head>
   <body class="container">
     <div class="container mt-5">
-        <h1 class="display-4"></h1>
- 
+        <h1 class="display-4">DHCP Notlar - 2</h1>
+        <h4>Sanal Makineyi DHCP Server yapmak</h4>
+        <p>
+            Hyper-V'de DHCP Server olarak belirleyeceğimiz Sanal Makinenin Switch Port'unu External'dan Internal'a alıyoruz. Static IP atıyoruz(Örneğin; 192.168.0.10). DHCP Servisini kurabilmek için makinenin Static IP'si olmak zorundadır. <br>
+            DC'yi seçtiğimi için öncelikle DC'nin Cache'ini temizliyoruz ki bir karışıklık yaşanmasın. Fakat bunu yapmak yerine yeni bir Sanal Makine oluşturuyoruz.
+            Server Manager > Tools > DC > Forward Lookup Zones > sirket.com > (Same as Parent Folder) 192.168.0.9 > Right Click > Clear Cache. <br>
+            Yukarıdaki işlemi ya da yeni bir Sanal Makineyi oluşturduktan sonra makineyi DHCP Server yapmak için şu yolu izleriz; <br>
+            Manage > Add Role > DHCP Server > |+|include <br>
+            Yukarıdaki adımdan sonra bir Scope oluşturmamız gerekiyor. Scope IP'lerin bulunduğu ve dağıtmak istediğimiz IP havuzu anlamına gelir. Ardından Complete DHCP Configuration'a tıklayarak devam ediyoruz. <br>
+            DHCP Administrators Group oluşturacak ve bunun üyeleri DHCP'de Full yetkiye sahip olacaklar. Bu grubun üyeleri DHCP Adminleri olacaklar, Scope açıp kapayabilecekler vs. <br>
+            DHCP Users Group oluşturulacak. Bu gruba üye yaptığımız kullanıcılar DHCP'ye müdahale edemeyen sadece izleme yetkisi olan kullanıcıları barındıracak yani sadece Read Only yetkileri olacak. Bu kullanıcıları Admin olarak biz belirleyeceğiz. Otomatik olarak ilk oluşturulduğunda hiç bir üyesi olmaz. Örneğin şirkette bir stajyer vs. var ve DHCP'yle alakalı bilgi edinmek istiyor. Bunun gibi durumlarda bu gruba bu kullanıcı eklenebilir.
+        </p>
+        <p>
+            DHCP Server kurduğumuz makine eğer bir Domain'e üye ise DHCP Authorize edecek. Authorize edebilmek için Forest Admin düzeyinde yetkili olmak zorunludur. Eğer DHCP Server'ı kuran kişi bu düzeyde bir yetkiye sahip değilse bu adımı atlayabilir. Daha sonra Admin bunu Authorize edebilir. Yetkiye sahip olduğumuzu tespit için kimlik girmemizi ister. Eğer Enterprise Admin isek bu Forset Admin yetkisini de kapsadığı için DHCP Server'ı aktif edebiliriz. Bu adımdan sonra "Commit" ederiz. 
+        </p>
+        <p>
+            Commit; <br>
+            Server Manager > Tools > DHHCP > dc.sirket.com(DHCP Server burasıdır) Eğer Authorize Skip edildiyse, bu konuma sağ tıklayıp Authorize edebiliriz. <br>
+            Authorized edilmiş tüm Server'ları görebileceğimiz konum; <br>
+            Server Manager > Tools > DHCP > Right Click > Manage Authorized Servers
+        </p>
+        <p>
+            Bir Client'i DHCP Client yapabilmek için IPv4 ayarını otomatiğe almalıyız. DHCP'de henüz Scope yok ise Client APIPA'dan IP alır. Henüz Scope hazırlamış değiliz, doğal olarak Client APIPA IP'ye sahip. Bu da Client'in Network'ü 30 saniyede bir DHCP Discover Broadcast yaparak meşgul etmesine sebep oluyor.
+        </p>
+
+        <h4>DHCP Server'da Scope Oluşturmak</h4>
+        <p>
+            Server Manager > Tools > DHCP > IPv4 > Right Click > New Scope Wizard > Scope ismi(Mantıklı, açıklayıcı bir isim tercih edilmeli) > Scope'akki IP Address Range belirlenir. Örneğin 192.168.0.0 - 192.168.0.100 -> Bu aralığı dağıtır. IP Adresini girdiğimiz anda otomatik olarak IP'nin Class'ına göre Subnet Mask atar. > Add Exclussion -> Yukarıda belirlediğimiz aralığa girmesini istemediğimiz IP'leri de bir aralık vererek belirtiriz. Örneğin 192.168.0.0 - 192.168.0.10. > IP'nin kiralanma süresi girilir. Bu kısımda sadece süre atanır. Süresiz olarak kiralama yapmak bu noktada mümkün değildir. Daha sonra nasıl yapıldığından bahsedilecek. > Default Gateway -> Diğer Server'ların(DNS ve WINS) IP'lerini ve Domain Name bilgilerini girmemizi ister. Şimdi mi yoksa daha sonra mı yapacağımızı sorar. Hayır dersekk sadece IP dağıtır fakat Client'lerin Gateway'leri olmaz. > Default Gateway gireriz. Örneğin 192.168.0.1(Network'ün ilk IP'si verilir) > O makinede DNS Server var ise DNS Server'ın ismini vs IP'sini otomatik kendisi girer. > DNS ve WINS hemen hemen aynı işleri yaparlar. Ufak farkları vardır. Network'te şuanda WINS bulunmuyorsa boş geçeriz.
+        </p>
+        <p>
+            Yukarıdaki adımları izleyerek bir Scope kurmuş olduk. Son aşamada bize bu Scope'u aktif etmek isteyip, istemediğimizi sorar. Eğer aktif etmezsek IP dağıtılmaz, yani hizmet başlamaz fakat başlatılmaya hazır bekler. <br>
+            Sonradan aktif etmek için; <br>
+            Server Manager > Tools > DHCP > IPv4 > Scope > Right Click > Active
+        </p>
+        <p>
+            Şuandan itibaren Client'lerin IP alabilmeleri için IPv4 otomatiğe alınabilir ya da Ethernet Resetlenebilir.
+        </p>
+        <p>
+            Hangi DHCP Client'e hangi IP Adresinin dağıtıldığını görmek için; <br>
+            Server Manager > Tools > DHCP > IPv44 > Scope > Address Leases
+        </p>
+        
+
      
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
