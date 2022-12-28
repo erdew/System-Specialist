@@ -100,7 +100,7 @@
           BU KONUMU SANAL MAKİNEDE TEST ET.
         </p>
 
-        <h4>Network Printer'ı Filer Server'a Connect etmek</h4>
+        <h4>Network Printer'ı File Server'a Connect etmek</h4>
         <p>
           Network Printer Device'ın farkı fiziksel olarak üzerinde Ethernet Port'u bulundurması yani doğal olarak bir IP Adresine sahip olmasıdır. <br>
           Print Server > Print Manager > Printers > Add Printer > Add a TCP/IP > Type of Device: TCP/IP -> Printer Device'ın IP'si girilir. > |+|Auto <br>
@@ -109,6 +109,85 @@
         <p>
           Network Printer Device'lara yazıcının kendi monitöründen de IP atanabilir. Eğer kendi monitörü yok ise bir cihaza bağlayıp aynı modem arayüzüne bağlanır gibi IP konfigürasyonu tarayıcı üzerinden de yapılabilir.
         </p>
+
+        <h2>DHCP Server(Dynamic Host Configuration Protocol)</h2>
+        <p>
+          DHCP, otomatik IP almaya ayarlanmış makinelere IP konfigürasyonu yapmayı sağlayan servistir. DHCP Microsoft'a özel değildir. Fakat kurs için Microsoft DHCP öğretilecek. Alternatifi olan Firewall ya da Router'ın üzerindeki DHCP'leri de kullanabilir olacağız. Çalışma prensip ve mantıkları aynıdır. Hatta Microsoft DHCP en kapsamlı olanıdır.
+        </p>
+        <p>
+          DHCP Static IP atamaya göre çok avantajlıdır. IP çakışmasını önler, herhangi bir yere verdiğimiz IP'leri not etmek zorunda kalmayız vs. <br>
+        </p>
+
+        <h4>Client'in DHCP Server'dan IP Kiralama Süreci</h4>
+        <p>
+          Otomatik IP almaya ayarlanmış son kullanıcı cihazına "DHCP Client" denir. <br>
+          Bu cihaz bir IP alabilmek için bulunduğu Network'e Broadcast yapmak zorundadır. <br>
+          IP'si olmayan bir makinenin IP Adresi 0.0.0.0, MAC Adresi ise sadece o makineye özel olan fiziksel ID'sidir. Şuanda bunun ne olduğunu bilmiyoruz fakat makine MAC Adresi bilgisine bunu yazar. <br>
+          Yapacağı Broadcast'te hedefin(Destination) IP Adresi 255.255.255.255(Broadcast ID)'dir, MAC Adresi ise FF.FF.FF.FF'dir.
+        </p>
+        
+        <ol>
+          <li>Aşama DHCP Discover</li>
+          <li>Aşama DHCP Offer</li>
+          <li>Aşama DHCP Request</li>
+          <li>DHCP Acknowlegdement</li>
+        </ol>
+
+        <h4>DHCP Discover</h4>
+        <p>
+          IP Adresisi olmayan cihazın(Client'in), IP Adresi alabilmek için yaptığı Broadcast'tir. Amaç ortamdaki DHCP Server'ı bulmaktır. Yapılan bu Broadcast maksimum Router'a kadardır. Router'lar Broadcast yayınları geçirmezler, Client o Router'a kadar olan yola Network denir.
+        </p>
+
+        <h4>DHCP Offer</h4>
+        <p>
+          DHCP Offer, DHCP Server'ın DHCP CLient'lere önerdiği IP Adresini barındıran bir Broadcast mesajıdır. Scope'taki ilk müsait IP Adresi Scope'tan çıkartılır ve DHCP Server'a Broadcast paketinin içerisine yerleştirilir. Bu şekilde Client'lere bu IP Adresini önerir. Broadcast'ler aynı anda gönderildikleri için önce hangi paket Client'e ulaşırsa, Client o önerilen IP Adresini kullanılır.
+        </p>
+
+        <h4>DHCP Request</h4>
+        <p>
+          DHCP Client, DHCP Server'dan gelen Broadcast'e göre DHCP Client'in hangi IP Adresini kabul ettiğini(istediğini) bildiren bir Broadcast paket gönderdiği aşamadır. Bu şekilde Network'teki herkes ve DHCP Server, DHCP Client'in DHCP Server'da oluşturulan Scope'tan hangi IP Adresini aldığını öğrenmiş olur.
+        </p>
+
+        <h4>DHCP Acknowlegdement(DHCP AK)</h4>
+        <p>
+          Bu aşamada DHCP Server, DHCP Client'ten gelen Request'i kabul eder. Kabul ettiğini Broadcast ile yayınlar. <br>
+          Bu aşama ilk bakışta biraz gereksiz gibi görünebilir fakat şöyle bir fonksiyonu varıdr; Örneğin Network'te birden fazla DHCP Server bulunuyor, DHCP1 ve DHCP2 kendi Scope'larından birer IP önerdiler. Diyelimki DHCP1'in önerdiği IP önerildi. Bu durumda DHCP2 aralarındaki yarışı kaybetmiş olur. DHCP2 kaybettiği içinde NAK adıverilen bir Broadcast yayınlar. Bu yayının fonksiyonu şudur; Eğer DHCP Server Scope'tan bir IP çıkarırsa normal şartlarda bunu yerine koyamaz fakat NAK Broadcast'i bunu sağlar. Daha doğrusu Network'un bu IP'nin tekrar Scope'ta olduğunu ve tekrar önerilebileceğini bildirir.
+        </p>
+        <p>
+          Yukarda bahsettiğimiz bu 4 aşamaya kısaca DORA ismi verilmiştir. <br>
+          DHCP Client, her kapatılıp tekrar açıldığında süreç Discover aşamasından başlatılar. Fakat bu defa kendisine daha önceden verilen IP Adresinin ona tekrardan verilmesini talep eder. Aynı IP Adresini geri verilebilmesi için  Client'ler tarafından bu IP Adresleri kiralanırlar. Bu kiralama süreci gerçektende aslında bir kontrat'tır. Microsoft DHCP için bu IP Adreslerinin kiralanabilme süresi 8 gündür. Bunun anlamı şudur; Bir IP Adresi DHCP Server'ın Scope'undan çıkarıldıysa ve bir DHCP Client'e önerilip o Client tarafından kiralanıldıysa, o Client çalışsın veya çalışmasın her koşulda 8 gün boyun o IP Adresini meşgul eder. Dolayısıyla o IP Adresi Client kapalıyken başka bir Client'e atanmaz. İstenirse bunun engellendiği yani Client'in kapandığı durumda onun kapanmadan önce sahip olduğu IP Adresini direkt olarak başka bir DHCP Client'e önermesi de mümkündür. Bu durum genellikle ISP'lerin müşterilerinin Modem'lerinin dış bacaklarına atadıkları gerçek IP'ler için gerçekleşir. Gerçek IP'ler çok kıymetli ve sınırlı oldukları için sürekli en verimli şekilde kulanılmak durumundadırlar. Bu sebeple kendimiz kurduğumuz Private IP'ler kullandığımız Network'ler için IP'lerin kiralanması, hatta süresiz kiralanması(Süresiz kiralama da mümkündür) en mantıklısıdır.
+        </p>
+
+        <h4>IP Renewing(IP Yenilemek)</h4>
+        <ol>
+          <span>Bir Client'in sahip olduğu IP'yi bırakmasının üç yolu vardır;</span>
+          <li>Makine Restart edilirse IP yenileme başlar.</li>
+          <li>Ethernet Kartı Restart edilirse IP yenileme başlar.</li>
+          <li>cmd > ipconfig /release komutu ile IP bırakılır.</li>
+        </ol>
+        <p>
+          Komut ile IP bıraktıktan sonra tekrar Discover yapabilmek için; <br>
+          cmd > ipconfig /renew <br>
+          Yukarıdaki komut ile Client'in IP'si yenilenir. Network'te başka bir DHCP Server var ise veya IP'nin kiralandığı günün üzerinden 8 gün geçtiyse bu durumda bırakılan IP'nin geri alınacağının garantisi yoktur.
+        </p>
+
+        <h4>DHCP Client'i 8 gün boyunca kapatmazsak ve DHCP Client, DHCP Server'a ulaşamazsa neler olur?</h4>
+        <p>
+          DHCP Client'i hiç kapatmadığımızı düşünelim, Server ve CLient arasında toplam kiralama süresinin %50'si dolduğunda Client Server'a gidip 3.aşamadan yani DHCP Request'den başlar. Özetle DHCP Client ve DHCP Server arasında tekrar sözleşme yapılır ve yeni bir 8 günlük sözleşme daha yapılır. <br>
+          DHCP Client sözleşmedeki sürenin %50'di dolduğunda, DHCP Server'a Request Broadcast atar. Eğer bu noktada DHCP Client, DHCP Server'a ulaşamazsa, sözleşmedeki sürenin %87.5'i dolduğunda tekrar Request Broadcast yapılır. Tekrar DHCP Server'a ulaşılamazsa sözleşmedeki sürenin %100'ü tamamlandığında tekrar Request Broadcast yapılır. Eğer bu noktada iletişim kurulabilirse Request yapılır ve yeniden sözleşme yapılıp aynı IP Adresi kullanılmaya devam eder. <br>
+          Eğer %100 dolduğunda DHCP Server'a ulaşılamıyorsa bu durumda DHCP Client IP'yi bırakır. Doğal olarak sürenin tamamı dolana kadar DHCP Client üzerindeki IP'yi kullanmaya devam etmiştir. DHCP Client artık Client olur yani otomatik olarak bir DHCP Server'dan IP alamadığı ve halihazırda üzerinde olan IP'yi bıraktığı için artık IP Adresi 0.0.0.0'a geri döner. Bu noktada Client DHCP Discover Broadcast yapar.Eğer o Network'te başka bir DHCP Server var ise süreç en başından başlar ve sonuç olarak DHCP Server'ın Scope'undan bir IP kiralayıp hayatına o IP Adresi ile devam eder. <br>
+          Eğer bu noktada da herhangi bir DHCP Server'a ulaşamıyorsa, hala otomatik olarak IP almaya ayarlı olduğundan dolayı İşletim Sistemi üzerinde bulunan APIPI adıverilen 169.254.0.0'tan başlayan Scope'tan bir IP alır. <br>
+          APIPA TCP/IP kullanan her İşletim Sisteminde gömülüdür. İşletim Sisteminin bir marifeti değildir. Fakat o sistem içerisinde bu durumlar için bulunan bir Scope'tur. Doğal olarak APIPA, bahsettiğimiz Client'e denk her makinede vardır ve o Network'te hiç bir Client DHCP Server'a erişemezse nihayetinde APIPA'dan bir IP Adresi üstleneği anlamına gelir. <br>
+          Dolayısıyla her APIPA'dan IP alan makinede IP Adresleri aynı olabilir. Bu da APIPA'dan IP alan makinelerin aynı Network'te olsalar bile iletişim kuramalarına sebep olur. Bunu önlemek için Client APIPA'dan IP atamadan önce almayı istediği IP'yi içeren bir Broadcast yapar. Bu Broadcast'i 3 defa yapar. Network'te eğer bu IP'yi alan bir Client yok ise kendisi alır. Eğer o IP'ye sahip olan bir Client var ise bu durumda bir sonraki IP için aynı süreç uygulanır. <br>
+          Bir Client'in APIPA'dan IP Adresi alması aslında o Client'in çadır kurması anlamına gelir. Daha önceden DHCP Server'dan kiraladığı IP Adresini de ev olarak hayal edebiliriz. Evsiz kaldığı için çadır kurmak durumunda kalır. <br>
+          Client APIPA'dan IP aldıktan sonra her 30 saniyede bir DHCP Discover Broadcast yapar. Bu da APIPA'ya düşen Client'lerin sayısına göre Network'te çok ciddi bir trafik oluşması anlamına gelir. <br>
+          APIPA'daki makinelere Gateway atanmaz, doğal olarak o Network'un dışına paket gönderemezler, internet ile ilişkileri olmaz. Yani iletişimleri LAN ile sınırlıdır.
+        </p>
+        <p>
+          Client'in APIPA'dan bir IP Adresi aldığını fark ettiğimizde, Client'in Network kablosunu kontrol ederiz. Kabloda bir sorun yok ise DHCP Server'la iletişimde bir sıkıntı olduğu anlamına gelir. Sadece iletişim de değil direkt olarak DHCP Server'da bir sorun olduğu anlamına da gelebilir. <br>
+          Printer Device'lar da APIPA'ya düşebilirler, bu durumda APIPA'ya düşen Printer'a bağlı bir Client'lerden çıktı alınmak istenirse alınamaz. Çünkü Active Directory üzerinden bir Ticket ile iletişim sağlanır. <br>
+          Domain Client'lerinden Priter Device'a paylaşım gitmeden önce Printer Server'a Client Ticket ile yönlendirilir. Printer Server gelen Client'in Ticket'ının doğruluğunun kontrolü için Domain Controller ile iletişime geçer. Doğru ise baskıyı yapmak için Device'a paketi gönderir, değilse baskı yapılmaz. Bu işlem Active Directory üzerinden gerçekleşir.
+        </p>        
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </body>

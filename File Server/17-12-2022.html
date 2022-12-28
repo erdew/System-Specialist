@@ -32,10 +32,12 @@
             "Inheritance" özelliğini kaldırabilmek için; ilgili klasöre sağ tıklanır, "Security" sekmesinden "Advanced" ayarlarına girilir ve "Disable Inheritance" seçilir. Ardından yukarıdaki listeden bu paylaşım ile ilişkisini kesmek istediğimiz kişi ya da grupları seçip, "Remove" butonuna tıklayarak kaldırırız.
         </p>
         <p>
-          Server Manger > File and S. > Shares > Bu File Server'da kaç tane Share edilen klasör var ise gösterir. > Rigth Click > Settings > Access-Based Enumeration(ABE) = Enable Kullanıcılara paylaşım içindeki izni olmayan klasörler gösterilmez.
+          Server Manger > File and Storage Services > Shares > Bu File Server'da kaç tane Share edilen klasör var ise gösterir. > Paylaşım yaptığımız ilgili klasöre Rigth Click > Properties > Settings > |+| Enable Access-Based Enumeration(ABE) 
+        </p>
+        <p>
+          ABE'yi Enable yaptığımızda kullanıcılara paylaşım içindeki izni olmayan klasörler gösterilmez. Yani erişmesine gerek olmayan hatta görmesine dahi gerek olmayan paylaşımları bu şekilde ilgisiz kişilere göstermenin önüne geçmiş oluyoruz.
           O kullanıcıların hiç bir Allow Permission'u olmamalıdır.
           Fakat dolaylı yoldan bir gruba dahilse ve o gruptan Read vs. Permission alıyorsa eğer "ABE" bu durumda çalışamaz çünkü dolaylı yoldan Allow Permission'ları var demektir.
-        </p>
         <p>
             Eğer bu konu ile alakalı Sanal Makine'de bir sorun yaşıyorsak;
             File Server > Computer Management > Shared Folder || Sessions > Open Files > Close
