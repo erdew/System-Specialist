@@ -63,8 +63,70 @@
             Hangi DHCP Client'e hangi IP Adresinin dağıtıldığını görmek için; <br>
             Server Manager > Tools > DHCP > IPv44 > Scope > Address Leases
         </p>
-        
 
+        <hr>
+        
+        <p>
+          Server Manager > Tools > DHCP > DC > Scope > Right Click > Display Static > Right Click > Limited to -> Kiralama süresini bu konumdan belirleriz. Unlimited yaparsak süresiz bir şekilde IP atanmış olur. O Scope'taki her IP için uygular. Bu tarz bir uygulamayı o Network'te çok sayıda IP dağıtabiliyorsak uygulamalıyız. Kısıtlı bir IP olmamalı. <br>
+          Server Manager > Tools > DHCP > DC > Scope > Right Click > Display Static > Right Click > Properties > End'i değiştirerek o Network'ün sınırına kadar kullanırız. Ücretsiz IP' kullanıyorsak Subnet'i geniş olanla başlarız. Direkt olarak 10'lu(A Class) Private IP'leri kullanarak başlarız. Subnetting'i gerçek IP kullandığımızda yapmalıyız. <br>
+          Private IP kullanıyorsak IP'lerin yetmemesi gibi bir duruma maruz kalmamalıyız. Eğer IP yetersiz gelirse yeni bir Scope oluşturmak zorundayız.
+        </p>
+        
+        <h4>Static IP ile DHCP Client IP çakışması</h4>
+        <p>
+          DHCP Server olan bir Network'e Static IP'si olan bir makine Connect olursa ve atanan otomatik IP'ler ile sonradan bağlanan Static IP çakışabilir. Bu durumda makinelerden birisi Network'ten düşer. %50 ihtimalle iki makineden biri Network'ten düşer.
+        </p>
+        <p>
+          DHCP > IPv4 > Properties > Advanced > Conflict detection attemps -> <br>
+           Network'e kaç defa otomatik atamayı önerdiği IP'yi Broadcast ile soracağını belirliyoruz. Kaç defa Broadcast yapacağını belirliyoruz. 3 defa ardı ardına Broadcast yaptırmak en idealidir. 3 defa sorduktan sonra Network'ten bir cevap almazsa önerdiği IP'yi dağıtır. Network'te herhangi bir Client'te bu IP var ise bir sonraki IP'yi önerir.
+        </p>
+        <p>
+          Bu aşamadan sonra yine Static IP'li bir makine Network'e eklenirse aynı çakışma problemi ile tekrardan kaşılaşırız.
+        </p>
+
+        <hr>
+
+        <p>
+          DHCP > IPv4 > > Scope > Address Pool > Add Exclusion <br>
+          Daha sonradan yukarıdaki konuma giderek Scope'tan dağıtılmasını istemediğimiz IP Adreslerini belirleyebiliriz. Eğer halihazırda Exclusion'a eklediğimiz IP Adres'leri DHCP Client'lere dağıtılmış durumda ise DHCP Server DHCP Clint'lerin bu IP Adres'lerini bırakmasını sağlar. Bunun gerçekleşmesi zaman alır. IP Adres'ini hemen bırakmasını istediğimiz DHCP Client'e giderek Ethernet'i Reset'leyerek ya da CMD'den komut girerek hemen sonuç alabiliriz.
+        </p>
+
+        <h4>IP Rezervasyonu</h4>
+        <p>
+          Otomatik IP Adresi alan bir DHCP Client'in her daim tekrar tekrar aynı IP Adresini almasını sağlayabiliriz. Normal şartlarda bir DHCP Client ona dağıtılan IP Adresini bıraktıktan sonra tekrar DHCP Request Broadcast yaptığı durumda aynı IP Adresini geri alabileceğinin garantisi yoktur. 
+        </p>
+        <p>
+          IP Adresleri, Ethernet Kartları'na atabilir. Bu durumda IP Rezervasyonunu Ethernet kartlarına hatta bu kartların da MAC Adreslerine yapabiliriz. <br>
+          Bunu yapabilmek için; <br>
+          DHCP > DC > IPv4 > Scope > Reservations <br>
+          Ya da direkt olarak DHCP Client'i seçerek o anda üzerinde bulunan IP Adresini o DHCP Client için rezerve edebiliriz; <br>
+          DHCP > DC > IPv4 > Scope > Address Leases > Bağlı olan makinelere sağ tık > Add to Reservation
+        </p>
+        <p>
+          Yukarıda bahsettiğimiz gibi özellikle bir IP Adresine rezervasyon yapmak istiyorsak mutlaka o IP Adresinin bulunduğu makinenin Ethernet Kartının MAC Adresini öğrenmek durumundayız. Bunu öğrenmek için; <br>
+          Makine > Network Con > Ethernet > Ethernet Status > Details -> Bu konumda MAC Adresi bilgisini görebiliriz. <br>
+          Ya da; <br>
+          DHCP Server > CMD > ping server-1.sirket.com > arp -a -> Network'teki bir IP'ye DNS üzerinden Ping atmış olduk. arp -a'nın çalışması için en az bir Client'e Ping atmış olmak gerekiyor. arp -a ise bize iletişime geçtiği bütün IP Adreslerinin MAC Adresini listeler. <br>
+          Ya da direkt liste şeklinde görebiliriz; <br>
+          DHCP > DC > IPv4 > Scope > Address Leases > Export > Save -> Liste görünür. <br>
+          DHCP > DC > IPv4 > Scope > Reservation > New Reservation > Reservation Name -> Rezerve etmek istediğimiz IP Adresi ve makinenin MAC Adresi girilir. <br>
+          Yukarıdaki rezervasyon işlemini yaptıktan sonra; <br>
+          DHCP > DC > IPv4 > Scope > Address Leases > Reservation(inactive) -> olarak görünüyor ise bu IP Adresi şuanda kullanıldığı için olabilir. Bunu düzeltmek için bu IP adresini kullanan DHCP Client'in IP'yi bırakmasını sağlamalıyız. Bunun için Client'e gidilir ve Ethernet'e Reset atılır. <br>
+          Bu listede eğer verdiğimiz IP Adresi iki tane görünüyorsa rezerve etmek istediğimizi değil de diğer makineden IP kaldırılır. IP kaldırıldıktan sonra listeden çıkar.
+        </p>
+        !!! BU NOKTADAN SONRAKİ NOTLARI TEKRAR DÜZENLE !!!
+        <hr>
+        <p>
+          İstersek Exclusion'da olan bir IP Adresi için de rezervasyon yapabiliriz. Static IP vermek yerine DHCP ile sonra rezerve ederek ilgili MAC Adresine IP atanabilir fakat Static verilmesi gerekenler direkt makineye gidip verilmelidir.
+        </p>
+        <p>
+          DHCP > DC > IPv4 > Scope > Reservation > [192.168.3.22] -> Örneğin oluşturduğumuz rezervasyon. > Sağ tık > Properties > Supported Types
+        </p>
+        <p>
+          BOOTP -> DHCP'nin ilkel halidir. Kullanım amacı; Üzerinde OS olmayan bir makineye uzaktan OS kurmak için kurulum dosyalarını uzaktan gönderebilmek için Ethernet üzerindeki ilkel bir yazılım BOOTP ile Broadcast yapıp Network'ten bir IP ister. OS Kurulu olmadığı için üzerinde IP Adresi yoktur. Bu durumda BOOTP, makinenin IP almasını sağlar. <br>
+          IP'nin ne ile atanacağını seçebiliriz; <br>
+          DHCP > DC > IPv4 > Scope > Properties > Advanced > DHCP(seçilidir)
+        </p>
      
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
