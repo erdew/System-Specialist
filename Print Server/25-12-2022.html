@@ -127,7 +127,68 @@
           IP'nin ne ile atanacağını seçebiliriz; <br>
           DHCP > DC > IPv4 > Scope > Properties > Advanced > DHCP(seçilidir)
         </p>
-     
+
+        <hr>
+
+        <h4>Gateway değiştirdiğimiz durumda neler yapılır?</h4>
+        <p>
+          DHCP > DC > IPv4 Scope > Scope Options > Router <br>
+          Router'a çift tıklarız. IP Address bölümünden yeni Gateway'i Add edip, eskisini Remove ederiz. <br>
+          Bu şekilde DHCP Client'lerin yeni Gateway'i almasını sağlar. Bu şekilde Scope Options'taki bütün ayarları değiştirebiliriz. Yeni bir "Options" girmek için burası kullanılır.
+        </p>
+
+        <hr>
+
+        <h4>Birden fazla Gateway'imiz olması durumunda neler yapılır?</h4>
+        <p>
+          Birden fazla Gateway'imizin olması demek; Birden fazla internet bağlantımız var demektir. Server'lardan vs. bir kaçını farklı Gateway'e bağlayabiliriz. Daha doğrusu Scope'taki herhangi bir makineyi istediğimiz bir Gateway'e bağlayabiliriz. <br>
+          Scope'tan herhangi bir IP Adresini verebiliriz fakat diyelim ki iki internet bağlantımız var ve birisi çok hızlı ve bu hızlı interneti bir Server'a vermek istiyoruz. Onun trafiği çok yoğun olabilir ve o yoğun trafiği bu internet ile kontrol etmesini sağlayabiliriz. Bunu yapmak için o Server'ı Rezerve edebiliriz. Yapmak zorunda değiliz fakat Server olduğu için zaten IP'sini sabitlemek iyi bir fikirdir. Rezerve edilmiş IP Adresli Server'ın Gateway'ini değiştirmek için; <br>
+          DHCP > DC > IPv4 > Scope > Reservations > [192.168.3.22] > Configure Options >|+|Router -> Örneğin; 0.2 Gateway'i girilir. <br>
+          Yukarıdaki konumdan IP'ye çift tıklayarak gördüğümüz Scope Options'tan mirasla gelen Options'ları değiştiremeyiz. Mirasın en tepesinde Scope Options bulunur.
+        </p>
+
+        <h4>Rezervasyon yapmadan Gateway değiştirmek</h4>
+        <p>
+          Varsayalım ki Müdürler departmanı var. Müdürlerein makinelerine farklı bir Gateway veremek istiyoruz. Genellikle yeni bir Gateway, yeni bir internet bağlantısı anlamına gelir. Özellikle bir gruba Option uygulamak istersek bunu Scope Options'tan yapamayız. Scope Options'taki Option'lar tüm DHCP Client'lerini kapsar. Yani belirlediğimiz tüm departmanları kapsar.
+        </p>
+
+        <h4>User Class</h4>
+        <p>
+          Özellile bir grup DHCP Client'i kapsayacak bir Options belirlemek için User Class oluşturulmalıdır. Oluşturduğumuz User Class'a DHCP Client'leri bu Class'a üye ederek, belirlediğimiz Option'ları üstlenmelerini sağlarız.
+        </p>
+        <ol>
+          <span>User Class 3 aşamalıdır.</span>
+          <li>User Class oluşturulur.(Örneğin bu senaryo için Müdürler adında bir User Class oluşturabiliriz.)</li>
+          <li>Müdürler Class'ına atamak istediğimiz özel Option'lar eklenir.</li>
+          <li>Müdürler Class'ına üye olmasını istediğimiz makineleri bu User Class'a ekleriz.</li>
+        </ol>
+        <h6>1 ve 2.Aşamalar</h6>
+        <p>
+          DHCP > DC > IPv4 > Right Click > Define User Class > Add > Display Name(Müdürler) > ASCII kodun altına tıklanır. -> "Müdürler" yazılır. > OK > User Class oluşturuldu. > Next > Bu Class'ta olduğunu iddia eden makine geldiğinde(User Class'ı "Müdürler" olan) Scope'un içinden bir özel aralıktan IP verebiliriz. Bunu yapmazsak özel bir aralıktan dağıtmaz.(No seçersek) -> 192.168.0.50 - 192.168.0.60 -> Percentage of IP Address Range verilir. 50'den 60'a vermemizin sebebi bu IP'lerin Müdürler makinelerini gösterdiğini daha rahat ayırt etmektir. > Amacımı bu User Class'a farklı bir Gateway vermek.|+|Router seçilir, aşağıdan Gateway Adresi girilir. Örneğin 192.168.0.3 > Add > Next > Finish.
+        </p>
+        <h6>3.Aşama</h6>
+        <p>
+          Müdürlerin makinesinde > CMD > ipconfig /setclassid Ethernet(Ethernet kartının ismi girilir) Müdürler(User Class name girilir) <br>
+          Yukarıda hangi Ethernet'i Müdürler User Class'ına katacaksak o Ethernet'in ismini yazarız. Bu noktadan sonra Command Prompt'ta Succesfully mesajını almalıyız. > ipconfig /release > ipconfig /renew -> IP'yi bırakıp, yeniden almasını sağlarız. > ipconfig all -> Detaylı olarak User Class name, MAC Adresi, IP Adresi vs. görüntüleriz. <br>
+          Eğer makineyi User Class'tan çıkarmakk istiyorsak; <br>
+          Müdürlerin makinesinde > CMD > ipconfig /setclassid Ethernet(Ethernet kartının ismi girilir) (User Class name boş bırakılır)
+        </p>
+
+        <hr>
+
+        <p>
+          En kapsayıcıdan, en spesifik sıralama yapacak olursak; "Rezervasyon", "User Class", "Scope Options" olduğunu söyleyebiliriz. Scope ürettikten sonra sağ tık Active. Birden çok Scope var ise ikisi de boş vs. fark etmez. Client'ten gelen Broadcast'i DHCP Server hangi Interface'ten alıyorsa o kendisinin bildiği tek IP Adrestir.(Network'ten) O Scope'tan(önce) IP dağıtmaya başlar. Interface'inin tek IP'si olmalı.(Birden falza IP atanabilir) VLAN'larımız var ise yeni Scope'lar oluştururuz. Örneğin; 4 katlı binada her bir kat 1 Switch'e bağlı. Her bir kattaki Switch'i de Backbone Switch'e bağladık. Backbone Switch'e VLAN yaptık.(1.0, 2.0, 3.0, 4.0) Hangi tünelden seslenirse o Network'ten Scope'tan DHCP IP dağıtır.
+        </p>
+
+        <h4>Yukarıdaki senaryoyu Hyper-V'de uygulamak</h4>
+        <p>
+          Sanalda şuanda VLAN yapamadığımız için gerçekten yeni bir Switch üretmemiz gerekiyor. Fakat zaten mantık aynı olacağı için bir problem yok. int-2 adında yeni bir Switch üretiriz. 1.Makine int1 Switch'ine bağlı bırakılır. 2.Makine int2 Switch'ine bağlanır. int1'e bağlı olan makine Broadcast yapınca int1 tünelinden DHCP Server'a Broadcast'i ulaştırabilir, alternatif bir yolu bile yoktur. Tersi 2.Makine için geçerlidir. Sanalda Network'ü tamamen izole etmek gerekibilir. Bunun için Switch'leri int değil de Private yapabiliriz. Yani sorun yaşarsan Private Switch üret o şekilde dene.
+        </p>
+        <p>
+          Ürettiğimiz Private 2 Switch'ine 192.168.1.10 IP'sini veririz. <br>
+          DHCP Server'da 1.0 için yeni bir Scope oluştururuz. <br>
+          Üretileen Scope'u farklı network'leri içerecek kadar büyük bir aralık belirlersek; kendisi otomatik Scope'lara ayırır. Bunu Superscope klasörü altında listeler. Tek tek uğraşmaya gerek kalmaz, sadece koaly yönetim sağlar.
+        </p>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </body>
