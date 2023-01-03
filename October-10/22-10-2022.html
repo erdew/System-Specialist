@@ -23,10 +23,96 @@
   <body class="container">
     <div class="container mt-5">
         <h1 class="display-4">22.10.2022</h1>
-   
-        
-        
+        <p>
+          - do show ip router -> IP Routing'leri gösterir. <br>
+          - Router'ın her Interface'i farklı birer Network'ü ifade eder. <br>
+          - Gateway sadece bir çıkış kapısıdır.  Farklı bir Network'e çıkmak için gereklir.<br>
+          - Aynı Network'teki makineler sadece IP'ye sahip olarak birbirlerine erişebilirler. <br>
+          - Router'lar çıkış yollarını yani bütün Network'lere hangi Interface'inden çıkacağını öğretmek gerekir. <br>
+          - Router'lara Default Gateway atılabilir. Her zaman Client'in çıkması gereken Interface aynı olacağı için hep geçerli olmasını sağlar. <br>
+          - IP Route 0.0.0.0 0.0.0.0 -> Hedef fark etmez. 192.168.5.2 -> Router'ın diğer Network'lere çıkan Interface'in IP'si. <br>
+          - Yukarıdaki durum tek bir çıkışı olan Network'ler için geçerlidir. 
+        </p>
+         
+        <hr>
 
+        <h4>Serial Port</h4>
+        <p>
+          Router'dan Router'a seri bağlantı yapmak. <br>
+          DTE Cable -> Bağlantının yapılabilmesi için kullanılan özel Modem ile Router'ın arasındaki bağlantıyı yapan kabloya verilen isimdir. <br>
+          Modem'in üzerinde Smart Serial Port bulunur. <br>
+          Seri bağlantı yapmak yerine yukarıda üzerinde Smart Serial Port bulundularan bir Modem kullanılarak da bir Router konfigüre edilebilir. <br>
+          Ancak Modem'e ihtiyaç duyulmadan sadece kablolar ile Router'dan Router'a seri bağlantı yapmakta mümkündür. <br>
+          Bunu için DTE ve DCE kabloları kullanılır. <br>
+          DCE kablo Modem'in üzerindeki Smart Serial Port gibi yani dişi olan DTE'nin karşılığı olan kablodur. <br>
+          Bu iki kablonun birbirine bağlanması arada modem varmış gibi bağlantının kurulmasını sağlar <br>
+          DCE kablonun amacı devreyi kandırmaktır. <br>
+          DCE takılı olan taraf DCE Router yani Modem gibi davranan Router olur. <br>
+          Bu iki kablonun aynı dili konuşabilmeleri için Clock Rate ayarı yani frakans ayarı yapılır. <br>
+          IP olmadığı için frekansları eşlemek gerekir. <br>
+          İki Router'u seri bağladığımız zaman DCE Router üzerinden frekans ayarı tanımlarız. <br>
+          Putty'de oluğu şekilde ayar yapılır. <br>
+          DCE Router'ın Serial 0/0/0 Interface'ini seçilir. <br>
+          ip adress atanır: 192.168.4.2 255.255.255.0 <br>
+          Interface no shutdown yapılır. <br>
+          clock rate girilir: 4000000 -> 4 MB/s. <br>
+          DTE Router'a IP girilir: 192.168.4.1 255.255.255.0 ve no shutdown yapılır. <br>
+          Seri bağlantı, Etnernet bağlantısına bir alternatiftir. Günümüzde aktif olarak kullanılmaz çok nadir olarak karşılaşılır. Fakat Cisco'nun CCNA sınavlarında sorulmaya devam edilir.
+        </p>
+
+        <h4>Telnet</h4>
+        <p>
+          Router'lara uzaktan bağlantı kurup konfigürasyon yapabilmek için Telnet Protokolü kullanılır. Bu şekilde Router'lara Console'dan ya da Seri bağlanmadan Ethernet kartı üzerinden bağlantı kurularak uzaktan ayarlar yapılabilir. Birden çok Router'a bağlantı kurmak gibi bir rahatlık verdiği için Telnet çok önemli bir protokkoldür. <br>
+          Telnet ile bağlantı kurabilmek için Router'ın Enable moduna şifre atanmış olmalı. Ayrıca VTY sanal port'ları şifre atanmalıdır. Telnet VTY Sanal port'ları üzerinden çalışır. <br>
+          VTY Port'larına IP atanmaz sadece aktif duruma getirilirler. <br>
+          Uzaktan telnet bağlantısı kurulmak için Router'ın üzerindeki IP'lerden ilgili olanı girilir.
+        </p>
+        <p>
+          ctrl + shift + 6 + x -> Telnet bağlantısını kesmeden exit yapılabilir. Kaynağa geri dönüldüğünde bağlantı kesilmemiş olur, daha sonra Enter'a basarak mevcuttaki Telnet Session'ununa geri döner. <br>
+          Örneğin; <br>
+          1.Router'dan 2.Router'a Telnet ile bağlandık. 2.Router'daki Session açıkken 1.Router'a geri gidip gerekli işlemi yaptıktan sonra Enter'a basarak 2.Router'dan devam edebiliriz. Daha doğrusu ctrl + shift 6 + x yapılan Router'a geri döner.
+        </p>
+        <p>
+          show sesions -> Router üzerinden kaç tane Router'a bağlı olduğunu yani kaç tane "oturum" olduğunu gösterir. <br>
+          Session numaralarına göre bağlantı kurabiliriz. <br>
+          Default olarak yıldız işareti Enter'a basar Session'a geçirir. <br>
+          Örneğin; <br>
+          resume 4 -> 4.Session'a geçer. <br>
+          Telnet üzerinde hızlı bir şekilde Router'lar arasında seçim yapmamızı sağlar. <br>
+          Session'ları direkt exit yazarak kapatabiliriz. <br>
+          Exit yapıldıktan sonra bağlı olan Router'tan atar. <br>
+          Örneğin; <br>
+          10 tane Session açtık ve 9. kapatmak istiyoruz. Bu durumda; "disconnect 9" yazılır.
+        </p>
+        <p>
+          IP'leri aklımızda tutmamız hem mümkün değil hem de gerekli değildir. <br>
+          Telnet bağlantısı için IP girmek yerine isim girerek bağlanabiliriz. <br>
+          Router > CLI > ip host Router_Bakirkoy_1 192.168.4.2(4'e giden Interface). <br>
+          Yukarıdaki 192.168.4.2 IP adresli Router'a, Router_Bakirkoy_1 ismini vermiş olduk. <br>
+          Bu sayede telnet Router_Bakirkoy_1 yazarak bağlantı kurabiliriz. <br>
+          Bu tanımlamayı hangi Router üzerinde yaptıysak bu isimlendirmeyi yalnızca o Oruter'da kullanabiliriz.
+        </p>
+        <p>
+          "show hosts" komutu ile hangi IP'ye hangi ismi verdiğimizi listeler. <br>
+          no ip host -> Host'u siler. <br>
+          CDP(Cisco Discovery Protocol) protokolüne sahip diğer markalarda da çalışır. <br>
+          show cdp neighboors -> Komşu Network cihazları gösterir. Eğer next HOP'taki yani "Directly Connected" cihazların hangi IP'ye vs sahip olduğunu bilmiyorsak bu şekilde görebiliriz. <br>
+          switch Fas 0/0(Çıkış, sorguladığımız konum yani biz.) 177 5 2950 Fas 0/24(Giriş, sorguladığımız konum yani karşı taraf.) -> Bu komut ile Interface'leri yakalayabildik fakat hala IP adresini öğrenemedik. <br>
+          show cdp neighboors detail -> IP: 192.168.2.2, Fast 0/1 vs. çok daha detaylı bilgileri getirir.
+        </p>
+
+        <hr>
+
+        <h4>DNS(Domain Name Service)</h4>
+        <p>
+          IP'leri akılda tutmak mümkün olmadığı için IP'lere isim atabiliriz. <br>
+          Cisco Packet Tracer > Server > DNS > PC01.sirket.com, 192.168.1.10 -> Veritabınını bu şekilde isimlerle dolduruyoruz. <br>
+          Database'e erişebilmeleri için Client'e DNS'i tanıtmak gerekiyor. <br>
+          IP Configuration (PC > Desktop > IP conf) <br>
+          Sektörde sorunların %50'si DNS'ten kaynaklıdır.
+        </p>
+        
+        
         
         <a href=""></a>
         <div class="mt-4"></div>
