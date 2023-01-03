@@ -26,53 +26,55 @@
         <h4>Bir şirketin Printer ihtiyacı nasıl karşılanır?</h4>
         <h6>Printer nedir?</h6>
         <p>
-          Çıktı alan cihaz Printer Device'tır. Control Panel'de Device'lar bölümünde gözlemlediğimiz Device'lar arasında gördüğümüz Device ise Printer'dır. Bu iki kavram arasında bir fark yokmuş gibi görünür fakat ciddi bir vardır. Bunu örneklerle açıklayacağız.
+          Çıktı alan cihaz Printer Device'tır. Control Panel'de Device'lar bölümünde görüntülenen Device ise aslında  Printer'dır. Printer da aslında bir Driver'dır. Printer Device ve Printer kavramları arasında bir fark yokmuş gibi görünür fakat ciddi farklar vardır. Bunu örneklerle açıklayacağız.
         </p>
         <p>
-          Network'lere bağlanabilen Printer'lar da vardır. Bunlar Network Printer adıverilir. Bu Printer'ların üzerinde CPU'ları RAM'leri vs. vardır. Ayrıca Network Printer'larında Ethernet Port'u bulunur. Doğal olarak IP atanabilir ve bu IP ile Network'te iletişim kurulabilir durumda olur. Network Printer'ları pahalılardır. Şirketler genel olarak orta maliyetli, ortalama Printer Device'lar kullanırlar. Network Printer'lar çok professiyonel ortamlarda kullanılırlar. Çok sayıda kullanıcı ve departman, çok sayıda çıktı almak durumundaysa Network Printer'ları büyük avantaj sağlar.
+          Network'lere bağlanabilen Printer Device'lar da vardır. Bunlara Network Printer Device adıverilir. Bu Printer Device'ların üzerinde CPU, RAM vs. gibi donanım birimleri bulunur. Network Printer Device'larını Printer Device'lardan ayıran özellik üzerlerinde Ethernet Port'unun olmasıdır. Doğal olarak bu Ethernet Port'una IP atanabilir ve bu IP sayesinde Network ile iletişim kurabilirler. Network Printer Device'lar normal Printer Device'lara göre daha maliyetlilerdir. Şirketler genel olarak orta maliyetli, ortalama Printer Device'lar kullanırlar. Network Printer'lar çok professiyonel ortamlarda kullanılırlar. Çok sayıda kullanıcı ve departman, çok sayıda çıktı almak durumundaysa Network Printer kullanmak daha mantıklı ve avantajlı olur.
         </p>
         <p>
-          Print Server, Client Windows'lar da olabilirler. Printer Device'ları bir oluşturduğumuz Print Server'a bağlayarak izinler, kuyruk sıralaması vs. düzenleyip, yaptığımız ayarlara göre çıktı almasını sağlayabiliriz. Daha professiyonel bir tasarım yapacaksak bu iş için Print Server için Client değil Server kullanılmalıdır. Normalde Domain Controller kesinlikle Print Server yapılmaz fakat eğitimde yapmak bir sorun oluşturmaz. Ancak yinede uygularken yeni bir makine üretip onu Print Server yap. Gerçekte Print Server olarak belirlenecek makinenin donanımı güçlü olmalıdır.
+          Printer oluşturmak ve Printer Device'lara paylaşım gönderebilmek için Print Server kurulması gerekir.
+          Print Server, bir Server'a kurulabileceği gibi Client Windows'lara da kurulabilir. Printer Device'ları, oluşturduğumuz Print Server'a bağlayarak; İzinler, Kuyruk Sıralaması vs. gibi ayarları düzenleyip, Printer Device'ların yaptığımız ayarlara göre çıktı almasını sağlayabiliriz. Daha professiyonel bir tasarım yapılacak ise Print Server Client'e değil Server'a kurulmalıdır. Üzerine Print Server kurulan makine, Printer Server olur. O isimle anılır. Normalde Domain Controller kesinlikle Print Server yapılmaz fakat eğitimde yapmak bir sorun oluşturmaz. Ancak yine de uygularken yeni bir makine üretip onu Print Server yapmak en doğrusudur. Print Server olarak belirlenecek makinenin donanımı performanslı olmalıdır.
         </p>
         <p>
-          Print Server, çıktı için yapılan paylaşımların Print Client'in anlayacağı dile çevirir. <br>
+          Print Server aslında bir derleyicidir. Çıktı için yapılan paylaşımları Printer Device'ın anlayacağı dile derler.<br>
           Server Manager > Tools > Services > Print Spooler <br>
-          Bir makinenin Print Server olabilmesi için Print Spooling servisi açık olmalıdır. Kapalı ise bu sunucuya bağlı olan Printer Device'a paylaşım yapılsa bile o Device paylaşımı algılayamaz doğal olarak çıktı alınamaz. Eğer sorun yaşıyorsak; Kuyrukta bir sürü iş var diyelim, en tepedeki iş makine dondurdu veya kuyruğa o kadar fazla iş alınması gerektiki fazla donanım kullanıldığı için ciddi yavaşlama olabilir. Bu durumda; <br>
+          Bir makinenin Print Server olabilmesi için Print Spooling servisi açık olmalıdır. Kapalı ise bu sunucuya bağlı olan Printer Device'a paylaşım yapılsa bile o Printer Device paylaşımı algılayamaz doğal olarak çıktı alınamaz. Çünkü o paylaşım Printer Device'ın anlayabileceği bir dile çevrilememiştir. <br>
+          Printer Device'ın üzerindeki iş yükünden dolayı vs. bir şekilde donduğunu varsayalım. Bu sorunu çözmek için aşağıdaki yol izlenebilir; <br> 
           Print Spooler > Right Click > Restart yapılır. <br>
           Restart yapıldığı zaman bütün kuyruk silinir. O anda yapılan işlem devam eder.
         </p>
         <p>
           Print Device'a bağlanmak için; <br>
-          Çok eski Prinver Device'larda LPT Connector kullanılır. Bu porta Paralel Port adı da verilir. <br>
-          Günümüzde en çok USB kullanılır. <br>
+          Çok eski Printer Device'larda LPT Connector kullanılır. LPT Connector'e aynı zamanda "Paralel Port" adı da verilmiştir. <br>
+          Günümüzde Printer Device'a bağlanmak için en çok USB Connector kullanılır. <br>
           Ethernet Port'u veya WiFi da kullanılabilir.
         </p>
 
-        <h6>Print Device'ı fiziksel olarak Print Server'a bağladıktan sonra kurulum aşamaları</h6>
+        <h4>Printer Device ile Print Server'ın fiziksel bağlantısı yapıldıktan sonra Print Server'ın kurulum aşaması</h4>
         <p>
-          Server Manager > Print Manager > Print Servers > PC(Local, Print Server olarak belirlediğimiz makine) > Printers <br>
+          Server Manager > Print Management > Print Servers > PC(Local, Print Server olarak belirlediğimiz makine) > Printers <br>
           Bu konumda gördüğümüz Printer'lar içinde Sanal Printer'lar da vardır. Örneğin Microsoft Print to PDF. Bu Printer ile örneğin bir web sitesinin PDF formatında kaydedilmesini sağlayabiliriz. <br>
           Yukarıda belirttiğimiz Printers konumunda Right Click > |+|Add Printer > Search the Network for printers || |+|Add a TCP/IP or Web Services Printer by IP Address or Hostname || |+|Add a new Printer using an existing port || |+|Create a new port and add a new printer. <br>
           Duruma göre yukarıdaki seçeneklerden birisi seçilir. Add a new printer using an existing port'u seçersek, fiziksel olarak hangi Port'tan bağladığımızı seçeriz. Install ederek devam ederiz, bize bir marka girmemizi sorar, fiziksel olarak bağlayacağımız Printer Device'ın marka modelini gireriz. Daha sonra isim verilir. |+|Share this Printer seçilirse o Printer Network'teki diğer cihazlar tarafından görüntülenebilir, bağlanılabilir durumda olur. Az önce verdiğimiz isim Share Name'dir Printer'ın hangi isimle görüntüleneceğini belirler. Daha sonra bu Printer Device'ın binada hangi konumda(Location) olduğu belirtilir. Ardından Next ve Finish seçilerek Printer'ın kurulumunu tamamlamış oluruz. <br>
           En üstte belirttiğimiz konumda bu Printer listelenmiş olur.
         </p>
         <p>
-          Network'te bulunan bir son kullanıcı Print Server'a Network üzerinden bağlantı kurar; örneğin \\pc1\ -> Bu konumda bir önceki paragrafta kurulumunu yaptığımız Printer'ı görüntüleyebilir. Çünkü o Printer'ı Share etmeyi seçmiştik. Kullanıcı bu Printer'a sağ tıklayıp Connect yapabilir. Windows 7, Windows 10 gibi Windows'un çeşitli versiyonlarında Printer'ları çalıştıracak olan Driver'lar farklıdır. Bu sebeple ağdaki her tipten işletim sistemi için gerekli Driver'lar Print Server'ın Driver'ları ile uyumlu olmalı. Driver'lar uyumlu olmalıki Connect yapılabilsin. Driver'ları yüklemek için şu konuma gidilir; <br>
-          Printers > Kurduğumu Printer > Right Click > Properties > Sharing > Additional Drivers -> Bu konumda, örneğin çok eski bir Windows'tan Connect olunmak istenirse onun Driver'ı indirilip, buradan yüklenir. <br>
-          Printer'lar Nertwork'e varsayıalnda sunulmazlar, bu sebeple Network'teki kullanıcılar Device eklemek istediğinde bu Printer'ları göremezler. Bunu açmak için; yukarıdaki konumdan List in the Directory ile tamamlandıktan sonra bu sorun ortadan kalkar.
+          Network'te bulunan bir son kullanıcı Print Server'a Network üzerinden bağlantı kurar; örneğin \\pc1\ -> Bu konumda bir önceki paragrafta kurulumunu yaptığımız Printer'ı görüntüleyebilir. Çünkü o Printer'ı Share etmeyi seçmiştik. Kullanıcı bu Printer'a sağ tıklayıp Connect yapabilir. Windows 7, Windows 10 gibi Windows'un çeşitli versiyonlarında Printer'ları çalıştıracak olan Driver'lar farklıdır. Bu sebeple ağdaki her tipten işletim sistemi için gerekli Driver'lar Print Server'ın Driver'ları ile uyumlu olmalı. Driver'lar uyumlu olmalı ki Connect yapılabilsin. Driver'ları yüklemek için şu konuma gidilir; <br>
+          Server Manager > Print Management > Print Servers > PC(Local, Print Server olarak belirlediğimiz makine) > Printers > Kurduğumuz Printer > Right Click > Properties > Sharing > Additional Drivers -> Bu konumda, örneğin çok eski bir Windows'tan Connect olunmak istenirse onun Driver'ı indirilip, buradan yüklenir. <br>
+          Printer'lar Network'e varsayılanda sunulmazlar, bu sebeple Network'teki kullanıcılar Printer Device eklemek istediğinde bu Printer'ları göremezler. Bunu açmak için; yukarıdaki konumdan List in the Directory ile tamamlandıktan sonra bu sorun ortadan kalkar.
         </p>
         <p>
-          Yukarıda bahsettiğimiz Directory, Active Directory'dir. Server, Printer oluştururken ya da oluşturulduktan sonra Sharing Tab'ında Share Name'inin sonuna $ işareti eklersekj Printer Hidden olarak paylaşılır.
+          Yukarıda bahsettiğimiz Directory, Active Directory'dir. Server, Printer oluştururken ya da oluşturulduktan sonra Sharing Tab'ında Share Name'inin sonuna $ işareti eklersek Printer, Hidden olarak paylaşılır.
         </p>
 
         <h4>Permissions</h4>
         <p>
-          Printer > Right Click > Properties > Security > Permissions > <br>
+          Server Manager > Print Management > Print Servers > PC(Local, Print Server olarak belirlediğimiz makine) > Printers > Kurduğumuz Printer > Right Click > Properties > Security > Permissions > <br>
           |+|Print -> || <br>
           |+|Manage Documents -> Printer'daki iş kuyruğuna müdahale edebilir, kuyruktaki işleri kaydırabilir, duraklatabilir vs. <br>
           |+|Manage This Printer -> Bu Printer'ın Driver'larını ve Printer'ın kendisini değiştirebilir, kurabilir ve kaldırabiliriz. <br>
           Print Operators'ın Full Permission hakları vardır. <br>
-          Örneğin bir Printer'ımız var bu Printer'ı birden varsa Group yani departman kullanıyor. Group'lardan birisine sadece Print Permission'ı Allow, diğerine ise Full Allow Permission verebiliriz. Yani duruma göre Group'lara izinler ya da kısıtlamaları bu yollar getirebiliriz. <br>
+          Örneğin bir Printer'ımız var bu Printer'ı birden varsa Group yani departman kullanıyor. Group'lardan birisine sadece Print Permission'ı Allow, diğerine ise Full Allow Permission verebiliriz. Yani duruma göre Group'lara izinler ya da kısıtlamaları bu yolla getirebiliriz. <br>
           Printer'ı kuranların da Permission'ları da Full Allow olur. 
         </p>
         <p>
@@ -188,6 +190,9 @@
           Printer Device'lar da APIPA'ya düşebilirler, bu durumda APIPA'ya düşen Printer'a bağlı bir Client'lerden çıktı alınmak istenirse alınamaz. Çünkü Active Directory üzerinden bir Ticket ile iletişim sağlanır. <br>
           Domain Client'lerinden Priter Device'a paylaşım gitmeden önce Printer Server'a Client Ticket ile yönlendirilir. Printer Server gelen Client'in Ticket'ının doğruluğunun kontrolü için Domain Controller ile iletişime geçer. Doğru ise baskıyı yapmak için Device'a paketi gönderir, değilse baskı yapılmaz. Bu işlem Active Directory üzerinden gerçekleşir.
         </p>        
+        <a href="../File Server/18-12-2022.html">18.12.2022 notlarına bu link gider.</a> <br>
+        <a href="../Print Server/25-12-2022.html">25.12.2022 notlarına bu link gider.</a>
+        <div class="mt-4"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </body>
