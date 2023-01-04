@@ -87,7 +87,63 @@
         
         <h6>IDE Controller</h6>
         <p>
-          Hard Drive'dır. Anakarttaki en eski port'lardan birisidir. Bu IDE Port'ları sayesinde başka bir cihazı bu makineye bağlayabiliriz. IDE Controller kullanarak 4 adet farklı ya da aynı cihaz bağlayabiliriz.
+          Hard Drive'dır. Anakarttaki en eski port'lardan birisidir. Bu IDE Port'ları sayesinde başka bir cihazı bu makineye bağlayabiliriz. IDE Controller kullanarak 4 adet farklı ya da aynı cihaz(Hard Disk vs.) bağlayabiliriz.
+        </p>
+
+        <h6>Checkpoints(Eski ismi Snapshot)</h6>
+        <p>
+          İşletim sistemindeki her şeyi RAM vs. dahil, hafızaya kaydeder. Daha sonra bir sorun yaşandığında bu Checkpoint'e geri dönülebilir. Makine hazır durumdadır ve üzerine çift tıklayarak Sanal Makine başlatılabilir. makineyee işletimini kurarız. <br>
+          IOS'ta bir sorun yaşanıyorsa "Repear Your Computer" yapabiliriz.
+        </p>
+
+        <h6>Server Editions</h6>
+        <p>
+          Standart ya da Datacenter seçilir; <br>
+          Standart, Desktop Exp - Data Center, Desktop Exp <br>
+          Standart: GUI, Desktop Exp: Arayüz. <br>
+          Data centere: GUI, Desktop Exp: Arayüz. <br>
+          Data Center daha pahalıdır fakat bizim yüklememiz gereken Data Center, Desktop Exp'dir.
+          Server ilk açıldığında Sanal Makine olduğu için "ctrl + alt + end" ile oturum açma konumuna gidilebilir.
+        </p>
+
+        <p>
+          Fiziksel makine ya da diğer sanal makineler ile sanal makineler arasında dosya aktarımı yapılabilir. Hyper-V -> Enhanced Session Mode Policy -> Allow. <br>
+          Bu modu Enable yaptığımızda dışarıdan Copy, Paste yapılabilir. Makine eğer Network'e bağlı ise direkt Network'ten de veri paylaşabiliriz. <br>
+          Server Manager > Computer Name -> Sanal makinenin ismi, IPv4 Address -> Sanal makinenin IP adresi. <br>
+          İlk kurulum yapıldıktan sonra fiziksel makinenin Interface'i DHCP hizmeti veren bir Server'a bağlı ise direkt olarak otomatik IP atanır ve fiziksel makine ile sanal makine aynı Network'te bulunurlar.
+        </p>
+
+        <h4>Şablon Oluşturmak(sysprep)</h4>
+        <p>
+          Oluşturduğumuz makinelerin dosyalarını kopyalayıp yeni makineler oluşturabiliriz. Sıfırdan konfigürasyon yapmaya gerek kalmaz fakat bir makineyi kurduğumuz zaman işletim sistemi donanımlara erişir(özellikle anakarta), anakartın GUID numarasını alır. <br>
+          Kopyaladığımız için bu Unique numaralar da direkt kopyalanır. Kopyalanan makine çalışır doğal olarak farklı bir makine üretememiş oluruz. Fakat bu Unique numaraları sıfırlayan bir program vardır. Bu program sysprep'tir. <br>
+          Sıfırlanmış halini kopyalayıp makineyi açtığımızda, makine sıfırdan çalışıp donanıma erişip benzersiz GUID alır. Tam olarak farklı bir makine oluşturmuş oluruz. Yeni bir makine üretirken, sıfırdan Setup yapmamız gerekmez. Yukarıda sysprep yaptığımız makinede her kopyada olmasını istediğimiz programlar yüklü olursa, kopyaladığımız her makinede bu programlar yüklü gelirler. <br>
+          sysprep -> Sadece şablon olarak kullanacağımız sanal makinede yapılmalıdır. <br>
+          Enter System Out-ofBox Expreience(oobe) <br>
+          |+|Generalize <br>
+          shutdown
+        </p>
+        <p>
+          VHD'nin kopyasını alıp, gerekli konuma(sanal makineleri yüklediğimiz klasöre) yapıştırdığımızda, ismini değiştirip yeni bir sanal makine oluşturabiliriz. Hyper-V Manager'da Virtual Machines'ten şablon olanı siliyoruz. Sadece Sanal Makineyi siler VHD'yi silmez. Onu silmek için klasöre gidip mannuel olarak silmeliyiz. <br>
+          Yeni makine oluşturduğumuzda -> Connect Virtual Hard Dist'teyken -> Use an exist VHD'yi seçeriz. (Şablondan kopyalayıp adını değiştiriğimiz VHD)
+        </p>
+        <p>
+          Bir makineye birden fazla kişi eşzamanlı veya değil Login olabilir. <br>
+          Auttantication -> Kimlik doğrulama, Autherization -> Yetkilendirme(klasörlere) <br>
+          Bir sanal makinede her kullancıya bir kimlik oluşturup, yetki verilebilir. <br>
+          Administrative -> En yetkili User'dır. <br>
+          Çoğunlukla Administrative hesabı, giriş yapma riskii kaldırmak için Disable edilir.
+        </p>
+
+        <h4>Local User oluşturmak</h4>
+        <p>
+          Start > Right Click > Computere Managements > Local Users and Groups <br>
+          Administrative önce dosyalara ait şifreleri kriptoladıysa, daha sonradan yukarıdaki Path'ten Set Password dersek artık o kriptolanmış dosyaları bir daha açmak. Sonuç olarak Reset'lemek tehlikelidir.
+        </p>
+        <p>
+          Guest hesabı hiç bir klasöre erişemez sadece internete çıkabilir. Logoff olduğunda indirdiği klasörler silinir. Yeni User oluşturduğumuzda User her Logon olduğunda yeni Password girmeye zorlayabiliriz. Hesabı Disable etmek -> Örneğin işten ayrıldıktan sonra bir kişinin hesabını olduğu gibi tutup silmek istemezsek kullanıma kapatmak istersek Disable ederiz. <br>
+          Veya işe yeni bir eleman alındığında ve iş başını örneğin 10 gün sonra yapacak ise önceden User'ı oluşturup Disable eder ve 10 gün sonra Active edebiliriz. <br>
+          Bir User(Account) oluşturulduğunda Unique ID üretilir. Buna Security ID adı verilir. Bir Account silinip tekrardan aynı isme Account üretilince farklı bir Security ID üretilir.
         </p>
 
         <a href=""></a>
