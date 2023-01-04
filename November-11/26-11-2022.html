@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>26.11.2022</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'EB Garamond', serif;
+        font-size: 18px;
+      }
+
+      .container {
+        max-width: 720px;
+      }
+
+    </style>
+  </head>
+  <body class="container">
+    <div class="container mt-5">
+        <h1 class="display-4">26.11.2022</h1>
+        <h4>VMware ve Hyper-V</h4>
+        <h5>Sanallaştırma</h5>
+        <p>
+          Bir fiziksel makinenin üzerinde Hyperevizor, onun üzerinde ise Hyper V kullanan sanal makineler bulunur. Bunları bir bütün olarak düşünmek gerekir. Fiziksel makinenin üzerinde Hyper V sanal makinelerinin çalıştırıldığı katman Hypervizor katmanı adıverilir. Donanımın yeterliliğine göre fiziksel makinenin üzerinde istediğimiz kadar sanal makine üretebiliriz. Bu makineler üzerinde kullanılacak RAM dinamik olarak ihtiyaca yönelik paylaştırılabilir.
+        </p>
+
+        <h5>Dual Boot</h5>        
+        <p>
+          Bir fiziksel makinenin üzerinde birden çok işletim sistemi çalıştırmak anlamına gelir.
+        </p>
+        <p>
+          Eğitimde Hyper-V kullanılacak. VMware ile devam edecek fakat büyük oranda Hyper-V'ye odaklanılacak.
+        </p>
+
+        <h4>Hyper-V(Microsft Sanallaştırma Teknolojisi)</h4>
+        <p>
+          Client işletim sistemleri; Windows 10, 8, 7 vs. || Server işletim sistemleri; Hizmet vermek için kullanılar. Windows Server 2000, 2012, 2016 vs.
+        </p>
+        <p>
+          Yukarıdaki iki tip işletim sisteminde de Hyper-V açılabilir fakar bir tek normal şartlarda "Home" Client Windows'ta açılmaz. Ancak bunu da ekstra yüklenmesi gereken programlarla çözebiliriz. Client'lere Windows Server kurularak sanallaştırma yapılabilir.
+        </p>
+        
+        <h4>Server OS'de Hyper-V açmak</h4>
+        <p>
+          Varsayılanda Hyper-V yüklü değildir. Hangi IP Adresine yükleneceğini sorar. Rol ve Feature'lar bulunur. Roller için Core servisler yani çok önemli ve ağır hizmetler, Feature'lar için ise ekstra roller yani daha nadir kullanılan özellikler diyebiliriz. <br>
+          Oluşturulaca sanal makineler için; Sanal Ethernet kartları oluşturulur. Hangi Fiziksel Port'a erişeceğini Server Size sorar. Sanal Port'ların da hangi fiziksel port'un çıkacağını bilmesi gerekiyor. Sanal makinelerin donanımı da sanal olarak dosyalanır yani kaydedilir. Seçtiğimiz bir konuma kaydedilirler. Hyper-V'nin sanal makineleri SSD'de çalıştırılmalıdır. Fiziksel makinenin performanslı olması önemlidir.
+        </p>
+        <p>
+          Hypervizor katmanı bir sanal makine oluşturulması için CPU'ya erişmek ister. Varsayılanda bu erişim kapalı durumda olabilir. BIOS'ta Sanallaştırma ya da Hypervizor'u Enable edip Restart etmek gerekir. Bu genellikle Client OS'larda olur.
+        </p>
+
+        <h5>Hyper-V Manager Yönetim Paneli</h5>
+        <p>
+          Başka bir yerde oluşturulup Export edilmiş bir sanal makine buradan Import edilip kullanılabilir. <br>
+          Sanal makineler için Ethernet Port'ları üretilirken Internal, External ve Private Switch'ler seçilir. Internal olan internete çıkamayan iç Network'e erişebilen Ethernet'tir. External fiziksel Switch'ten geçip internete çıkabilen sanal Ethernet'tir. Private ise full izole bir karttır. 
+        </p>
+
+        <h6>Sanal Bilgisayar Kasası Oluşturmak</h6>
+        <p>
+          Server Manaher > Hyper-V > New Virtual machine > <br>
+          name(server2016Base) <br>
+          location(Default Location - daha önceden ayarladığımız) <br>
+          specify generation(Generation 1 -> 32 veya 64 bit destekleyen anakart, Generation 2 -> Sadece 64 bit ayrıca yeni nesil bir BIOS verir) <br>
+          assign memory -> 32 - 12582912(Fiziksel makinenin RAM'i maksimum ne kadarsa) <br>
+          network -> bu nasıl makineyi hangi Switch'e bağlayacağımızı sorar. Örneğin ürettiğimiz ext1 Switch'i. <br>
+          connect vhd -> Maksimum fiziksel olarak sahip olduğumuz kadar kapasite yazabiliriz. Daha fazla girersek hata olma fakat doğal olarak kullanılamaz da. <br>
+          installation options -> İşletim sistemini fiziksel olarak, Network üzerinde veya istersek dahah sonradan kurabiliriz. <br>
+          sumamry -> Tüm seçimlerimizi gösterir.
+        </p>
+
+        <h6>Memory Weight</h6>
+        <p>
+          Sanal makinelerin tamammı RAM istediğinde hangisine öncelik verileceğini belirler.
+        </p>
+
+        <h6>Processor</h6>
+        <p>
+          VCP, sanal makine için kaç tane sanal CPU kullanmak istediğimzi sorar. <br>
+          Relative Weight, RAM'deki mantık ile aynıdır. <br>
+          VM rezerve, CPU kullanılmasa bile belli bir yüzdesini ayırmamızı sağlar.
+        </p>
+        
+        <h6>IDE Controller</h6>
+        <p>
+          Hard Drive'dır. Anakarttaki en eski port'lardan birisidir. Bu IDE Port'ları sayesinde başka bir cihazı bu makineye bağlayabiliriz. IDE Controller kullanarak 4 adet farklı ya da aynı cihaz bağlayabiliriz.
+        </p>
+
+        <a href=""></a>
+        <div class="mt-4"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
