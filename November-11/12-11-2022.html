@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>12.11.2022</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'EB Garamond', serif;
+        font-size: 18px;
+      }
+
+      .container {
+        max-width: 720px;
+      }
+
+    </style>
+  </head>
+  <body class="container">
+    <div class="container mt-5">
+        <h1 class="display-4">12.11.2022</h1>
+        <h4>Switch ve VLAN ilişkisi</h4>
+        <p>
+            Router'lardaki gibi Switch'lerde de konfigürasyonlar uygulanabilirler. Router'lar ile Switch'ler aynı işletim sistemlerine sahip olabilirler. Normal Switch'ler ancak Layer 2 bazında çalışabilirler. yani IP bazında iletişim kuramaz, MAC bazında çalışırlar. Üzerindeki tüm Ethernet Port'larını VLAN 1 adını verdiği tek bir Port gibi kullanabilir. Bunu sanal bir Interface olarak görür ve bu Port'a bir IP atanabilmesini sağlar. Bunu yapma amacımız aslında Telnet ile Switch'e uzaktan konfigürasyon yapmaktır. Fiziksel olarak bir Port değil sanal bir Port'tan(kapsayıcı bir sanal port) bahsediyoruz. Bütün Ethernet Port'ları varsayılanda VLAN 1'dedirler.
+        </p>
+        <p>
+            Router; <br>
+            int vlan 1 <br>
+            ip address 192.168.1.1 255.255.255.0 <br>
+            no shutdown <br>
+            -> VTY ve Enable'a da Password atamak gereklidir.
+        </p>
+
+        <h4>VLAN Kavramı</h4>
+        <p>
+            Switch'in üzerindeki 24 Port'u bölebiliriz. Port'lardan istediğimiz kadarını VLAN(Virtual Local Area Network) ile sanki fiziksel bir başka Switch'miş gibi seçtiğimiz Port'ları ayırabiliriz. Switch'miş gibi seçtiğimiz Port'ları ayırabiliriz. Switch'in üzerindeki Ethernet Port'larının bir kısmını VLAN 1.0, VLAN 2.0, VLAN 3.0 şeklinde ayırabiliriz. Her birindeki Client'ler kendi içinde iletişim kurabilir. Bu şekilde ayrıldıkları için artık Client'ler üzerinde IP değiştirecek diğer Network'lere erişilemez. Çünkü artık her bir VLAN Port'ları sanki fiziksel başka bir Switch'miş gibi çalışırlar.
+        </p>
+        
+        <h4>Switch Configuration</h4>
+        <p>
+            show vlan brief -> VLAN'ler hakkında özet bilgi verir. <br>
+            VLAN 2 -> Direkt yeni VLAN'ı açar. <br>
+            VLAN 2 name -> Örnek name; Muhasebe_VLAN -> ismini değiştirir. <br>
+            exit <br>
+            int f 0/2 <br>
+            switchport mode access -> Access üzerinde birden fazla VLAN trafiği yok ise kullanılır. <br>
+            Access ile yukarıdaki Port'u erişilebilir moda alıyoruz. <br>
+            Alternatifi Trunk'tır. Birden fazla VLAN trafiği geçmesi gerekiyorsa Trunk yapılır. Switch ve Router'ların Default'ta Access Mode'ta çalışırlar.
+        </p>
+        <p>
+          Deminki işemi bağlı olduğu Port'a yapıyoruz. Bu durumda modunu nasıl olmasını istiyorsak o şekilde sabitlemeliyiz. <br>
+          switchport access vlan 2 <br>
+          -> Switchport VLAN 2'ye erişsin anlamına gelir. <br>
+          0/2 Interface'i VLAN 1'den(Default Port'tan) çıktı ve vlan 2'ye alınır. Bu durumda 0/2 Interface'i sanki başka bir Switch'teymiş gibi davranılır. Aynı şeyi bir aralık vererek de yapabiliriz. 0/2 - 0/10 <br>
+          interface range f 0/1-10 -> 10 Dahil.<br>
+          switchport mode access <br>
+          switchport access vlan 10 -> "vlan 10" isminde Yeni bir vlan oluşturur. <br>
+          Sektörde bu isimler vlan 10, vlan 20, vlan 30 şeklinde ilerler. <br>
+          Eğer VLAN'lardan birini silmek istiyorsak, sileceğimiz VLAN'ının meşgul ettiği Port'ları VLAN 1'in üzerine taşırayak silmeliyiz. <br>
+          Örneğin; no vlan 10 komutu ile vlan 10 silinir.
+        </p>
+        
+        <h4>Çok sayıdaki VLAN'ın birbirleriyle iletişimi</h4>
+        <p>
+          Layer 3 Switch ile(Üzerinde çok sayıda Interface bulundurup Routing yapabilen cihaz) çalışılmalıdır. Bu cihaz Layer 2 ve Layer 3'te çalışabilir. Layer 3 Switch, Default'ta Switch gibi çalışır. Yazılımsal olarak Routing özelliği kapalı durumda gelir. VLAN 10 ve VLAN 20 için Gateway IP vereceğiz. <br>
+          BU KISMIN CISCO PACKET TRACER'DA UYGULAMASINI SS ALARAK BURADA PAYLAS.
+        </p>
+        
+        <hr>
+
+        <p>
+          Fiziksel olarak Interface'e birden fazla IP verilemez. Fiziksel Interface'ler sanal olarak bölünebilir durumdalardır. f 0/0.10 -> Fiziksel Fastethernet 0/0'ın 1 isimli Sanal Port'unu ifade eder. Sayı arttıkça yük artacağı için o Port'un veri aktarım hızı önemlidir. Sınırsız sayıda Sub Interface üretilebilir. Bu şekilde alt sanal port'lar  için VLAN'lara erişen Switch'in genelde en son port'una ya da bu port'un Switchport' mode'una trunk yapmak gerekir. Çünkü Port üzerinden birden fazla VLAN trafiği akacak.
+        </p>
+        <p>
+          Yukarıdaki senaryoda f 0/0 interface'ini açıp Subinterface'lere IP atarız. Bu durumda sanki fiziksel kablonun içerisinde sanal yollar varmış gibi davranmasını sağlayan bir protokol kullanılır. Kablonun içereisine tünellere açılmış gibidir. <br>
+          Buna Encapsulation denir. Prokolün adı ise 802.1Q(Kısaca dot1q(.1Q))'dür. <br>
+          KOMFİGÜRASYON SS'LERİNİ BURADA PAYLAŞ.
+          Yukarıdaki VLAN işlemi uygulandığında bu işleme "Router on a Stick" adıverilir.
+        </p>
+        <p>
+          VLAN sayısı çok ise ya da çok fazla Switch var ise bir Switch'te tanımladığımız VLAN'ların hepsini diğer Switch'lere de gönderir(Tanımlar). İlişkilendirilen Port'lar gelmez, sadece VLAN isimleri oluşturulur. Çünkü ilişkilendirilmesi gereken port'lar farklı olabilirler. Bu işlemi yapan Protokol'ün adı; VTP(Vlan Trunking Protokol)'dir.
+          BU NOKTADA UYGULAMAYI YAPIP SS'LERI BURADA PAYLASIP KONUYU ANLATMAYA DEVAM ET.
+        </p>
+        
+        <a href=""></a>
+        <div class="mt-4"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
