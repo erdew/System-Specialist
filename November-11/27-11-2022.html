@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>27.11.2022</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'EB Garamond', serif;
+        font-size: 18px;
+      }
+
+      .container {
+        max-width: 720px;
+      }
+
+    </style>
+  </head>
+  <body class="container">
+    <div class="container mt-5">
+        <h1 class="display-4">27.11.2022</h1>
+        <h4>Hesapları(Account) Yetkilendirmek</h4>
+        <p>
+            Yetkilendirme için "Groups" kullanılır. "Account" oluşturuğumuzda otomatik olarak "Users" grubuna eklenir. Buradaki gruplamalarda "Administrator" vs. bulunur. Örneğin Administrator'a eklediğimiz hesaplar Admin yetkisine sahip olurlar. -> Fakat Local Admin yani sadece üzerinde bulunduğu makinenin(yetkiyi aldığı makinenin) üerinde full yetkili olur. <br>
+            Administrator hiç bir Account'a verilmez yani kendimizden başka kimseye vermemeliyiz, çünkü bu hesap tam yetkilidir, Server üzerinde yapılması mümkün olan her şeyi yapabilir. Örneğin program kurup/kaldırmak isteyen Account'ı "Power Users" grubuna ekleyebiliriz. Çok sayıda grup vardır. Bu gruplar yetkileri ifade eder yani sadece yetki verirler.
+        </p>
+
+        <h4>Bazı önemli gruplar ve anlamları</h4>
+        <p>
+            Backup Operator - Bu makinedeki(Local Account olduğu için) her Account'un yeydeğini alabilme yetkisi varıdr.
+        </p>
+        <p>
+            Hyper-V Administrators - Bu grubun üyeleri Hyper-V kurulu ise gelir. Hyper-V ile ilgili ayarları yapabilirler.
+        </p>
+        <p>
+            Performance Groups - Performanss monitörlerini yönetebilirler.
+        </p>
+        <p>
+            Print Operators - Yazıcı kurabilir, print kuyruğunu düzenleyebilir vs.
+        </p>
+        <p>
+            Remote Desktop Users - Bu makineye uzaktan(ADP ile) bağlanma yetkileri vardır.
+        </p>
+
+        <h4>SAM(Security Amount Managere)</h4>
+        <p>
+            Local User'ların tutulduğu veritabanıdır. Work Group'taki herhangi bir User herhangi bir makine Logon olmak isterse o Work Group'taki bütün makinelerde bu bu User'ı kurmak yani tanıtmak gerekir. Bu işlem olmadan user her makinede Logon olamaz.
+        </p>
+        <p>
+            Bu işlemi Work Group ile tek tek yapmak zorundayız. Domain kurarak farklı bir şekilde yapmak mümkündür. Fakat bu Server maliyeti demektir, dolayısıyla çok sayıda makine olmalıdır. Az sayıda makine var ise bir Switch ile birbirlerine eriştirip, her makinenin Local'inde hesaplar açılır. Daha sonra yetkileri vardır ve problem çözülür, bu Work Group ile çalışma şeklidir. Domain için çok sayıda makine makine olması daha mantıklıdır, Work Group için ideal olarak maksimum 10 makine diyebiliriz. 100 tane makineye Work Group yaparsak 100x100 kere toplam Account tanıtmak gerekecek. Böyle bir durumda tabiki Domain kurulmalıdır.
+        </p>
+        <p>
+            Bir makinenin Work Group'ta olup olmadığını görmek için; This PC > Properties > Computer Name, Domain and Work Group Settings.
+        </p>
+        <p>
+            Work Group'un adını değiştiriğimizde Network'teki tüm makinelerin Work Group adını değiştirmek gerekir.  User'ların çok fazla makine değiştirmediği, yine küçük Network'ler için geçelidir. <br>
+            Her makinenin Local'inde duran SAM yerine merkezi bir veritabı açıp, burada bütün Accunt'ları tanımlarız. Bir Account Logon olmak istediğinde Autantication'u SAM üzerinden değil bu veritabı üzerinden yapılmasını sağlayabiliyoruz. Bütün Account'ların veritabanında tutulduğu ve üyelerin Logon yapabilmeleri için doğrulama yapıldığı sanal güvendik sınırına "Domain" denir.
+        </p>
+        <p>
+            Work Group ortamı Account Create edildiği anda otomatik olarak Default'ta oluşturulur.
+        </p>
+
+        <h4>Domain Ortamı Oluşturmak</h4>
+        <p>
+            Domain Controller, Domain ortamındaki en değerli makinedir. Domainin kalbidir. Domain'in veritabanı yani Active Directory bu makine üzerinde tutulur ve çalıştırılır. Autantication'u bu makine yapar. Kısaca DC olarak ifade edilir. DC'lerin mutlaka yedekleri olmalıdır. Bu yedeğe Addition DC denir. Domain(Active Directory Replication) her zaman bütün DC'ler arasında senkron olmak zorundadır. Otomatik bir durumdur. Eargent Replication(Acil Paylaşma) örneğin bir DC'de şifre değiştirilmesi durumunda diğer DC'lerle bu verinin paylaşımı.
+        </p>
+
+        <h4>Domain Controller Kurmak</h4>
+        <p>
+            Server OS'in üzerine Active Directory kurulmalıdır. <br>
+            Domain Ortamı >>> DC >> Server OS > Active Directory. <br>
+            DC kurmak için bir Server OS'ne ihtiyaç vardır. Work Gorup'ta olduğu gibi Domain için de isimlendirme yapılmalıdır. Bu isimlendirmeye FQDN(Full Qualified Domain Name) -> Örneğin; bilgeadam.com <br>
+            Domain'de Türkçe karakter kullanılmaz. Aynı isimde makineler olamadığı gibi Domain Name'lerde aynı olmaz, Unique olurlar. Bu sebeple Domain Name(Web Sitesinin adı) kiralanır. Server OS Name -> Makineye Active Directory kurmadan önce vermemiz gereken isimdir. Bir daha değiştirilmemek üzere bir belirlenmelidir. Daha sonradan değiştirilebilir fakat çok uzun sürer. DC'ye Static IP atanmalıdır. Çünkü sabit bir IP'ye sahip olmalıdır.
+        </p>
+
+        <h4>Yetkilendirme</h4>
+        <p>
+            Eğer Domain'e ilk DC'yi kuruyosak, Local Admin olmak zorundayız. Ortamda DNS Service olması gereklidir. Bu Service makinede bulunmuyorsa kendisi yüklemeyi önerir ve onaylarsak kendisi yükle ve ayarlarını yapar. <br>
+            Disk > Minimum NTFS ya da daha yeni bir dosya sistemi.
+        </p>
+
+        <h5>DC kurulumu için atanacak IP'ler</h5>
+        <p>
+            IPv4 - Static IP <br>   
+            127.0.0.1 -> DNS Service -> Kendisi DNS Service ise bu şekilde yazılır. <br>
+            10.3.34.103 -> Kendi IP Adresi -> Ethernet Port'u üzerinden çalışır. <br>
+            Direkt servise gitmek için kullanılır.
+        </p>
+
+        <h4>Server Manger</h4>
+        <p>
+            Manage > Add Roles > Server Roles > Active Directory Domain Name Service <br>
+            Active Directory kurulumundan sonra "Promote this Server to a Domain Controller" seçilir. <br>
+            Kurulumu yaptığımız makineyi DC'ye çevirir. <br>
+            Deployment Conf. -> 3 seçenek verir. <br>
+            1) Varolan Domian'e yeni bir DC'mi eklemek istiyorsun? <br>
+            2) Birden fazla Domain var ve üzerine DC mi ekleyeceksiniz? <br>
+            3) Yeni bir Forest mı oluşturmak istiyorsun? |+| <br>
+            İlk defa Domain oluşturuyorsak; <br>
+            Domain Name: sirket.com <br>
+            DNS Server kur. |+| <br>
+            DRSM -> Parola(Directory Service Restore Mode Password) <br>
+            NetBIOS Name(Domain'in uzantısı olmayan, kısa isim.) -> SIRKET <br>
+            Bu noktada eğer başka bir Domain ismi ile çakıştıysa NetBIOS Name'in sonuna 0 ekler. -> SIRKET0 <br>
+            Bu yaşanırsa bu noktadan geri dönülmeli, devam edilmemelidir. Bu durum aynı Network'te bulunan PC'lerde isim sirket ise yine çakışır. Yeni Domain name sirket ve o ağdaki herhangi bir PC'nin de adı sirket ise yine çakışır. <br>
+            Yeşil Check - Başarılı!!
+        </p>
+        <p>
+            SIRKET\Administrator -> Domain Admin(Domain'e üye bütün makinelerde tam yetkilidir.) <br>
+            Administrator -> Sadece o makinede(Local). <br>
+            Kurulumu yaptığımız makinedeki Local Admin de beraberinde Domain Admin'e Promote(yükseltme) yapıyor. Bu sebeple Local Admin şifresine sahip olmaya devam eder. DC olan makinelerin SAM'i kapatılır(Erişilemez).
+        </p>
+
+        <h5>Sadece DC için geçerli</h5>
+        <p>
+            Daha doğrusu artık SAM'de Active Directory'e Promote edildi. İstersek herhangi birini de Domain Adminb yapabiliriz. <br>
+            Computer Management > User'lar artık burada görünmez. > Tools > Active Directory and Users/ sirket.com/ Users/ Groups/ Bu gruplarda Local'den Promote edilirler(hepsi değil). > Artık User'lar burada tutulurlar. > New > User > Logon ismini belirleyip yeni User oluşturabiliriz. <br>
+            Buradan(DC'den) açtığımız Account'lar Domain'e üye makinelere giriş yapabilir.
+        </p>
+
+        <h4>Makineleri Domain'e Join Etmek</h4>
+        <p>
+            Prereqs <br>
+            1) Domain Controller'a Domain'e sokacğaımız makine erişebiliyor olmalı. <br>
+            2) DC'nin kullandığı DNS'e erişebiliyor(Doğru DNS'i biliyor olmalı.) olması. -> Örneğin DNS, DC'deyse DC'nin IP'si verilir. <br>
+            3) Yetki gerekir. -> Domain Admin'i sınırsız sayıda User'ı Domain'e ekleyebilir. <br>
+            Domain'deki User'ların Domain'e maksimum 10 tane User sokabilir. <br>
+            Default'ta bu devrededir. <br>
+            Makineyi Domain'e katmak, Domain kurallarına sahip olmasına neden olur.
+        </p>
+        <p>
+            Server Manager > Work Group > Change > Domain(sirket.com) > Administrator -> Yetkisi olan bir hesap Autantication yapar. <br>
+            Alternatif yazılar -> Sirket\user1 -> NetBIOS Name, user1@sirket.com -> UPN(User Presible Name), user1
+        </p>
+
+        <h4>Cache'ten Logon Olmak</h4>
+        <p>
+            Domain'e bir kaç Laptop dahil ettik. Laptop'tan Logon olundu yani DC(Active Directory) Autantication yapıldı. Makineyi akşam eve götürüp Logon olabilir. Mantık olarak evden DC'ye ulaşılamayacağı düşünüldüğünden Logon olunamayacağı düşünülür. Bu Laptop bir kere Logon olursa artık bu Logon kriptolanır ve diğer Logon'larda bu kripto çözülür ve kayıt üzerinden doğrulanır. Yani giriş yapılır. Buna Cache'ten Logon olmak denir. Bu makinede yetkisi dahilinde her şeyi yapar fakat Server'a erişemez. Şirketlerin VPN ile bağlanması bu sebeptendir. VPN hem o ağa bağlar hem de DC'den Logon olunur. Cache'ten Logon olunduğunda Network'teki makineler birbirlerine erişemezler, Printer vs'de kullanılamaz. Maksimum Local makinesine erişir yani sadece kendi dosyalarına erişebilir. Bu bağlamda şirketteki DC her zaman çalışır durumda olmalıdır.
+        </p>
+        
+        <a href=""></a>
+        <div class="mt-4"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
