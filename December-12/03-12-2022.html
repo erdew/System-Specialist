@@ -23,19 +23,19 @@
   <body class="container">
     <div class="container mt-5">
         <h1 class="display-4">03.12.2022</h1>
-        <h4>Storage(Depolama)</h4>
+        <h2>Storage(Depolama)</h2>
         <p>
             Start > Right Click > Disk Management <br>
             Diskler Basic ya da Dynamic olurlar. İkisi de bir diğerinin alternatifidir. <br>
             Boot dosyaları Primary Partion'da olmak durumunda. Boot dosyaları olmasa bile işletim sisteminin yüklü olmasına rağmen Power tuşuna basıldığında işletim sistemi başlatılamaz.
         </p>
         
-        <h5>Page File</h5>
+        <h4>Page File</h4>
         <p>
             Fiziksel RAM'in kapasitesi yetersiz kaldığında Hard Disk'in bir kısmı RAM olarak kullanılabilir. Disk'in içine Page File açar o parçayı RAM olarak kullanır. Bu çok eski makineler için kullanılan eski bir teknolojidir. Artık buna ihtiyaç kalmaz.
          </p>
          
-         <h5>New Simle Volume Wizard</h5>
+         <h4>New Simle Volume Wizard</h4>
          <p>
             Drive Letter; <br>
             A, B, C, D, E, F, G ... Alfabetik şeklide ilerler. <br>
@@ -45,14 +45,111 @@
             Do not assign a drive letter or drive path seçilirse; Kullanıcının görmesini istemediğimiz Hidden Drive üretilir. Ne zaman Letter atarsak o zaman Disk Online olur.
          </p>
 
-         <h5>File Systems(Dosya Sistemleri)</h5>
+         <h4>File Systems(Dosya Sistemleri)</h4>
          <p>
-            Boyuta göre File System değişir. 
+            Boyuta göre File System değişir. <br>
+            FAT -> FAT'lar; Disket vs içindir. En eski ve en küçük hafızalı olandır. <br>
+            FAT32 <br>
+            NTFS -> New Technology File System -> En güncelidir. <br>
+            ReFS <br>
+            Farklı yetkinlikleri vardır. Listede yukarıdan aşağıda veri kapasitesi artar. Burada kapasite; Diskteki toplam veri boyutu ve tek bir verinin büyüklüğü anlamında kullanılır.
          </p>
-   
-        
-        
+         
+         <h4>MBR(Master Boot Record)</h4>
+         <p>
+            Disk'lerin içinde bir uzay boşluğu olduğunu hayal edip, bu boşluktaki verilerin her birine belli bir adres atamak MBR gibi adresleme yapan Disk teknolojileri sayesinde gerçekleşir. Teknik olarak bir diskin içerisindeki bu boşluğa istediğimiz kadar veri yükleyebiliriz fakat bu veriler o uzaya atıldıkları andan itibaren eğer adreslenemezlerse artık erişilebilir durumda olmazlar. Bu bağlamda kullandığımız makinede herhangi bir dosya sildiğimizde aslında o dosyanın diskte tutulduğu adresi silmiş oluruz. Bu şekilde artık işletim sistemi adresi bilemediği için veriye ulaşamaz dolayısıyla diskte o kadar yer açılmış olur. O veriler hala disktelerdir fakat artık onlara adres atayan kalıp o verilerin üzerinden kaldırılmış olur. Doğal olarak o kalıbın içerisine başka, yeni bir veri yazılabilir olur.
+            Herhangi bir dosyanın(verilerin) diskte tutulduğu adreslerin olduğu listedir. Sonuç olarak diskerin boyutlarını adresleme kapasiteleri belirler. <br>
+            Quick Format, MBR'ı siler.(İşletim Sisteminin dosyaları görememesine sebep olur) <br>
+            Allocation Unit Size; Unit'in olabilecek en küçük boyutunu belirler. <br>
+            Unit'lerin büyük olamsı daha yavaş çalışması anlamına gelir fakat video vs. gibi büyük veriler tutatacaksak daha yüksek seçilmelidir. <br>
+            Bir Basic Disk'te maksimum 3 Primary yapmanıza izin verir. 3'ten daha fazla Partition açtığımızda Logical Driver olarak ayrılırlar. Fakat Logical Driver'a işletim sisteminin Boot dosyalarını koymanıza izin vermez. <br>
+            Extended Partition <br>
+            Logical Drive, Free Space <br>
+            NTFS File System'indeki dosyalar başka bir Driver Letter'dan Mount edilebilirler. Sadece NTFS File System'indeki Driver'lar Extend edilebilir. Fakat Free Space ile Extend edilmesi istenen Driver yanyana olmalıdır. Yanyana olmasa da yapılmasını sağlayan yazılımlar vardır. fakat mutlaka yedek alınmalıdır, veri kaybı olabilir.
+         </p>
+         
+         <h4>Yeni bir Disk takmak</h4>
+         <p>
+            İşletim sistemine yeni bir disk takıp nasıl kullanıma açılır? <br>
+            Bu yeni diskin Controller'ı önemlidir. Örneğin IDE Legacy bir Controller ise makine Shutdown edilmelidir. Fakat Controller SCSI ise Shutdown edilmesine gerek yoktur. <br>
+            Sanal Makine > Right Click < IDE Controller 0 > New Hard Disk > VHDX > Disk performansı çok önemli ise Fixed yapılır. Fizikselden hafızayı azaltır. Dynamically Expanding'te bir makineye hafıza ayrılamayabilir. Bu riski olmak istemezsek Fixed yapılır. Differancing, parent-Child ilişkisi vardır. işletim sistemi dosyaları Parent'ta tutulur, bu sayede Child'lar daha az olan harcar.
+         </p>
 
+         <h4>Diski İşletim Sistemine Tanıtmak</h4>
+         <p>
+            Partition Style <br>
+            MBR <br>
+            GPT(GUID Partition Table) -> Modern olan adresleme tablosudur. <br>
+            Önce Online yapılır. Bazen Offline gelebilir. Offline olması diskin bozuk olabileceği anlamına da gelebilir. <br>
+            Dynamic Disk > New Simple Volume > Dynamic yaptığımızda Simple Volume Partition'lar oluşturulur. Bütün bölümler yetki açısından eşit olurlar. Üzerinde herhangi bir Volume olan Dynamic Disk'i Basic Disk'e Convert edemeyiz. Volume'ler silindiği zaman o Volume'ün içerisindeki bütün veriler uçar. <br>
+            Disk, Basic olmasına rağmen adres tablosunu GPT'ye çekersek, istediğimiz kadar Primary Partition oluşturabiliriz.
+         </p>
+        
+         <h4>Hot Swap</h4>
+         <p>
+            Makine açıkken disk ekleme, değiştirme ve çıkartma yapılabilmesi anlamına gelir.
+         </p>
+
+         <h4>SCSI Controller</h4>
+         <p>
+            Modern Controller kartlarıdır. <br>
+            Makine açıkken; Settings > SCSI Controller > Hard Disk > Virtual Hard Disk
+         </p>
+
+         <h4>RAID Teknolojisi</h4>
+         <p>
+            Disklerin sahip olduğu Volume'leri yönetmek için RAID kullanılır. Birden fazla diskin birlikte çalışmasını ya da okuma yazma sürelerini kısaltmak gibi işlemler yapabilmek için bu teknoloji kullanılır. Volume'lerin bu teknolojideki hedefleri sağlayıp, sağlamadığını kontrol ediyoruz. <br>
+            Bu teknoloji iki şekilde kullanılabilir. <br>
+            Software RAID ya da Hardware RAID. <br>
+            Hardware RAID, RAID kartı ile yapılır. Software'de doğal olarak bu karta ihtiyaç yoktur. İkisinde de RAID özellikleri birebir aynıdır. <br>
+            Kısaca Sofware RAID0 ile Hardware RAID0 100% aynıdır. 
+         </p>
+         <p>
+            Software RAID yapılacaksa diskler Dynamic Disk olmalıdır. <br>
+            Yaptığımızda Spanned Volume olarak oluşturulur. Fiziksel olarak bir disk kapasitesi tamamen dolduğunda, fiziksel diskleri de tek bir diskmiş gibi kullanmasını sağlar. <br>
+            Extend > Disk 2 > OK <br>
+            Bir Volume silince bütün o Volume'e dahil bütün dislerin içeriği kalıcı olarak silinir. Başka bir Fiziksel Disk kullandığımızda ve bu disk ile birden fazla disk aynı Volume üzerindelerse, birisi bozulsa bile bütün Volume uçar. <br>
+            Spanned Volume maksimum 32 destekler. <br>
+            Spanned Volume'ün amacı büyük hacimli bir bütün oluşturmaktır.
+         </p>
+         <p>
+            RAID'lerin kullanılmasının 3 temel amacı vardır; <br>
+            1) Daha büyük hacim. <br>
+            2) Daha kısa süren okuma/yazma süreleri. <br>
+            3) Hata töleransı. <br>
+         </p>
+         <p>
+            Spanned Volume'de, Volume'ü oluşturan disklerden sadece bir tanesi bile bozulsa bütün Volume'ü kaybederiz. Yani bütün veriler silinir.
+            Hata töleransı en yüksek RAID'i kullansak bile kesinlikle Backup almak durumundayız.
+         </p>
+
+         <h5>Striped Volume - RAID 0</h5>
+         <p>
+            Minimum 2 tane diske ihtiyaç vardır. Software'de 32'ye kadar yapılabilir. RAID 0'da RAID 0 Volume'e yazılacak veri, RAID 0'da kullanılacak disk sayısı kadar parçaya bölünüp disklere bu parçalar eş zamanlı yazılır. <br>
+            A B C D <br>
+            / \ <br>
+            A B <br>
+            C D <br>
+            Veriler yukarıdaki gibi aynı anda iki diske de yazılır. <br>
+            Kaç tane disk kullanılırsa veriler o kadar parçaya bölünür. <br>
+            Disklerden alınan Volume'lerin boyutu eşit olmak zorundadır. <br>
+            4 tane 100'er GB'lık diske RAID 0 uyguladığımızı düşünelim; <br>
+            100 GB <br>
+            100 GB <br>
+            100 GB <br>
+            100 GB <br>
+            = RAID 0 -> Toplam disk alanı 400 GB olur. <br>
+            RAID kullanmanın 3 hedefini kontrol edecek olursak; <br>
+            1) Büyük hacim kazandık. <br>
+            2) Okuma/Yazma süreleri kısaldı. <br>
+            3) Hata töleransı elde edemedik, disklerden 1 tanesi bile bozulsa verilere artık erişemeyiz.
+         </p>
+
+         <h5>Mirrored Volume - RAID 1</h5>
+         <p>
+          En az 2 farklı fiziksel diske ihtiyaç vardır. <br>
+          1.diske ne yazılırsa 2.diske de aynı veriler birebir yazılır fakat bu Backup değildir.
+         </p>
         
         <a href=""></a>
         <div class="mt-4"></div>
