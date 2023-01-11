@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>04.12.2022</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'EB Garamond', serif;
+        font-size: 18px;
+      }
+
+      .container {
+        max-width: 720px;
+      }
+
+    </style>
+  </head>
+  <body class="container">
+    <div class="container mt-5">
+        <h1 class="display-4">04.12.2022</h1>
+        <h5>Mirrored Volume - RAID 1</h5>
+        <p>
+            2 farklı fiziksel diske ihtiyaç vardır. <br>
+            1.diske ne yazılırsa 2.diske de aynı veriler birebir yazılır fakat bu Backup değildir. <br>
+            Mirror yaptığımız 2 tane 100'er GB'lık Hard Disk'imiz olsun. Toplamda 1 tanesinden alınan maksimum kapasite kadar veri kaydedilebilir. <br>
+            Disklerden biri bozulduğu zaman Mirror'lanmış olduğu için makine çalışan diğer diskten Boot olur ve sorunsuz çalışır. <br>
+            Mirroring, RAID'lerin 2.'nin sadece okuma süresi ve 3.hedefi gerçekleştirir. Fakat 1. hedef sağlanamaz, aksine elimizde ne kadar var ise yarısını hata töleransı sağlayabilmek için işgal eder. Fakat Volume'ün silinmesi durumunda, Drive Letter da silineceği için veriler uçar. <br>
+            Okuma süresi Mirror'un yapısı gereği kısalır. Çünkü bir veri okunmak istendiğinde önce 1. ve 2. disklerden aynı anda okunabilir. Doğal olarak "A" verisi 1. diskten, "B" verisi 2. diskten okunduğu için okuma süresi yarı yarına kısalır. <br>
+            RAID 1'ın kullanılma amacı hata töleransı sağlamaktır. <br>
+            RAID 1'de, bir disk Remove olduğunda nasıl tamir edilir? Arızalı görünen(missing) diske > Right Click > Reactive Disk yapılır. <br>
+            Fiziksel arızalı değilse bu işlemden sonra düzelebilir. Fiziksel arıza var ise bu durumda başta bekleyen diskleri devreye alırız. Bu durumda arızalı diske Remove Mirror yapılır. Volume kalır, Volume'ün Simple Volume'e dönüştürülmesini sağlar. Bu noktadan sonra Simple Disk'i(Yeni diskten elde ettiğimiz) > Right Click > Add > Disk 1 -> Tekrar senkronize etmeye bağlar. Maksimum iki disk Mirror edilebilir. <br>
+            Break Mirror, iki diskin de senkronizasyonunu ortadan kaldırır, ikik diskin içinde de aynı veriler hala vardır. Bundan sonra birbirlerine ayrı ayrı veriler yazılır. <br>
+            Break Mirror yaptıktan sonra artık eskiden Mirror olduğu Volume'le tekrar Mirror Volume yapamıyor. Bunun sebebi Break edilen diskin dolu olmasıdır. Bir diskin Mirror edilebilmesi için o diskin boş olması gerekir. <br>
+            Hardware RAID yaparsak Mirroring ikiden fazla yapılabilir.
+        </p>
+
+        <h5>Strapped Set with Parity - RAID 5</h5>
+        <p>
+            Minimum 3 farklı fiziksel disk ile yapılır. <br>
+            Parity adında bir veri elde edilir. Bu üretilen bir veridir. Üçüncü disk toplam elde edilen hafızaya dahil edilmez. Bu disk Parity verisi için kullanılır. <br>
+            RAID 5, RAID kurallarının tümünü karşılar. <br>
+            Örneğin, 10 tane 100 GB disk var ise, toplam hafıza 900 GB olur. <br>
+            Parity sayesinde disklerden biri çöktüğünde veri kaybı olmaz. Birden fazla disk(3 tane olma durumunda) var ise birden fazlası çöktüğünde yine veri kaybederiz. RAID 5 için 3'ten fazla da olsa sadece maksimum bir tane çöktüğü zaman çalışmaya devam edebilir. Yani 32 tane diskimiz bile varsa ve bunları RAID 5'e dahil ettiysek, bu durumda yine sadece 1 tane hata töleransı olur. <br>
+            Peki Parity 1 disk bozulduğunda kayıp verileri nasıl geri getirir? <br>
+            Senaryomuzda 3 tane disk olsun; <br>
+            D1  D2  D3(P) <br>
+            1   1   0 <br>
+            0   0   0 <br>
+            1   0   1 <br>
+            0   1   1 <br>
+            Parity disk 3.disk olmak zorunda değildir. Herhangi birisi olabilir. <br>
+            Yukarıda D1'in çöktüğünü varsayalım. Yeni disk olarak da D4'ü ekleyelim. <br>
+            D4  D2  D3 <br>
+                1   0 -> D2 1 ve D3 0 ise bu durumda D4 1 olmak durumundadır. <br>
+            Bu mantıkla yeni diske verileri geri yazar.
+        </p>
+
+        <h5>Trouble Shooting</h5>
+        <p>
+            Disklerden birisi arızalandığında verilere hala erişilebilir fakat hata töleransı ortadan kalkar. <br>
+            Önce > Disk -> Arızalı > Right Click > Reactive Disk -> Düzelmezse, yeni bir fiziksel disk eklenir. Arızalı olan diskin üzerinde > Repair Volume seçilir. <br>
+            Yeni taktığımız diski seçip, gerekli senkronizasyonu yapar ve tekrar hata töleransına sahip olur. Fakat aynı anda birden fazla disk çökerse veriler uçar. <br>
+            RAID'ler Extend edilemezler fakat diskte boş kalan Volume'lere farklı türde RAID'ler atanabilir.(Aynı Disk üzerinde) <br>
+        </p>
+
+        <hr>
+        
+        <h5>RAID 6</h5>
+        <p>
+            Minimum 4 disk ile yapılır. <br>
+            Eğer Parity için 2 disk ayrılıyorsa, bu RAID 6 olur. Sadece hata töleransı artar.
+        </p>
+
+        <h5>Mirror + Striped - RAID 10</h5>
+        <p>
+            Hata töleransı en yüksek RAID'lerdne biridir. <br>
+            RAID 1+0 olaraka isimlendirilir. İki farklı RAID teknolojisinin birleşimidir. Önce RAID 1 yapılacak sonra özdeş setlerei birbirlerine Mirror'layacak. <br>
+        </p>
+        <img src="images/RAID-10.PNG" alt="RAID-10">
+        <p>
+          Mantık olarak iki diski Mirror'layıp oluşan setin aynısından bir tane daha üretip o set ile Mirror'lıyoruz. Bu setler arasındaki teknoloji de RAID 0'dır.
+        </p>
+        <p>Tersi olarak da RAID 01 yapabiliriz;</p>
+        <img src="images/RAID-01.PNG" alt="RAID-01">
+        <p>
+          RAID 01 için; <br>
+          1)Kapasite 1 diske göre artar, satın aldığımız toplam kapasiteye göre azalır. <br>
+          2)Hız artmaz. <br>
+          3)Hata töleransı artar.
+        </p>
+
+        <hr>
+
+        <h5>RAID 15(1+5)</h5>
+        <img src="images/RAID-15.PNG" alt="RAID-15">
+        <p>
+          RAID 15 için; <br>
+          1)Toplam 600 GB'lık kapasitenin 200 GB'ını kullanabiliriz. <br>
+          2)Hızı RAID 5 kadar olur. <br>
+          3)Hata töleransı 1 set + 2.setin ilk diskine kadardır.
+        </p>
+
+        <hr>
+
+        <h5>RAID 50</h5>
+        <img src="images/RAID-50.PNG" alt="RAID-50">
+
+        <hr>
+
+        <h5>RAID 100</h5>
+        <img src="images/RAID-100.PNG" alt="RAID-100">
+
+        <hr>
+
+        <h5>RAID 101</h5>
+        <img src="images/RAID-101.PNG" alt="RAID-101">
+        
+        <hr>
+
+        <h5>RAID 500</h5>
+        <img src="images/RAID-500.PNG" alt="RAID-500">
+
+        <hr>
+
+        <p>
+          Tüm RAID'ler için hata töleransından kastımız disklerin sıralı olarak bozulma şeklinde hesaplıyoruz. <br>
+        </p>
+        
+        <h4>Sanal Makinede RAID 51 yapmak</h4>
+        <p>
+          Server Manager > File and Storage Services > Disks -> Diskler görünmezse Rescan yaparız, olmazsa makineyi Restart'larız. Eğer Restart'tan sonra da gelmezse Management > Basic Convert > Hala görünmüyorsa içerisine Basic'teyken bir Partion oluştur. > Storage Pools > New Storage Pool(isim ver) > LUN'ları doğru seç[+](Sıralı değildir) > Create Virtual Disk when this wizard closes[+] -> Burada yeni bir Pool oluşturuyoruz, çünkü artık bu disklere Pool adıveriliir. -> 3 tanesini > RAID5-Pool1'e aldık. <br>
+          OK > <br>
+          > Virtual Disk Name(RAID5-1) <br>
+          > Parity <br>
+          > Fixed(Sanal makinede evde denerken thin yap) <br>
+          > 300 GB -> 300 GB'lık bir RAID5 oluşturur.<br>
+          Yeni bir Basic Disk oluşturuldu. <br>
+          Diğer Set için aynı işlemi yekrar yaparız. <br>
+          Bu Pool için de yeni disk oluşur. <br>
+          İlk oluşan Disk > Right Click > New Mirroring Volume > İkinci oluşturulan disk > 1024(örneğin) > Volume Label RAID51 <br>
+          Bu noktadan sonra istersek bu Pool'lardan farklı RAID'ler üretebiliriz. 
+        </p>
+
+        <a href=""></a>
+        <div class="mt-4"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
