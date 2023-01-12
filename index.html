@@ -13,16 +13,21 @@
       .elements {
         color: rgb(139, 233, 253);
         border: 1px solid rgb(139, 233, 253);
-        border-radius: 6px;
+        border-radius: 10px;
         padding: 12px;
         margin-top: 50px
       }
+
+      a{
+        text-decoration: none;
+      }
+
       a:hover {
         cursor: pointer;
         color: #232529;
         background-color: rgb(139, 233, 253);
-        transition: 1s;
-        border-radius: 6px;
+        transition: 0.5s;
+        border-radius: 10px;
       }
 
       body {
@@ -48,10 +53,6 @@
         color: rgb(139, 233, 253);
       }
 
-      a{
-        text-decoration: none;
-      }
-
       .bg-script {
         color: rgb(139, 233, 253);
         background-color: #31333a;
@@ -61,15 +62,19 @@
         font-size: 16px;
         line-height: normal;
       }
+
+      .b {
+        border: 2px solid rgb(139, 233, 253);
+        border-radius: 10px;
+      }
     </style>
   </head>
   <body class="container">
     <div class="container mt-5">
       <h1 class="display-1 d-flex justify-content-center">Haftalık Notlar</h1>
 
-      <hr>
-
-      <h4 class="display-6 d-flex justify-content-center">OCTOBER 2022</h4>
+      <div class="b p-5 mt-5">
+        <h4 class="display-6 d-flex justify-content-center">EKİM 2022</h4>
         <div class="d-flex flex-wrap flex-row justify-content-evenly">
           <a href="October-10/08-10-2022.html" class="elements h4 text-decoration-none">08.10.2022</a>
           <a href="October-10/15-10-2022.html" class="elements h4 text-decoration-none">15.10.2022</a>
@@ -79,15 +84,15 @@
           <a href="October-10/22-10-2022.html" class="elements h4 text-decoration-none">22.10.2022</a>
           <a href="October-10/23-10-2022.html" class="elements h4 text-decoration-none">23.10.2022</a>
         </div>
-
+        
         <div class="d-flex flex-wrap flex-row justify-content-evenly">
           <a href="October-10/30-10-2022.html" class="elements h4 text-decoration-none">30.10.2022</a>
           <a href="" class="elements h4 text-decoration-none">xxxxxxxxxx</a>
         </div>
+      </div>
 
-        <hr>
-
-        <h4 class="display-6 d-flex justify-content-center">NOVEMBER 2022</h4>
+      <div class="b p-5 mt-5">
+        <h4 class="display-6 d-flex justify-content-center">KASIM 2022</h4>
         <div class="d-flex flex-wrap flex-row justify-content-evenly">
           <a href="November-11/05-11-2022.html" class="elements h4 text-decoration-none">05.11.2022</a>
           <a href="November-11/06-11-2022.html" class="elements h4 text-decoration-none">06.11.2022</a>
@@ -102,10 +107,10 @@
           <a href="November-11/26-11-2022.html" class="elements h4 text-decoration-none">26.11.2022</a>
           <a href="" class="elements h4 text-decoration-none ">xxxxxxxxxx</a>
         </div>
+      </div>
 
-        <hr>
-
-        <h4 class="display-6 d-flex justify-content-center">DECEMBER 2022</h4>
+      <div class="b p-5 mt-5">
+        <h4 class="display-6 d-flex justify-content-center">ARALIK 2022</h4>
         <div class="d-flex flex-row flex-wrap justify-content-evenly">
           <a href="December-12/03-12-2022.html" class="elements h4 text-decoration-none">03.12.2022</a>
           <a href="December-12/04-12-2022.html" class="elements h4 text-decoration-none">04.12.2022</a>
@@ -130,10 +135,10 @@
           <a href="December-12/31-12-2022.html" class="elements h4 text-decoration-none">31.12.2022</a>
           <a href="" class="elements h4 text-decoration-none">xxxxxxxxxx</a>
         </div>
+      </div>
 
-        <hr>
-
-        <h4 class="display-6 d-flex justify-content-center">JANUARY 2023</h4>
+      <div class="b p-5 mt-5">
+        <h4 class="display-6 d-flex justify-content-center">OCAK 2023</h4>
         <div class="d-flex flex-row flex-wrap justify-content-evenly">
           <a href="January-01/07-01-2023.html" class="elements h4 text-decoration-none">07.01.2023</a>
           <a href="January-01/08-01-2023.html" class="elements h4 text-decoration-none">08.01.2023</a>
@@ -148,6 +153,7 @@
           <a href="" class="elements h4 text-decoration-none"></a>
           <a href="" class="elements h4 text-decoration-none"></a>
         </div>
+      </div>
     </div>
       
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
