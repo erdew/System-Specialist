@@ -60,106 +60,271 @@
   </head>
   <body class="container">
     <div class="container mt-5">
-        <h1 class="display-4">15.10.2022</h1>
-    Router ve Switch'lere yapılması önerilen "Basic Configuration"'lar:
-        Router'a isim atamak: enable > conf terminal > hostname This is host name 
-        Açılış mesajı: enable > conf t > banner > login banner This is login banner, ya da banner motd This is message of the day. 
-        Console Port'una Password atamak: enable > conf t > line > line console 0 > password This is password > login(Şifrenin sorulmasını sağlar.) 
-        Enable Moduna Password atamak: enable > password This is enable password > login 
-        Tüm şifreleri kriptolamak: enable > conf t > service password-encryption 
-        Interface'lere açıklama eklemek: enable > conf t > interface f0/0 > description > This is desscription. 
-        Komut yazarken herhangi bir bildirim almamak için yazılması gereken komut: enable > conf t > line > console 0 > logging sychrous 
-        Router'a TelNet ile bağlanmak
-         Telnet Router'lara uzaktan erişim sağlayan bir protokoldür. Console Kablosu ile Router'a seri bağlantı yapmak demek, Router'a uzaklığımızın maksimum 1 metre olabileceği anlamına geliyor. Dolayısıyla kablo ile cihaza bağlanmak yerine genellikle Telnet tercih edilir. Telnet bağlantısı Enhernet port'ları üzerinden yapılır. Fakat Default'ta Router'ların Ethernet Port'ları kapalıdır, yani erişilebilir durumda değillerdir. Ayrıca Router'lar Default'ta Telnet iletişimine kapalılardır. Router'ı uzaktan kontrol etmek istediğimizde sıradan bir veri iletişimi sağlamıyoruz, özel bir istekte bulunuyoruz. Bu tarz özel durumlar için mutlaka kullanılması gereken protokoller ve uygulanması gereken bazı adımlar vardır. Telnet için atılacak adımlar:
-        Enable'a Password atamış olmak. 
-        VTY Port'larına Password atamak.(VTY Port'ları Ethernet Port'un içersindeki Telnet protokolünün kullanacağı Sanal Port'ları ifade eder.) Maksimum 16 adet(0-15, 0 ve 15 dahil) VTY Port çalışabilir. Yani bir Client'ten Router'a Telnet'ten bağlandığımızda 1 adet VTY Port'unu meşgul ediyor olduğumuz anlamına gelir. VTY Port'ları Default'ta Login'dir. Dolayısıyla Manuel olarak Password atanmadığı sürece, sistem olmayan bir şifreyi sürekli sormaya çalşıyormuş gibi çalışır ve bu durum VTY Port'larının aslında kapalıymış gibi algılanmasına sebep olur. VTY Port'larına Password atamak: enable > conf t > line vty 0 15 > password This is Password for VTY Ports Client'ten Telnet ile Router'a bağlanmak için, Client'in Terminalinden telnet IP Adresi girilir, önce VTY Password sorulur daha sonra enable Password sorulur ve bu noktadan sonra erişilen Router'a istenilen konfigürasyon yapılabilir. 
-        Router'larda SAVE yapmak 
-        Router'ların donanımlarında 3 önemli bileşen vardır.
-        Flash - İşletim sisteminin yüklü olduğu hafıza. 
-        NVRAM(Startup Configuration) - Yapılmış olan konfigürasyonların kalıcı olarak tutulduğu hafıza. 
-        RAM(Runnig Configuration) - Henüz kaydedilmemiş olan konfigürasyonların geçici olarak tutulduğu hafıza. 
-        Router çalıştırıldığında önce Flash'tan RAM'e işletim sistemi yüklenir. Daha sonra NVRAM'de kaydedilmiş konfigürasyon var ise onlar da RAM'e yüklenir. Sonuç olarak bizim gördüğümüz, düzenleme yaptığımız her şey aslında RAM'de çalışır. Kayıt yaptığımızda RAM'deki konfigürasyonlar NVRAM'in üzerine yazılır.
-        enable > copy r(running conf) s(startup conf) || copy s r ya da enable > w(write)
-        Router'da Pasword Resetlemek
-           Diyelim ki bir şirketteki bir Router'ı devraldık ve bu Router'ın NVRAM'indeki konfigürasyonları silmeden, bazı güncellemeler yapmak istiyoruz. Fakat bu Router'ın şifresini öğrenemediğimizi varsayalım. Böyle bir durumda Router'ı formatlamak zorunda kalmadan konfigürasyon yapabilmenin bir yöntemi vardır. Router'ların açılış modları vardır. Bu modlar işletim sistemleri RAM'e yüklenmeden önce seçilir ve ona göre boot edilir. Default'ta bu mod 0x2102 açılış modudur. Elimizdeki senaryoda Router'ın Power tuşuna basıp CTRL + Pause(Break) tuşlarıyla başlangıç modunu değiştirebileceğimiz adımı aktifleştiriyoruz. Bu noktada açılış modunu değiştirmek için şu komutları giriyoruz: confreg 0x2142 > reset. Router'ı farklı bir modda çalıştırdık ve şuanda NVRAM RAM'e yüklenmiş durumda değil. Sadece işletim sistemi RAM' yüklenmiş durumda. Bu sebeple Router, sanki NVRAM'in hiç bir konfigürasyon yokmuş gibi çalışmaya başlar fakat aslında NVRAM'i daha önceden yapılan konfigürasyonlarla doludur. Dolayısıyla şuanda kesinlikle Save yapılmamalıdır. Bu aşamada yazılması gereken komutlar: en > copy s r > en > conf t > line col 0 > no pw > no login exit > line vty 0 15 > exit > no en secret > config-register 0x2102 > do w > do reload Bu komutlardan sonra Router yeniden başlar ve Interface'leri down gelir, bunları tekrar no shutdown yapmak gerekiyor. Yukarıda yaptığımız şey özetle şudur; Route'ı farklı bir mod'ta başlatıp Startup Configuration'ınını Runnnig Configuration'a yükledik. Console'u seçip şifresini kaldırdık ve sormaması için no login dedik. VTY port'larını resetledik. Enable'ın şifresini kaldırdık. En son modu değiştirdik ve Router'u resetledik. Bunu yaptığımız için artık normal mod'ta açıldığında hiç bir şifre sormaz fakat bütün konfigürasyonlar hala yüklü durumdadır. Şuandan itibaren kendimiz tekrar istediğimiz şifreleri koyarak "copy r s" yaptığımızda Router açılışta bizim belirlediğimiz şifrelerle çalışır.
-        
-        Router’larda Yedekleme
-        
-        en
-        show version => Router hakkındaki bilgileri verir. Hangi Configuration modunda olduğunu gösterir.
-        
-        en
-        show flash => Kulalndığımız cihazın IOS’unun adını gösterir.
-        
-        ROM Mode FTP’yi kullanamaz, FTP bu işlem için çok modern kalır.
-        
-        TFTP Protokolü Yedek Sistem ile iletişimi sağlayan bir aracıdır.
-        
-        Bir Sunucu ya da PC’yi TFTP trafiğini sağlayabilen hale getirmek için  TFTP Server yazılımı kullanılır.
-        TFTP Server ile direkt olarak IOS’un yedeğini alabiliriz.
-        
-        
-        
-        
-        IOS’u yedek alabilmek için yapılması gerekenler;
-        
-        copy flash tftp
-        192.168.1.20   => Hedefin IP’si.
-        Packet’in ismi ne olsun diye sorar. (Tavsiye ettiği ismi kullanmak en iyisidir)
-        
-        NVRAM’i Yedeklemek
-        
-        copy startup-conf tftp
-        Bir isim girmemizi ister bu noktada önerilen ismi kullanmamak daha uygundur.
-        Bunun yerine duruma uygun çok anlamlı ve açıklayıcı bir isim vermek gerekir.
-        Türkçe karakter abarındırmayan, Router’ın Konfigürasyonunu düzgünce tarif edebilmeli.
-        Örneğin; RouterMerkezi-Router_1
-        
-        NVRAM’i yedeklemek için Router’ın üzerindeki USB Port’u da kullanılabilir.
-        Direkt olarak bir Flash ya da Harici Disk’e bu veri yazdırılabilir.
-        
-        Yedekten Geri Yüklemek
-        
-        erase startup-config => Uyguladığımız makinenin NVRAM’ini silmiş oluruz.
-        Makineyi Reset’lemediğimiz sürece herhangi bir yedeğe ihtiyaç duyulmaksızın NVRAM hala kurtarılabilir durumdadır. Çünkü NVRAM hala Running Configuration’un içerisinde yüklü durumdadır. Bu bölüm makinenin elektiriği kesildiği takdirde tamamen silinir. Fakat bu bölüme veriler de Startup Configuration’dan yüklenirler. Yukarıda ise biz bu bölümü silmiş olduk.
-        Yukarıdaki durumu makineyi kapatmadan evvel eski haline döndürüp, kurtarmak istiyorsak şu komutları kullanmamız gerekir;
-        copy r s
-        
-        Geri Yükleme Komutları
-        
-        copy tftp startup-conf
-        remote host 192.168.1.20 => Yedeklerin tutulduğu makine.
-        Yedeğini yüklemek istediğimiz Packet’in ismi. 
-        Yükleme yapıldıktan sonra “Reload” yapılır.(Makineyi Restart’lar)
-        
-        IOS Yüklenmeme Sorunu
-        
-        Eğer IOS açılmazsa yani Flash bölümünde IOS bulunmuyorsa, bu durumda yapılması gerekenler şunlardır;
-        
-        Öncelikle “delete” Flash’taki herhangi bir şeyin silmenin komutudur.
-        
-        Delete flash => Flash’ı tamamen siler.
-        Copy tftp flash 
-        192.168.1.20 
-        Yukarıdaki son iki komut ile makineyi Reset’lemeden ya da Shutdown etmeden Remote’taki yedekten çekebiliriz.
-        
-        Eğer Router’ı fiziksel olarak yedeğe aldığımız makineye bağlama şansımız var ise aşağıdaki adımlar uygulanır;
-        
-        İşletim Sisteminin yüklenmediği durumda Router’ı direkt olarak yedekleme yaptığımız makine kabla ile bağlarız.
-        Ardından tftpdnld komutu girilir.
-        Bu aşamadan sonra IP Adresi, Mac Adresi, Gateway, TFTP IP Adresi(Yedek alınan makinenin IP Adresi), TFTP(Kuracağımız IOS Adı) bilgileri girilir.
-        Makine Reset’lenir.
-        Son olarak Router’ı eski konuma getirip, normal kablolaması yapılır.
-        IP Routing
-        
-        Router’ların her bir yeni bir Network’e açılan kapı gibidir.
-        Dolayısıyla bir Router’ın bir Interface’inden öteki Router’ın Interface’ine kadar olan mesafe yalnızca bir Network’ü temsil eder.
-        Bu bağlı olarak bir Router maksimum direkt bağlı olduğu bu Router’dan başka bir Router’a erişemez.
-        Dolayısıyla bu Router’lar kendilerine bağlı olan diğer Router’ları birbirlerine haber vermek durumundadırlar. Aksi durumda Network’ler arasında iletişim sağlanamazdı.
+        <h1 class="display-4 text-center">15.10.2022</h1>
+        <h4>Router ve Switch'ler için; "Basic Configurations"</h4>
 
+        <hr>
+
+        <h5>Router'a isim atamak;</h5>
+        <p class="bg-script text-start">
+          > enable <br>
+          > configuration terminal <br>
+          > hostname This is host name 
+        </p>
+
+        <h5>Açılış mesajı;</h5>
+        <p class="bg-script text-start">
+          > enable <br>
+          > conf t <br>
+          > banner -> login banner This is login banner, ya da banner motd This is message of the day. 
+        </p>
+
+        <h5>Console Port'una Password atamak;</h5>
+        <p class="bg-script text-start">
+          > enable <br>
+          > conf t <br>
+          > line <br>
+          > line console 0 <br>
+          > password <br>
+          > login(Şifrenin sorulmasını sağlar) 
+        </p>
+
+        <h5>Enable Moduna Password atamak;</h5>
+        <p class="bg-script text-start">
+          > enable <br> 
+          > password(Enable şifresi) <br>
+          > login
+        </p>
+
+        <h5>Tüm şifreleri kriptolamak;</h5>
+        <p class="bg-script text-start">
+          > enable <br>
+          > conf t <br>
+          > service password-encryption 
+        </p>
+
+        <h5>Interface'lere açıklama eklemek;</h5>
+        <p class="bg-script text-start">
+          > enable <br>
+          > conf t <br>
+          > interface f0/0 <br>
+          > description 
+        </p>
+        <h5>Geribildirimleri, komutları yazdıktan sonra göstermesini sağlamak için;</h5>
+        <p class="bg-script text-start">
+          > enable <br>
+          > conf t <br>
+          > line <br>
+          > console 0 <br> 
+          > logging sychrous 
+        </p>
+
+        <hr>
+
+        <h4>Router'a TelNet ile bağlanmak</h4>
+        <p>
+          Telnet Router'lara uzaktan erişim sağlayan bir protokoldür. <b>Console Kablosu</b> ile Router'a <b>seri bağlantı</b> yapmak demek, Router'a uzaklığımızın maksimum 1 metre olabileceği anlamına geliyor. Dolayısıyla kablo ile cihaza bağlanmak yerine genellikle Telnet tercih edilir. <br>
+          Telnet bağlantısı Enhernet port'ları üzerinden yapılır fakat Default'ta Router'ların Ethernet Port'ları kapalıdır, yani erişilebilir durumda değillerdir. <br>
+          Ayrıca Router'lar, Default'ta Telnet iletişimine kapalıdır. <br>
+          Router'ı uzaktan kontrol etmek istemek; sıradan bir veri iletişimi değil, özel bir istekte bulunmaktır. <br>
+          Bu tarz özel durumlar için mutlaka kullanılması gereken protokoller ve uygulanması gereken bazı adımlar vardır. <br>
+        </p>
+
+        <h4>Telnet bağlantısı için önkoşullar</h4>
+        <ol>
+          <li>Enable'a Password atamış olmak.</li>
+          <li>VTY Port'larına Password atamak.(VTY Port'ları Ethernet Port'un içersindeki Telnet protokolünün kullanacağı Sanal Port'ları ifade eder)</li>
+        </ol>
+        <p>
+          Maksimum 16 adet(0-15, 0 ve 15 dahil) VTY Port çalışabilir. <br>
+          Bir Client'ten, Router'a Telnet'ten bağlandığımızda 1 adet VTY Port'unu meşgul ediyor olduğumuz anlamına gelir. <br>
+          TY Port'ları, Default'ta Login'dir. <br>
+          Dolayısıyla Manuel olarak Password atanmadığı sürece, sistem olmayan bir şifreyi sürekli sormaya çalşıyormuş gibi çalışır ve bu durum VTY Port'larının aslında kapalıymış gibi algılanmasına sebep olur. <br>
+        </p>
+
+        <h5>VTY Port'larına Password atamak</h5>
+        <p class="bg-script text-start">
+          > enable <br>
+          > conf t <br>
+          > line vty 0 15 <br>
+          > password -> Client'lerden VTY Port'larına bağlanmak için girilen şifre. 
+        </p>
+        <p>
+          Client'ten Telnet ile Router'a bağlanmak için, Client'in Terminalinden telnet IP Adresi girilir, önce <b>"VTY Password"</b> sonra <b>"Enable Mode Password"</b> sorulur ve bu noktadan sonra Router'a zuaktan bağlanılmış olur ve istenilen konfigürasyon yapılabilir. 
+        </p>
+
+        <h4>Router'larda SAVE yapmak</h4>
+        <ol>
+          <span>Router'ların donanımlarında 3 önemli bileşen vardır;</span>
+          <li><b>Flash</b>: İşletim sisteminin yüklü olduğu hafıza.</li>
+          <li><b>NVRAM(Startup Configuration)</b>: Yapılmış olan konfigürasyonların kalıcı olarak tutulduğu hafıza.</li>
+          <li><b>RAM(Runnig Configuration)</b>: Henüz kaydedilmemiş olan konfigürasyonların geçici olarak tutulduğu hafıza.</li>
+        </ol>
+        <p>
+          Router çalıştırıldığında önce Flash'tan RAM'e işletim sistemi yüklenir. <br>
+          Daha sonra NVRAM'de kaydedilmiş konfigürasyon var ise onlar da RAM'e yüklenir. <br> Sonuç olarak bizim gördüğümüz, düzenleme yaptığımız her şey aslında RAM'de çalışır. <br>
+          Kayıt yaptığımızda RAM'deki konfigürasyonlar NVRAM'in üzerine yazılır.
+        </p>
+        <p class="bg-script text-start">
+          > enable <br>
+          > copy r(running conf) s(startup conf) veya <br>
+          > copy s r ya da <br>
+          > w(write)
+        </p>
+
+        <h4>Router'da Pasword Resetlemek</h4>
+        <p>
+          Diyelim ki bir şirketteki bir Router'ı devraldık ve bu Router'ın NVRAM'indeki konfigürasyonları silmeden, bazı güncellemeler yapmak istiyoruz fakat bu Router'ın şifresini öğrenemediğimizi varsayalım. <br>
+          Böyle bir durumda Router'ı formatlamak zorunda kalmadan konfigürasyon yapabilmenin bir yöntemi vardır. <br>
+          Router'ların açılış modları vardır. <br>
+          Bu modlar işletim sistemleri RAM'e yüklenmeden önce seçilir ve ona göre boot edilir. <br>
+          Default'ta bu mod 0x2102 açılış modudur. <br>
+          Elimizdeki senaryoda Router'ın Power tuşuna basıp CTRL + Pause(Break) tuşlarıyla başlangıç modunu değiştirebileceğimiz adımı aktifleştiriyoruz. <br>
+        </p>
+        <p>
+          <b>Bu noktada açılış modunu değiştirmek için şu komutları giriyoruz;</b>
+        </p>
+        <p class="bg-script text-start">
+          > confreg 0x2142 <br>
+          > reset
+        </p>
+        <p>
+          Router'ı farklı bir modda çalıştırdık ve şuanda NVRAM RAM'e yüklenmiş durumda değil. <br>
+          Sadece işletim sistemi RAM'e yüklenmiş durumda. <br>
+          Bu sebeple Router, sanki NVRAM'in hiç bir konfigürasyon yokmuş gibi çalışmaya başlar fakat aslında NVRAM'i daha önceden yapılan konfigürasyonlarla doludur. <br>
+          Dolayısıyla şuanda <u>kesinlikle Save yapılmamalıdır</u>. <br>
+        </p>
+        <p><b>Bu aşamada yazılması gereken komutlar;</b></p>
+        <p class="bg-script text-start">
+          > en <br>
+          > copy s r <br>
+          > en <br>
+          > conf t <br>
+          > line col 0 <br>
+          > no pw <br>
+          > no login exit <br>
+          > line vty 0 15 <br>
+          > exit <br>
+          > no en secret <br>
+          > config-register 0x2102 <br>
+          > do w <br>
+          > do reload <br>
+        </p>
+        <p>
+
+        </p>
+        <p>
+          Bu komutlardan sonra Router yeniden başlar ve <b>Interface'leri down gelir</b>, bunları tekrar "<b>no shutdown</b>" yapmak gerekiyor. <br>
+          <b>Yukarıda yaptığımız şey özetle şudur;</b> <br>
+          Route'ı farklı bir mod'ta başlatıp <b>Startup Configuration</b>'ınını, <b>Runnnig Configuration</b>'a yükledik. <br>
+          Console'u seçip şifresini kaldırdık ve sormaması için "<b>no login</b>" dedik. <br>
+          VTY port'larını resetledik. <br>
+          Enable'ın şifresini kaldırdık. <br>
+          En son modu değiştirdik ve Router'u resetledik. <br>
+          Bunu yaptığımız için artık normal mod'ta açıldığında hiç bir şifre sormaz fakat bütün konfigürasyonlar hala yüklü durumdadır. <br>
+          Şuandan itibaren kendimiz tekrar istediğimiz şifreleri koyarak "<b>copy r s</b>" yaptığımızda Router açılışta bizim belirlediğimiz şifrelerle çalışır.
+        </p>
+        
+        <h4>Router’larda Yedekleme Yapmak</h4>
+        <p class="bg-script text-start">
+          > enable <br>
+          > show version -> Router hakkındaki bilgileri verir, hangi Configuration modunda olduğunu gösterir.
+        </p>
+        <p class="bg-script text-start">
+          > enable <br>
+          > show flash -> Kulalndığımız cihazın IOS’unun adını gösterir.
+        </p>
+        <p>
+          <b>ROM Mode</b>, <b>FTP</b>'yi kullanamaz, FTP bu işlem için çok modern kalır. <br>
+          <b>TFTP Protokolü</b>, Yedek Sistem ile iletişimi sağlayan bir aracıdır. <br>
+          Bir Sunucu ya da PC’yi TFTP trafiğini sağlayabilen hale getirmek için TFTP Server yazılımı kullanılır. <br>
+          TFTP Server ile direkt olarak IOS’un yedeğini alabiliriz.
+        </p>
+
+        <h5>IOS’u yedek alabilmek için yapılması gerekenler;</h5>
+        <p class="bg-script text-start">
+          > copy flash tftp <br>
+          > 192.168.1.20 -> Hedefin IP’si. <br>
+          Packet’in ismi ne olsun diye sorar. (Tavsiye ettiği ismi kullanmak en iyisidir)
+        </p>
+       
+        <h4>NVRAM’i Yedeklemek</h4>
+        <p class="bg-script text-start">
+          > copy startup-conf tftp
+        </p>
+        <p>
+          Bir isim girmemizi ister. <br>
+          Bu noktada önerilen ismi kullanmamak daha uygundur. <br>
+          Bunun yerine duruma uygun çok anlamlı ve açıklayıcı bir isim vermek gerekir. <br>
+          Türkçe karakter barındırmamalı ve Router’ın Konfigürasyonunu düzgünce tarif edebilmeli. <br>
+          Örneğin; <b>RouterMerkezi-Router_1</b>
+        </p>
+        <p>
+          NVRAM’i yedeklemek için Router’ın üzerindeki USB Port’u da kullanılabilir. <br>
+          Direkt olarak bir Flash ya da Harici Disk’e bu veri yazdırılabilir. <br>
+        </p>
+
+        <h4>Yedekten Geri Yüklemek</h4>
+        <p class="bg-script text-start">
+          > erase startup-config -> Uyguladığımız makinenin NVRAM’ini silmiş oluruz.
+        </p>
+        <p>
+          Makineyi Reset’lemediğimiz sürece herhangi bir yedeğe ihtiyaç duyulmaksızın NVRAM hala kurtarılabilir durumdadır. <br>
+          Çünkü NVRAM hala Running Configuration’un içerisinde yüklü durumdadır. <br>
+          Bu bölüm makinenin elektiriği kesildiği takdirde tamamen silinir fakat bu bölüme veriler de Startup Configuration’dan yüklenirler. <br>
+          Yukarıda ise biz bu bölümü silmiş olduk.
+        </p>
+        <p>
+          Yukarıdaki durumu makineyi kapatmadan evvel eski haline döndürüp, kurtarmak istiyorsak <b>şu komutları kullanmamız gerekir</b>;
+        </p>
+        <p class="bg-script text-start">
+          > copy r s
+        </p>
+        
+        <h4>Geri Yükleme Komutları</h4>
+        <p class="bg-script text-start">
+          > copy tftp startup-conf <br>
+          > remote host 192.168.1.20 -> Yedeklerin tutulduğu makine.
+        </p>
+        <p>
+          Yedeğini yüklemek istediğimiz Packet’in ismi. <br>
+          Yükleme yapıldıktan sonra “Reload” yapılır.(Makineyi Restart’lar)
+        </p>
+
+        <h4>IOS Yüklenmeme Sorunu</h4>
+        <p>
+          <b>Eğer IOS açılmazsa yani Flash bölümünde IOS bulunmuyorsa, bu durumda yapılması gerekenler şunlardır;</b>
+        </p>
+        <p class="bg-script text-start">
+          Öncelikle “delete” Flash’taki herhangi bir şeyin silmenin komutudur. <br>
+          > delete flash => Flash’ı tamamen siler. <br>
+          > copy tftp flash <br>
+          > 192.168.1.20 
+        </p>
+        <p>
+          Yukarıdaki son iki komut ile makineyi Reset’lemeden ya da Shutdown etmeden Remote’taki yedekten çekebiliriz.
+        </p>
+        <p>
+          <b>Eğer Router’ı fiziksel olarak yedeğe aldığımız makineye bağlama şansımız var ise aşağıdaki adımlar uygulanır;</b> <br>
+          İşletim Sisteminin yüklenmediği durumda Router’ı direkt olarak yedekleme yaptığımız makine kabla ile bağlarız. <br>
+          Ardından <b>tftpdnld</b> komutu girilir. <br>
+          Bu aşamadan sonra IP Adresi, Mac Adresi, Gateway, TFTP IP Adresi(Yedek alınan makinenin IP Adresi), TFTP(Kuracağımız IOS Adı) bilgileri girilir. <br>
+          Makine Reset’lenir. <br>
+          Son olarak Router’ı eski konuma getirip, normal kablolaması yapılır.
+        </p>
+
+        <h4>IP Routing</h4>
+        <p>
+          Router’ların her bir yeni bir Network’e açılan kapı gibidir. <br>
+          Dolayısıyla bir Router’ın bir Interface’inden öteki Router’ın Interface’ine kadar olan mesafe yalnızca bir Network’ü temsil eder. <br>
+          Bu bağlı olarak bir Router maksimum direkt bağlı olduğu bu Router’dan başka bir Router’a erişemez. <br>
+          Dolayısıyla bu Router’lar kendilerine bağlı olan diğer Router’ları birbirlerine haber vermek durumundadırlar. <br>
+          Aksi durumda Network’ler arasında iletişim sağlanamazdı.
+        </p>
+        
         <div class="m-5 text-center">
-          <a href="../December-12/31-12-2022.html" class="bg-script m-5">31.12.2022</a>
-          <a href="08-01-2023.html" class="bg-script m-5">08.01.2023</a>
+          <a href="08-10-2022.html" class="bg-script m-5">08.10.2022</a>
+          <a href="22-10-2022.html" class="bg-script m-5">22.10.2022</a>
         </div>
         <div class="mt-4"></div>
     </div>
