@@ -30,6 +30,10 @@
         */
       }
 
+      h1 {
+        text-align: center;
+      }
+
       h1, h2, h3, h4, h5, h6 {
         color: rgb(139, 233, 253);
       }
@@ -51,7 +55,7 @@
         background-color: #31333a;
         padding: 20px;
         border-radius: 10px;
-        text-align: center;
+        text-align: start;
         font-size: 16px;
         line-height: normal;
       }
@@ -62,38 +66,60 @@
     <div class="container mt-5">
         <h1 class="display-4">23.10.2022</h1>
         <p>
-            Servis sağlayıcıların DNS veritabanlarından IP'leri Client'lere gönderirler. Örneğin Superonline, Google vs. kendi DNS veritabanlarına sahiplerdir. DNS Client, DNS Server'dan hizmet alan cihaz anlamına gelir.
+            Servis sağlayıcıları, IP'leri DNS veritabanlarından Client'lere gönderirler. Örneğin; Superonline, Google vs. kendi DNS veritabanlarına sahiplerdir. DNS Client, DNS Server'dan hizmet alan cihaz anlamına gelir.
         </p>
 
         <h4>Router'ları DNS Client yapmak</h4>
+        <p class="bg-script">
+            Router <br>
+            > en <br>
+            > conf t <br>
+            > ip DNS_Server 192.168.1.10 <br>
+        </p>
         <p>
-            Router > en > conf t > ip name-server "DNS IP" 192.168.1.10 <br>
-            Client'lerde DNS kullanmak çok gereklidir. Router'larda da gereklidir ancak şart değildir. Çok sayıda cihaz var ise DHCP ile otomatik IP dağıtarak işimizi kolaylaştırabiliriz. DHCP Server IP konfigürasyonunu otomatik yapar.
-        </p>   
+          Client'lerde DNS kullanmak çok gereklidir. Router'larda da gereklidir ancak şart değildir. Çok sayıda cihaz var ise DHCP ile otomatik IP dağıtarak işimizi kolaylaştırabiliriz. DHCP Server IP konfigürasyonunu otomatik yapar.
+        </p>
+
         <h5>Router'ı DHCP Server'a çevirmek</h5>
-        <p>
-            Router > ip dhcp pool Pool-Kadikoy > network 192.168.1.0 255.255.255.0 >default-router 192.168.1.1 > dns-server 192.168.1.10 > exit > ip dhcp excluded-address 192.168.1.1 192.168.1.10
+        <p class="bg-script">
+            Router <br>
+            > ip dhcp pool Pool-Kadikoy <br>
+            > network 192.168.1.0 255.255.255.0 <br>
+            > default-router 192.168.1.1 <br>
+            > dns-server 192.168.1.10 <br>
+            > exit <br>
+            > ip dhcp excluded-address 192.168.1.1 192.168.1.10
         </p>
         <p>
             Hangi Network'e ait IP'leri dağıtmamız gerektiğini gireriz. Default Router ise Gateway bilgisidir. Ardından DNS Server'ın IP'sini gireriz. En son olarak Pool'a dahil etmek istemediğimiz IP aralığını gireriz.
         </p>
         <p>
-            Client'leri IP konfigürasyonu DHCP'ye ayarlıyoruz. DNS hizmeti veren makinelerin IP'leri sabittir bu sebeple Static IP verilir. Client'ten aldığı IP konfigürasyonu sorgulamak için; <br>
-            ipconfig, ipconfig /all komutları kullanılır. <br>
-            Client'in IP almasını sağlamak için: ipconfig /renew komutu kullanılır.
+            Client'leri IP konfigürasyonu DHCP'ye ayarlıyoruz. DNS hizmeti veren makinelerin IP'leri sabittir bu sebeple Static IP verilir. <br>
+            <br>
+            <b>Client'ten aldığı IP konfigürasyonu sorgulamak için;</b><br>
+        </p>
+        <p class="bg-script">
+          > ipconfig <br>
+          > ipconfig /all -> komutları kullanılır. <br>
+          > ipconfig /renew -> Client'in IP almasını sağlamak için kullanılır.
         </p>
         <p>
-            ping komutu icmp protokolü kullanır. <br>
+          "ping" komutu, ICMP protokolü kullanır.
+        </p>
+        <p class="bg-script">
             #debug ip icmp -> açar <br>
             #no debug all -> kapatır <br>
-            Örneğin; <br>
-            Ping atıldığında arkaplanda neler olup bittiğini bu şekilde görüntüleyebiliriz.
+        </p>
+        <p>
+          <b>Örneğin;</b> <br>
+          Ping atıldığında arkaplanda neler olup bittiğini bu şekilde görüntüleyebiliriz.
         </p>
         <h4>Subnetting</h4>
         <p>
-            192.168.1.8/16 -> Hedefin altına kendi Mask'ını yazar. <br>
-            192.168.1.9/24 -> Aynı sonuç(hedef ile) çıkar ise kendi Network'ünde olduğunu anlayıp paketleri gönderebilir. Musk'ı aynı sonucu çıkarmazsa paketi Gateway'e gönderir. Yukarıdaki iki IP'de aslında farklı Network'telerdir.
-            <br>
+          192.168.1.8/16 -> Hedefin altına kendi Mask'ını yazar. <br>
+          192.168.1.9/24 -> Aynı sonuç(hedef ile) çıkar ise kendi Network'ünde olduğunu anlayıp paketleri gönderebilir. Musk'ı aynı sonucu çıkarmazsa paketi Gateway'e gönderir. Yukarıdaki iki IP'de aslında farklı Network'telerdir.
+        </p>
+        <p>
             BU NOKTADA SUBNETTINGIN DETAYLARINI YAZMAK GEREKIYOR
         </p>
         <p>

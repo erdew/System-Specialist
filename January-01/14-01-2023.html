@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>14.01.2023</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+        body {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 14px;
+            color: #e2e3e7;
+            background-color: #232529;
+            /*
+            e2e3e7
+            c4c7cf
+            868d9a
+            696e79
+            41454c
+            35383f
+            292c31
+            232529
+
+            31333a
+            */
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: rgb(139, 233, 253);
+        }
+
+        a{
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #e2e3e7;
+        }
+
+        .container {
+            max-width: 800px;
+        }
+
+        .bg-script {
+            color: rgb(139, 233, 253);
+            background-color: #31333a;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: start;
+            font-size: 16px;
+            line-height: normal;
+        }
+    </style>
+  </head>
+  <body class="container">
+    <div class="container mt-5">
+        <h1 class="display-4">14.01.2023</h1>
+        <p>
+            İnternete bağlanırken DNS Server'lar arasında bir trafik olur. <br>
+            YAZILAR BİTİNCE BURAYA SEMBOLLERİ ÇİZ.
+        </p>
+        <p>
+            Yukarıdaki iki DNS Server da yalnızca kendi Network'ündeki IP'leri çözümlemeyi bilir. <br>
+            Dünyadan(internetten), bizim haricimizdeki kişilerin de bizim Server'ımıza erişmesini istiyorsak "<b>Domain Register</b>" etmek ve dosyaları bu Server'ın içerisine yüklemeliyiz. <br>
+            Register etmek; aracı firma internette bizim satın aldığımız Domain'in görünmesi için DNS hizmeti verir.
+        </p>
+        <p>
+            Private olarak kurduğumuz DNS <br>
+            Register ettiğimiz DNS(Aradığımız isme karşılık gelen IP'yi tutar) -> İşaretçidir.<br>
+            Kendisine gelen soruyu içerideki DNS'e sorar. -> Yönlendirir.
+        </p>
+        <p>
+            Eğer bir Domain var ise o Network'te, en bir DNS Server olmak zorundadır.
+        </p>
+        <p>
+            SEMBOL -> .root -> .com -> sirket3.com DNS -> Hedef: www.sirket1.com <br>
+            Yukarıdaki adımı yapmadan direkt ISP'nin DNS Server'ına gidersek, Forward'lamış oluruz. <br>
+            Superonline ülkemizdeki çoğu şirket hizmet verdiği için kendi Cache'inde çözümlemeleri tutar, bu sayede .root'a ve gidilmesine gerek yoktur. <br>
+            Daha kapsamlı olan googl.ecom -> 8.8.8.8'de kullanılabilir. Daha Robust olan bir DNS Server'dır. <br>
+            Dünyanın en performanslı DNS Server'ı; 1.1.1.1'dir. Amerikada Cloudflare adında bir hizmet sağlayıcıdır. Google'ın DNS'inden daha hızlı çalışır.
+        </p>
+        <p class="bg-script">
+            > DC0 <br>
+            > Forward <br>
+            > Properties <br>
+            > Forwarders <br>
+            > Edit -> Forward edilecek olan DNS Server buradan eklenir.
+        </p>
+        <p>
+            sirket3'den, sirket1'e yani sirket1'in DNS Server'ına direkt sorgulayabiliriz. <br>
+            sirket3'de, her sirket1 sorgulandığında "Conditional Forwarder" ile .root veya herhangi bir DNS Server'a gitmeden sirket1'in DNS Server IP'sini girerek yönlendirebiliriz.
+        </p>
+        <p class="bg-script">
+            Conditional Forwards -> Forwards <br>
+            192.168.40.40 -> 8.8.8.8 
+        </p>
+        <p>
+            Soldan başlar o sorgulanan Hostname'e özel Conditional Forward yok ise direkt Forward'a geçer, orada da bulunamazsa .root'a geçer.
+        </p>
+        <p>
+            DNS Server, her zaman önce <b>Forward Lookup Zone</b>'a bakar. <br>
+            Burada sorguyu çözümleyecek olan Domain bulunmuyorsa, Conditional'ı kontrol eder. Orası da boş ise Forward'a orada yok ise .root Domain'ininden isim çözümlemesi yapılır.
+        </p>
+        <p>
+            Aynı şirketin birden çok ortamı(binası vs.) var ise bu şirketler kardeş olduğu için Primary olan Forward Lookup Zone diğer kardeş şirketler olarak Secondary Zone açılır. Bu aynı Forward Lookup Zone'un replikasını sahip olduğumuz her DNS Server üzerinde taşırız.
+        </p>
+        <p>
+            Conditional Forward tanımlandığında sirket3'ün DNS Server'ı sirket1'in DNS Server'ına gider. <br>
+            Alternatifi; sirket3'ün DNS Server'ı, sirket1'in DNS Server'ına gitmez, sorgulayanı yönlendirebilir. -> "Ben bilmiyorum, sen buna sor." <br>
+            Bu işleme Stubzone denir. -> Primary ve Secondary notlarında eksik bölüme ekle. <br>
+            Forward Lookup Zone'a, Stubzone edilen DNS Server'ın IP adresi yüklenir. Üzerindeki Host'lar vs. yüklenmez. <br>
+            Stubzone yaparsak, transfer yapılacak makinede Zone transferi açık olmalıdır. -> Önceki notlarda detaylı olarak nasıl yapıldığı yazar. <br>
+            Forward'ın içinde; Primary Zone'umuz var ise o Zone üzerinde yetkilisiniz(Authorite) demektir. <br>
+            Bu Zone'un tüm içeriğine sahip olduğumuz için yetkili oluruz. <br>
+            Primary olduğu için içeriği değiştirebiliriz. <br>
+            Secondary Zone'umuz varsa, onun üzerinde de yetkili oluruz. <br>
+            Secondary Zone, Read-Only olsa bile Zone'un içeriğinin tamamına sahip oluruz. Bu da bizi yetkkili yapar.<br>
+            Stubzone olduğu zaman yetkili değilizdir. <br>
+            Zone'un bir kopyası bizde bulunmaz, dolayısıyla cevabı biz vermeyiz, yönlendirdiğimiz DNS Server verir. <br>
+            <b>Bu bağlamda;</b>
+        </p>
+        <p class="bg-script">
+            > .root <br>
+            > .com <br>
+            > DNS Server <br>
+            Yukarıdaki yönlemdirme de Stubzone mantığı ile çalışır.
+        </p>
+
+        <h4>DNS Server'daki Kayıt Tipleri</h4>
+        <p>
+            İçindeki kayıtlar ile alakalı bilgiler. <br>
+            <ol>
+                <li>
+                    Host Kaydı(A Record or AAAA): Hostname'e karşılık IP'yi tarif eden kayıtlardır. <br>
+                    Örneğin; server1 -> 192.168.1.1 <br>
+                    Forward Zone'a .root(.) eklersek, DNS Serverlarımızın Root olduğunu iddia ederiz. <br>
+                    Makine artık hiç bir Domain'e erişemez.
+                </li>
+                <li>
+                    Alias(CNAME): CNAME, makinenin ismini akılda kalacak bir isme denk yapmak için kullanılır. <br>
+                    CNAME: www.bilgeadam.com -> KQhggwzxH7pPCaAqO46MgnOM80zW1 gibi karmaşık bir isme sahiptir. <br>
+                    www.bilgeadam.com yazıldığında "KQhggwzxH7pPCaAqO46MgnOM80zW1" isimli makineye erişmesini sağlar. <br>
+                    Başka bir deyişle; DNS Server kullanıcının yazdığı Domain'i bu makineye gönderir. <br>
+                    <p class="bg-script">
+                        > sirket3.com <br>
+                        > Alias <br>
+                        > www <br>
+                        > Server <br>
+                        > OK
+                        BU KISMI SANALDA UYGULA NOTU GÜNCELLE.
+                    </p>
+                    Yukarıdaki www.bilgeadam.com ismine denk gelen aslında başka bir isme sahip olan Server'a gönderilir(Sorgulama yapan kişi). <br>
+                    www, aslında bu sebeple kullanılır.
+                </li>
+                <li>
+                    Mail Exchanger(MX): Herhangi bir DNS Server'ın(Domain'in), Mail Server'ı kimdir? <br>
+                    Host or Child Domain -> Boş bırak, FQDN'e denk olan Mail Server'ı seçeriz. <br>
+                    (Same as Parent Folder) -> Hiyerarşik olarak üst Folder'ın kendisi olduğunu söyler.
+                </li>
+            </ol>
+        </p>
+        <p>
+            Domain, sanal bir güvenlik duvarıdır. <br>
+            Domain belli bir makine grubunun aynı isim altında barınmasını sağlar. <br>
+            Bu ortamın bir kontrolünü sağlayan makine vardır, bu Domain Controller'dır. <br>
+            ping sirket3.com -> sirket3 -> Hostname, .com Domain Suffix <br>
+            sirket3'e bu komut ile erişmek istiyoruz. <br>
+            Burada sirket3 DC'dir.
+        </p>
+        <p>
+            Makinenin üzerindeki Ethernet'ler DC'nin birden fazla IP'si olduğuna anlamına gelir. <br>
+            Eğer Ethernet'lerden birisini sökersek, DNS'ten onun IP'si hala durur ve gelen makinelere bu IP'yi vermeye devam eder. <br>
+            Bu kayıt DNS'ten silinmelidir.
+        </p>
+        <p>
+            4) Name Server(NS): Zone'u yöneten DNS Server kim? <br>
+            Bunun tarifi için kullanılır. <br>
+            sirket3.com'un DNS Server'ı kim? <br>
+            Name Server'ın içine girip tarif eder. 
+        </p>
+        <p>
+            5) Start of Authority(SOA): Primary Zone'dan, Secondary Zone'a yapılan transferin koşullarını barındırır. (Detaylı bilgi için SOA notlarına bak) <br>
+        </p>
+        <p>
+            <b>Reverse Forward Lookup</b>: 10.3.34 -> 34.3.10.in-addr.arpa > <br>
+            IANA'nın belirlediği "in-addr", Sabit bir Domain ismidir. <br>
+            Forward Lookup ile aynı şekilde oluşturulur. <br>
+            Örneğin; 10.3.34.100 -> Pointer(PTR) -> sirket3.com -> Makinenin IP'ye denk gelen ismi tarif etmek. <br>
+            FLZ oluşturulduktan sonra mutlaka RFLZ da oluşturulmalıdır. <br>
+            ping -a 10.3.34.100 <br>
+            IP'den isim çözlümlemyi de tetiklemiş olduk. <br>
+            10.3.34.0 -> Önceden sırayla bu Network'ten olanlara ping atılırdı. Artık sadece kendisine ping atar.
+        </p>
+        <p class="bg-script">
+            > DNS <br>
+            > DC <br>
+            > Properties <br>
+            > Advanced
+        </p>
+        <p>
+            []Disable Recursion -> Bu DNS Server'a tanımlı olsa bile Forward'lara ve Rooting'lere gitme. <br>
+            []Enable BIND Secondaries -> Linux'ların DNS Servislerinin ismi BIND DNS'tir. BIND DNS'lerin Secondary'si alınabilsin mi? <br>
+            []Fail on load if bad zone data -> Bir satır bile önemli ise, çok kritik ise işaretlenir. Yapılması normal şartlarda tavsiye edilmez. <br>
+            [+]Enable round robin -> Seçili ise birden fazla IP var ise(Aynı interface için) 3'ünü birden söyler(sorgulayana) ama önce 1'e git der. <br>
+            3 tane olduğunu varsayarsak; Sıralama: 1, 2, 3 şeklinde olur. <br>
+            Yanıtların tamamını , sıralamayı değiştirerek gönderir. <br>
+            Garantiye almak için bu şekilde tasarlanmıştır. <br>
+            Bu şekilde Load Balancing yapar. <br>
+            Bir sonraki makine için sıralama; 2, 3, 1 şeklinde, sonraki makine için 3, 1, 2 olur, daha sonraki içinse 1, 2, 3 şeklinde başa döner. <br>
+            [+]Enable netmask ordering <br>
+            Local'de iki tane DNS Server var diyelimki; 10.3.34.101(1), 10.3.34.102(2). <br>
+            212.1.2.3 -> Uzakta duran DNS Server. <br>
+            Uzaktakine Local makinelerden erişebilmek için internete çıkmak gerekir. <br>
+            Bu zorunluluk makinelerin trafiğini internet bağlantı hızımızla sınırlamak demektir. <br>
+            Local'deki makineler gigabit'lik hatta bağlı oldukları için çok hızlı bir şekilde Respond alırlar fakat internete bağlı olan çok daha geç cevap alabilir. <br>
+            Bu durumda, bu seçeneği Check ettiğimizde uzak DNS Server'ı her zaman sıralamanın en altına atar. <br>
+            [+]Secure cache against pollutios -> DNS Servisinin Cache'inde duran bilgilerin kriptolanmasını sağlar.
+        </p>
+        <p class="bg-script">
+            > DNS <br>
+            > DC <br>
+            > Properties <br>
+            > Interfaces
+        </p>
+        <p>
+            Yukarıdaki konum DNS Server'a takılı Interface ve IP'lerini gösterir. <br>
+            İstersek özellikle bir interface'ten gelen soruları dinlememeyi sağlayabiliriz. <br>
+            Client, bunu yaptığımız interface'i kullanırsa direkt DNS Server'a ulaşamadığını görür.
+        </p>
+        
+        <h4>Ortamdaki DNS Çökerse</h4>
+        <p>
+            Client'ler açılmadan önce DNS'e gider, ortamdaki DC'yi sorar. <br>
+            DNS: DNS > DC0(kurstaki sanal makinede dc dns server yapıldı) > sirket3.com > _tcp -> DNS bu konuma bakar. <br>
+            DNS çökerse bu konumu bulamaz. <br>
+            Çökeme ihtimaline karşı Client'lere erişebileceği ikinci bir DNS verilmiş olması mantıklıdır. <br>
+            Elimizdeki Primary'nin, Secondary'si alınır ve Client'ler Primary'e erişemezse Secondary'e yönlendirilir. <br>
+            İki tane DNS kurmak(en az) bir Network için yapılması gereken şeydir. <br>
+            İkinciye Secondary kurduk. <br>
+            Client'lere; IP Conf > Alternate DNS Server: 2.kurduğumuzu gireriz. (Dahha fazla ise Advance) <br>
+            2.yöntem; otomatize edecek olan DHCP > Scope Options > Yeni kurduğumuz DNS Server'ı da Client'lere söyleriz. <br>
+            1.DNS çökerse, 2.nin(Secondary), SOA ayarlarına göre yaşar. <br>
+            Default'ta yaşama süresi 1 gündür. <br>
+            Secondary, Read-only olduğu için uzun süre çalışmaması gerekir. <br>
+            Adreslerin güncel tutulması gerekir. <br>
+            Bu değişiklikleri kendi veritabanına yazamaz. <br>
+            Anlık olarak durumu kurtarabilmek için; General > Primary Zone yapılır. <br>
+            Artık read-only olmaz. <br>
+            Bozulan DNS tekrar ayağa kalkarsa iki Primary olur. <br>
+            İki farklı DNS olur. <br>
+            Client'ler önce ilkine gitmeyi denemeye devam ederler. <br>
+            İlkine gittiği için ve bu DNS Server yeni kalktığı için güncel bilgiyi alamaz. <br>
+            Active Directory Integrated Zone ile bu sorun çözülür. -> Zone'lar, Primary olmalarına rağmen birbirlerine replike edecekler. <br>
+            İkinci DNS her haydı bir sayaç ile zaman mühürleme yapar. -> Şu hostname'in IP'si şu zamanda güncellendi. <br>
+            1.çöken DNS yukarıdaki bilgiyi 2. ile paylaşır, 2.ninki daha güncel olduğu için; 2.deki zone'ları 1'ye aktarır. <br>
+            Bunu DNS değil, Active Directory yapar. -> Sektörde yaygın olarak kullanılır.
+        </p>
+
+        
+        <a href=""></a>
+        <div class="mt-4"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
