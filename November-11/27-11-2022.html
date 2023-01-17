@@ -30,6 +30,10 @@
         */
       }
 
+      h1 {
+        text-align: center;
+      }
+
       h1, h2, h3, h4, h5, h6 {
         color: rgb(139, 233, 253);
       }
@@ -61,7 +65,7 @@
   <body class="container">
     <div class="container mt-5">
         <h1 class="display-4">27.11.2022</h1>
-        <h4>Hesapları(Account) Yetkilendirmek</h4>
+        <h4>Hesapları(Accounts) Yetkilendirmek</h4>
         <p>
             Yetkilendirme için "Groups" kullanılır. "Account" oluşturuğumuzda otomatik olarak "Users" grubuna eklenir. Buradaki gruplamalarda "Administrator" vs. bulunur. Örneğin Administrator'a eklediğimiz hesaplar Admin yetkisine sahip olurlar. -> Fakat Local Admin yani sadece üzerinde bulunduğu makinenin(yetkiyi aldığı makinenin) üerinde full yetkili olur. <br>
             Administrator hiç bir Account'a verilmez yani kendimizden başka kimseye vermemeliyiz, çünkü bu hesap tam yetkilidir, Server üzerinde yapılması mümkün olan her şeyi yapabilir. Örneğin program kurup/kaldırmak isteyen Account'ı "Power Users" grubuna ekleyebiliriz. Çok sayıda grup vardır. Bu gruplar yetkileri ifade eder yani sadece yetki verirler.
@@ -129,7 +133,7 @@
             Direkt servise gitmek için kullanılır.
         </p>
 
-        <h4>Server Manger</h4>
+        <h4>Server Manager</h4>
         <p>
             Manage > Add Roles > Server Roles > Active Directory Domain Name Service <br>
             Active Directory kurulumundan sonra "Promote this Server to a Domain Controller" seçilir. <br>

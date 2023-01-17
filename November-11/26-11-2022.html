@@ -61,7 +61,7 @@
   <body class="container">
     <div class="container mt-5">
         <h1 class="display-4">26.11.2022</h1>
-        <h4>VMware ve Hyper-V</h4>
+        <h4 id="hyper-v">Hyper-V</h4>
         <h5>Sanallaştırma</h5>
         <p>
           Bir fiziksel makinenin üzerinde Hyperevizor, onun üzerinde ise Hyper V kullanan sanal makineler bulunur. Bunları bir bütün olarak düşünmek gerekir. Fiziksel makinenin üzerinde Hyper V sanal makinelerinin çalıştırıldığı katman Hypervizor katmanı adıverilir. Donanımın yeterliliğine göre fiziksel makinenin üzerinde istediğimiz kadar sanal makine üretebiliriz. Bu makineler üzerinde kullanılacak RAM dinamik olarak ihtiyaca yönelik paylaştırılabilir.
@@ -98,7 +98,7 @@
           Sanal makineler için Ethernet Port'ları üretilirken Internal, External ve Private Switch'ler seçilir. Internal olan internete çıkamayan iç Network'e erişebilen Ethernet'tir. External fiziksel Switch'ten geçip internete çıkabilen sanal Ethernet'tir. Private ise full izole bir karttır. 
         </p>
 
-        <h6>Sanal Bilgisayar Kasası Oluşturmak</h6>
+        <h6>Sanal Makine Oluşturmak</h6>
         <p>
           Server Manaher > Hyper-V > New Virtual machine > <br>
           name(server2016Base) <br>
