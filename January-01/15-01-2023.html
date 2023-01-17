@@ -252,7 +252,7 @@
           Misafir olarak bağlanıp, IP alan ve kendini DNS'e Register eden makineler bir sürü çöplük kayıt üretirler. Çünkü bu makineler bir kere bağlanır ve belkide bir daha geri dönmezler. <br>
           Bu çöpleri Manuel olarak bulup silmek söz konusu değildir. <br>
           Bunun için; <br>
-          Aging(Yaşlı) and Scavenging(Bayat) -> Amaç Zone'da duran çöp kayıtları silmek. <br>
+          Aging(Yaşlanma) and Scavenging(Süpürme) -> Amaç Zone'da duran çöp kayıtları silmek. <br>
           Burada silinecek olan kayıtlar -> "lazım olmayan" kayıtlar olmalı. <br>
           Aging: En yaşlı kayıtları ifade eder. <br>
         </p>
@@ -265,8 +265,42 @@
           > Default
         </p>       
         <p>
-          
+          <b>No Refresh Interval:</b> 7 gün boyunca Update edilip, edilmediğine bakmaz. <br>
+          8.günde Client'ten Update etmesini ister. <br>
+          Update edilmesini 7 gün dahah bekler. <br>
+          Bu sürenin sonunda da hala Update edilmemişse; <br>
+          Kaydı "Bayat(Stale)" olarak işaretler, silmez. <br>
         </p> 
+        <p>
+          <b>"Stale"</b> olarak işaretlenmiş kayıtları periyodik olarak silmesini sağlamak için; <br>
+          []Scavenge stale resource reacord. -> İşaretlemediysek ve yine de silmek istersek(Otomatize etmeden). 
+        </p>
+        <p class="bg-script">
+          > DNS <br>
+          > Domain(DC) <br>
+          > Right Click <br>
+          > Scavenge Stale Resource Records
+        </p>
+        <p class="bg-script">
+          > DNS <br>
+          > Right Click <br>
+          > Connect to DNS Server <br>
+          > Diğer DNS'in FQDN'i girilir. -> Domain'deki bütün DNS'leri bu şekilde tek bir ekrandan yönetebiliriz.
+        </p>
+        <p class="bg-script">
+          > DNS <br>
+          > Domain(DC) <br>
+          > All Tasks <br>
+          > Stop, Pause, Restart -> DNS Servisi için.
+        </p>
+
+        <h4>WINS Server</h4>
+        <p>
+          Kurucu Microsoft'tur. <br>
+          Direkt NetBIOS Name sorgusu yapılan durumlar vardır. <br>
+          Yani arkasına "Suffix" eklemeden. <br>
+          Örneğin PC'deyken Network'e girmek istediğimizde NetBIOS Name Broadcast yapar.
+        </p>
         
         <div class="m-5 text-center">
           <a href="14-01-2023.html" class="bg-script m-5">14.01.2023</a>
