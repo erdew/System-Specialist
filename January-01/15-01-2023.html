@@ -299,9 +299,163 @@
           Kurucu Microsoft'tur. <br>
           Direkt NetBIOS Name sorgusu yapılan durumlar vardır. <br>
           Yani arkasına "Suffix" eklemeden. <br>
-          Örneğin PC'deyken Network'e girmek istediğimizde NetBIOS Name Broadcast yapar.
+          Örneğin PC'deyken Network'e girmek istediğimizde NetBIOS Name Broadcast yapar. <br>
+          Hostname yazıp konuma gidersek; isim çözümleme ilk adımdan başlar. <br>
+          İsim çözümlemesini; Broadcast yapmadan, yani Network'te gürültü olmasını engelleyerek NetBIOS Name ile yapmak için WINS Server kullanılır. <br>
+          WINS Client'lerin(IP ayalarında WINS Server'ın IP'sini bilen makine) NetBIOS Name'lerinii ve ona karşılık gelen IP'lerini, WINS sorgularına yanıt verebilen servistir. <br>
+          WINS Client'ler, WINS Server'a Unicast ile ulaşırlar. <br>
+          NetBIOS Name Broadcast'lerini engellemek için WINS Server ideal bir çözümdür.
+        </p>
+        <p>
+          WINS Server kurabilmek için gerekli olanlar; <br>
+          Local Admin yetkisi <br>
+          Static IP <br>
+          Windows Server İşletim Sistemi
+        </p>
+        <p>
+          WINS install, Feature'ların içerisindedir.
+        </p>
+        <p class="bg-script">
+          > Tools <br>
+          > WINS <br>
+          > DC <br>
+          > Tüm NetBIOS Name'ler içiçe buraya kaydedilmiştir. <br>
+          > Active Registration -> İlk başta hiç bir şey görünmez. <br>
+          > Active Registration <br>
+          > Right Click <br>
+          > Display Records <br>
+          > Next -> Tüm kayıtları gösterir.
+        </p>
+        <p>
+          Client'lere WINS'i göstermeden bu liste boş kalır. <br>
+          1.Yöntem > DHCP ile otomatik IP atarken WINS'in IP'sini de ekleyebiliriz(Scope Options'lardan -> 046 numaralı) <br>
+          2.Manuel olarak; IPv4 > Advanced > WINS -> WINS Server kendisine de hizmet verebilir. <br>
+          Client'ler kendilerini WINS Server'a Register görünür.
+        </p>
+        <p>
+          NetBIOS Name -> 15 + 1 -> Record Name(15) -> Type -> [00h]Work Station <br>
+          Makinenin üzerinde birden fazla hizmet varsa, ayrı ayrı eklenir.
         </p>
         
+        <h4>WINS Server'ın sürekliliği</h4>
+        <p>
+          Bir WINS devre dışı kalırsa ikincisi çalışmalı. <br>  
+          Başka bir WINS kurulur, veritabanları birbirlerine replike edilir. <br>
+          WINS, Network'e tıklayarak NetBIOS Name'den erişmeler çok oluyorsa kurulması tavsiye edilir. <br>
+        </p>
+        <p class="bg-script">
+          > 1.WINS'te <br>
+          > 1.WINS'in, 2.WINS'e veritabanını göndermesi; <br>
+          > Replication Partners <br>
+          > New R. ->  Hedef WINS seçilir. <br>
+          > Partner(2.WINS) <br>
+          > Properties <br>
+          > Advanced -> Pushh ve Pull'ların ne sıklıkta yapılacağını belirler. <br>
+          > 12:30:00 -> Başla <br>
+          > 0:0:30 -> Her 30 dakikada bir Pull yap. <br>
+          > [+]User Pers [1] -> Yapılan her 1 Update'te Push'la.
+        </p>
+        <p class="bg-script">
+          > 2.WINS'te; <br>
+          > Yukarıdakilerin birebir aynısı yapılır.
+        </p>
+        <p class="bg-script">
+          Ekranlar arası geçiş yapmamak için; <br>
+          > WINS <br>
+          > Right Click <br>
+          > New Server
+        </p>
+        <p class="bg-script">
+          Client'lerde; <br>
+          > Advanced <br>
+          > Add <br>
+          > 2.WINS
+        </p>
+        <p>
+          Bu noktada Hyper-V'de yaptığımız Checkpoint'i geri alıyoruz. <br>
+          Şuanı da Checkpoint'le ya da şuanı silip geri al seçenekleri verir.
+        </p>
+
+        <h4>RDP(Remote Desktop Protocol)</h4>
+        <p>
+          Microsoft tarafında bu protokolü kullanan servis: Terminal Server <br>
+          İki amaçla kullanılır. <br>
+          1)Uzaktan performans isteyen donanımlı bir program kullanılacaksa, bunu kullanmayı sağlar. <br>
+          Sağlam bir makineye bu program kurulur. <br>
+          Bu programı çalıştırmaya donanımı yetmeyen makineler uzaktan kullanabilirler. <br>
+          Ekstra lisanslıdır. 10 makineye kadar ücretsizdir. <br>
+          2)Uzaktan bir makineyi kontrol etmek. <br>
+        </p>
+        <p class="bg-script">
+          Start > Search > Remote Desktop Connection
+        </p>
+        <p>
+          Öncelikle hedef makinede Remote Desktop Connet izni verilmiş olması gerekir. <br>
+          Yapılması gerekenler;
+        </p>
+        <p class="bg-script">
+          > Server Manager <br>
+          > Remote Desktop <br>
+          > Allow
+        </p>
+        <p>
+          Domain'deki tüm makinelerin varsayılanda birbirlerine RDP ile aerişebilme izni vardır. <br>
+          CTRL + R > mstsc -> RDP'yi açar. <br>
+          1.makinede arayüzü açarız. <br>
+          isim ya da IP girilir.(Hedefin) <br>
+          Authentication ister. -> Bağlanacağımız makine üzerinde ne kadar yetkili olacağımızı belirler. <br>
+          Yes -> Bağlanır. <br>
+          Yukarıdaki bağlantıyı yapabilmek için aynı Network'te olmalarına gerek yoktur.
+        </p>
+        <p class="bg-script">
+          > RDP <br>
+          > Options <br>
+          > Local Resources -> Bağlantıyı yapan(yapmamızı sağlayan) makinenin fiziksel kaynaklarını, hedef makine üzerinde kullanmamızı sağlar. Örneğin kendi makinemizin bağlı olduğu Printer Device'lar Remote bağlantı yapılan makinenin üzerinde görünebilirler. <br>
+          > More <br>
+          > [+]Drivers -> Bu makinenin Driver'ları bağlandığımız makinenin üzerinde görünürler.
+        </p>
+        <p>
+          Yukarıda belirtilen kaynak paylaşımını makine şu konum üzerinde yapar;
+        </p> 
+        <p class="bg-script">
+          > Computer Management <br>
+          > System Test <br>
+          > Shared Folder <br>
+          > Share <br>
+          > IPC$ -> Bu dosya üzerinde paylaşımı yapar.
+        </p>
+        <p>
+          Uzaktan bağlanmak istediğimiz makinede RDP Disable(Hizmet kapalı). <br>
+          Fiziksel olarak erişemiyoruz. <br>
+          Yine de uzaktan bağlanmamız gerekiyorsa; <br>
+          Remote Desktop'ı da, Remote Desktop'tan açabiliriz. <br>
+          Hedef makinede en az Local Admin yetkisinde olmalıyız.
+        </p>
+        <p class="bg-script">
+          > run <br>
+          > regedit <br>
+          > File <br>
+          > Connect Network Registry -> Ağdaki bir makinenin Registry'sine bağlan. <br>
+          Disable olan hangisi ise onu seçeriz.
+        </p>
+        <p class="bg-script">
+          > regedit <br>
+          > Computer <br>
+          > Server2016-20 <br>
+          > HKEY_LOCAL_MACHINES <br>
+          > SYSTEM <br>
+          > CurrentContolSet <br>
+          > Control <br>
+          > Terminal Server <br>
+          > fDenyTSConnections -> Terminal Server bağlantılarına Deny ver demektir.
+          > Double Click -> Default'ta 1'dir, 0 yaparız.
+        </p>
+        <p>
+          Artık uzaktan bağlantı kurulabilir. <br>
+          Bağlantı kurulacak olan makinede yine uzaktan Allow yaptık.
+        </p>
+
+
         <div class="m-5 text-center">
           <a href="14-01-2023.html" class="bg-script m-5">14.01.2023</a>
           <a href="" class="bg-script m-5"></a>

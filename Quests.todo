@@ -3,7 +3,7 @@ Windows Server üzerinde yapılacaklar;
 ✔ Pattern ile 1 tane Domain Controller ve 2 tane Domain Clint kur. @done(23-01-17 13:26)
 ✔ Domain Controller yapmak için gereken konfigürasyonları yap. @done(23-01-17 13:27)
 ✔ Client'leri Domain'e dahil etmek için gereken konfigürasyonları yap. @done(23-01-17 13:27)
-☐ Domain User oluştur.
+☐ Domain User'lar oluştur.
 ☐ Domain User Group oluştur.
 ☐ Oluşturduğun Account'lara Permission uygula.
 ☐ Herhangi bir makinede Storage, Simple Volume oluştur.
@@ -44,3 +44,8 @@ Windows Server üzerinde yapılacaklar;
 ☐ DNS Servisinin sürekliliğini sağla.
 ☐ Secondary oluştur.
 ☐ Active Directory Integrated Zone ile iki tane Primary oluştur.
+☐ Stale kayıtları temizle.
+☐ WINS Server oluştur.
+☐ WINS Server'ın sürekliliğini sağla.
+☐ Remote bağlantı kur.
+☐ Hedefin Remote bağlantısi Deny iken yine Remote olarak Allow olmasını sağla.
