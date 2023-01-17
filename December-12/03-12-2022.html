@@ -55,7 +55,7 @@
         background-color: #31333a;
         padding: 20px;
         border-radius: 10px;
-        text-align: center;
+        text-align: start;
         font-size: 16px;
         line-height: normal;
       }
@@ -66,10 +66,14 @@
     <div class="container mt-5">
         <h1 class="display-4">03.12.2022</h1>
         <h2>Storage(Depolama)</h2>
+        <p class="bg-script">
+           > Start <br>
+           > Right Click <br>
+           > Disk Management <br>
+        </p>
         <p>
-            Start > Right Click > Disk Management <br>
             Diskler Basic ya da Dynamic olurlar. İkisi de bir diğerinin alternatifidir. <br>
-            Boot dosyaları Primary Partion'da olmak durumunda. Boot dosyaları olmasa bile işletim sisteminin yüklü olmasına rağmen Power tuşuna basıldığında işletim sistemi başlatılamaz.
+            Boot dosyaları Primary Partion'da olmak durumunda. Boot dosyaları olmazsa işletim sistemi yüklü olmasına rağmen Power tuşuna basıldığında işletim sistemi başlatılamaz.
         </p>
         
         <h4>Page File</h4>
@@ -94,7 +98,7 @@
             FAT32 <br>
             NTFS -> New Technology File System -> En güncelidir. <br>
             ReFS <br>
-            Farklı yetkinlikleri vardır. Listede yukarıdan aşağıda veri kapasitesi artar. Burada kapasite; Diskteki toplam veri boyutu ve tek bir verinin büyüklüğü anlamında kullanılır.
+            Farklı yetkinlikleri vardır. Listede yukarıdan aşağıya doğru veri kapasiteleri artar. Burada kapasite; Diskteki toplam veri boyutu ve tek bir verinin büyüklüğü anlamında kullanılır.
          </p>
          
          <h4>MBR(Master Boot Record)</h4>
@@ -103,39 +107,66 @@
             Herhangi bir dosyanın(verilerin) diskte tutulduğu adreslerin olduğu listedir. Sonuç olarak diskerin boyutlarını adresleme kapasiteleri belirler. <br>
             Quick Format, MBR'ı siler.(İşletim Sisteminin dosyaları görememesine sebep olur) <br>
             Allocation Unit Size; Unit'in olabilecek en küçük boyutunu belirler. <br>
-            Unit'lerin büyük olamsı daha yavaş çalışması anlamına gelir fakat video vs. gibi büyük veriler tutatacaksak daha yüksek seçilmelidir. <br>
+            Unit'lerin büyük olması daha yavaş çalışması anlamına gelir fakat video vs. gibi büyük veriler tutacaksak daha yüksek seçilmelidir. <br>
             Bir Basic Disk'te maksimum 3 Primary yapmanıza izin verir. 3'ten daha fazla Partition açtığımızda Logical Driver olarak ayrılırlar. Fakat Logical Driver'a işletim sisteminin Boot dosyalarını koymanıza izin vermez. <br>
             Extended Partition <br>
             Logical Drive, Free Space <br>
-            NTFS File System'indeki dosyalar başka bir Driver Letter'dan Mount edilebilirler. Sadece NTFS File System'indeki Driver'lar Extend edilebilir. Fakat Free Space ile Extend edilmesi istenen Driver yanyana olmalıdır. Yanyana olmasa da yapılmasını sağlayan yazılımlar vardır. fakat mutlaka yedek alınmalıdır, veri kaybı olabilir.
+            NTFS File System'indeki dosyalar başka bir Driver Letter'dan Mount edilebilirler. Sadece NTFS File System'indeki Driver'lar Extend edilebilir. Fakat Free Space ile Extend edilmesi istenen Driver yanyana olmalıdır. Yanyana olmasa da yapılmasını sağlayan yazılımlar vardır fakat mutlaka yedek alınmalıdır, veri kaybı olabilir.
          </p>
          
          <h4>Yeni bir Disk takmak</h4>
          <p>
             İşletim sistemine yeni bir disk takıp nasıl kullanıma açılır? <br>
-            Bu yeni diskin Controller'ı önemlidir. Örneğin IDE Legacy bir Controller ise makine Shutdown edilmelidir. Fakat Controller SCSI ise Shutdown edilmesine gerek yoktur. <br>
-            Sanal Makine > Right Click < IDE Controller 0 > New Hard Disk > VHDX > Disk performansı çok önemli ise Fixed yapılır. Fizikselden hafızayı azaltır. Dynamically Expanding'te bir makineye hafıza ayrılamayabilir. Bu riski olmak istemezsek Fixed yapılır. Differancing, parent-Child ilişkisi vardır. işletim sistemi dosyaları Parent'ta tutulur, bu sayede Child'lar daha az olan harcar.
+            Bu yeni diskin Controller'ı önemlidir. Örneğin IDE Legacy bir Controller'dır ve yeni bir disk eklemek için makine Shutdown edilmelidir. Fakat Controller SCSI ise Shutdown edilmesine gerek yoktur. <br>
+         </p>
+         <p class="bg-script">
+            > Sanal Makine <br>
+            > Right Click <br>
+            > IDE Controller 0 <br>
+            > New Hard Disk
+            > VHDX
+            > Fixed -> Disk performansı çok önemli ise.
+         </p>
+         <p>
+            Fizikselden hafızayı azaltır. Dynamically Expanding'te bir makineye hafıza ayrılamayabilir. Bu riski almak istemezsek Fixed yapılır. Differancing, Parent-Child ilişkisi vardır. İşletim Sistemi dosyaları Parent'ta tutulur, bu sayede Child'lar daha az alan işgal ederler.
          </p>
 
          <h4>Diski İşletim Sistemine Tanıtmak</h4>
+         <p class="bg-script">
+            Partition Style; <br>
+            > MBR <br>
+            > GPT(GUID Partition Table) -> Modern olan adresleme tablosudur.
+         </p>
          <p>
-            Partition Style <br>
-            MBR <br>
-            GPT(GUID Partition Table) -> Modern olan adresleme tablosudur. <br>
-            Önce Online yapılır. Bazen Offline gelebilir. Offline olması diskin bozuk olabileceği anlamına da gelebilir. <br>
-            Dynamic Disk > New Simple Volume > Dynamic yaptığımızda Simple Volume Partition'lar oluşturulur. Bütün bölümler yetki açısından eşit olurlar. Üzerinde herhangi bir Volume olan Dynamic Disk'i Basic Disk'e Convert edemeyiz. Volume'ler silindiği zaman o Volume'ün içerisindeki bütün veriler uçar. <br>
+            Önce Online yapılır. Bazen Offline gelebilir. Offline olması Disk'in bozuk olabileceği anlamına da gelebilir. <br>
+         </p>
+         <p class="bg-script">
+            > Dynamic Disk <br>
+            > New Simple Volume <br>
+            > Dynamic  -> Yaptığımızda Simple Volume Partition'lar oluşturulur
+         </p>
+         <p>
+            Bütün bölümler yetki açısından eşit olurlar. Üzerinde herhangi bir Volume olan Dynamic Disk'i, Basic Disk'e Convert edemeyiz. Volume'ler silindiği zaman o Volume'ün içerisindeki bütün veriler uçar.
+         </p>
+         <p>
             Disk, Basic olmasına rağmen adres tablosunu GPT'ye çekersek, istediğimiz kadar Primary Partition oluşturabiliriz.
          </p>
         
          <h4>Hot Swap</h4>
          <p>
-            Makine açıkken disk ekleme, değiştirme ve çıkartma yapılabilmesi anlamına gelir.
+            Makine açıkken Disk ekleme ve çıkartma yapılabilmesi anlamına gelir.
          </p>
 
          <h4>SCSI Controller</h4>
          <p>
-            Modern Controller kartlarıdır. <br>
-            Makine açıkken; Settings > SCSI Controller > Hard Disk > Virtual Hard Disk
+            Modern <b>Controller</b> kartlarıdır. <br>
+         </p>
+         <p class="bg-script">
+            Makine açıkken; <br>
+            > Settings <br>
+            > SCSI Controller <br>
+            > Hard Disk <br>
+            > Virtual Hard Disk
          </p>
 
          <h4>RAID Teknolojisi</h4>

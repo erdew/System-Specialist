@@ -55,20 +55,21 @@
         background-color: #31333a;
         padding: 20px;
         border-radius: 10px;
-        text-align: center;
+        text-align: start;
         font-size: 16px;
         line-height: normal;
       }
-
     </style>
   </head>
   <body class="container">
     <div class="container mt-5">
         <h1 class="display-4">10.12.2022</h1>
-        <h2>NAS ve SAN hakkında Bilgisayar Kavramlarını izleyerek not al!!</h2>
+        <h6>(NAS ve SAN hakkında Bilgisayar Kavramlarını izleyerek not al!!)</h6>
         <h4>NAS(Network Attach Storage)</h4>
         <p>
-            Ortak Storage'a Network'ten erişilebilir. Bu tarz Storage'lara NAS denir.
+          Network üzerinde ortak kullanılmak üzere bir Storage kurulur. <br>
+          Network'te ilgili cihazlar bu Storage'a bağlanarak Disk kapasitelerini bu Storage'tan alırlar. <br>
+          Bu tarz Storage'lara NAS(Network Attach Storage) adıverilmiştir.
         </p>
         <h4>SAN(Storage Area Network)</h4>
         <p>
@@ -77,95 +78,153 @@
 
         <h4>Makineler üzerinde NAS kullanımı</h4>
         <p>
-            3 adımdan oluşur. <br>
-            1.adım donanımı satın almaktır. <br>
-            Örneğin üzerinde 3 tane 1'er Terabyte'lık disk takılı makinemiz var ve bu makineyi Storage olarak kullanırsak bu makineye artık NAS adıverilir. <br>
+            3 adımdan oluşur. <br><br>
+            <i><b>1.adım</b></i> donanımı satın almaktır. <br>
+            Örneğin üzerinde 3 tane 1'er Terabyte'lık Disk takılı makinemiz var ve bu makineyi Storage olarak kullanırsak bu makineye artık NAS adıverilir. <br>
             Fiziksel olarak hazır NAS'lar da vardır. Bu donanım professiyonel ortamlarda kullanılır. <br>
-            Bir Server da NAS olabilir(Bu şekilde kullanım Software NAS'tır). Network'ten erişilirse NAS, direkt fiberden erişilirse SAN olarak isimlendirilir. <br>
-            ISCSI Fiziksel kablo üzerinden makineye bağlanma teknolojisidir. <br>
-            2.adım; ISCSI Targer Konfigürasyon'udur(Hangi makinenin ne kadar disk kullanabileceğini belirler <br>
-            3.adım; izin verdiğimiz Server'ın NAS ya da SAN'daki ona ayrılmış kapasiteye bağlanma aşamasıdır. Bu işleme ISCSI Initiator denir. <br>
-            Target işlemi Storage'ta yapılır. <br>
-            ISCSI Initiator ise Server'da(Local) yapılır.
+            Bir Server da NAS olabilir(Bu şekilde kullanıma Software NAS adıverilir). Network'ten erişilirse NAS, direkt fiberden erişilirse SAN olarak isimlendirilir. <br>
+            ISCSI Fiziksel kablo üzerinden makineye bağlanma teknolojisidir. <br><br>
+            <i><b>2.adım</b></i>; ISCSI Targer Configuration'udur(Hangi makinenin ne kadar Disk kullanabileceğini belirler) <br><br>
+            <i><b>3.adım</b></i>; ISCSI Initiator'dır. İzin verdiğimiz Server'ın NAS ya da SAN'daki ona ayrılmış kapasiteye bağlanma aşamasıdır. <br>
+            Target işlemi Storage'ta yapılır. <br><br>
+            ISCSI Initiator ise Server(Local) üzerinde yapılır.
         </p>
 
         <h4>NAS Server'da yapılacaklar</h4>
-        <p>
-            Server Manager > File and Storage > ISCSI -> ISCSI Default'ta kurulu değildir. <br>
-            Add Feature > Server Roles > File and Storage > File and iSCSI Services -> iSCSI Target Server, iSCSI Target Storage Provider -> NAS Server'a yüklüyoruz.
+        <p class="bg-script">
+            > Server Manager <br>
+            > File and Storage <br>
+            > ISCSI -> ISCSI Default'ta kurulu değildir. <br>
+            > Add Feature <br>
+            > Server Roles <br>
+            > File and Storage <br>
+            > File and iSCSI Services -> iSCSI Target Server, iSCSI Target Storage Provider -> NAS Server'a yüklüyoruz.
         </p>
         <p>
-            iSCSI Wizard'ı çalıştır -> Disk görünmezse; Rescan yap -> Disk sekmesi <br>
-            Örneğin G diskini kullanacağız. <br>
-            Bu noktada G sürücüsünün altında iSCSI Virtual Disk adında bir Folder oluşturur(NAS1), o Folder'ın içerisine kurulacak VHD oluşturur. <br>
-            Bu diskin ne kadarını kullanabileceğimizi belirliyoruz. <br>
-            iSCSI Target belirliyoruz.(Bu alanı kim belirleyecek?) <br>
-            Target Name(Target_DC) <br>
-            Access Server ekliyoruz > Add > Add Initiator ID > Enter a value... > IP Address -> Buraya Target'ın IP Adresi yazılır.(10.3.34.103) <br>
-            Bu aşamada Target Server'ın açık olması zorunlu değildir. <br>
-            Bu IP'ye özet IQN adında Unique bir numara verir. <br>
-            NAS ile Target arasında Target'ı tarif eden benzersiz bir numaradır. <br>
-            IQN ile Target'ı tarif edebiliriz. <br>
-            Authentication > CHAP(Target'ın NAS'a giderkenki Authantication'ı) <br>
-            OK
+          iSCSI Wizard'ı çalıştır. -> Disk görünmezse; <br>
+          Rescan yap -> Disk sekmesi <br>
+          Örneğin G diskini kullanacağız. <br>
+          Bu noktada G sürücüsünün altında iSCSI Virtual Disk adında bir Folder oluşturur(NAS1), o Folder'ın içerisine kurulacak VHD'yi oluşturur. <br>
+          Bu Disk'in ne kadarını kullanabileceğimizi belirliyoruz. <br>
+          iSCSI Target belirliyoruz. <br>
+        </p>
+        <p class="bg-script">
+          Target Name(Target_DC) <br>
+          Access Server ekliyoruz <br>
+          > Add <br>
+          > Add Initiator ID <br>
+          > Enter a value... <br>
+          > IP Address -> Buraya Target'ın IP Adresi yazılır.(10.3.34.103) <br>
+        </p>
+        <p>
+          Bu aşamada Target Server'ın açık olması zorunlu değildir. <br>
+          Bu IP'ye özet IQN adında Unique bir numara verir. <br>
+          NAS ile Target arasında Target'ı tarif eden benzersiz bir numaradır. <br>
+          IQN ile Target'ı tarif edebiliriz. <br>
+        </p>
+        <p class="bg-script">
+          > Authentication <br>
+          > CHAP(Target'ın NAS'a giderkenki Authentication'ı) <br>
+          > OK
         </p>
 
-        <h4>Target'ın NAS'a bağlanabilmesi için yapılacaklar</h4>
+        <h4>Target'ın, NAS'a bağlanabilmesi için yapılacaklar;</h4>
         <p>
-            Bu makineye iSCSI Service'i kurulmak zorunda değildir. <br>
-            iSCSI Initiator'e git > Target: 10.3.34.123 <br>
-            Volume and Devices > Auto Configure -> Bağlantı kurulur.
+          Bu makine Target olduğu için iSCSI Service'i kurulmak zorunda değildir. <br>
+        </p>
+        <p class="bg-script">
+          > Start <br>
+          > iSCSI Initiator <br>
+          > Target: 10.3.34.123(NAS Server'ın IP'si girilir) <br>
+          > Volume and Devices <br> 
+          > Auto Configure -> Bağlantı kurulur.
+        </p>
+        <p>
+          Artık Target'ın Disk Management'ına gidildiğinde NAS Server'da belirlediğimiz diski kullanabildiğimizi göreceğiz.
         </p>
         
         <h4>File Server</h4>
         <p>
-          Bir makineyi File Server yapar. <br>
-          İdeal olan yani doğrusu Server OS kullanmaktır fakat Client OS'ları da File Server yapılabilir. <br>
-          Bir Server, Service verebilmesi için Server'a o Service kurulmalıdır. File Service kurulu olarak gelir -> Çok kullanıldığı için yüklü gelir. <br>
+          Herhangi bir makineyi File Server yapabiliriz. <br>
+          İdeal olan Server İşletim Sistemi kullanmaktır. Ancak Client İşletim Sistem'leri de "File Server" yapılabilir. <br>
+          Bir Server, Service verebilmesi için Server'a o Service kurulmalıdır. <br>
+          File Service kurulu olarak gelir. -> Sık kullanıldığı için makinelere yüklü gelir. <br>
           (File and Storage Services) <br>
-          Eğer silindiyse tekrar kurana kadar çalışmaz. Oluşturduğumuz Storage'ın üzerine Folder oluşturduk. O klasörün içerisine File oluuşturduk. Network'te tek bir File paylaşılamaz, ancak bir Folder paylaştırılabilir. Bir Folder paylaştığımız anda paylaşımı yapan makine Network'teeki diğer makineler için File Server olur. <br>
-          Folder > Right Click > Advanced Sharing <br>
-          Klasörler Default'ta Share'a kapalıdır. <br>
-          Default'ta Share Name Folder'ın ismi ile aynıdır. Share Name aynı olmak zorunda değildir. Eş zamanlı erişebilecek kullanıcı sayısı belirlenir. Bu Client OS'lerde 10, Server'larda 16000 civarındadır.
+          Eğer silindiyse tekrar kurana kadar çalışmaz. Oluşturduğumuz Storage'ın üzerine Folder oluşturduk. O klasörün içerisine File oluşturduk. Network'te tek bir File paylaşılamaz, ancak bir Folder paylaştırılabilir. Bir Folder paylaştığımız anda paylaşımı yapan makine Network'teki diğer makineler için File Server olur. <br>
         </p>
-
-        <h4>User, File Server'a erişecek makine</h4>
+        <p class="bg-script">
+          > Folder <br>
+          > Properties <br> 
+          > Advanced Sharing <br>
+        </p>
         <p>
-          IP ya da isim yazılır. -> Gitmek istediğimiz File Server'ın -> 10.3.34.100 -> Paylaşımları listeler. <br>
-          Folder'ı oluşturan Owner'dır. <br>
+          Klasörler varsayılanda Share'a kapalıdır. <br>
+          Varsayılanda Share Name ile Folder'ın ismi aynıdır fakat Share Name ile aynı olmak zorunda değildir. <br>
+          Eş zamanlı olarak paylaşıma erişebilecek kullanıcı sayısı bellidir. <br>
+          Bu sayı, Client İşletim Sistemleri için 10, Windows Server'larda ise 16000 civarındadır.
+        </p>
+          
+        <h4>User, File Server'a erişecek makine</h4>
+        <p class="bg-script">
+          > IP ya da isim yazılır. <br>
+          -> Gitmek istediğimiz File Server'ın <br>
+          -> \\10.3.34.100 <br>
+          -> Paylaşımları listeler.
+        </p>
+        <p>
+          Folder'ı oluşturan <b>Creator Owner</b>'dır. <br>
           Tam yetkilidir. <br>
           İstediği kullanıcıyı yetkilendirebilir. <br>
-          Çok kişiye defalarca göndermek kyerine paylaşım yapılır. <br>
+          Bir dosya çok kişiye defalarca gönderilmek yerine paylaşım yapılır. <br>
         </p>
         <p>
-          Organizational Unit bölümünden şirketteki departmanlar iççin hiyerarşik olarak gruplar oluşturulabilir.
+          "Organizational Unit" bölümünden şirketteki departmanlar için hiyerarşik olarak gruplar oluşturulabilir.
         </p>
 
-        <h4>Share Permition</h4>
-        <p>
-          Advance Sharing > Permissions > Full Control > İzinleri de değiştirme, okuma ve silme hakkı da verir.(Tüm izinlere sahip olur
+        <h4>Share Permission</h4>
+        <p class="bg-script">
+          > Advance Sharing <br>
+          > Permissions <br>
+          > Full Control -> İzinleri de değiştirme, okuma ve silme hakkı da verir.(Tüm izinlere sahip olur)
         </p>
 
         <h4>File Share Permition</h4>
         <p>
           Admin eklenir, User eklenir. <br>
-          Çok sayıda isim var ise Domain'deki eklediğimiz Organizational Unit > IK > Right Click > Group > OK. <br>
-          İzni User'a değil de direkt Group'a veririz. Bireysel izin vermekk pek doğru bir yaklaşım değildir. <br>
-          Bu daha sonradan o gruba eklenen herkesi kapsar ya da bu gruptan çıkartılan kkimse erişemez.
+          Çok sayıda isim var ise Domain'deki eklediğimiz; <br>
+        </p>
+        <p class="bg-script">
+          > Organizational Unit <br>
+          > HR <br>
+          > Right Click <br>
+          > Group <br>
+          > OK
+        </p>
+        <p>
+          Permission'ları, User'a değil de direkt Group'a veririz. Bireysel izin vermek pek doğru bir yaklaşım değildir. <br>
+          Bu daha sonradan o gruba eklenen herkesi kapsar ya da bu gruptan çıkartılan kimse erişemez.
         </p>
 
         <h4>Örneğin DC VM'deyken;</h4>
         <p>
           DC \\ 110.3.34.100\c$ -> Sürücü ismi <br>
           Gitmek istediğimiz makinede Local Admin olmalıyız. <br>
-          Domain Admin'leri, Default'ta Local Admin'dir de(Tüm Domain üyesi makkineler için). <br>
-          10.3.34.100\admin$ -> Windows Folder'ına atar. -> Üst Folder'ın adı değiştirilmiş olsa bile direkt bu konuma geçmeyi sağlar.
+          Domain Admin'ler aynı zamanda varsayılanda Local Admin'dir. Tüm Domain Client'lerin üzerinde Full Permission'a sahiptir. <br>
         </p>
-        <p>
-          Computeer Management > Shared Folder > Shares -> Paylaşılanlar gözükür. > Right Click > Stop Sharing -> Bunun ile makine Reset'lenirse tekrar paylaşılır. -> Register'dan kapatılabilir. -> Bu yapılırsa tekrar paylaşım yapamayız. <br>
+        <p class="bg-script">
+          10.3.34.100\admin$ -> Windows Folder'ına atar. <br>
+          -> Üst Folder'ın adı değiştirilmiş olsa bile direkt bu konuma geçmeyi sağlar.
+        </p>
+        <p class="bg-script">
+          > Computer Management <br>
+          > Shared Folder <br>
+          > Shares -> Paylaşılanlar gözükür. <br>
+          > Right Click <br>
+          > Stop Sharing -> Bunun ile makine Reset'lenirse tekrar paylaşılır. <br>
+          -> Register'dan kapatılabilir. <br>
+          -> Bu yapılırsa tekrar paylaşım yapamayız. <br>
           \pc$ -> Remote Desktop bağlantılarında Folder gönderip, almak iiçn kullanılan Path'dir.
         </p>
-
         
         <div class="m-5 text-center">
           <a href="04-12-2022.html" class="bg-script m-5">04.12.2022</a>

@@ -3,21 +3,25 @@ Windows Server üzerinde yapılacaklar;
 ✔ Pattern ile 1 tane Domain Controller ve 2 tane Domain Clint kur. @done(23-01-17 13:26)
 ✔ Domain Controller yapmak için gereken konfigürasyonları yap. @done(23-01-17 13:27)
 ✔ Client'leri Domain'e dahil etmek için gereken konfigürasyonları yap. @done(23-01-17 13:27)
-☐ Domain User'lar oluştur.
-☐ Domain User Group oluştur.
-☐ Oluşturduğun Account'lara Permission uygula.
-☐ Herhangi bir makinede Storage, Simple Volume oluştur.
-☐ Yeni bir Disk oluştur.
-☐ Oluşturduğun Disk'i Hot Swap yaparak SCSI Controller üzerinden işletim sistemine tanımla.
-☐ Striped Volume uygula.
-☐ Mirrored Volume uygula.
-☐ Strapped  Set with Parity uygula.
-☐ RAID 6 uygula.
-☐ RAID 15 uygula.
-☐ RAID 51 uygula.
-☐ File Sharing yapıp Permission'ları uygula.
-☐ Shadow Copy yap.
-☐ File Server kur.
+✔ Domain User'lar oluştur. @done(23-01-17 15:53)
+✔ Organizational Unit oluştur. @done(23-01-17 15:53)
+✔ Domain User Group oluştur. @done(23-01-17 15:53)
+✔ Oluşturduğun Account'lara Permission uygula. @done(23-01-17 15:56)
+✔ Yeni Disk'ler oluştur. @done(23-01-17 16:15)
+✔ Oluşturduğun Disk'i Hot Swap yaparak SCSI Controller üzerinden işletim sistemine tanımla. @done(23-01-17 16:15)
+✔ Simple Volume oluştur. @done(23-01-17 16:16)
+✔ Striped Volume uygula. @done(23-01-17 16:23)
+✔ Mirrored Volume uygula. @done(23-01-17 16:25)
+✔ Striped Set with Parity uygula. @done(23-01-17 16:29)
+✘ RAID 6 uygula. @cancelled(23-01-17 16:38)
+✔ RAID 15 uygula. @done(23-01-17 16:46)
+✔ RAID 51 uygula. @done(23-01-17 16:58)
+✔ NAS Server kur. @done(23-01-17 17:47)
+✔ NAS Client kur. @done(23-01-17 17:47)
+✔ Shadow Copy yap. @done(23-01-17 17:49)
+✔ File Server kur. @done(23-01-17 17:56)
+✔ File Sharing yapıp Permission'ları uygula. @done(23-01-17 17:59)
+☐ Active Directory'de komple bir Group'un Permission'larını düzenle.
 ☐ Disk Quota belirle.
 ☐ Dosya uzantılarına göre kısıtlama yap.
 ☐ Dosyaları Compress yap.
