@@ -34,6 +34,10 @@
         text-align: center;
       }
 
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
       h1, h2, h3, h4, h5, h6 {
         color: rgb(139, 233, 253);
       }
@@ -55,8 +59,8 @@
         background-color: #31333a;
         padding: 20px;
         border-radius: 10px;
-        text-align: center;
-        font-size: 16px;
+        text-align: start;
+        font-size: 15px;
         line-height: normal;
       }
 
@@ -64,10 +68,10 @@
   </head>
   <body class="container">
     <div class="container mt-5">
-        <h1>18.12.2022</h1>
+        <h1><a href="../index.html" class="display-4">18.12.2022</a></h1>
         <h4>PKI(Public Key Insfrastructor, .cer) ve Private Key(.pfx)</h4>
         <p>
-          Dosyalar kriptolanabilirler. Dosyaları kriptolamak, NTFS Dosya Sistemine sahip disklerin bir özelliğidir. Kriptolanırken kullanılan anahtara "Public Key" adıverilir. Uzantısı .cer'dir. .cer dosyayı kriptolayan anahtardır. Her Public Key'e ait "Private Key" adiverilen bir özel anahtar daha vardır. Kriptolamayı yapan her User için Public Key ve ona karşılık gelen Private Key'ler atanır. Ancak bu anahtarlar ancak o User kriptolama yaptığında üretilebilirler. Private Key, kriptolama yapan(Log-on olan) kişiyi temsil eder. Bunun anlamı da o kriptolanan dosyaya onu kriptolayan kişiden başkası erişemez. O User'ın yaptığı her kriptolama için aynı özel anahtar kullanılır. Bu işlem bu şekilde uygulanmaya müsade edildiğinde Domain Admin bile olsak bu dosyalara erişemeyiz. Eğer biz şirketimize ait makinelerde o makineleri kullanan çalışanların yaptığı kriptolu dosyalara bile erişebilmek istiyorsak o kullanıcının dosyayı kriptolarken otomatik olarak Admin için de bir anahtar oluşturmasını sağlamalıyız.
+          Dosyalar kriptolanabilirler. Dosyaları kriptolamak, NTFS Dosya Sistemine sahip disklerin bir özelliğidir. Kriptolanırken kullanılan anahtara "Public Key" adıverilir. Uzantısı <b>.cer</b>'dir. <b>.cer</b> dosyayı kriptolayan anahtardır. Her Public Key'e ait "<b>Private Key</b>" adiverilen bir özel anahtar daha vardır. Kriptolamayı yapan her User için Public Key ve ona karşılık gelen Private Key'ler atanır. Ancak bu anahtarlar ancak o User kriptolama yaptığında üretilebilirler. Private Key, kriptolama yapan(Log-on olan) kişiyi temsil eder. Bunun anlamı da o kriptolanan dosyaya onu kriptolayan kişiden başkası erişemez. O User'ın yaptığı her kriptolama için aynı özel anahtar kullanılır. Bu işlem bu şekilde uygulanmaya müsade edildiğinde Domain Admin bile olsak bu dosyalara erişemeyiz. Eğer biz şirketimize ait makinelerde o makineleri kullanan çalışanların yaptığı kriptolu dosyalara bile erişebilmek istiyorsak o kullanıcının dosyayı kriptolarken otomatik olarak Admin için de bir anahtar oluşturmasını sağlamalıyız.
         </p>
         <p>
           Daha açıklayıcı olmak gerekirse; Bir user bir dosyayı Encrypted ettiğinde ona sorulmaksızın Admin içinde Public ve Private Key üretmesini sağlarız. Bu sayede o Domain'de kriptolanan bütün dosyalara Admin'de erişebilir durumda olur. Fakat doğal olarak bunu sağlamak için konfigürasyon yapmamız gerekiyor.  
@@ -75,28 +79,70 @@
 
         <h4>EFS(Encrypted File System)</h4>
         <p>
-          EFS, PKI teknolojisini kullanır. <br>
-          Computer Management > Local Users > New Users(Yeni kullanıcılar oluşturup, kendine ait dosyalar üretelim) <br>
-          Folder > Right Click > Properties > Advanced > |+|Encrypted Contents to Secure Data > |+|Encrypt the file only(Sadece o dosyayı kriptolar) || |+|Encrypt the file and parent folder(Parent'ını ve onun altındaki tüm dosyaları kriptolar) > Ardından üretilen bu Private Key'e fiziksel(USB Flash Disk) yedeklemeni önerip bunu sorar. Kopyalamayı seçersek bir Wizard başlatır ve .pfx'i yedekler. Klasör üretir ve o klasöre bir şifre atamamızı ister. Eğer bu Wizard'ı bu aşamada çalıştırmazsak; <br>
-          Run > mmc > Certifie > Personel > Right Click > Export(Bu noktadan isternirse .cer ve .pfx uzantıları Key dosyaları yedeklenebilirler) <br>
+          EFS, PKI teknolojisini kullanır.
+        </p>
+        <p class="bg-script">
+          > Computer Management <br>
+          > Local Users <br>
+          > New Users(Yeni kullanıcılar oluşturup, kendine ait dosyalar üretelim) <br>
+        </p>
+        <p class="bg-script">
+          > Folder <br>
+          > Right Click <br>
+          > Properties <br>
+          > Advanced <br>
+          > [+]Encrypted Contents to Secure Data <br>
+          > [+]Encrypt the file only(Sadece o dosyayı kriptolar) <br>
+          || [+]Encrypt the file and parent folder(Parent'ını ve onun altındaki tüm dosyaları kriptolar)
+        </p>
+        <p>
+          Ardından üretilen bu Private Key'e fiziksel(USB Flash Disk) yedeklemeni önerip bunu sorar. Kopyalamayı seçersek bir Wizard başlatır ve .pfx'i yedekler. Klasör üretir ve o klasöre bir şifre atamamızı ister. Eğer bu Wizard'ı bu aşamada çalıştırmazsak; 
+        </p>
+        <p class="bg-script">
+          > Run <br>
+          > mmc <br>
+          > Certifie <br> 
+          > Personel <br>
+          > Right Click <br>
+          > Export(Bu noktadan isternirse .cer ve .pfx uzantıları Key dosyaları yedeklenebilirler)
+        </p>
+        <p>
           Eğer Private seçilip Delete işaretlenirse hem yedekler hem de o Key'i makineden siler. Makine değiştirilecekse yani Disk bu makineden başka bir makineye taşınacaksa bu işlem uygulanır.
         </p>
 
         <h4>Saklanan Public ve Private Key'eri görmek</h4>
-        <p>
-          Run > mmc > File > Add/Remove Snap > Certificates > Add > OK > Certifies > Personel > Kayıt var ise .cer ve .pfx uzantılı Key'ler görüntülenir. 
+        <p class="bg-script">
+          > Run <br>
+          > mmc <br>
+          > File <br>
+          > Add/Remove Snap <br>
+          > Certificates <br>
+          > Add <br>
+          > OK <br>
+          > Certifies <br>
+          > Personel <br>
+          > Kayıt var ise .cer ve .pfx uzantılı Key'ler görüntülenir. 
         </p>
 
         <h4>Kriptolu ya da Compress edilmiş dosyaları farklı bir renkte göstermek</h4>
-        <p>
-          Folder > View > Options > View > Show Encrypted or Compressed NTFS files in color.
+        <p class="bg-script">
+          > Folder <br>
+          > View <br>
+          > Options <br>
+          > View <br>
+          > Show Encrypted or Compressed NTFS files in color.
         </p>
 
         <hr>
 
         <h4>Kriptolanan her dosyaya Admin'in erişmesini sağlamak</h4>
+        <p class="bg-script">
+          > Folder <br> 
+          > Properties <br>
+          > Advance <br>
+          > Detail
+        </p>
         <p>
-          Folder > Properties > Advance > Detail <br>
           Bu buton kriptolama yapınca açılır ve Public Key'i gösterir. Yukarıdaki konuma her bir User kriptolama yaptığında Admin'inde Public Key'i eklenecek. Bu Public Key dosyayı Admin için üretilecek olan Private Key ile açabilecek. Bu dosyayı  kriptolayan User'ın anahtarlatı kullanılarak yapılır. Bu sebepleme diğer User'lar "Access Denied" olurlar. Kriptolamaya dahil etmek istediğimiz User EFS Recovery Agent olmalıdır. Bu senaryoda bu User Admin'dir. Hedefimiz başka User'ların kriptoladığı dosyaları Admin hesabının açabilmesi. Bu hedefi gerçekleştirmek için Admin'in "EFS Recovery Agent" olmasından başka bir yol yoktur. EFS Recovery Agent'in hangi User olacağını belirleyebilmek için minimum "Local Admin" düzeyinde bir yetkiye ihtiyaç vardır.
         </p>
         <span>
@@ -110,25 +156,63 @@
 
         <h4>EFS Recovery Agent üretmek</h4>
         <ol>
-          <li>
-            cmd > cd desktop > cipher /R:EFS_RA(EFS_RA atadığımız isimdir, farklı bir isim de girilebilir) > Bu aşamada .pfx dosyasını korumak için şifre ister. > Ardından .cer ve .pfx dosyalarını üretir.
+          <li class="bg-script">
+            > cmd <br>
+            > cd desktop <br>
+            > cipher /R:EFS_RA(EFS_RA atadığımız isimdir, farklı bir isim de girilebilir) <br>
+            > Bu aşamada .pfx dosyasını korumak için şifre ister. <br>
+            > Ardından .cer ve .pfx dosyalarını üretir.
           </li>
-          <li>
+          <li class="bg-script mt-1">
             Ürettiğimiz anahtar bütün kriptolanan dosyalara yazılsın istiyoruz. <br>
-            Bunun için gpedit.msc > Local Group Policy > Computer > Windows > Security > Public Key > Encrypted File System > Right Click > Add Data Recovery Agent > Wizard çalıştırılır, .cer dosyasını ister. > next > finish. <br> !!
+            Bunun için; <br>
+            > gpedit.msc <br>
+            > Local Group Policy <br>
+            > Computer <br>
+            > Windows <br>
+            > Security <br>
+            > Public Key <br>
+            > Encrypted File System <br>
+            > Right Click <br>
+            > Add Data Recovery Agent <br>
+            > Wizard çalıştırılır, .cer dosyasını ister. <br>
+            > Next <br>
+            > Finish
+          </li>
+          <span>
             File Recovery dosyasının, kriptolanan dosyalara yazılması emrini vermiş olduk. Bunu yaptığımızda sadece en azından Local Admin yetkisine sahip herhangi bir User'ı Recovery Agent yapabiliriz. BURAYI TEKRAR ET !!
             SORUN ŞU: EFS RECOVERY AGENT'I ÜRETEN KİŞİ Mİ ADMİN OLMAK ZORUNDA YOKSA ÜRETİLEN O ANAHTARI KUŞANACAK OLAN USER MI ADMİN OLMAK ZORUNDA.
-          </li>
-          <li>
-            EFS_RA  .pfx'i hesabına yüklememiz gerekiyor.(Admin olarak Log-on'dayız) > File > Çift tık > Current User > Önerdiği File'ı ver > Oluştururken atadığımız şifreyi sorar > | |Mark this key exportable -> Kurulduktan sonra Export edilsin mi diye sorar. Varsayılanda kapalıdır, Export edilemesin istiyorsak işaretlemeyiz. > Auto > Finish.
+          </span>
+          <li class="bg-script">
+            EFS_RA  .pfx'i hesabına yüklememiz gerekiyor.(Admin olarak Log-on'dayız) <br>
+            > File <br>
+            > Çift tık <br>
+            > Current User <br>
+            > Önerdiği File'ı ver <br>
+            > Oluştururken atadığımız şifreyi sorar <br>
+            > | |Mark this key exportable <br>
+            -> Kurulduktan sonra Export edilsin mi diye sorar. Varsayılanda kapalıdır, Export edilemesin istiyorsak işaretlemeyiz. <br>
+            > Auto <br>
+            > Finish
           </li>
         </ol>
 
         <hr>
 
         <p>
-          Bir User kriptoladığı dosyaya başka bir User'ın daha erişmesini istiyorsa kendisi erişmesini istediği User'ın Public Key'lerini kriptoladığı dosyaya eklerse eklenecek olan User o dosyaya erişebilir durumda olur. Fakat daha sonra erişmesini sağlayacağımız User'ın en azından bir kere bir dosya kriptolaması yapmış olması zorunludur. Çünkü ancak kriptolama yapıldığında anahtarlar üretilir. Eklemek için; <br>
-          Folder > Right Click > Properties > Advance > Details > Add > eklemek istediğimiz User seçilir. <br>
+          Bir User kriptoladığı dosyaya başka bir User'ın daha erişmesini istiyorsa kendisi erişmesini istediği User'ın Public Key'lerini kriptoladığı dosyaya eklerse eklenecek olan User o dosyaya erişebilir durumda olur. Fakat daha sonra erişmesini sağlayacağımız User'ın en azından bir kere bir dosya kriptolaması yapmış olması zorunludur. Çünkü ancak kriptolama yapıldığında anahtarlar üretilir. <br>
+          Eklemek için;
+        </p>
+        <p class="bg-script">
+          > Folder <br>
+          > Right Click <br>
+          > Properties <br>
+          > Advance <br>
+          > Details <br>
+          > Add <br>
+          > eklemek istediğimiz User seçilir.
+        </p>
+        <p>
           Yukarıdaki gibi bunu yapabiliriz fakat bunu yapmak çok kötü sonuçlara sebep verebilir. Örneğin eklediğiniz kişi eğer o dosya üzerinde başka User'lar da ekleyebilir hatta ve hatta direkt olarak sizin Key'lerinizi o dosyadan kaldırıp, erişiminizi imkansız hale getirebilir. Dolayısıyla kriptoladığınız bir dosyaya başka bir User'ın erişmesine izin vermemeniz en doğrusudur.
         </p>
 
@@ -140,29 +224,81 @@
         </p>
         <p>
           DFS Server herhangi bir makineye kurulabilir. Sanalda kuracaksak DC'yi tercih edebiliriz.  <br>
-          Kurulum için; <br>
-          Server Manager > Add Roles and Features > File and Storage Service > File and iSCSI > |+|DFS Namespace > next > finish. <br>
+          Kurulum için;
+        </p>
+        <p class="bg-script">
+          > Server Manager <br>
+          > Add Roles and Features <br>
+          > File and Storage Service <br>
+          > File and iSCSI <br>
+          > [+]DFS Namespace <br>
+          > Next <br>
+          > Finish
         </p>
         <p>
-          DFS Server'ı yönetmek için; <br>
-          DFS Management > Namespace > New Namespace > DFS Servisini veren(sunan) makine seçilir. > Birden fazla namespace Server olabilir. Bu senaryoda DC'yi seçtik. İnsanların algılayabileceği ortak bir paylaşım ismi verilir. > Edit Setting(Bu yapacağımız paylaşıma da izinler atayabiliyoruz, Admins have full; other have read-only) > Namespace Type(Eğer DFS Server, Domain'de ise üstteki seçilir değil ise alttaki seçilir) > Next > Create <br>
-          Yukarıda ürettiğimiz Namespace altında yapılması gereken paylaşımlar eklenir. <br>
-          Örneğin; \\sirket.com\Tüm Paylaşımlar > Right Click > New Folder > Add > Browse > Browse > Server(1.Server'ı ekliyoruz) > OK > Hangi isimle görünsün > OK > İsmi gir; Bu isimde bir Folder oluşturur. Onun içerisinde o makineden yapılan, onların içerisinden de istediğimiz Folder'ı seçebiliriz. <br>
+          DFS Server'ı yönetmek için;
+        </p>
+        <p class="bg-script">
+           > DFS Management <br>
+           > Namespace <br>
+           > New Namespace <br>
+           > DFS Servisini veren(sunan) makine seçilir. <br>
+           > Birden fazla namespace Server olabilir. Bu senaryoda DC'yi seçtik. İnsanların algılayabileceği ortak bir paylaşım ismi verilir. <br> 
+           > Edit Setting(Bu yapacağımız paylaşıma da izinler atayabiliyoruz, Admins have full; other have read-only) <br>
+           > Namespace Type(Eğer DFS Server, Domain'de ise üstteki seçilir değil ise alttaki seçilir) <br>
+           > Next <br>
+           > Create
+        </p>
+        <p>
+          Yukarıda ürettiğimiz Namespace altında yapılması gereken paylaşımlar eklenir.
+        </p>
+        <p class="bg-script">
+          Örneğin; <br>
+          > \\sirket.com\Tüm Paylaşımlar <br>
+          > Right Click <br>
+          > New Folder <br>
+          > Add <br>
+          > Browse <br>
+          > Browse <br>
+          > Server(1.Server'ı ekliyoruz) <br>
+          > OK <br>
+          > Hangi isimle görünsün <br>
+          > OK <br>
+          > İsmi gir; Bu isimde bir Folder oluşturur. Onun içerisinde o makineden yapılan, onların içerisinden de istediğimiz Folder'ı seçebiliriz.
+        </p>
+        <p>
           Aynı şekilde diğer File Server'lar da seçilir. Yukarıda ortak bir alana paylaşım yapmalarını sağlamak için bütün File Server'ları seçeriz. Ayrıca bu Server'ların hepsinin bir paylaşım yapıyor olmaları zorunludur.
         </p>
 
         <h6>Ortak içeriğe sahip olmak</h6>
         <p>
-          Ayrı ayrı iki paylaşım yapan makinede isimleri farklı iki klasörün içerisindeki(iki klasöründe) birebir aynı dosyalara sahip olmasını sağlamak isteyebiliriz. Aslında birbirinden farklı iki File Server'ın senkronize çalışmasını isteyebiliriz. Buna "Replikasyon" adıverilir. DFS Replikasyon yapılabilmesini sağlar. Bunun yapılabilmesi için ayrı bir servis yüklemek gereklidir. <br>
-          DFS olan makineye; Server Manager > Add Roles > File > File > DFS Replication > Install <br>
+          Ayrı ayrı iki paylaşım yapan makinede isimleri farklı iki klasörün içerisindeki(iki klasöründe) birebir aynı dosyalara sahip olmasını sağlamak isteyebiliriz. Aslında birbirinden farklı iki File Server'ın senkronize çalışmasını isteyebiliriz. Buna "Replikasyon" adıverilir. DFS Replikasyon yapılabilmesini sağlar. Bunun yapılabilmesi için ayrı bir servis yüklemek gereklidir.
+        </p>
+        <p class="bg-script">
+          DFS olan makineye; <br>
+          > Server Manager <br>
+          > Add Roles <br>
+          > File <br>
+          > File <br>
+          > DFS Replication <br>
+          > Install 
+        </p>
+        <p class="bg-script">
           Kurulumdan sonra; <br>
-          DFS Management > Replication > Doomain System Volume(Gelmeli)
-       </p>
+          > DFS Management <br>
+          > Replication <br>
+          > Doomain System Volume(Gelmeli)
+        </p>
 
-       BU AŞAMAYA GELDİKTEN SONRA NOTLARA DEVAM ET.
        <h6>Senkronize etmek</h6>
-       <p>
-        Namespaces > sirket > New Folder > İki farklı makineden aynı olmasını istediğimiz iki makineyi ve Folder'ı seçeriz > Media adında ikisini aynı klasörde paylaşırız > OK(Okay'a basınca Replikasyon yapılmasını sorar) > OK 
+       <p class="bg-script">
+        > Namespaces <br>
+        > sirket <br>
+        > New Folder <br>
+        > İki farklı makineden aynı olmasını istediğimiz iki makineyi ve Folder'ı seçeriz. <br>
+        > Media adında ikisini aynı klasörde paylaşırız. <br>
+        > OK(Okay'a basınca Replikasyon yapılmasını sorar) <br>
+        > OK 
        </p>
        <p>
         Yukarıdaki işlemi yapabilmek için replikasyona muhattap olacak sunuculara da DFS Replication servisi yüklenmiş olmalıdır. Yüklü olduğu durumda yukarıdaki senkronizasyon işleminden sonra bir Wizard başlatır. Wizard başladıktan sonra replikasyona bir isim vermemizi ister. İsim vassayılanda bırakılabilir, zaten Folder Name vermiştik. Hangisinin Primary olacağını sorar, File Server'lardan herhangi birisini seçebiliriz. Topology Selection yapmamızı ister. Bir önceki adımda seçtiğimiz Primary'inin önemini görmüş olacağız. İkiden fazla File Server olsaydı yani minimum 3 File Server olsaydı bu drumda "Hub and Spoke" yapabilirdik. Bu durumda Hub seçtiğimiz Primary olurdu ve diğerleri ile Primary bağlı olurlardır. Paylaşılan değişiklikler önce Primary File Server'a ve onun aracılığıyla diğer File Server'lara aktarılırdı. Diğer bir seçenek ise Cross Referance yani Full Mash'tir. Bu File Server'ların paylaşımları karışık olarak birbirlerine göndermesini sağlar. Son olarak "No Topology" ise replikasyon yapmaz. Replikasyon yapabilmek için daha sonradan ekstra işlemler yapılması gerekir. "Topology" belirlendikten sonra "Bandwith" girilir. Uzakta bir File Server'dan diğer File Server'a çok hızlı bir hat girilirse, iletişim diğer işler için durma noktasına gelebilir. Bandwith ayarı için bir "Schedule" ayarlanabilir. Ayın şu haftasında, şu günlerin, şu saatlerinde hız şu kadar olsun tarzında bir plan oluşturabiliriz. Bu noktada girilen saat önemlidir. Çünkü Server'lar aynı saat diliminde olmayabilirler. Örneğin kendimize göre gece saat 2'yi ayarlamak istiyorsak; Local'i seçmeliyiz. Diğer bir seçenek ise bizim ayarladığımız saat bizde 2 iken onlarda ne zaman 2 olacaksa o zaman çalışır. Replikasyon işlemi Active Directory'nin Topology'i ayarlaması ile gerçekleşir.
@@ -170,14 +306,28 @@
        <p>
         Replikasyon tamamlandıktan sonra; <br>
         Media klasörü yeşil işaret alır. <br>
-        DFS Management > Replication > sirket.com\Tüm Paylaşımlar\Media -> Görünür durumda olur. <br>
+      </p>
+      <p class="bg-script">
+        > DFS Management 
+        > Replication 
+        > sirket.com\Tüm Paylaşımlar\Media -> Görünür durumda olur.
+      </p>
+      <p>
         Son kullanıcı paylaşmak istediği veriyi önce Media klasörüne atar. Bu veri seçilen Topology'e göre hareket eder.
-       </p>
-       <p>
+      </p>
+      <p>
         Son kullanıcı için direkt Media'nın bir kısayolunu oluşturup masaüstüne koyabiliriz. <br>
-        This PC > Right Click > Map Network Drive > Drive Letter > Path -> Path direkt Media'nın yolunu ifade eder. <br>
+      </p>
+      <p class="bg-script">
+        > This PC <br>
+        > Right Click <br>
+        > Map Network Drive <br>
+        > Drive Letter <br>
+        > Path -> Path direkt Media'nın yolunu ifade eder.
+      </p>
+      <p>
         Bu noktadan sonra bu kısayola kullanıcı sadece çift tıklayak Media konumuna gidebilir.
-       </p>
+      </p>
 
        
        <div class="m-5 text-center">
