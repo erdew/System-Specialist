@@ -21,7 +21,8 @@ Windows Server üzerinde yapılacaklar;
 ✔ Shadow Copy yap. @done(23-01-17 17:49)
 ✔ File Server kur. @done(23-01-17 17:56)
 ✔ File Sharing yapıp Permission'ları uygula. @done(23-01-17 17:59)
-☐ Active Directory'de komple bir Group'un Permission'larını düzenle.
+✔ Shared File için User Group için Permission belirle. @done(23-01-18 13:15)
+☐ Belli bir User Group'a özel paylaşım yap(sadece o grubun görebileceği).
 ☐ Disk Quota belirle.
 ☐ Dosya uzantılarına göre kısıtlama yap.
 ☐ Dosyaları Compress yap.

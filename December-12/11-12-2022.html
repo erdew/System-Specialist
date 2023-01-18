@@ -55,7 +55,7 @@
         background-color: #31333a;
         padding: 20px;
         border-radius: 10px;
-        text-align: center;
+        text-align: start;
         font-size: 16px;
         line-height: normal;
       }
@@ -65,50 +65,112 @@
   <body class="container">
     <div class="container mt-5">
         <h1 class="display-4">11.12.2022</h1>
-        <h4>File Sharing(Advanced)</h4>
+        <h4>File Sharing(Advanced Tab)</h4>
         <p>
             User Limit(Eş zamanlı User'ı ifade eder) <br>
-            Hidden Share -> Share Name: Teklifler$ -> Hidden olurlar(Teklifler$ yazmadan görünmez) <br>
-            Hidden yaptığımızda yine de kesinlikle Permission'lara da dikkat edilmelidir. Share Name'e göre Permission atarsak ona göre Folder'lara erişim olur.
         </p>
-        
+        <p class="bg-script">
+          Hidden Share -> Share Name: Teklifler$ <br>
+          -> Hidden olurlar(Teklifler$ yazmadan görünmez) <br>
+        </p>
+        <p>
+          Hidden yaptığımızda yine de kesinlikle Permission'lara da dikkat edilmelidir. Share Name'e göre Permission atarsak ona göre Folder'lara erişim olur.
+        </p>
+          
         <h4>DC User Log-on</h4>
         <p>
-            Domain Controller'lara Log-on olabilecek kişiler varsayılanda sınırlıdır. Herhangi bir User, DC'ye direkt Log-on ol. <br>
-            Server Manager > Tools > Group Policy Management > Forest > Domains > sirket0.com > Domain Controllers > Default Domain Controller Policiy > Right Click > Edit > Computer Configuration > Policies > windows Settings > Security Settings > Local Policy > User Right Assignment > Allow Log-on Locally -> DC'ye Log olabilmesini istediğimiz kişi ya da gruplar eklenir. > Double Click > Add > Browse > Everyone(Evde denemek için everybody yaparız, normalde yapılmaz) <br>
-            Log-off olmadan önce yapılan değişikliklerin hemen gerçekleştirilmesi için; <br>
-            CMD > gpupdate /force
+          Domain Controller'lara Log-on olabilecek kişiler varsayılanda sınırlıdır. Herhangi bir User, DC'ye direkt Log-on ol. <br>
+        </p>
+        <p class="bg-script">
+          > Server Manager <br>
+          > Tools <br>
+          > Group Policy Management <br>
+          > Forest <br>
+          > Domains <br>
+          > sirket0.com <br>
+          > Domain Controllers <br>
+          > Default Domain Controller Policiy <br>
+          > Right Click <br>
+          > Edit <br>
+          > Computer Configuration <br>
+          > Policies <br>
+          > windows Settings <br>
+          > Security Settings <br>
+          > Local Policy <br>
+          > User Right Assignment <br>
+          > Allow Log-on Locally -> DC'ye Logon olabilmesini istediğimiz kişi ya da gruplar eklenir. <br>
+          > Double Click <br>
+          > Add <br>
+          > Browse <br>
+          > Everyone(Evde denemek için everybody yaparız, normalde yapılmaz)
+        </p>
+        <p>
+          Log-off olmadan önce yapılan değişikliklerin hemen gerçekleştirilmesi için;
+        </p>
+        <p class="bg-script">
+          > CMD > gpupdate /force
         </p>
 
         <hr>
         
+        <h4>Security Tab</h4>
         <p>
           Deny vererek bir User'a Network'ten belli Folder'lara erişim engeli verilebilir. <br>
-          Permission'lar sadece Network üzerinden erişildiğinde geçerlidir. <br>
-          Eğer File Server'dan Full Deny verdiğimiz bir User Local'den giriş yaparsa, Folder'a erişebilir çünkü Share Permission'lar sadece Remote olarak Network üzerinden erişildiğinde geçerlidir. Bu ciddi bir açığı oluşturabilir, doğal olarak Local'de geçerli olacak ilave bir Permission'a daha ihtiyaç vardır. Buna NTFS Permission veya Security Permission denir. <br>
-          Folder > Right Click -> Bu Security Permission'ın olabilmesi için Disk File Type'ı NTFS olmak zorundadır. > Security -> Permissions -> <br>
-          1.List Folder Content -> Sadece File'ları görebiliriz. <br>
-          2.Read -> File'ın içini görebilir, aynı zamanda Copy de yapılabilir. <br>
-          3.Read and Execute -> Oku ve çalıştır(Folder içinde ".exe" var ise çalışabilir) <br>
-          4.Write -> İçerik değiştirilebilir, dosya kopyalanabilir, yeni dosya yazılabilir. <br>
-          5.Modify -> İçerik değiştirilebilir, dosya kopyalanabilir, yeni dosya yazılabilir ve silinebilir. <br> 
-          6.Full Control -> İçerik değiştirilebilir, dosya kopyalanabilir, yeni dosya yazılabilir ve silinebilir. Ekstradan Permission'lara da müdahale edebilir, hatta Folder'ın Ownership'liğini de alabilir. <br>
-          CREATOR OWNER -> Bu isimleri listeden silmek doğru değildir. <br>
-          SYSTEM -> Tüm dosyalar aslında bu SYSTEM üzerinden açılır. <br>
-          Domain Member'lar, Autanticated User'lardır ve Domain'deki User'lar; Read&Execute, Read, List Folder Content Permission'larına sahiplerdir.
+          Share Permission'lar sadece Network üzerinden erişildiğinde geçerlidir. <br>
+          Eğer File Server'dan Full Deny verdiğimiz bir User Local Logon yaparsa, Folder'a erişebilir çünkü Share Permission'lar sadece Remote olarak Network üzerinden erişildiğinde geçerlidir. Bu ciddi bir güvenlik açığı oluşturabilir, doğal olarak Local Logon'larda geçerli olacak ilave bir Permission'a daha ihtiyaç vardır. Buna NTFS Permission veya Security Permission denir. <br>
+        </p>
+        <p class="bg-script">
+          > Folder <br>
+          > Right Click <br>
+           -> Bu Security Permission'ın olabilmesi için Disk File Type'ı NTFS olmak zorundadır. <br>
+          > Security <br>
+           -> Permissions <br>
+           -> <br>
+          1. <u>List Folder Content</u> <br>
+           -> Sadece File'ları görebiliriz. <br>
+          2. <u>Read</u> <br>
+           -> File'ın içini görebilir, aynı zamanda Copy de yapılabilir. <br>
+          3. <u>Read and Execute</u> <br>
+           -> Oku ve çalıştır(Folder içinde ".exe" var ise çalışabilir) <br>
+          4. <u>Write</u> <br>
+           -> İçerik değiştirilebilir, dosya kopyalanabilir, yeni dosya yazılabilir. <br>
+          5. <u>Modify</u> <br>
+           -> İçerik değiştirilebilir, dosya kopyalanabilir, yeni dosya yazılabilir ve silinebilir. <br> 
+          6. <u>Full Control</u> <br>
+           -> İçerik değiştirilebilir, dosya kopyalanabilir, yeni dosya yazılabilir ve silinebilir. <br>  
         </p>
         <p>
-          Inheritance, üst klasörden alt klasöre miras olarak izinleri aktarır. <br>
+          Ekstradan Permission'lara da müdahale edebilir, hatta Folder'ın Ownership'liğini bile alabilir. <br>
+        </p>
+        <p class="bg-script">
+          CREATOR OWNER -> Bu isimleri listeden silmek doğru değildir. <br>
+          SYSTEM -> Tüm dosyalar aslında bu SYSTEM üzerinden açılır. <br>
+        </p>
+        <p>
+          Domain Member'lar, Autanticated User'lardır. <br>
+          Domain User'lar; <b>Read&Execute, Read, List Folder Content Permission</b>'larına sahiplerdir.
+        </p>
+        <p>
+          <b>Inheritance</b>, üst klasörden alt klasöre miras olarak izinleri aktarır. <br>
           Inheritance her dizin için yani her Folder veya File için ayrı ayrı kapatılabilir. <br>
           Mirasın en üst Folder'ı C'dir. <br>
           IK'nın C Sürücüsünden mirasla izin almamasını sağlıyoruz. <br>
-          IK > Right Click > Security > Advanced > Disable Inheritance -> İki seçenek verir; Organik olarak gelen mirasları ne yapacağını sorar. <br>
-          Convert Inherit -> Gelmiş olanları tutar, mirası keser. <br>
-          Bu noktadan sonra C'den miras almaz fakat kendisi alt Folder'lar için Parent olur.
+        </p>
+        <p class="bg-script">
+          > IK <br>
+          > Right Click <br>
+          > Security <br>
+          > Advanced <br>
+          > Disable Inheritance -> İki seçenek verir; <br>
+          > Convert Inherit -> Üst klasörden gelmiş olanları tutar, fakat sonradan gelecek olan mirası keser. <br>
+          > Remove all Inherit -> Üst klasörden miras gelen permission'ları siler ve yeni permission'ları da miras olarak almaz. 
+        </p>
+        <p>
+          Bu noktadan sonra "Disable Inheritance" yaparsak C'den miras almaz fakat kendisi alt Folder'lar için Parent olur.
         </p>
         <p>
           NTFS Permission'ları ile Share Permission'ları arasında üstünlük farkı yoktur. <br>
-          Eğer kaynağa IK User'ı Netwrok'ten gidiyorsa NRFS ve Share Permission'larına birlikte bakılır ve buna göre izin verilir. <br>
+          Eğer kaynağa IK User'ı, Network'ten gidiyorsa NTFS ve Share Permission'larına birlikte bakılır ve buna göre izin verilir. <br><br>
           Nasıl hesaplar? <br>
           Network'ten gelinmiyorsa, yani sadece Security Permission'ları dikkate alınacaksa; <br>
           Direkt IKuser'a sadece Read verdik, IK Grubu ekleyip, IK Group'da Modify verdik. <br>
@@ -121,27 +183,55 @@
         <h4>Deny verilirse;</h4>
         <p>
           Allow'ları topla, çıkan şey eksi aldığı en büyük Deny eksidir. <br>
-          Örneğin; Allow -> Full Control, Deny -> Write = Full Control - Deny = Full COntrol'ün içinden Write özelliği çıkar. -> Deny ezicidir. <br>
+          Örneğin;
+        </p>
+        <p class="bg-script">
+          Allow -> Full Control, <br>
+          Deny -> Write = Full Control - Deny = Full Control'ün içinden Write özelliği çıkar. <br>
+          -> Deny ezicidir.
+        </p>
+        <p>
           Gruptan sadece bir kişinin bir klasöre erişimini tamamen engellemek istersek; <br>
+        </p>
+        <p class="bg-script">
           Group Allow -> Full Control... Tüm gerekli maddeler... <br>
-          x User Deny -> Full Control... Tüm gerekli maddeler... x User erişemez. <br>
+          x User Deny -> Full Control... Tüm gerekli maddeler... x User erişemez.
         </p>
         
         <hr>
 
+        <p class="bg-script">
+          > C:\IK <br>
+          > Security <br>
+          > Advance <br>
+          > Effective Access <br>
+          -> Şu User, şu Device'tan(Kullanıcının kullandığı makine) <br>
+          -> O User'ın bütün Permission'larını gösterir. <br>
+        </p>
         <p>
-          C:\IK > Security > Advance > Effective Access -> Şu User, şu Device'tan(Kullanıcının kullandığı makine) -> O User'ın bütün Permission'larını gösterir. <br>
           Permission Raporu verir. <br>
-          User'lara ya da Grup'lara en yüksek Permission, Modify verilmesi tavsiye edilir.
+          <b>User'lara ya da Grup'lara en yüksek, Modify Permission verilmesi tavsiye edilir.</b>
         </p>
         <p>
           Makinenin başında sadece Security Permission geçerlidir. <br>
-          Network bağlantısında hem Shared, hehm Security Permission geçerlidir. <br>
+          Network bağlantısında hem Shared, hem Security Permission geçerlidir. <br>
           Nasıl kontrol ediyor? <br>
-          IK Fodler > Share -> IKuser1 = Read, Security = Modify <br>
-          İki taraftada izinler kendi içinde toplanır. Bu toplam izinler kıyaslanır ve hangisi daha kısıtlayıcı ise o geçerli oluyor. <br>
-          Network'ten geliniyorsa -> R M = R(READ) -> Sadece Read olması daha kısıtlayıcıdır o yüzden sonuç böyledir. <br>
-          Kaynak olan PC'den giriliyorsa -> Share yok sayılır. -> M -> Direkt Security Permission kendi içinde toplanıp sonuç üretilir. 
+        </p>
+        <p class="bg-script">
+          > IK Folder <br>
+          > Share <br>
+          -> IKuser1 = Read <br>
+          -> Security = Modify <br>
+        </p>
+        <p>
+          İki taraftada izinler kendi içinde toplanır. Bu toplam izinler kıyaslanır ve hangisi daha kısıtlayıcı ise o geçerli oluyor.
+        </p>
+        <p class="bg-script">
+          Network'ten geliniyorsa -> R M = R(READ) <br>
+          -> Sadece Read olması daha kısıtlayıcıdır o yüzden sonuç böyledir. <br>
+          Kaynak olan PC'den giriliyorsa -> Share yok sayılır. <br>
+          -> M <br>
+          -> Direkt Security Permission kendi içinde toplanıp sonuç üretilir. 
         </p>
 
         <h4>Shadow Copy</h4>
@@ -150,14 +240,35 @@
           Shadow Copy, kaynağın olduğu(Örneğin File Server) <br>
           Sürücüde açabiliyoruz. <br>
           Shadow Copy, Default'ta kapalıdır. <br>
-          Local Disk(C) > Right Click > Properties > Shadow Copies > Enable -> Şuanın kopyasını alır. <br>
-          Bu noktadan sonra bir dosya sildik diyelim(C'nin altında) klasöre Right Click > Previous Version > Restore -> Bir dosya sileceksen bile yine de yedeğini al. <br>
-          Örneğin klasörü sildik. <br>
-          Bu sefer o klasörün Parent'ına Previous Version yapılır. <br>
-          Open > Gerekli klasöre sürükle bırak. -> File Server olduğu için diğer bütün makinelere geri yüklenir.
+        </p>
+        <p class="bg-script">
+          > Local Disk(C) <br>
+          > Right Click <br>
+          > Properties <br>
+          > Shadow Copies <br>
+          > Enable -> Şuanın kopyasını alır. <br>
+        </p>
+        <p class="bg-script">
+          Bu noktadan sonra bir dosya sildik diyelim(C'nin altında) klasöre; <br>
+          > Right Click <br>
+          > Previous Version <br>
+          > Restore -> Bir dosya sileceksen bile yine de yedeğini al.
         </p>
         <p>
-          C > Shadow Copies > Schedule > Advanced -> Düzenli olarak otomatik Shadow Copy alır. Eğer belirlediğimiz limit dolarsa en eski Shadow Copy silinir. Her Shhadow Copy aynı boyutta değildir. Örneğin; ilki 2.19 GB, diğerleri 100 MB vs. olur. <br>
+          Örneğin klasörü sildik. <br>
+          Bu sefer o klasörün Parent'ına Previous Version yapılır. <br>
+        </p>
+        <p class="bg-script">
+          > Open <br>
+          > Gerekli klasöre sürükle bırak. -> File Server olduğu için diğer bütün makinelere geri yüklenir.
+        </p>
+        <p class="bg-script">
+          > C <br>
+          > Shadow Copies <br>
+          > Schedule <br>
+          > Advanced -> Düzenli olarak otomatik Shadow Copy alır. Eğer belirlediğimiz limit dolarsa en eski Shadow Copy silinir. Her Shhadow Copy aynı boyutta değildir. Örneğin; ilki 2.19 GB, diğerleri 100 MB vs. olur.
+        </p>
+        <p>
           Restore edersek üstüne yazar. <br>
           Sürükle bırak yaparak(Sadece ilgili dosyaları) az risk alırız. Eğer bu şekilde yapmazsak içerisindeki tüm Folder'lar geri yüklenir ve mevcuttakiler değişmiş olur. <br>
           Shadow Copy'i yalnızca Server OS'larda açabiliriz. Client OS'larda çalışmaz. <br>
