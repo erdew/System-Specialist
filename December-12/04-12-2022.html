@@ -55,7 +55,7 @@
         background-color: #31333a;
         padding: 20px;
         border-radius: 10px;
-        text-align: center;
+        text-align: start;
         font-size: 16px;
         line-height: normal;
       }
@@ -170,24 +170,45 @@
         <hr>
 
         <p>
-          Tüm RAID'ler için hata töleransından kastımız disklerin sıralı olarak bozulma şeklinde hesaplıyoruz. <br>
+          Tüm RAID'ler için hata töleransından kastımız disklerin sıralı olarak bozulmasıdır. 
         </p>
         
         <h4>Sanal Makinede RAID 51 yapmak</h4>
-        <p>
-          Server Manager > File and Storage Services > Disks -> Diskler görünmezse Rescan yaparız, olmazsa makineyi Restart'larız. <br>
-          Eğer Restart'tan sonra da gelmezse Management > Basic Convert <br>
+        <p class="bg-script">
+          > Server Manager <br>
+          > File and Storage Services <br>
+          > Disks -> Diskler görünmezse Rescan yaparız, olmazsa makineyi Restart'larız. <br>
+          Eğer Restart'tan sonra da gelmezse <br>
+          > Management <br>
+          > Basic Convert <br>
           Hala görünmüyorsa içerisine Basic'teyken bir Partion oluştur. <br>
-          > Storage Pools > New Storage Pool(isim ver) > LUN'ları doğru seç[+](Sıralı değildir) > Create Virtual Disk when this wizard closes[+] -> Burada yeni bir Pool oluşturuyoruz, çünkü artık bu disklere Pool adıveriliir. -> 3 tanesini > RAID5-Pool1'e aldık. <br>
+          > Storage Pools <br>
+          > New Storage Pool(isim ver) <br>
+          > LUN'ları doğru seç[+](Sıralı değildir) <br>
+          > Create Virtual Disk when this wizard closes[+] <br>
+          -> Burada yeni bir Pool oluşturuyoruz, çünkü artık bu disklere Pool adıveriliir. <br>
+          -> 3 tanesini <br>
+          > RAID5-Pool1'e aldık. <br>
           OK > <br>
           > Virtual Disk Name(RAID5-1) <br>
           > Parity <br>
           > Fixed(Sanal makinede evde denerken thin yap) <br>
           > 300 GB -> 300 GB'lık bir RAID5 oluşturur.<br>
+        </p>
+        <p>
           Yeni bir Basic Disk oluşturuldu. <br>
           Diğer Set için aynı işlemi yekrar yaparız. <br>
           Bu Pool için de yeni disk oluşur. <br>
-          İlk oluşan Disk > Right Click > New Mirroring Volume > İkinci oluşturulan disk > 1024(örneğin) > Volume Label RAID51 <br>
+        </p>
+        <p class="bg-script">
+          > İlk oluşan Disk <br>
+          > Right Click <br>
+          > New Mirroring Volume <br>
+          > İkinci oluşturulan disk <br>
+          > 1024(örneğin) <br>
+          > Volume Label RAID51 <br>
+        </p>
+        <p>
           Bu noktadan sonra istersek bu Pool'lardan farklı RAID'ler üretebiliriz. 
         </p>
 

@@ -1,6 +1,6 @@
 Windows Server üzerinde yapılacaklar;
 ✔ Pattern Virtual Machine kur. @done(23-01-17 13:25)
-✔ Pattern ile 1 tane Domain Controller ve 2 tane Domain Clint kur. @done(23-01-17 13:26)
+✔ Pattern ile 1 tane Domain Controller ve 2 tane Domain Client kur. @done(23-01-17 13:26)
 ✔ Domain Controller yapmak için gereken konfigürasyonları yap. @done(23-01-17 13:27)
 ✔ Client'leri Domain'e dahil etmek için gereken konfigürasyonları yap. @done(23-01-17 13:27)
 ✔ Domain User'lar oluştur. @done(23-01-17 15:53)
