@@ -136,6 +136,9 @@
           Kişiye özel limit atamak için bu listeden ilgili kullanıcıya çift tıklanıp, değer girilir.
         </p>
 
+        <hr>
+
+        <h5>Ekstra hatırlatma notları</h5>
         <p class="bg-script">
         <b>Ekstra not 1</b> <br>
           > Server Manager <br>
@@ -149,17 +152,23 @@
 
         <p class="bg-script">
         <b>Ekstra not 2</b> <br>
-          fsutil file createnew textfile.txt 1024000
+        > cmd <br>
+        -> İlgili konuma gidilir, örneğin; <br>
+        > cd desktop <br>
+        > fsutil file createnew textfile.txt 1024000
         </p>
+        <p>
           Yukarıdaki komut ile 1 MB yer kaplayan "textfile" isimde ".txt" formatında bir dosya üretilir.
           Bu tarz dosyaları gerçek bir veri kopyalamadan test etmek için kullanabilirsin.
+        </p>
+
         <hr>
 
         <p>
           Yukarıda bahsettiklerimiz direkt olarak Disk'e verilen kotalardı. Aslında sadece klasörlere de kota atanabilir.
           Doğal olarak Disk'in kapasitesi o klasör için maksimum kapasiteyi belirler.
           Disk'in kapasitesinden daha az bir kapasite belirleyeceksek o klasör için kota verilebilir.
-          Klasörlere kapasite verebildiğimiz gibi aynı zamanda içersine kopyalanacak olan dosyaların da uzantılarını sınırlandırabiliriz. <br>
+          Klasörlere kapasite verebildiğimiz gibi aynı zamanda içerisine kopyalanacak olan dosyaların da uzantılarını sınırlandırabiliriz. <br>
           Örneğin paylaşılan klasöre belli bir "Group" ya da "User'ın" o klasöre ".mp4" tipinde dosya kopyalamasını engelleyebiliriz.
           Bunu yapabilmek için Server'a <b>Feauture</b> yüklemek gerekiyor.
         </p>
@@ -213,20 +222,20 @@
         <hr>
 
         <h4>Dosya uzantılarına göre kısıtlama</h4>
-        <p><b>Dosya tipi kısıtlamasında dosyaları kopyalayamalayı engelleme yaklaşımı;</b></p>
+        <p><b>Dosya tipi kısıtlamasında dosyaları kopyalamayı engelleme yaklaşımı;</b></p>
         <p>İzinler genel olarak ana klasörlere değil, alt klasörlere verilirler.</p> 
         <p class="bg-script">
           > Server Manager <br>
           > File Server Resource Manager(FSRM) <br>
-          > File Screen Management <br>
+          > File Screening Management <br>
           > File Screen Templates
         </p>
         <p>
           Yukarıdaki yolda ilişkilendireceğimiz klasörün içerisine dosya tipini kısıtlayabileceğimiz hazır "File Screen Templates"ler vardır.
         </p>
-        <p>İstersek "File Screen Templates"e sağ tıklayıp "Create File Screen Template" ile yeni "Block"lar oluşturabiliriz.</p>
+        <p>İstersek "File Screen Templates'e" sağ tıklayıp "Create File Screen Template" ile yeni "Block"lar oluşturabiliriz.</p>
         <p>
-          Yukarıdaki gibi ürettiğimiz <b>File Screen Template</b>'e çift tıklayarak içeriğine içeriğine erişebiliriz. <br>
+          Yukarıdaki gibi ürettiğimiz <b>File Screen Template</b>'e çift tıklayarak içeriğine erişebiliriz. <br>
           Bu noktada "<b>Settings</b>" sekmesinde karşımıza iki tane seçenek çıkar. <br>
           İlki "<b>Active screening</b>", ikincisi ise "<b>Passive screening</b>". <br><br>
           "<b>Active screening</b>": Direkt yasaklar. <br>
@@ -236,7 +245,7 @@
         <p class="bg-script">
           > File Screens <br>
           > Right Click <br>
-          > Create <br>
+          > Create File Screen <br>
           > Browse(Yasağın uygulanacağı klasör seçilir) <br>
           > File Screen Template(Ürettiğimiz kopya veya sıfırdan oluşturduğum Template seçilir) <br>
           > Create</p>
@@ -312,11 +321,15 @@
           > Right Click <br>
           > General <br>
           > Compress this drive to save disk space <br>
+        </p>
+        <p class="bg-script">
           > Folder <br>
           > Right Click <br>
           > General <br>
           > Advance <br>
           > Compress this drive to save disk space, Subfolder'ları da dahil edebilir. <br>
+        </p>
+        <p class="bg-script">
           > File <br>
           > Right Click <br>
           > General <br>
@@ -329,8 +342,8 @@
           Disk'leri yazılımsal olarak korumaktan ziyade burada bahsedeceğimiz veri güvenliği, fiziksel olarak direkt Disk'in çalınması üzerine olacak. <br>
           Disk çalınsa bile o disk'in başka bir cihaza bağlandığında verilere erişimini imkansız hale getirmek mümkündür. <br>
           Bunu mümkün hale getiren teknolojiye "Bit Locker" adıverilir. <br>
-          Bu teknoloji heme "Client" hem de "Server'larda" kullanılabilir. <br>
-          Bit Locker diskteki verileri kriptolar. Anakartın üzerinde TPM adıverlen bir Chip vardır. Bu anakarta lehimli bir parçadır. Bit Locker açıldığında diski kriptolarken TPM çipindeki Unique verileri baz alarak kriptolar. Eğer BitLocker uyguladıysak PC'yi çalıştırdığımızda TPM kriptosunu çözerek makine başlatılır. Eğer makinenin üzerindeki anakart eski tip bir anakart ise üzerinde TPM Chip bulunmaz. Bu durumda bile aslında Bit Locker uygulamak mümkündür. TPM olmadığı için Bit Locker uyguladığımızda bir şifre üretmemizi sağlar. Bu şifreyi unutmamıza karşın bir önem için başka bir şifre daha üretir. TPM olan makinede paraloya ihtiyaç yoktur. Üzerinde TPM olan bir anakartta bulunan diske Bit Locker uygulanırsa ancak ve ancak o disk sadece bu diske bağlandığında kullanılabilir anlamına gelir.
+          Bu teknoloji hem "Client" hem de "Server'larda" kullanılabilir. <br>
+          Bit Locker, Disk'teki verileri kriptolar. Anakartın üzerinde TPM adında bir Chip vardır. Bu anakarta lehimli bir parçadır. Bit Locker açıldığında diski kriptolarken TPM çipindeki Unique verileri baz alarak kriptolar. Eğer BitLocker uyguladıysak PC'yi çalıştırdığımızda TPM kriptosunu çözerek makine başlatılır. Eğer makinenin üzerindeki anakart eski tip bir anakart ise üzerinde TPM Chip bulunmaz. Bu durumda bile aslında Bit Locker uygulamak mümkündür. TPM olmadığı için Bit Locker uyguladığımızda bir şifre üretmemizi sağlar. Bu şifreyi unutmamıza karşın bir önem için başka bir şifre daha üretir. TPM olan makinede paraloya ihtiyaç yoktur. Üzerinde TPM olan bir anakartta bulunan diske Bit Locker uygulanırsa ancak ve ancak o disk sadece bu diske bağlandığında kullanılabilir anlamına gelir.
         </p>
         <p>
           Hyper-V'de TPM yoktur. Server İşletim Sistem'lerinde bu Feature yüklü değildir. <br>

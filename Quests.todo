@@ -22,10 +22,11 @@ Windows Server üzerinde yapılacaklar;
 ✔ File Server kur. @done(23-01-17 17:56)
 ✔ File Sharing yapıp Permission'ları uygula. @done(23-01-17 17:59)
 ✔ Shared File için User Group için Permission belirle. @done(23-01-18 13:15)
-☐ Belli bir User Group'a özel paylaşım yap(sadece o grubun görebileceği).
-☐ Disk Quota belirle.
-☐ Dosya uzantılarına göre kısıtlama yap.
-☐ Dosyaları Compress yap.
+✘ Belli bir User Group'a özel paylaşım yap(sadece o grubun görebileceği). @cancelled(23-01-19 21:18)
+✔ Disk Quota belirle. @done(23-01-19 21:39)
+✔ Bir klasöre kota belirle. @done(23-01-19 21:56)
+✔ Dosya uzantılarına göre kısıtlama yap. @done(23-01-19 22:02)
+✔ Dosyaları Compress yap. @done(23-01-19 22:06)
 ☐ Kriptolu ya da Compress edilmiş dosyaların farklı bir renkte görünmesini sağla.
 ☐ Kriptolanan tüm dosyalara Admin'in erişmesini sağla.
 ☐ EFS Recovery Agent üret.
