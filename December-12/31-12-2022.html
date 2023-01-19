@@ -34,6 +34,10 @@
         text-align: center;
       }
 
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
       h1, h2, h3, h4, h5, h6 {
         color: rgb(139, 233, 253);
       }
@@ -55,7 +59,7 @@
         background-color: #31333a;
         padding: 20px;
         border-radius: 10px;
-        text-align: center;
+        text-align: start;
         font-size: 16px;
         line-height: normal;
       }
@@ -64,72 +68,173 @@
   </head>
   <body class="container bg-dark text-light">
     <div class="container mt-5">
-        <h1 class="display-4">31.12.2022</h1>
+        <h1><a href="../index.html" class="display-4">31.12.2022</a></h1>
+        <h4>Sanal Makinelere farklı IP dağıtmak</h4>
         <p>
-            DHCP ile Hyper-V veya Vmware ile oluşturduğumuz sanal makinelere farklı IP'ler vermek isteyebiliriz. Yani kısaca sanal makinelere farklı bir IP aralığından IP dağıtarak bir bakışta onların sanal makineler olduklarını ayırt edebiliriz.
+            DHCP ile Hyper-V veya VMware ile oluşturduğumuz sanal makinelere farklı IP'ler vermek isteyebiliriz. Yani kısaca sanal makinelere farklı bir IP aralığından IP dağıtarak bir bakışta onların sanal makineler olduklarını ayırt edebiliriz.
         </p>
         <p>
-            Sanal makinelerin ortak noktası; Ethernet Kartlarıdır. Ethernet kartı üreticileri bu kartlara Unique isimler atarlar. Buna MAC Adresi denir. Sanal makinelerin Ethernet kartlarının MAC adreslerinin ilk 6 hanesi aynı olur. Hyper-V'ler kendisi içinde, Vmware'ler de kendi içinde aynı durum geçerlidir.
+            Sanal makinelerin ortak noktası; Ethernet Kartlarıdır. Ethernet kartı üreticileri bu kartlara Unique isimler atarlar. Buna MAC Adresi denir. Sanal makinelerin Ethernet kartlarının MAC adreslerinin ilk 6 hanesi aynı olur. Hyper-V'ler kendisi içinde, VMware'ler de kendi içinde aynı durum geçerlidir.
         </p>
         <p>
-            MAC adreslerine göre hangi makineye nasıl davranılacağını belirleyebiliriz. <br>
-            DHCP > ... IPv4 > Scope > Policies > Right Click > Name > Add > MAC Adsress > örn: 00155D > Append Wildcard -> Eğer MAC adresinin sonuna * koyarsak bu numara ile başlayan, başına * koyarsak bu numara ile biten anlamına gelir. <br>
-            Bu noktadan itibaren Default Gateway ve IP Range bilgilerini girmemizi ister. <br>
-            Tamamladıktan sonra Adress Leases'da o MAC adresine göre atadığımız IP Adresini görürüz.
+          MAC adreslerine göre hangi makineye nasıl davranılacağını belirleyebiliriz. <br>
+        </p>
+        <p class="bg-script">
+          > DHCP <br>
+          > ... IPv4 <br>
+          > Scope <br>
+          > Policies <br>
+          > Right Click <br>
+          > Name <br>
+          > Add <br>
+          > MAC Adsress <br>
+          > örn: 00155D <br>
+          > Append Wildcard -> Eğer MAC adresinin sonuna * koyarsak bu numara ile başlayan, başına * koyarsak bu numara ile biten anlamına gelir.
+        </p>
+        <p>
+          Append Wildcard -> Eğer MAC adresinin sonuna * koyarsak bu numara ile başlayan, başına * koyarsak bu numara ile biten anlamına gelir.
+        </p>
+        <p>
+          Bu noktadan itibaren Default Gateway ve IP Range bilgilerini girmemizi ister. <br>
+          Tamamladıktan sonra Adress Leases'da o MAC adresine göre atadığımız IP Adresini görürüz.
         </p>
 
         <h4>DHCP'de hizmetin sürekliliğini sağlamak</h4>
         <p>
-            İki farklı makineye DHCP Server kurulur. <br>
-            ... > Scope > Right Click > Properties > Advanced > Conflict -> DHCP Server IP'yi dağıtmadan önce 3 defa sorar. İki DHCp Server'a da aynı ayar yapılır. Bu sayede IP çakışması önlenir. (Makineler her açıldığında DHCP Discover aşamasından başlar.) 
+          İki farklı makineye DHCP Server kurulur. <br>
         </p>
+        <p class="bg-script">
+          > ... <br>
+          > Scope <br>
+          > Right Click <br>
+          > Properties <br>
+          > Advanced <br>
+          > Conflict 
+        </p>
+        <p>
+          Conflict -> DHCP Server IP'yi dağıtmadan önce 3 defa sorar. İki DHCp Server'a da aynı ayar yapılır. Bu sayede IP çakışması önlenir. (Makineler her açıldığında DHCP Discover aşamasından başlar.) 
+        </p>
+
         <h4>Split Scope(Scope Bölmek)</h4>
         <p>
-            Scope manuel ve otomatik olarak bölünebilirler. Bu bölümde manuel olarak nasıl böleceğimizi göreceğiz. Scope oluştururken A Class bir IP dağıtmak en mantıkllısıdır. Elimize ciddi anlamda bir IP dağıtma imkanı verir. Hatta istersek bu IP aralığını birden fazla aralığa bölerek de dağıtabiliriz. Bölsek bile A Class IP'lerin Prefix'i /8 olduğu için aynı Network'te olurlar.
+          Scope manuel ve otomatik olarak bölünebilirler. Bu bölümde manuel olarak nasıl böleceğimizi göreceğiz. Scope oluştururken A Class bir IP dağıtmak en mantıkllısıdır. Elimize ciddi anlamda bir IP dağıtma imkanı verir. Hatta istersek bu IP aralığını birden fazla aralığa bölerek de dağıtabiliriz. Bölsek bile A Class IP'lerin Prefix'i /8 olduğu için aynı Network'te olurlar.
         </p>
         <h5>Uygulama</h5>
         <p>
-            1.DHCP Server; <br>
-            Sanalda başka bir makineye DHCP Server kurulur. Authorized edildikten sonra; İlk DHCP Server'a gidilir. A Class'tan IP aralığı dağıtacak bir Scope oluşturulur. Örneğin; 10.0.0.0 - 10.0.0.100
+          1.DHCP Server; <br>
+          Sanalda başka bir makineye DHCP Server kurulur. Authorized edildikten sonra; İlk DHCP Server'a gidilir. A Class'tan IP aralığı dağıtacak bir Scope oluşturulur. Örneğin; 10.0.0.0 - 10.0.0.100
         </p>
         <p>
-            2.DHCP Server; <br>
-            1.DHCP Server'dan verdiğimiz ilk IP aralığının devamından Scope oluşturuyoruz. Örneğin; 10.0.0.101 - 10.0.0.254
+          2.DHCP Server; <br>
+          1.DHCP Server'dan verdiğimiz ilk IP aralığının devamından Scope oluşturuyoruz. Örneğin; 10.0.0.101 - 10.0.0.254
         </p>
         <p>
-            Bu şekilde aynı Scope ikiye bölünmüş oldu fakat burada IP'nin Client'lere hangi DHCP Server'dan dağıtılacağı gibi bir problem var. Biz bunu şuanda bilemeyiz. Ancak ikisinden birini Primary belirleyebiliriz. Daha doğrusu bunu sağlamak için belli bir DHCP'yi direkt olarak Primary belirlemek gibi bir seçeneğimiz yok. Dolaylı yoldan diğer bir tanesi hariç diğerine "Delay Configuration" yaparız.
+          Bu şekilde aynı Scope ikiye bölünmüş oldu fakat burada IP'nin Client'lere hangi DHCP Server'dan dağıtılacağı gibi bir problem var. Biz bunu şuanda bilemeyiz. Ancak ikisinden birini Primary belirleyebiliriz. Daha doğrusu bunu sağlamak için belli bir DHCP'yi direkt olarak Primary belirlemek gibi bir seçeneğimiz yok. Dolaylı yoldan diğer bir tanesi hariç diğerine "Delay Configuration" yaparız.
         </p>
         <p>
-            2.DHCP Server'ın hizmetini geçiktirmek için; <br>
-            2.DHCP Server > Right Click > Properties > Scope(Hangi Scope için geçikme istiyorsak) > Advanced > Delay Configuration -> 10 ms <br>
-            Bunu uygulamadan önce aslında yukarıdaki gibi yarı yarıya değil de 1.DHCP'nin çok daha geniş bir IP aralığı dağıtmasını sağlamalıyız. Fakat bu oranı belirlerken şu kritere dikkat etmeliyiz; 2.DHCP Server'da bütün Network'ü tek başına çalıştırabilecek kadar sayıda IP dağıtabilmeli. Çünkü amacımız eğer 1.DHCP Server çökerse 2.DHCP Server'dan devam etmesini sağlamak. 
+          2.DHCP Server'ın hizmetini geçiktirmek için;
+        </p>
+        <p class="bg-script">
+          > 2.DHCP Server <br>
+          > Right Click <br>
+          > Properties <br>
+          > Scope(Hangi Scope için geçikme istiyorsak) <br>
+          > Advanced <br>
+          > Delay Configuration -> 10 ms
         </p>
         <p>
-            Özetleyecek olursak; iki farklı DHCP Server oluşturduk ve aynı Network'teki bir IP aralığını birbirlerini izleyecek şekilde dağıttık. İlk DHCP Server'ın, dağıtılacak IP aralığının büyük dilimini kapsamasını sağladık. 2.DHCP Server'ın hizmetin yavaşlattık ki her zaman 1.DHCP offer'ları 2.den daha hızlı gönderebilsin. Sonuç olarak 1.DHCP Server çöktüğünde 2.DHCP Server bütün Network'e IP dağıtır. 
+          Bunu uygulamadan önce aslında yukarıdaki gibi yarı yarıya değil de 1.DHCP'nin çok daha geniş bir IP aralığı dağıtmasını sağlamalıyız. Fakat bu oranı belirlerken şu kritere dikkat etmeliyiz; 2.DHCP Server'da bütün Network'ü tek başına çalıştırabilecek kadar sayıda IP dağıtabilmeli. Çünkü amacımız eğer 1.DHCP Server çökerse 2.DHCP Server'dan devam etmesini sağlamak. 
+        </p>
+        <p>
+          Özetleyecek olursak; iki farklı DHCP Server oluşturduk ve aynı Network'teki bir IP aralığını birbirlerini izleyecek şekilde dağıttık. İlk DHCP Server'ın, dağıtılacak IP aralığının büyük dilimini kapsamasını sağladık. 2.DHCP Server'ın hizmetin yavaşlattık ki her zaman 1.DHCP offer'ları 2.den daha hızlı gönderebilsin. Sonuç olarak 1.DHCP Server çöktüğünde 2.DHCP Server bütün Network'e IP dağıtır. 
         </p>
 
         <h4>Otomatik Split Scope</h4>
+        <p class="bg-script">
+          > 1.DHCP <br>
+          > ... <br>
+          > IPv4 <br>
+          > Scope <br>
+          > Right Click <br>
+          > Advanced <br>
+          > Split Scope
+        </p>
         <p>
-          1.DHCP > ... > IPv4 > Scope > Right Click > Advanced > Split Scope -> Policy yazılmamış olması gerekiyor. İstenirse kurulumdan sonra yapılabilir. > 2.DHCP'yi seçerek davet ederiz. > Microsft, havuzu %80, %20 paylaştırmamızı önerir. Fakat %20'lik Scope'ta Network'ün tamamını kaplayacak kadar büyük olmalı. Çok kritik değildir A Class IP dağıtacağımız için %50, %50'de yapılabilir. > İki DHCP'ninde Offer gecikmelerini girmemizi ister(Primary belirlemek). <br>
+          -> Policy yazılmamış olması gerekiyor. İstenirse kurulumdan sonra yapılabilir. > 2.DHCP'yi seçerek davet ederiz. 
+        </p>
+        <p>
+          > Microsft, havuzu %80, %20 paylaştırmamızı önerir. Fakat %20'lik Scope'ta Network'ün tamamını kaplayacak kadar büyük olmalı. Çok kritik değildir A Class IP dağıtacağımız için %50, %50'de yapılabilir. <br>
+          > İki DHCP'ninde Offer gecikmelerini girmemizi ister(Primary belirlemek). <br>
           Şuandan itibaren DHCP Server'lardan herhangi birisi bozulsa dahi herhangi bir sorunla kaşılaşılmaz, IP dağıtılır.
         </p>
         <p>
           DHCP Server ekranı dinamik değildir. Refresh edilmesi gerekir. Ayrıca oluşturduğumuz Scope'lar deaktif olurlar. Bunları Active konumuna getirerek hizmete almalıyız.
         </p>
         <p>
-          Herhangi bir DHCP Server, Scope'tan bir IP çıkarıp dağıttığında bunu bir veritabanına yazar. Split Scope yaptığımız için iki farklı veritabı oluşturulur. 2.2.DHCP Server için 1.DHCP Server'da yaptığımız ayarlar geçerli olmazlar. Failover ayarlaması yaparak ikisininde ortak veritabanı kullanmasını sağlayabiliriz. <br>
-          DHCP > DC > IPv4 > Right Click > Configure Failover > Gösterdiği Scope'u dahil etmeyi sorar. > Alternetig DHCP Server'i sorar(2.DHCP Server seçilir). > Relationship Name: Örneğin; dc0-server2016-20 > Maximum Client Load Time -> IP'nin kiralama süresinin üzerine ilave edilecek saat griilir. Bu Failover'a özeldir. > Load Balance || Hot Standby, Load Balance: DHCP Server'ların iş yükünü % kaç üstleneceğini belirliyoruz. Örneğin %50, %50 üstlenebilirler. Hot Standby: Aktif, pasif dengeler. Partner(2.DHCP) Standly(Pasif) mi ? yoksa Active'mi olacağını belirleriz. Active seçilirse 2.DHCP aktif, 1.DHCP pasif olur. Havuzun %x'i(Default %5'tir) Standby'a acil durum için Scope'tan ayrılan aralıktır. > |+|State Switchover Internal -> 1.DHCP çökerse, 2.DHCP çalışmaya ne zaman başlayacağı seçilir. Örneğin 1 saat içinde 1.DHCP'deki problemi çözeceğimizi düşünüyorsak 1 Saat ayarlanabilir. Genelde tercih edilmez. > |+|Enable Message Authentication -> iki Server arasındaki iletişim kriptolansın mı? İstersek bir parola belirlememizi ister. <br>
+          Herhangi bir DHCP Server, Scope'tan bir IP çıkarıp dağıttığında bunu bir veritabanına yazar. Split Scope yaptığımız için iki farklı veritabı oluşturulur. 2.2.DHCP Server için 1.DHCP Server'da yaptığımız ayarlar geçerli olmazlar. Failover ayarlaması yaparak ikisininde ortak veritabanı kullanmasını sağlayabiliriz.
+        </p>
+        <p class="bg-script">
+          > DHCP <br>
+          > DC <br>
+          > IPv4 <br>
+          > Right Click <br>
+          > Configure Failover <br>
+          > Gösterdiği Scope'u dahil etmeyi sorar. <br>
+          > Alternetig DHCP Server'i sorar(2.DHCP Server seçilir). <br>
+          > Relationship Name: Örneğin; dc0-server2016-20 <br>
+          > Maximum Client Load Time
+        </p>
+        <p>
+          -> IP'nin kiralama süresinin üzerine ilave edilecek saat griilir. Bu Failover'a özeldir.
+        </p>
+        <p class="bg-script">
+          > Load Balance || Hot Standby
+        </p>
+        <p>
+          Load Balance: DHCP Server'ların iş yükünü % kaç üstleneceğini belirliyoruz. Örneğin %50, %50 üstlenebilirler. Hot Standby: Aktif, pasif dengeler. Partner(2.DHCP) Standly(Pasif) mi ? yoksa Active'mi olacağını belirleriz.  <br>
+          "Active" seçilirse 2.DHCP aktif, 1.DHCP pasif olur. Havuzun %x'i(Default %5'tir) Standby'a acil durum için Scope'tan ayrılan aralıktır.
+        </p>
+        <p class="bg-script">
+          > [+]State Switchover Internal
+        </p>
+        <p>
+          -> 1.DHCP çökerse, 2.DHCP çalışmaya ne zaman başlayacağı seçilir. Örneğin 1 saat içinde 1.DHCP'deki problemi çözeceğimizi düşünüyorsak 1 Saat ayarlanabilir. Genelde tercih edilmez. 
+        </p>
+        <p class="bg-script">
+          [+]Enable Message Authentication
+        </p>
+        <p>
+          -> iki Server arasındaki iletişim kriptolansın mı? İstersek bir parola belirlememizi ister. <br>
           Bu noktadan itibaren iki DHCP Server aynı bilgileri taşır.          
         </p>
-        <p>
-          1. veya 2.DHCP Server > IPv4 > Properties > Failover -> Kurulum yapılırken girdiğimiz tüm ayarları bu konumdan değiştirebiliriz. > Edit > Delete -> Failover ortadan kalkar. DHCP Server'ların veritabanları bağımsız hale gelir. > 
+        <p class="bg-script">
+          > 1. veya 2.DHCP Server <br>
+          > IPv4 <br>
+          > Properties <br>
+          > Failover -> Kurulum yapılırken girdiğimiz tüm ayarları bu konumdan değiştirebiliriz. <br>
+          > Edit <br>
+          > Delete -> Failover ortadan kalkar. DHCP Server'ların veritabanları bağımsız hale gelir. 
+        </p>
+        <p class="bg-script">
+          > DHCP <br>
+          > Right Click <br>
+          > Replicate -> Zamanı hızlandırmış gibi olur yani durumunu günceller.
+        </p>
+        <p class="bg-script">
+          > DHCP <br>
+          > DC <br>
+          > All Task <br>
+          > Stop -> Servisi durdurur.
+        </p>
+        <p class="bg-script">
+          > 2.DHCP Server <br>
+          > IPv4 <br>
+          > Properties <br>
+          > Failover <br>
+          > Change to partner down 
         </p>
         <p>
-          DHCP > Right Click > Replicate -> Zamanı hızlandırmış gibi olur yani durumunu günceller.
-        </p>
-        <p>
-          DHCP > DC > All Task > Stop -> Servisi durdurur. <br>
-          2.DHCP Server > IPv4 > Properties > Failover > Changto to partner down -> Partner'e tekrar bağlanamayacaksa, sürekli iletişim kurmaya çalışmasını engeller. <br>
+          -> Partner'e tekrar bağlanamayacaksa, sürekli iletişim kurmaya çalışmasını engeller. <br>
           Yeni bir DHCP Server üretilip bunu da Partner yapabiliriz.
         </p>
         <p>
@@ -138,8 +243,12 @@
 
         <hr>
 
-        <p>
-          ... IPv4 > Right Click > New Multicast Scope -> Multicast IP aralığı D class'tır. (224.0.0.0 - 239.255.255.255) -> Burada belirleyeceğimiz aralık kaç tane Multicast yayın yapılağını belirtir. > TTL kaç HOP yapılabileceğini belirler.
+        <p class="bg-script">
+          > ... IPv4 <br>
+          > Right Click <br>
+          > New Multicast Scope -> Multicast IP aralığı D class'tır. (224.0.0.0 - 239.255.255.255) <br>
+          -> Burada belirleyeceğimiz aralık kaç tane Multicast yayın yapılağını belirtir. <br>
+          > TTL kaç HOP yapılabileceğini belirler.
         </p>
         <p>
           Bir Client Multicast IP'yi nasıl ister? <br>
@@ -150,7 +259,19 @@
 
         <h4>DHCP Server'ının veritabanıyla çalışma</h4>
         <p>
-          1) Yaptığı tüm hizmetleri bir veritabanında tutar. Konum: DHCP > Servere2016-20 > Right Click > Properties -> Veritabanın konumunu gösterir. -> C:Windows > System32 > dhcp.mdb -> Her şey bu veritabanında tutulur. <br>
+          1) Yaptığı tüm hizmetleri bir veritabanında tutar.
+        </p>
+        <p class="bg-script">
+          Konum: <br>
+          > DHCP <br>
+          > Server2016-20 <br>
+          > Right Click <br>
+          > Properties -> Veritabanın konumunu gösterir. <br>
+          -> C:Windows <br>
+          > System32 <br>
+          > dhcp.mdb -> Her şey bu veritabanında tutulur. 
+        </p>
+        <p>
           Bu konumda .log, .chk, .mdb dosyaları bulunur. <br>
           .log: Önce bütün işlemler burada kayıtlanır. Örneğin DORA aşaması buraya yazılır. <br>
           .chk: Veritabanına yazıldaysa eğer sorunsuz olduğu için Check dosyasına yazılır. <br>
@@ -169,16 +290,40 @@
         <h4>DHCP DataBase Backup ve Restore nasıl yapılır?</h4>
         <p>
           Veritabanı iki şekilde yedeklenir. Hiç sormadan, otomatik olarak yedekler. Veritabanın bulunduğu konuma Backup klasörü açıp yedekleri içine alır. <br>
-          Manuel -> DHCP Server > Right Click > Backup > Browse > OK. <br>
-          Restore -> DHHCP Server > Right Click > Restore > Browse -> otomatik alınan ya da Manuel yedeklediğimiz dosyayı seçeriz. > OK.
         </p>
-        <p>
-          DHCP > DC > IPv4 > Filters > Allow || Deny(Default'ta ikisi de Disable) -> Allow: Enable, bu listede hangi makinelerin MAC adresleri DHCP Server o makineye IP Adresi dağıtır.
+        <p class="bg-script">
+          Manuel -> <br>
+          > DHCP Server <br>
+          > Right Click <br>
+          > Backup <br>
+          > Browse <br>
+          > OK
         </p>
-        <p>
-          DHCP > DC > IPv4 > Properties > Advanced > Bindings -> DHCP üzerinde takılı olan Interface'leri görürüz. <br>
-          |+|Olanlar DHCP Broadcast'lerini dinler. <br>
-          |+|Olanlar DHCP Broadcast'lerini dinleyemezler.
+        <p class="bg-script">
+          Restore -> <br>
+          > DHCP Server <br>
+          > Right Click <br>
+          > Restore <br>
+          > Browse -> otomatik alınan ya da Manuel yedeklediğimiz dosyayı seçeriz. <br>
+          > OK
+        </p>
+        <p class="bg-script">
+          > DHCP <br>
+          > DC <br>
+          > IPv4 <br>
+          > Filters <br>
+          > Allow || Deny(Default'ta ikisi de Disable) <br>
+          -> Allow: Enable, bu listede hangi makinelerin MAC adresleri DHCP Server o makineye IP Adresi dağıtır.
+        </p>
+        <p class="bg-script">
+          > DHCP <br>
+          > DC <br>
+          > IPv4 <br>
+          > Properties <br>
+          > Advanced <br>
+          > Bindings -> DHCP üzerinde takılı olan Interface'leri görürüz. <br>
+          [+]Olanlar DHCP Broadcast'lerini dinler. <br>
+          [+]Olanlar DHCP Broadcast'lerini dinleyemezler.
         </p>
 
         

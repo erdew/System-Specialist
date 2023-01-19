@@ -34,6 +34,10 @@
         text-align: center;
       }
 
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
       h1, h2, h3, h4, h5, h6 {
         color: rgb(139, 233, 253);
       }
@@ -55,7 +59,7 @@
         background-color: #31333a;
         padding: 20px;
         border-radius: 10px;
-        text-align: center;
+        text-align: start;
         font-size: 16px;
         line-height: normal;
       }
@@ -64,53 +68,157 @@
   </head>
   <body class="container">
     <div class="container mt-5">
-        <h1 class="display-4">25.12.2022</h1>
+        <h1><a href="../index.html" class="display-4">25.12.2022</a></h1>
         <h4>Sanal Makineyi DHCP Server yapmak</h4>
         <p>
             Hyper-V'de DHCP Server olarak belirleyeceğimiz Sanal Makinenin Switch Port'unu External'dan Internal'a alıyoruz. Static IP atıyoruz(Örneğin; 192.168.0.10). DHCP Servisini kurabilmek için makinenin Static IP'si olmak zorundadır. <br>
             DC'yi seçtiğimi için öncelikle DC'nin Cache'ini temizliyoruz ki bir karışıklık yaşanmasın. Fakat bunu yapmak yerine yeni bir Sanal Makine oluşturuyoruz.
-            Server Manager > Tools > DC > Forward Lookup Zones > sirket.com > (Same as Parent Folder) 192.168.0.9 > Right Click > Clear Cache. <br>
-            Yukarıdaki işlemi ya da yeni bir Sanal Makineyi oluşturduktan sonra makineyi DHCP Server yapmak için şu yolu izleriz; <br>
-            Manage > Add Role > DHCP Server > |+|include <br>
-            Yukarıdaki adımdan sonra bir Scope oluşturmamız gerekiyor. Scope IP'lerin bulunduğu ve dağıtmak istediğimiz IP havuzu anlamına gelir. Ardından Complete DHCP Configuration'a tıklayarak devam ediyoruz. <br>
-            DHCP Administrators Group oluşturacak ve bunun üyeleri DHCP'de Full yetkiye sahip olacaklar. Bu grubun üyeleri DHCP Adminleri olacaklar, Scope açıp kapayabilecekler vs. <br>
-            DHCP Users Group oluşturulacak. Bu gruba üye yaptığımız kullanıcılar DHCP'ye müdahale edemeyen sadece izleme yetkisi olan kullanıcıları barındıracak yani sadece Read Only yetkileri olacak. Bu kullanıcıları Admin olarak biz belirleyeceğiz. Otomatik olarak ilk oluşturulduğunda hiç bir üyesi olmaz. Örneğin şirkette bir stajyer vs. var ve DHCP'yle alakalı bilgi edinmek istiyor. Bunun gibi durumlarda bu gruba bu kullanıcı eklenebilir.
+        </p>
+        <p class="bg-script">
+          > Server Manager <br>
+          > Tools <br>
+          > DC <br>
+          > Forward Lookup Zones <br>
+          > sirket.com <br>
+          > (Same as Parent Folder) 192.168.0.9 <br>
+          > Right Click <br>
+          > Clear Cache
+        </p>
+        <p>
+          Yukarıdaki işlemi ya da yeni bir Sanal Makineyi oluşturduktan sonra makineyi DHCP Server yapmak için şu yolu izleriz;
+        </p>
+        <p class="bg-script">
+          > Manage <br>
+          > Add Role <br>
+          > DHCP Server <br> 
+          > [+]include 
+        </p>
+        <p>
+          Yukarıdaki adımdan sonra bir Scope oluşturmamız gerekiyor. Scope IP'lerin bulunduğu ve dağıtmak istediğimiz IP havuzu anlamına gelir. Ardından Complete DHCP Configuration'a tıklayarak devam ediyoruz. <br>
+          DHCP Administrators Group oluşturacak ve bunun üyeleri DHCP'de Full yetkiye sahip olacaklar. Bu grubun üyeleri DHCP Adminleri olacaklar, Scope açıp kapayabilecekler vs. <br>
+          DHCP Users Group oluşturulacak. Bu gruba üye yaptığımız kullanıcılar DHCP'ye müdahale edemeyen sadece izleme yetkisi olan kullanıcıları barındıracak yani sadece Read Only yetkileri olacak. Bu kullanıcıları Admin olarak biz belirleyeceğiz. Otomatik olarak ilk oluşturulduğunda hiç bir üyesi olmaz. Örneğin şirkette bir stajyer vs. var ve DHCP'yle alakalı bilgi edinmek istiyor. Bunun gibi durumlarda bu gruba bu kullanıcı eklenebilir.
         </p>
         <p>
             DHCP Server kurduğumuz makine eğer bir Domain'e üye ise DHCP Authorize edecek. Authorize edebilmek için Forest Admin düzeyinde yetkili olmak zorunludur. Eğer DHCP Server'ı kuran kişi bu düzeyde bir yetkiye sahip değilse bu adımı atlayabilir. Daha sonra Admin bunu Authorize edebilir. Yetkiye sahip olduğumuzu tespit için kimlik girmemizi ister. Eğer Enterprise Admin isek bu Forset Admin yetkisini de kapsadığı için DHCP Server'ı aktif edebiliriz. Bu adımdan sonra "Commit" ederiz. 
         </p>
         <p>
-            Commit; <br>
-            Server Manager > Tools > DHHCP > dc.sirket.com(DHCP Server burasıdır) Eğer Authorize Skip edildiyse, bu konuma sağ tıklayıp Authorize edebiliriz. <br>
-            Authorized edilmiş tüm Server'ları görebileceğimiz konum; <br>
-            Server Manager > Tools > DHCP > Right Click > Manage Authorized Servers
+          Commit;
+        </p>
+        <p class="bg-script">
+          > Server Manager <br>
+          > Tools <br>
+          > DHCP <br>
+          > dc.sirket.com(DHCP Server burasıdır) Eğer Authorize Skip edildiyse, bu konuma sağ tıklayıp Authorize edebiliriz. <br>
+        </p>
+        <p>
+          Authorized edilmiş tüm Server'ları görebileceğimiz konum;
+        </p>
+        <p class="bg-script">
+          > Server Manager <br>
+          > Tools <br>
+          > DHCP <br>
+          > Right Click <br>
+          > Manage Authorized Servers
         </p>
         <p>
             Bir Client'i DHCP Client yapabilmek için IPv4 ayarını otomatiğe almalıyız. DHCP'de henüz Scope yok ise Client APIPA'dan IP alır. Henüz Scope hazırlamış değiliz, doğal olarak Client APIPA IP'ye sahip. Bu da Client'in Network'ü 30 saniyede bir DHCP Discover Broadcast yaparak meşgul etmesine sebep oluyor.
         </p>
 
         <h4>DHCP Server'da Scope Oluşturmak</h4>
-        <p>
-            Server Manager > Tools > DHCP > IPv4 > Right Click > New Scope Wizard > Scope ismi(Mantıklı, açıklayıcı bir isim tercih edilmeli) > Scope'akki IP Address Range belirlenir. Örneğin 192.168.0.0 - 192.168.0.100 -> Bu aralığı dağıtır. IP Adresini girdiğimiz anda otomatik olarak IP'nin Class'ına göre Subnet Mask atar. > Add Exclussion -> Yukarıda belirlediğimiz aralığa girmesini istemediğimiz IP'leri de bir aralık vererek belirtiriz. Örneğin 192.168.0.0 - 192.168.0.10. > IP'nin kiralanma süresi girilir. Bu kısımda sadece süre atanır. Süresiz olarak kiralama yapmak bu noktada mümkün değildir. Daha sonra nasıl yapıldığından bahsedilecek. > Default Gateway -> Diğer Server'ların(DNS ve WINS) IP'lerini ve Domain Name bilgilerini girmemizi ister. Şimdi mi yoksa daha sonra mı yapacağımızı sorar. Hayır dersekk sadece IP dağıtır fakat Client'lerin Gateway'leri olmaz. > Default Gateway gireriz. Örneğin 192.168.0.1(Network'ün ilk IP'si verilir) > O makinede DNS Server var ise DNS Server'ın ismini vs IP'sini otomatik kendisi girer. > DNS ve WINS hemen hemen aynı işleri yaparlar. Ufak farkları vardır. Network'te şuanda WINS bulunmuyorsa boş geçeriz.
+        <p class="bg-script">
+          > Server Manager 
+          > Tools 
+          > DHCP 
+          > IPv4 
+          > Right Click 
+          > New Scope Wizard 
+          > Scope ismi(Mantıklı, açıklayıcı bir isim tercih edilmeli)
+          > Scope'akki IP Address Range belirlenir. Örneğin 192.168.0.0 - 192.168.0.100
         </p>
         <p>
-            Yukarıdaki adımları izleyerek bir Scope kurmuş olduk. Son aşamada bize bu Scope'u aktif etmek isteyip, istemediğimizi sorar. Eğer aktif etmezsek IP dağıtılmaz, yani hizmet başlamaz fakat başlatılmaya hazır bekler. <br>
-            Sonradan aktif etmek için; <br>
-            Server Manager > Tools > DHCP > IPv4 > Scope > Right Click > Active
+          -> Bu aralığı dağıtır. IP Adresini girdiğimiz anda otomatik olarak IP'nin Class'ına göre Subnet Mask atar.
+        </p>
+        <p class="bg-script">
+          > Add Exclussion
         </p>
         <p>
-            Şuandan itibaren Client'lerin IP alabilmeleri için IPv4 otomatiğe alınabilir ya da Ethernet Resetlenebilir.
+          -> Yukarıda belirlediğimiz aralığa girmesini istemediğimiz IP'leri de bir aralık vererek belirtiriz. Örneğin 192.168.0.0 - 192.168.0.10. > IP'nin kiralanma süresi girilir. Bu kısımda sadece süre atanır. Süresiz olarak kiralama yapmak bu noktada mümkün değildir. Daha sonra nasıl yapıldığından bahsedilecek. 
+        </p>
+        <p class="bg-script">
+          > Default Gateway
         </p>
         <p>
-            Hangi DHCP Client'e hangi IP Adresinin dağıtıldığını görmek için; <br>
-            Server Manager > Tools > DHCP > IPv44 > Scope > Address Leases
+          -> Diğer Server'ların(DNS ve WINS) IP'lerini ve Domain Name bilgilerini girmemizi ister. Şimdi mi yoksa daha sonra mı yapacağımızı sorar. Hayır dersekk sadece IP dağıtır fakat Client'lerin Gateway'leri olmaz.
+        </p>
+        <p class="bg-script">
+          > Default Gateway, Örneğin 192.168.0.1(Network'ün ilk IP'si verilir)
+        </p>
+        <p class="bg-script">
+          > O makinede DNS Server var ise DNS Server'ın ismini vs IP'sini otomatik kendisi girer.
+        </p>
+        <p class="bg-script">
+          > DNS ve WINS hemen hemen aynı işleri yaparlar. Ufak farkları vardır. Network'te şuanda WINS bulunmuyorsa boş geçeriz.
+        </p>
+        <p>
+          Yukarıdaki adımları izleyerek bir Scope kurmuş olduk. Son aşamada bize bu Scope'u aktif etmek isteyip, istemediğimizi sorar. Eğer aktif etmezsek IP dağıtılmaz, yani hizmet başlamaz fakat başlatılmaya hazır bekler. <br>
+          Sonradan aktif etmek için;
+        </p>
+        <p class="bg-script">
+          > Server Manager <br>
+          > Tools <br>
+          > DHCP <br>
+          > IPv4 <br>
+          > Scope <br>
+          > Right Click <br>
+          > Active
+        </p>
+        <p>
+          Şuandan itibaren Client'lerin IP alabilmeleri için IPv4 otomatiğe alınabilir ya da Ethernet Resetlenebilir.
+        </p>
+        <p>
+          Hangi DHCP Client'e hangi IP Adresinin dağıtıldığını görmek için;
+        </p>
+        <p class="bg-script">
+          > Server Manager <br>
+          > Tools <br>
+          > DHCP <br>
+          > IPv4 <br>
+          > Scope <br>
+          > Address Leases
         </p>
 
         <hr>
         
+        <p class="bg-script">
+          > Server Manager <br>
+          > Tools <br>
+          > DHCP <br>
+          > DC <br>
+          > Scope <br>
+          > Right Click <br>
+          > Display Static <br>
+          > Right Click <br>
+          > Limited to
+        </p>
         <p>
-          Server Manager > Tools > DHCP > DC > Scope > Right Click > Display Static > Right Click > Limited to -> Kiralama süresini bu konumdan belirleriz. Unlimited yaparsak süresiz bir şekilde IP atanmış olur. O Scope'taki her IP için uygular. Bu tarz bir uygulamayı o Network'te çok sayıda IP dağıtabiliyorsak uygulamalıyız. Kısıtlı bir IP olmamalı. <br>
-          Server Manager > Tools > DHCP > DC > Scope > Right Click > Display Static > Right Click > Properties > End'i değiştirerek o Network'ün sınırına kadar kullanırız. Ücretsiz IP' kullanıyorsak Subnet'i geniş olanla başlarız. Direkt olarak 10'lu(A Class) Private IP'leri kullanarak başlarız. Subnetting'i gerçek IP kullandığımızda yapmalıyız. <br>
+          -> Kiralama süresini bu konumdan belirleriz. Unlimited yaparsak süresiz bir şekilde IP atanmış olur. O Scope'taki her IP için uygular. Bu tarz bir uygulamayı o Network'te çok sayıda IP dağıtabiliyorsak uygulamalıyız. Kısıtlı bir IP olmamalı.
+        </p>
+        <p class="bg-script">
+          > Server Manager <br>
+          > Tools <br>
+          > DHCP <br>
+          > DC <br>
+          > Scope <br>
+          > Right Click <br>
+          > Display Static <br>
+          > Right Click <br>
+          > Properties <br>
+          > End
+        </p>
+        <p>
+          -> End'i değiştirerek o Network'ün sınırına kadar kullanırız. Ücretsiz IP' kullanıyorsak Subnet'i geniş olanla başlarız. Direkt olarak 10'lu(A Class) Private IP'leri kullanarak başlarız. Subnetting'i gerçek IP kullandığımızda yapmalıyız.
+        </p>
+        <p>
           Private IP kullanıyorsak IP'lerin yetmemesi gibi bir duruma maruz kalmamalıyız. Eğer IP yetersiz gelirse yeni bir Scope oluşturmak zorundayız.
         </p>
         
@@ -118,9 +226,15 @@
         <p>
           DHCP Server olan bir Network'e Static IP'si olan bir makine Connect olursa ve atanan otomatik IP'ler ile sonradan bağlanan Static IP çakışabilir. Bu durumda makinelerden birisi Network'ten düşer. %50 ihtimalle iki makineden biri Network'ten düşer.
         </p>
+        <p class="bg-script">
+          > DHCP <br>
+          > IPv4 <br>
+          > Properties <br>
+          > Advanced <br>
+          > Conflict detection attemps 
+        </p>
         <p>
-          DHCP > IPv4 > Properties > Advanced > Conflict detection attemps -> <br>
-           Network'e kaç defa otomatik atamayı önerdiği IP'yi Broadcast ile soracağını belirliyoruz. Kaç defa Broadcast yapacağını belirliyoruz. 3 defa ardı ardına Broadcast yaptırmak en idealidir. 3 defa sorduktan sonra Network'ten bir cevap almazsa önerdiği IP'yi dağıtır. Network'te herhangi bir Client'te bu IP var ise bir sonraki IP'yi önerir.
+          -> Network'e kaç defa otomatik atamayı önerdiği IP'yi Broadcast ile soracağını belirliyoruz. Kaç defa Broadcast yapacağını belirliyoruz. 3 defa ardı ardına Broadcast yaptırmak en idealidir. 3 defa sorduktan sonra Network'ten bir cevap almazsa önerdiği IP'yi dağıtır. Network'te herhangi bir Client'te bu IP var ise bir sonraki IP'yi önerir.
         </p>
         <p>
           Bu aşamadan sonra yine Static IP'li bir makine Network'e eklenirse aynı çakışma problemi ile tekrardan kaşılaşırız.
@@ -128,8 +242,14 @@
 
         <hr>
 
+        <p class="bg-script">
+          > DHCP <br>
+          > IPv4 <br>
+          > Scope <br>
+          > Address Pool <br>
+          > Add Exclusion
+        </p>
         <p>
-          DHCP > IPv4 > > Scope > Address Pool > Add Exclusion <br>
           Daha sonradan yukarıdaki konuma giderek Scope'tan dağıtılmasını istemediğimiz IP Adreslerini belirleyebiliriz. Eğer halihazırda Exclusion'a eklediğimiz IP Adres'leri DHCP Client'lere dağıtılmış durumda ise DHCP Server DHCP Clint'lerin bu IP Adres'lerini bırakmasını sağlar. Bunun gerçekleşmesi zaman alır. IP Adres'ini hemen bırakmasını istediğimiz DHCP Client'e giderek Ethernet'i Reset'leyerek ya da CMD'den komut girerek hemen sonuç alabiliriz.
         </p>
 
@@ -139,42 +259,125 @@
         </p>
         <p>
           IP Adresleri, Ethernet Kartları'na atabilir. Bu durumda IP Rezervasyonunu Ethernet kartlarına hatta bu kartların da MAC Adreslerine yapabiliriz. <br>
-          Bunu yapabilmek için; <br>
-          DHCP > DC > IPv4 > Scope > Reservations <br>
-          Ya da direkt olarak DHCP Client'i seçerek o anda üzerinde bulunan IP Adresini o DHCP Client için rezerve edebiliriz; <br>
-          DHCP > DC > IPv4 > Scope > Address Leases > Bağlı olan makinelere sağ tık > Add to Reservation
+          Bunu yapabilmek için;
+        </p>
+        <p class="bg-script">
+          > DHCP <br>
+          > DC <br>
+          > IPv4 <br>
+          > Scope <br>
+          > Reservations
         </p>
         <p>
-          Yukarıda bahsettiğimiz gibi özellikle bir IP Adresine rezervasyon yapmak istiyorsak mutlaka o IP Adresinin bulunduğu makinenin Ethernet Kartının MAC Adresini öğrenmek durumundayız. Bunu öğrenmek için; <br>
-          Makine > Network Con > Ethernet > Ethernet Status > Details -> Bu konumda MAC Adresi bilgisini görebiliriz. <br>
+          Ya da direkt olarak DHCP Client'i seçerek o anda üzerinde bulunan IP Adresini o DHCP Client için rezerve edebiliriz;
+        </p>
+        <p class="bg-script">
+          > DHCP <br>
+          > DC <br>
+          > IPv4 <br>
+          > Scope <br>
+          > Address Leases <br>
+          > Bağlı olan makinelere Right Click <br>
+          > Add to Reservation
+        </p>
+        <p>
+          Yukarıda bahsettiğimiz gibi özellikle bir IP Adresine rezervasyon yapmak istiyorsak mutlaka o IP Adresinin bulunduğu makinenin Ethernet Kartının MAC Adresini öğrenmek durumundayız. Bunu öğrenmek için;
+        </p>
+        <p class="bg-script">
+          > Makine <br>
+          > Network Configuration <br>
+          > Ethernet <br>
+          > Ethernet Status <br>
+          > Details -> Bu konumda MAC Adresi bilgisini görebiliriz.
+        </p>
+        <p class="bg-script">
           Ya da; <br>
-          DHCP Server > CMD > ping server-1.sirket.com > arp -a -> Network'teki bir IP'ye DNS üzerinden Ping atmış olduk. arp -a'nın çalışması için en az bir Client'e Ping atmış olmak gerekiyor. arp -a ise bize iletişime geçtiği bütün IP Adreslerinin MAC Adresini listeler. <br>
+          > DHCP Server <br>
+          > cmd <br>
+          > ping server-1.sirket.com <br>
+          > arp -a
+        </p>
+        <p>
+          -> Network'teki bir IP'ye DNS üzerinden Ping atmış olduk. arp -a'nın çalışması için en az bir Client'e Ping atmış olmak gerekiyor. arp -a ise bize iletişime geçtiği bütün IP Adreslerinin MAC Adresini listeler.
+        </p>
+        <p>
           Ya da direkt liste şeklinde görebiliriz; <br>
-          DHCP > DC > IPv4 > Scope > Address Leases > Export > Save -> Liste görünür. <br>
-          DHCP > DC > IPv4 > Scope > Reservation > New Reservation > Reservation Name -> Rezerve etmek istediğimiz IP Adresi ve makinenin MAC Adresi girilir. <br>
-          Yukarıdaki rezervasyon işlemini yaptıktan sonra; <br>
-          DHCP > DC > IPv4 > Scope > Address Leases > Reservation(inactive) -> olarak görünüyor ise bu IP Adresi şuanda kullanıldığı için olabilir. Bunu düzeltmek için bu IP adresini kullanan DHCP Client'in IP'yi bırakmasını sağlamalıyız. Bunun için Client'e gidilir ve Ethernet'e Reset atılır. <br>
+        </p>
+        <p class="bg-script">
+          > DHCP <br>
+          > DC <br>
+          > IPv4 <br>
+          > Scope <br>
+          > Address Leases <br>
+          > Export <br>
+          > Save -> Liste görünür.
+        </p>
+        <p class="bg-script">
+          > DHCP <br>
+          > DC <br>
+          > IPv4 <br>
+          > Scope <br>
+          > Reservation <br>
+          > New Reservation <br>
+          > Reservation Name -> Rezerve etmek istediğimiz IP Adresi ve makinenin MAC Adresi girilir. <br>
+        </p>
+        <p>
+          Yukarıdaki rezervasyon işlemini yaptıktan sonra;
+        </p>
+        <p class="bg-script">
+          > DHCP <br>
+          > DC <br>
+          > IPv4 <br>
+          > Scope <br>
+          > Address Leases <br>
+          > Reservation(inactive)
+        </p>
+        <p>
+          -> olarak görünüyor ise bu IP Adresi şuanda kullanıldığı için olabilir. Bunu düzeltmek için bu IP adresini kullanan DHCP Client'in IP'yi bırakmasını sağlamalıyız. Bunun için Client'e gidilir ve Ethernet'e Reset atılır. <br>
           Bu listede eğer verdiğimiz IP Adresi iki tane görünüyorsa rezerve etmek istediğimizi değil de diğer makineden IP kaldırılır. IP kaldırıldıktan sonra listeden çıkar.
         </p>
-        !!! BU NOKTADAN SONRAKİ NOTLARI TEKRAR DÜZENLE !!!
+ 
         <hr>
+
         <p>
           İstersek Exclusion'da olan bir IP Adresi için de rezervasyon yapabiliriz. Static IP vermek yerine DHCP ile sonra rezerve ederek ilgili MAC Adresine IP atanabilir fakat Static verilmesi gerekenler direkt makineye gidip verilmelidir.
         </p>
-        <p>
-          DHCP > DC > IPv4 > Scope > Reservation > [192.168.3.22] -> Örneğin oluşturduğumuz rezervasyon. > Sağ tık > Properties > Supported Types
+        <p class="bg-script">
+          > DHCP <br>
+          > DC <br>
+          > IPv4 <br>
+          > Scope <br>
+          > Reservation <br>
+          > [192.168.3.22] -> Örneğin oluşturduğumuz rezervasyon. <br>
+          > Right Click <br>
+          > Properties <br>
+          > Supported Types
         </p>
         <p>
-          BOOTP -> DHCP'nin ilkel halidir. Kullanım amacı; Üzerinde OS olmayan bir makineye uzaktan OS kurmak için kurulum dosyalarını uzaktan gönderebilmek için Ethernet üzerindeki ilkel bir yazılım BOOTP ile Broadcast yapıp Network'ten bir IP ister. OS Kurulu olmadığı için üzerinde IP Adresi yoktur. Bu durumda BOOTP, makinenin IP almasını sağlar. <br>
+         <b>BOOTP</b> -> DHCP'nin ilkel halidir. Kullanım amacı; Üzerinde OS olmayan bir makineye uzaktan OS kurmak için kurulum dosyalarını uzaktan gönderebilmek için Ethernet üzerindeki ilkel bir yazılım BOOTP ile Broadcast yapıp Network'ten bir IP ister. OS Kurulu olmadığı için üzerinde IP Adresi yoktur. Bu durumda BOOTP, makinenin IP almasını sağlar. <br>
           IP'nin ne ile atanacağını seçebiliriz; <br>
-          DHCP > DC > IPv4 > Scope > Properties > Advanced > DHCP(seçilidir)
+        </p>
+        <p class="bg-script">
+          > DHCP <br>
+          > DC <br>
+          > IPv4 <br>
+          > Scope <br>
+          > Properties <br> 
+          > Advanced <br>
+          > DHCP(seçilidir)
         </p>
 
         <hr>
 
         <h4>Gateway değiştirdiğimiz durumda neler yapılır?</h4>
+        <p class="bg-script">
+          > DHCP <br>
+          > DC <br>
+          > IPv4 Scope <br>
+          > Scope Options <br>
+          > Router
+        </p>
         <p>
-          DHCP > DC > IPv4 Scope > Scope Options > Router <br>
           Router'a çift tıklarız. IP Address bölümünden yeni Gateway'i Add edip, eskisini Remove ederiz. <br>
           Bu şekilde DHCP Client'lerin yeni Gateway'i almasını sağlar. Bu şekilde Scope Options'taki bütün ayarları değiştirebiliriz. Yeni bir "Options" girmek için burası kullanılır.
         </p>
@@ -184,8 +387,20 @@
         <h4>Birden fazla Gateway'imiz olması durumunda neler yapılır?</h4>
         <p>
           Birden fazla Gateway'imizin olması demek; Birden fazla internet bağlantımız var demektir. Server'lardan vs. bir kaçını farklı Gateway'e bağlayabiliriz. Daha doğrusu Scope'taki herhangi bir makineyi istediğimiz bir Gateway'e bağlayabiliriz. <br>
-          Scope'tan herhangi bir IP Adresini verebiliriz fakat diyelim ki iki internet bağlantımız var ve birisi çok hızlı ve bu hızlı interneti bir Server'a vermek istiyoruz. Onun trafiği çok yoğun olabilir ve o yoğun trafiği bu internet ile kontrol etmesini sağlayabiliriz. Bunu yapmak için o Server'ı Rezerve edebiliriz. Yapmak zorunda değiliz fakat Server olduğu için zaten IP'sini sabitlemek iyi bir fikirdir. Rezerve edilmiş IP Adresli Server'ın Gateway'ini değiştirmek için; <br>
-          DHCP > DC > IPv4 > Scope > Reservations > [192.168.3.22] > Configure Options >|+|Router -> Örneğin; 0.2 Gateway'i girilir. <br>
+          Scope'tan herhangi bir IP Adresini verebiliriz fakat diyelim ki iki internet bağlantımız var ve birisi çok hızlı ve bu hızlı interneti bir Server'a vermek istiyoruz. Onun trafiği çok yoğun olabilir ve o yoğun trafiği bu internet ile kontrol etmesini sağlayabiliriz. Bunu yapmak için o Server'ı Rezerve edebiliriz. Yapmak zorunda değiliz fakat Server olduğu için zaten IP'sini sabitlemek iyi bir fikirdir. <br>
+          Rezerve edilmiş IP Adresli Server'ın Gateway'ini değiştirmek için;
+        </p>
+        <p class="bg-script">
+          > DHCP <br>
+          > DC <br>
+          > IPv4 <br>
+          > Scope <br>
+          > Reservations <br>
+          > [192.168.3.22] <br>
+          > Configure Options <br>
+          > [+]Router -> Örneğin; 0.2 Gateway'i girilir.
+        </p>
+        <p>
           Yukarıdaki konumdan IP'ye çift tıklayarak gördüğümüz Scope Options'tan mirasla gelen Options'ları değiştiremeyiz. Mirasın en tepesinde Scope Options bulunur.
         </p>
 
@@ -204,16 +419,54 @@
           <li>Müdürler Class'ına atamak istediğimiz özel Option'lar eklenir.</li>
           <li>Müdürler Class'ına üye olmasını istediğimiz makineleri bu User Class'a ekleriz.</li>
         </ol>
+
         <h6>1 ve 2.Aşamalar</h6>
-        <p>
-          DHCP > DC > IPv4 > Right Click > Define User Class > Add > Display Name(Müdürler) > ASCII kodun altına tıklanır. -> "Müdürler" yazılır. > OK > User Class oluşturuldu. > Next > Bu Class'ta olduğunu iddia eden makine geldiğinde(User Class'ı "Müdürler" olan) Scope'un içinden bir özel aralıktan IP verebiliriz. Bunu yapmazsak özel bir aralıktan dağıtmaz.(No seçersek) -> 192.168.0.50 - 192.168.0.60 -> Percentage of IP Address Range verilir. 50'den 60'a vermemizin sebebi bu IP'lerin Müdürler makinelerini gösterdiğini daha rahat ayırt etmektir. > Amacımı bu User Class'a farklı bir Gateway vermek.|+|Router seçilir, aşağıdan Gateway Adresi girilir. Örneğin 192.168.0.3 > Add > Next > Finish.
+        <p class="bg-script">
+          > DHCP <br>
+          > DC <br>
+          > IPv4 <br>
+          > Right Click <br>
+          > Define User Class <br>
+          > Add <br>
+          > Display Name(Müdürler) <br>
+          > ASCII kodun altına tıklanır. -> "Müdürler" yazılı<r class="br"></r>
+          > OK <br> 
+          > User Class oluşturuldu. <br>
+          > Next
         </p>
-        <h6>3.Aşama</h6>
         <p>
-          Müdürlerin makinesinde > CMD > ipconfig /setclassid Ethernet(Ethernet kartının ismi girilir) Müdürler(User Class name girilir) <br>
-          Yukarıda hangi Ethernet'i Müdürler User Class'ına katacaksak o Ethernet'in ismini yazarız. Bu noktadan sonra Command Prompt'ta Succesfully mesajını almalıyız. > ipconfig /release > ipconfig /renew -> IP'yi bırakıp, yeniden almasını sağlarız. > ipconfig all -> Detaylı olarak User Class name, MAC Adresi, IP Adresi vs. görüntüleriz. <br>
+          -> Bu Class'ta olduğunu iddia eden makine geldiğinde(User Class'ı "Müdürler" olan) Scope'un içinden bir özel aralıktan IP verebiliriz. Bunu yapmazsak özel bir aralıktan dağıtmaz.(No seçersek) <br>
+          -> 192.168.0.50 - 192.168.0.60 -> Percentage of IP Address Range verilir. 50'den 60'a vermemizin sebebi bu IP'lerin Müdürler makinelerini gösterdiğini daha rahat ayırt etmektir.
+        </p>
+        <p class="bg-script">
+             > Amacımız bu User Class'a farklı bir Gateway vermek. <br>
+             [+]Router seçilir, aşağıdan Gateway Adresi girilir. Örneğin 192.168.0.3 <br>
+             > Add <br>
+             > Next <br>
+             > Finish
+        </p>
+
+        <h6>3.Aşama</h6>
+        <p class="bg-script">
+          > Müdürlerin makinesinde; <br>
+          > cmd <br>
+          > ipconfig /setclassid Ethernet -> (Ethernet kartının ismi girilir) Müdürler(User Class Name girilir)
+        </p>
+        <p>
+          Yukarıda hangi Ethernet'i Müdürler User Class'ına katacaksak o Ethernet'in ismini yazarız. Bu noktadan sonra Command Prompt'ta Succesfully mesajını almalıyız.
+        </p>
+        <p class="bg-script">
+          > ipconfig /release <br>
+          > ipconfig /renew -> IP'yi bırakıp, yeniden almasını sağlarız. <br>
+          > ipconfig all -> Detaylı olarak User Class name, MAC Adresi, IP Adresi vs. görüntüleriz.
+        </p>
+        <p>
           Eğer makineyi User Class'tan çıkarmakk istiyorsak; <br>
-          Müdürlerin makinesinde > CMD > ipconfig /setclassid Ethernet(Ethernet kartının ismi girilir) (User Class name boş bırakılır)
+        </p>
+        <p class="bg-script">
+          > Müdürlerin makinesinde; <br>
+          > cmd <br>
+          > ipconfig /setclassid Ethernet(Ethernet kartının ismi girilir) (User Class name boş bırakılır)
         </p>
 
         <hr>
@@ -224,12 +477,12 @@
 
         <h4>Yukarıdaki senaryoyu Hyper-V'de uygulamak</h4>
         <p>
-          Sanalda şuanda VLAN yapamadığımız için gerçekten yeni bir Switch üretmemiz gerekiyor. Fakat zaten mantık aynı olacağı için bir problem yok. int-2 adında yeni bir Switch üretiriz. 1.Makine int1 Switch'ine bağlı bırakılır. 2.Makine int2 Switch'ine bağlanır. int1'e bağlı olan makine Broadcast yapınca int1 tünelinden DHCP Server'a Broadcast'i ulaştırabilir, alternatif bir yolu bile yoktur. Tersi 2.Makine için geçerlidir. Sanalda Network'ü tamamen izole etmek gerekibilir. Bunun için Switch'leri int değil de Private yapabiliriz. Yani sorun yaşarsan Private Switch üret o şekilde dene.
+          Sanalda şuanda VLAN yapamadığımız için gerçekten yeni bir Switch üretmemiz gerekiyor. Fakat zaten mantık aynı olacağı için bir problem yok. int-2 adında yeni bir Switch üretiriz. 1.Makine int1 Switch'ine bağlı bırakılır. 2.Makine int2 Switch'ine bağlanır. int1'e bağlı olan makine Broadcast yapınca int1 tünelinden DHCP Server'a Broadcast'i ulaştırabilir, alternatif bir yolu bile yoktur. Tersi 2.Makine için geçerlidir. Sanalda Network'ü tamamen izole etmek gerekebilir. Bunun için Switch'leri int değil de Private yapabiliriz. Yani sorun yaşarsan Private Switch üret o şekilde dene.
         </p>
         <p>
-          Ürettiğimiz Private 2 Switch'ine 192.168.1.10 IP'sini veririz. <br>
+          Ürettiğimiz "Private 2" Switch'ine 192.168.1.10 IP'sini veririz. <br>
           DHCP Server'da 1.0 için yeni bir Scope oluştururuz. <br>
-          Üretileen Scope'u farklı network'leri içerecek kadar büyük bir aralık belirlersek; kendisi otomatik Scope'lara ayırır. Bunu Superscope klasörü altında listeler. Tek tek uğraşmaya gerek kalmaz, sadece koaly yönetim sağlar.
+          Üretileen Scope'u farklı network'leri içerecek kadar büyük bir aralık belirlersek; kendisi otomatik Scope'lara ayırır. Bunu <b>Superscope</b> klasörü altında listeler. Tek tek uğraşmaya gerek kalmaz, sadece kolay yönetim sağlar.
         </p>
 
         
