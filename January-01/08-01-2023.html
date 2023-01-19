@@ -34,6 +34,10 @@
         text-align: center;
       }
 
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
       h1, h2, h3, h4, h5, h6 {
         color: rgb(139, 233, 253);
       }
@@ -55,8 +59,8 @@
         background-color: #31333a;
         padding: 20px;
         border-radius: 10px;
-        text-align: center;
-        font-size: 16px;
+        text-align: start;
+        font-size: 15px;
         line-height: normal;
       }
 
@@ -64,64 +68,85 @@
   </head>
   <body class="container">
     <div class="container mt-5">
-        <h1 class="display-4">08.01.2023</h1>
+        <h1><a href="../index.html" class="display-4">08.01.2023</a></h1>
         <h4>DNS Server(DNS Servisi)</h4>
         <p>
-            DNS'in işi Host Name'lerledir. Host Name'leri ve ona karşılık gelen IP'leri otomatik olarak öğrenebilen ve kaydedebilen, bu kayıtlarda bir değişiklik olursa otomatik olarak değiştirebilen ve Host Name sorgularına yanıt verebilen servistir. <br>
-            Eğer bir Domain ortamı var ise en az 1 adet DNS Server olmak zorundadır.
-            Work Group'ta olması gerekmez.
+          DNS'in işi Host Name'lerledir. Host Name'leri ve ona karşılık gelen IP'leri otomatik olarak öğrenebilen ve kaydedebilen, bu kayıtlarda bir değişiklik olursa otomatik olarak değiştirebilen ve Host Name sorgularına yanıt verebilen servistir. <br>
+          Eğer bir Domain ortamı var ise en az 1 adet DNS Server olmak zorundadır.
+          Work Group'ta olması gerekmez.
         </p>
         
         <h4>DNS Suffix</h4>
         <p>
-            .com, .org vs nereden çıktı? <br>
-            Ortak özelliklerine göre internet Network'ünde karmaşıklığı önlemek için kategorize ederler. Aynı zamanda bir güvenlik duvarıdırlar.<br>
-            Domain'ler hiyerarşik olarak Level'lara ayrılmıştır. <br>
-            En üst Level'da "Root Level Domain" yer alır. First Level Domain'ler, Root Level Domain'lere bağlılardır. <br>
-            .edu - education <br>
-            .com - commertial <br>
-            .gov - goverment <br>
-            .org - organization <br>
-            Bunlar Top Level Domain'lerdir.(.tr, .en vs de dahildir) <br>
-            Örneğin; ornek.com -> Second Level Domain'dir. <br>
-            Örneğin; istanbul.ornek.com -> Sub Domain'dir. Second Level'dan sonra kaç nokta gelirse artık Sub Domain olarak adlandırılır. <br>
+          .com, .org vs nereden çıktı? <br>
+          Ortak özelliklerine göre internet Network'ünde karmaşıklığı önlemek için kategorize ederler. Aynı zamanda bir güvenlik duvarıdırlar.<br>
+          Domain'ler hiyerarşik olarak Level'lara ayrılmıştır. <br>
+          En üst Level'da "Root Level Domain" yer alır. First Level Domain'ler, Root Level Domain'lere bağlılardır. <br>
+          .edu - education <br>
+          .com - commertial <br>
+          .gov - goverment <br>
+          .org - organization <br>
+          Bunlar Top Level Domain'lerdir.(.tr, .en vs de dahildir) <br>
+          Örneğin; ornek.com -> Second Level Domain'dir. <br>
+          Örneğin; istanbul.ornek.com -> Sub Domain'dir. Second Level'dan sonra kaç nokta gelirse artık Sub Domain olarak adlandırılır.
         </p>
         <p>
-            Örnek olarak (www.ist.ornek.com)'i inceleyelim; <br>
-            www.ist.ornek.com = FQDN(Full Qualified Domain Name) <br>
-            www = Host Name <br>
-            .ist = Sub Level Domain <br>
-            .ornek.com = Second Level Domain, aynı zamanda DNS Suffix<br>
-            ist.ornek.com = DNS Suffix <br>
-            .com = Top Level Domain <br>
-            www.ist.ornek.com. = (.), Root Domin'in ismidir. <br>
-            Aslında her zaman .com'dan sonra da bir nokta daha vardır. Fakat bunu yazmak bir adres verirken adresin dünyada olduğunu söylemek gibi bir şeydir. Doğal olarak yazılmasına gerek yoktur.
+          Örnek olarak (www.ist.ornek.com)'i inceleyelim; <br>
+          www.ist.ornek.com = FQDN(Full Qualified Domain Name) <br>
+          www = Host Name <br>
+          .ist = Sub Level Domain <br>
+          .ornek.com = Second Level Domain, aynı zamanda DNS Suffix<br>
+          ist.ornek.com = DNS Suffix <br>
+          .com = Top Level Domain <br>
+          www.ist.ornek.com. = (.), Root Domin'in ismidir. <br>
+          Aslında her zaman .com'dan sonra da bir nokta daha vardır. Fakat bunu yazmak bir adres verirken adresin dünyada olduğunu söylemek gibi bir şeydir. Doğal olarak yazılmasına gerek yoktur.
+        </p>
+        <p class="bg-script">
+          > Root <br>
+          > .com, .gov ... <br>
+          > ornek, google <br>
+          > ist.ornek ...
         </p>
         <p>
-            Root > .com, .gov ... > ornek, google > ist.ornek ... <br>
-            Yukarıdakilerin her biri aslında bir Domain'dir. <br>
-            Her birini ayrı ayrı yönetecek en az bir DNS Server gereklidir.
+          Yukarıdakilerin her biri aslında bir Domain'dir. <br>
+          Her birini ayrı ayrı yönetecek en az bir DNS Server gereklidir.
+        </p>
+        <p class="bg-script">
+          > DNS <br>
+          > DC <br>
+          > Forward Lookup Zones <br>
+          > Properties <br>
+          > Root Hints -> Hangi DNS'lerin olduğunu görürüz.
         </p>
         <p>
-            DNS > DC > Forward Lookup Zones > Properties > Root Hints -> Hangi DNS'lerin olduğunu görürüz. <br>
-            Dünyaya yayılmış olan 13 tane Root Domain ve bunları yöneten DNS Server'lar vardır. <br>
-            C > Windows > System32 > DNS > Cache <br>
-            Yukarıdaki konumda 13 tane Root Domain'in DNS Server bilgileri yer alır. <br>
-            Dünyada bu Root Domain'lerin çok sayıda kopyası bulur, ağırlıklı olarak Avrupadadır. Root'lara bir ekleme vs. olduğunda orjinal Root kopyalarına bu değişikliklerin kopyalarını gönderir.
+          Dünyaya yayılmış olan 13 tane Root Domain ve bunları yöneten DNS Server'lar vardır.
+        </p>
+        <p class="bg-script">
+          > C <br>
+          > Windows <br>
+          > System32 <br>
+          > DNS <br>
+          > Cache
+        </p>
+        <p>
+          Yukarıdaki konumda 13 tane Root Domain'in DNS Server bilgileri yer alır. <br>
+          Dünyada bu Root Domain'lerin çok sayıda kopyası bulur, ağırlıklı olarak Avrupadadır. <br>
+           Root'lara bir ekleme vs. olduğunda orjinal Root kopyalarına bu değişikliklerin kopyalarını gönderir.
         </p>
 
         <h4>IANA(Internet Assigned Numbers Authority)</h4>
         <p>
             İnternettiki tüm kuralları koyan organizasyondur. <br>
-            Bir şirket internette yer almak isterse bu organizasyondan Domian'i satın almak durumundadır. IANA aracı şirketlere bu Domain'leri satma yetkisi vermiştir. Domain satın almak isteyen şirketler, aracı şirketlerden bu Domain'leri satın alırlar. Daha doğrusu "Register" ederler. IANA, örneğin .com'a Register yapma yani kayıt girme veya yaptığı kaydı değiştirme, silme vs. gibi yetkiler vermiştir.
+            Bir şirket internette yer almak isterse bu organizasyondan Domian'i satın almak durumundadır. IANA aracı şirketlere bu Domain'leri satma yetkisi vermiştir. <br> Domain satın almak isteyen şirketler, aracı şirketlerden bu Domain'leri satın alırlar. Daha doğrusu "Register" ederler. IANA, örneğin .com'a Register yapma yani kayıt girme veya yaptığı kaydı değiştirme, silme vs. gibi yetkiler vermiştir.
         </p>
         <p>
           Client'lerin DNS ayarlarına gidip belli bir DNS girersek eğer, tüm isim çözümlemelerini o DNS üzerinden yapar. Daha doğru isim çözümlemek için önce girilen DNS'i dener. Eğer çözümleme yapılamazsa süreç sıfırdan başlar. <br>
-          Örneğin x şirketindeki bilgisayarların tümüne y DNS Server'ını ayarlarsak x bilgisayarları her sorgu yaptığında önce kendi üzerindeki Host Name Domain Cache'ine bakar karşılığını burada bulamazsa, y DNS Server'ının Cache'ine bakarak çözümlemeyi buradan yapar. DNS Server'ın Cache'inde de karşılığını bulamazsa eğer bu durumda DNS Server'ın kayıtları kontrol edilir. Bu süreçler daha detaylı olarak anlatılacak.
+          Örneğin x şirketindeki bilgisayarların tümüne y DNS Server'ını ayarlarsak x bilgisayarları her sorgu yaptığında önce kendi üzerindeki Host Name Domain Cache'ine bakar karşılığını burada bulamazsa, y DNS Server'ının Cache'ine bakarak çözümlemeyi buradan yapar. <br>
+          DNS Server'ın Cache'inde de karşılığını bulamazsa eğer bu durumda DNS Server'ın kayıtları kontrol edilir. Bu süreçler daha detaylı olarak anlatılacak.
         </p>
         <p>
           Peki bu şekilde sipesifik olarak bir DNS Server belirlendiğinde, farklı bir DNS Server'da bulunan bir DNS Suffix'e erişmek istediğimizde neler olur? <br>
-          Bu soru şu anlamda sorulmuştur; Örneğin bilgeadam.com Domain'ininde yer alan bir şiket bilgisayarından migros.com aratıldığı zaman bilgeadam.com'un DNS Server'ından isim çözümlemesi yapılmaya çalışılır. Fakat bu o DNS Server'da doğal olarak olmayan bir bilgi. Yani migros.com'un IP karşılığı bu DNS Server'da yok. Bu durumda neler olacak?
+          Bu soru şu anlamda sorulmuştur; Örneğin bilgeadam.com Domain'ininde yer alan bir şiket bilgisayarından migros.com aratıldığı zaman bilgeadam.com'un DNS Server'ından isim çözümlemesi yapılmaya çalışılır fakat bu o DNS Server'da doğal olarak olmayan bir bilgi. Yani migros.com'un IP karşılığı bu DNS Server'da yok. Bu durumda neler olacak?
         </p>
         <p>
           Farklı bir Domain'e gidilmek isteniyorsa bilgeadam'ın dışında bir sorgu olduğu için "bilmiyorum" Respond'unu vermez. Çünkü bu sorgulanan Domain'de yetkili(Authorite) değildir. Bu tarz farklı bir Domain sorgulandığında Router'a gidilir. Sorgu yaptığımız makinenin bağlı olduğu Router; Root Hints'teki Root DNS Server'larına gidilip sorulur. <br>
@@ -133,7 +158,15 @@
           DNS Server'larının(DNS Servisinin) da kendi Cache'i vardır. <br>
           Bir DNS Server kendisine DNS Client olabilir. <br>
           Yani kendisinden hizmet alabilir. <br>
-          Bu Cache'i silmek için DC > Right Click > Clear Cache ya da komut ile > DC > CMD > dnscmd /clearcache
+        </p>
+        <p class="bg-script">
+          Bu Cache'i silmek için; <br>
+          > DC <br>
+          > Right Click <br>
+          > Clear Cache ya da komut ile <br>
+          > DC <br>
+          > CMD <br>
+          > <b><i>dnscmd /clearcache</i></b>
         </p>
 
         <h4>DNS Server kurmak</h4>
@@ -141,37 +174,80 @@
           DNS Server kurabilmek için Server OS olmalı. <br>
           Makinenin Static IP'si olmalı. <br>
           Minimum Local Admin yetkisinde olunmalı <br>
-          Server Manager > Manage > Add Role > Next > Next > DNS Server |+| > Next
+        </p>
+        <p class="bg-script">
+          > Server Manager <br>
+          > Manage <br>
+          > Add Role <br>
+          > Next <br>
+          > Next <br>
+          > [+]DNS Server <br>
+          > Next
+        </p>
+        <p class="bg-script">
+          > DNS Manager <br>
+          > Forward Lookup Zones -> İsme karşılık IP, <br>
+          > Rever Lookup Zones -> IP'ye karşılık isim.
         </p>
         <p>
-          DNS Manager > Forward Lookup Zones -> İsme karşılık IP, <br>
-          Rever Lookup Zones -> IP'ye karşılık isim. <br>
           DNS kurulduktan sonra, DNS'in hizmet verebilmesi için de yukarıdaki iki Folder'da olmalıdır. <br>
-          Bir Forward Lookup Zone nasıl açılır ? <br>
-          DNS Manager > Forward > New Zone > Primary Zone, Secondary Zone, Stub Zone -> 3 farklı Zone tipi vardır. <br>
+          Bir Forward Lookup Zone nasıl açılır ?
+        </p>
+        <p class="bg-script">
+          > DNS Manager <br>
+          > Forward <br>
+          > New Zone <br>
+          > Primary Zone, Secondary Zone, Stub Zone -> 3 farklı Zone tipi vardır.
+        </p>
+        <p>
           1) Primary; içine kayıt girebiliriz, varolan kaydı silebilir ya da değiştirebiliriz. İçine Update edilebilen kayıtlar alır yani Writable tiptedir. <br>
           2) Secondary; Ancak bir Primary(varolan)'nin, Secondary'si yapılabilir. Hata töleransı için Read-only şekilde Primary'inin bir kopyasıdır. İkisinin arasında organik bir ilişki vardır, Primary'deki güncellemeler Secondary'de replikalanır. <br>
           3) Stub Zone; -> Daha sonra açıklanacak.
         </p>
+        <p class="bg-script">
+          > Next <br> 
+          > Next <br>
+          > Zone Name <br>
+          > bilgeadam.com <br>
+          > Allow only -> Dynamic Update -> Default'takini seç. <br>
+          > Next
+        </p>
         <p>
-          Next > Next > Zone Name > bilgeadam.com > Allow only -> Dynamic Update -> Default'takini seç. > Next <br>
           Zone açarak; Bu Domain'de Authorize olduğumuzu iddia ederiz. <br>
           Tüm Domain'lerin iletişimini sağlamak için internet servis sağlayıcıları aracı olurlar. Örneğin Tük Telekom üzerinden de DNS Server hizmeti yapılabilir. Türk Telekom'un DNS'i aracı olarak Root, .com gibi Domain'lere gitmeye gerek kalmadan isim çözümleme yapabilirler. <br>
           Sonuç olarak birden fazla PC farklı Domain'lerden farklı Domain'lere sürekli trafik yapıyolar. <br>
           Bir DNS Server'ı başka bir DNS Server'a Forward edebiliriz. Örneğin bilgeadam, migros ve vakko aynı internet sağlayıcısını kullanıyor olsunlar. Bu ISP'nin DNS Server'ında aralarındaki trafik Cache'e kayıtlı olduğu için(Sürekli trafik olduğunu var sayalım), bizim DNS Server'ımız bu ISP'nin DNS Server'ına Forward edilirse direkt onun Cache'inden isim çözümleme yapılır.(Root'a vs. uğramadan)
         </p>
         <p>
-          Nasıl yapılır ? <br>
-          DNS > DC > Properties > Forwarders > Use root hints of no forwarders are avaible -> Default'ta Root'a yönlendirir. > Edit Forwards -> 8.8.8.8 -> Rever -> Root'a sorar ve dns.google'dan getirir. <br>
+          Nasıl yapılır ?
+        </p>
+        <p class="bg-script">
+          > DNS <br>
+          > DC <br>
+          > Properties <br>
+          > Forwarders <br>
+          > Use root hints of no forwarders are avaible -> Default'ta Root'a yönlendirir. <br>
+          > Edit Forwards <br>
+          -> 8.8.8.8 <br>
+          -> Rever <br>
+          -> Root'a sorar ve dns.google'dan getirir.
+        </p>
           Rooting'lere gitmeden önce araya bir işlem sokarak girekt yukarıda verdiğimiz DNS Server'a gider. <br>
           Olumsuz yanıt alsa bile Root'a gitmez. <br>
           Root'a gidebilmesi için menudeki ilgili bölüm Chech edilmiş olmalı ve yukarıdaki DNS Server'a ulaşılamıyor olması gerekir. 
-        </p>
 
         <h4>Conditional Forwarders(Koşullu Yönlendirme)</h4>
         <p>
-          "x" Domain'ine gelen sorgular için o Domain'i bilen "y" DNS Server'ına git demektir. <br>
-          DNS > DC > Conditional Forwarders > New > NetBIOS Name'i ve IP gireriz. <br>
+          "x" Domain'ine gelen sorgular için o Domain'i bilen "y" DNS Server'ına git demektir.
+        </p>
+        <p class="bg-script">
+          > DNS <br>
+          > DC <br>
+          > Conditional Forwarders <br>
+          > New <br>
+          > NetBIOS Name'i ve IP gireriz.
+        </p>
+        <p>
           "y" DNS Server'ını bulur listeye getirir. <br>
           Confitional, Genel Forward, Root -> 3 şekilde Forward yapılır.
         </p>
@@ -179,19 +255,55 @@
         <h4>Secondary Zone yapmak</h4>
         <p>
           Primary'nin Read-only kopyasını almak. <br>
-          DNS > DC > New Zone > Secondary > Kopyasını almak istediğimiz Zone yazılır. > Hedefin IP'si girilir. <br>
-          Bu noktada eklenir fakat izin olmadığı için kayıtlara erişemeyiz. Bunun için Primary'nin Secondary Zone Transfer'ine izin vermiş olması gerekir. <br>
-          DNS > DC > Zone > Right Click > Properties > Zone Transfers > Allow[+] > To any Servers[+] -> Herkese(internetteki) izin verir. > Server Listed[+]  -> Name Servers listesindeki herkese verir. <br>
-          Sadece bu ekranda eklediğimiz Server'a izin verir. -> Only to the following servers[+] <br>
-          Secondary Zone > Properties > Change > Primary Zone -> Sonradan değiştirebiliriz. <br>
+        </p>
+        <p class="bg-script">
+          > DNS <br>
+          > DC <br>
+          > New Zone <br>
+          > Secondary <br>
+          > Kopyasını almak istediğimiz Zone yazılır. <br>
+          > Hedefin IP'si girilir.
+        </p>
+        <p>
+          Bu noktada eklenir fakat izin olmadığı için kayıtlara erişemeyiz. Bunun için Primary'nin Secondary Zone Transfer'ine izin vermiş olması gerekir.
+        </p>
+        <p class="bg-script">
+          > DNS <br>
+          > DC <br>
+          > Zone <br>
+          > Right Click <br>
+          > Properties <br>
+          > Zone Transfers <br>
+          > [+]Allow <br>
+          > [+]To any Servers -> Herkese(internetteki) izin verir. <br>
+          > [+]Server Listed -> Name Servers listesindeki herkese verir.
+        </p>
+        <p class="bg-script">
+          Sadece bu ekranda eklediğimiz Server'a izin verir. -> [+]Only to the following servers.
+        </p>
+        <p class="bg-script">
+          > Secondary Zone <br>
+          > Properties <br>
+          > Change <br>
+          > Primary Zone -> Sonradan değiştirebiliriz.
+        </p>
+        <p>
           Replikasyon özelliği ortadan kalkar. -> Writable hale gelir.
         </p>
 
         <h4>SOA Kaydı(Start of Authority)</h4>
         <p>
           Primary'den Secondary'e Zone kuralı transferleridir. <br>
-          Zone > Properties > SOA -> Burada değişiklik yapılabilmesi için Primary Zone olması gerekir. <br>
-          Zone > Properties > SOA -> Serial Number; Zone'un içinde yapılan bir değişiklikte bu sayı artar. Sayaçtır. <br>
+        </p>
+        <p class="bg-script">
+          > Zone <br>
+          > Properties <br>
+          > SOA -> Burada değişiklik yapılabilmesi için Primary Zone olması gerekir. <br>
+          > Zone <br>
+          > Properties <br>
+          > SOA -> Serial Number; Zone'un içinde yapılan bir değişiklikte bu sayı artar, sayaçtır.
+        </p>
+        <p>
           Primary Server; Primary olan(replikasyonun yapıldığı) Server. <br>
           Refresh Internal; Primary, Secondary'e 15'da Refresh yapmasını söyler.(Primary'deki değişiklikleri alma periyodu) <br>
           Retry Interval -> Secondary, Primary'e erişemiyorsa yukarıdaki periyodu 10 dakikaya düşür. <br>

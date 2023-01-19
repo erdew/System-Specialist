@@ -34,6 +34,10 @@
         text-align: center;
       }
 
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
       h1, h2, h3, h4, h5, h6 {
         color: rgb(139, 233, 253);
       }
@@ -56,7 +60,7 @@
         padding: 20px;
         border-radius: 10px;
         text-align: start;
-        font-size: 16px;
+        font-size: 15px;
         line-height: normal;
       }
 
@@ -64,30 +68,32 @@
   </head>
   <body class="container">
     <div class="container mt-5">
-        <h1 class="display-4 text-center">07.01.2022</h1>
+        <h1><a href="../index.html" class="display-4">07.01.2022</a></h1>
         <p>
             Password normal şartlarda her makinede 42 günlük ömre sahiptir, bu sürenin sonunda değiştirilmesi istenir.
         </p>
         <p class="bg-script">
-            Group Policy > <br>
-            Domains > <br>
-            company.com > <br>
-            Default Domain Policy > <br>
-            Right Click > <br>
-            Edit > <br>
-            Computer Configuration > <br>
-            Policies > <br>
-            Windows Settings > <br>
-            Security Settings > <br>
-            Account Policy >  <br>
-            Password'lar ile ilgili bilgiler bu kısımda bulunur. (Group Policy konusu ayrı olarak işlenecektir)
+            > Group Policy <br>
+            > Domains <br>
+            > company.com <br>
+            > Default Domain Policy <br>
+            > Right Click <br>
+            > Edit <br>
+            > Computer Configuration <br>
+            > Policies <br>
+            > Windows Settings <br>
+            > Security Settings <br>
+            > Account Policy
+        </p>
+        <p>
+          Password'lar ile ilgili bilgiler yukarıdaki konumda bulunur. (Group Policy konusu ayrı olarak işlenecektir)
         </p>
         <p class="bg-script">
-            Server Manager > <br>
-            DNS > <br>
-            DC > <br>
-            Forward Lookup Zones > <br>
-            company.com -> Bu konumda DC'nin IP'sini doğrula. <br>
+            > Server Manager <br>
+            > DNS <br>
+            > DC <br>
+            > Forward Lookup Zones <br>
+            > company.com -> Bu konumda DC'nin IP'sini doğrula. <br>
             (Same as parent folder) -> Eski IP'leri sil.
         </p>
         <p>
@@ -100,12 +106,12 @@
             Network'teki sorunların çoğu buradaki bilgi eksikliğinden kaynaklanır. <br>
             İsim = Cihazlara verilen isimdir. <br>
             İki çeşit isimlendirme vardır. <br>
-            <b>1 FQDN, 2 NetBIOS Name.</b> <br>
+            <b>1 FQDN, 2 NetBIOS Name.</b>
         </p>
         <p class="bg-script">
-            server1.company.com -> FQDN(Full Qualified Domain Name) <br>
-            server1(ilk noktaya kadar) -> Hostname <br>
-            company.com -> DNS Suffix -> İlk noktadan sonraki tüm kısımdır.
+            > server1.company.com -> FQDN(Full Qualified Domain Name) <br>
+            > server1(ilk noktaya kadar) -> Hostname <br>
+            > company.com -> DNS Suffix -> İlk noktadan sonraki tüm kısımdır.
         </p>
             
         <p>
@@ -118,14 +124,16 @@
             Bunu söylemenin yöntemlerinden birisi DNS'tir.
         </p>
         <p class="bg-script">
-            Name > <br>
-            IP -> İsimden IP'ye yapılan çözümleme isim çözümlemesidir. > <br>
-            İstenirse MAC Adresine de çözümleme yapılabilir. MAC Adresi = Ethernet kartı'dır. <br>
-            IP'den MAC Adresine dönüşüm ARP'dir. <br>
-            İletişimin temelinde ARP yatar. <br>
-            DC > <br>
-            cmd > <br>
-            arp -a -> Gateway'den başlar daha önceden iletişime geçtiği tüm IP'leri ve MAC adreslerini listeler.
+            > Name to IP -> İsimden IP'ye yapılan çözümleme isim çözümlemesidir.
+        </p>
+        <p>
+          -> İstenirse MAC Adresine de çözümleme yapılabilir. MAC Adresi = Ethernet kartı'dır. <br>
+          -> IP'den MAC Adresine dönüşüm ARP'dir. İletişimin temelinde ARP yatar. <br>
+        </p>
+        <p class="bg-script">
+          > DC <br>
+          > cmd <br>
+          > arp -a -> Gateway'den başlar daha önceden iletişime geçtiği tüm IP'leri ve MAC adreslerini listeler.
         </p>
         <p>
           <b>
@@ -133,19 +141,37 @@
           </b>
         </p>
         <p class="bg-script">
-            pint server-2 -> İsim çözümlesini tetikler <br>
-            Arkasına Suffix yazmadığımız için bunu NetBIOS Name olarak algılar. <br>
-            Enter > FQDN'e çevirir. <br>
-            FQDN ile bulduğu IP'ye Ping atar.
+            > pint server-2 -> İsim çözümlesini tetikler. <br>
+            -> Arkasına Suffix yazmadığımız için bunu NetBIOS Name olarak algılar. <br>
+            > Enter <br>
+            > FQDN'e çevirir. <br>
+            -> FQDN ile bulduğu IP'ye Ping atar.
         </p>
         <p>
           <b>Herhangi bir makine DNS Suffix'i nasıl öğrenir ve bunu makineye nasıl söyleriz?</b> <br>
         </p>
         <ol>
           <li>Makineyi Work Group'tan çıkarıp Domain'e üye edersek hangi Suffix'i kullancağını otomatik olarak öğrenir.</li>
-          <li>Makineyi Domain'e katmadan Suffix kullanmasını istersek <b><i>DHCP > Scope Options</i></b>'tan DNS Suffix söylenebilir.</li>
-          <li>Makineyi Domain'e üye etmeden; <b><i>Server Manager > Local > Domain > Computer Name > Change > Work Group -> More > Primary DNS Suffix</i></b> -> Buraya ne yazarsak kullanması gerektiği yerde otomatik olarak bu DNS Suffix'i kullanır. Buradan yaparsak artık sadece bunu kullanır.</li>
-          <li>Makinenin üzerindeki <b><i>Ethernet Port > Properties > Advance > DNS > DNS Suffix for this connect</i></b> -> Buraya yazacağımız herhangi bir Suffix'i, DNS Suffix olarak kullanmaya bağlar. <b><i>Append Primary[+]</i></b> seçili olduğunda 3.aşama çalışabilir.</li>
+          <li class="bg-script">Makineyi Domain'e katmadan Suffix kullanmasını istersek; <br>
+            <b><i> > DHCP <br>
+              > Scope Options</i></b>'tan DNS Suffix söylenebilir.</li>
+          <li class="bg-script mt-1">Makineyi Domain'e üye etmeden; <br>
+            <b><i>> Server Manager <br>
+              > Local <br>
+              > Domain <br>
+              > Computer Name <br>
+              > Change <br>
+              > Work Group -> More <br>
+              > Primary DNS Suffix</i></b> <br>
+              -> Buraya ne yazarsak kullanması gerektiği yerde otomatik olarak bu DNS Suffix'i kullanır. Buradan yaparsak artık sadece bunu kullanır.</li>
+          <li class="bg-script mt-1">Makinenin üzerindeki; <br>
+             <b><i>Ethernet Port <br>
+              > Properties <br>
+              > Advance <br>
+              > DNS <br>
+              > DNS Suffix for this connect</i></b> <br>
+              -> Buraya yazacağımız herhangi bir Suffix'i, DNS Suffix olarak kullanmaya bağlar. <br>
+              <b><i>Append Primary[+]</i></b> seçili olduğunda 3.aşama çalışabilir.</li>
         </ol>
        
         <h4>Host Name Resolution Process</h4>
@@ -157,44 +183,57 @@
         </p>
         <p class="bg-script">
           Görmek için; <br>
-          cmd > <br>
-          ipconfig /displaydns -> Var ise listelenir.
+          > cmd <br>
+          > ipconfig /displaydns -> Var ise listelenir.
         </p>
             Bu bilgi saniyelerle sınırlıdır. Adres çözümlendikten sonra; 1200 saniye yani 20 dakika boyunca bellekte tutulur. Bu süre içerinde adres değişmiş bile olsa yine de bellekteki adrese gidilir. <br>
             Cache'e güvenmiyorsak, yani IP'nin değiştiğini düşünüyorsak, Manuel olarak hafızayı sileriz. <br>
-            <b><i>ipconfig /flushdns</i></b> -> Komutu yazdığınız makinenin <i>Host Name Cache</i>'ini temizler. <br>
-            Cache de boş ise 4.aşamaya geçer. <br>
-            4.Aşama; <i>Hosts File</i>'a bakar. -> Yani aradığı makine kendisi değil ve daha önceden o isme çözümleme yapılmamış ise <i>Hosts Name</i>'e bakar. <br>
-            Her Windows makine için Hosts Name dosyası <u>aynı yerdedir</u>; <br>
-            <b><i>C \ Windows \ System32 \ Drivers \ etc \ hosts</i></b> <br>
-            Bu dosyanın, dosya uzantısı yoktur! <br>
-            Host'a müdahale edebilmek için; Notepad ile açılır. <br>
-            Default'ta Host dosyasının içi boştur. -> Bu dosya silinirse işletim sistemi Reset'lendiğinde yeniden yüklenir. <br>
-            Hosts dosyasının içine örneğin; 1.2.3.4 örnek1.örnek.com şeklinde çözümleme yaptıracak bilgiyi girebiliriz. <br>
-            Eğer Cache boş ise buradan isim çözümlemesini yapar. <br>
-            Hosts File'ın içine bir kayıt yaparsak bize sormadan bunu Host Name Cache'e alır ve süresiz bir şekilde orada tutar. Bu bilgi Cache'ten komut ile silinemez sadece Host File'a giderek direkt kaydı silmek gerekir. <br>
-            <b><i>127.0.0.1 www.youtube.com</i></b> -> Bu bilgiyi Hosts File'a girersek; <b><i>FQDN</i></b> girmiş oluruz. youtube.com'un içindeki www makinesine çözümleme yapar. 127.0.0.1 girdiğimiz için de çözümleme yapan makine Youtube olmadığı için artık Youtube erişilemez durumda olur. <br>
-            5.aşama <b><i>DNS Server'dır.</i></b> <br>
-            IP bulunamazsa; İsimle IP adresi eşleşmezse böyle bir çözümleme yapamadığı için, "Böyle bir makine olmadığını belirten" bir <b><i>Respond</i></b> verir. DNS Servera ğdaki otoritedir(Kendi kapsamında, Network'ünde). DNS Server'daki isim çözümleme, yapılamıyorsa bunu da söylemek üzerine kurulur. Yani olumlu ya da olumsuz şekilde de Respond verir. 
-            Olumlu ise Respond, Host File olarak gelir. <br>
-            Olumsuz ise Respond olumsuz olarak döner ve bir sonraki aşamaya geçilir, yani NameBIOS Name olarak döner.
         <p>
-            Soruyu soran makine herhangi bir DNS Suffix biliyorsa, sorgunun ortasına ekler.(Sadece NetBIOS girdiysek) sorguyu Host Name'e çevirir. Bu şekilde soruyu sorar. -> Makine(NetBIOS Name), aşamalardan herhangi birinde yok ise çözümleme başarısız olur. <br>
-            5.aşamada yani DNS Server'da 2 çeşit Autheritive Responds üretilir. <br>
-            "IP adresi şudur" ya da "böyle bir makine yoktur" şeklindedir. <br>
-            Her iki Respond'ta çözümleme yapıldıktan sonra alınır. <br>
-            Eğer çözümleme yapılamadıysa; 6.aşamadan devam edilir. <br>
-            6.aşama NetBIOS Name Cache'tir. <br>
-            <b><i>NetBIOS Name Cache</i></b> bir tablodur. <b><i>-> cmd > nbtstat -c</i></b> <br>
-            Respond'un arkasında DNS Suffix yok ise bu bir NetBIOS Name'dir. <br>
-            Örneğin; pc01 [192.168.4.44] <br>
-            NetBIOS Name -> Maksimum 16 karakter olabilir. 16. karaktere bir şey yazamayız. O karakteri NetBIOS Name oluşturan servis kullanır. Dolayısıyla biz 15 karakter kullanabiliriz. <br>
-            Örneğin Benimgüzelbilgisayarım12 ve Benimgüzelbilgisayarım13 adında iki NetBIOS Name üretirsek bu makinelerin isimleri aslında Unique olmazlar. Çünkü ilk 15 karakterleri birebir aynıdır. Bu sebeple isim çakışması olur. Bu tarz isimler verilmemelidir. <br>
-            NetBIOS Name Cache ayrı bir dosya olarak tutulur. Host Name Cache ile ayrıdır. <br>
-            <b><i>NetBIOS Name Cache'i silmek -> nbtstat -R</i></b> <br>
-            6.aşamadan da yanıt gelmezse; <br>
-            7.aşama yani <b><i>WINS Server</i></b>'a başvurulur. NetBIOS Name'leri otomatik olarak öğrenebilen ve NetBIOS sorgularına yanıt verebilen servistir. <u>WINS Server'un geliştiricisi Microsoft'tur.</u> <br>
-            Aynı şekilde DNS Server da Host Name'leri otomatik olarak öğrenebilen ve Host Name sorgularına yanıt verebilen bir servistir.
+        <p class="bg-script">
+          <b><i> > ipconfig /flushdns</i></b> -> Komutu yazdığınız makinenin <i>Host Name Cache</i>'ini temizler. <br>
+        </p>
+        <p>
+          Cache de boş ise 4.aşamaya geçer. <br>
+          4.Aşama; <i>Hosts File</i>'a bakar. -> Yani aradığı makine kendisi değil ve daha önceden o isme çözümleme yapılmamış ise <i>Hosts Name</i>'e bakar. <br>
+          Her Windows makine için Hosts Name dosyası <u>aynı yerdedir</u>; <br>
+        </p>
+        <p class="bg-script">
+          <b><i> > C \ Windows \ System32 \ Drivers \ etc \ hosts</i></b> <br>
+        </p>
+        <p>
+          Bu dosyanın, dosya uzantısı yoktur! <br>
+          Host'a müdahale edebilmek için; Notepad ile açılır. <br>
+          Default'ta Host dosyasının içi boştur. -> Bu dosya silinirse işletim sistemi Reset'lendiğinde yeniden yüklenir. <br>
+          Hosts dosyasının içine örneğin; 1.2.3.4 örnek1.örnek.com şeklinde çözümleme yaptıracak bilgiyi girebiliriz. <br>
+          Eğer Cache boş ise buradan isim çözümlemesini yapar. <br>
+          Hosts File'ın içine bir kayıt yaparsak bize sormadan bunu Host Name Cache'e alır ve süresiz bir şekilde orada tutar. Bu bilgi Cache'ten komut ile silinemez sadece Host File'a giderek direkt kaydı silmek gerekir. <br>
+          <b><i>127.0.0.1 www.youtube.com</i></b> -> Bu bilgiyi Hosts File'a girersek; <b><i>FQDN</i></b> girmiş oluruz. youtube.com'un içindeki www makinesine çözümleme yapar. 127.0.0.1 girdiğimiz için de çözümleme yapan makine Youtube olmadığı için artık Youtube erişilemez durumda olur. <br>
+        </p>
+        <p>
+          5.aşama <b><i>DNS Server'dır.</i></b>
+          IP bulunamazsa; İsimle IP adresi eşleşmezse böyle bir çözümleme yapamadığı için, "Böyle bir makine olmadığını belirten" bir <b><i>Respond</i></b> verir. DNS Servera ğdaki otoritedir(Kendi kapsamında, Network'ünde). DNS Server'daki isim çözümleme, yapılamıyorsa bunu da söylemek üzerine kurulur. Yani olumlu ya da olumsuz şekilde de Respond verir. 
+          Olumlu ise Respond, Host File olarak gelir. <br>
+          Olumsuz ise Respond olumsuz olarak döner ve bir sonraki aşamaya geçilir, yani NameBIOS Name olarak döner.
+          Soruyu soran makine herhangi bir DNS Suffix biliyorsa, sorgunun ortasına ekler.(Sadece NetBIOS girdiysek) sorguyu Host Name'e çevirir. Bu şekilde soruyu sorar. -> Makine(NetBIOS Name), aşamalardan herhangi birinde yok ise çözümleme başarısız olur. <br>
+          5.aşamada yani DNS Server'da 2 çeşit Autheritive Responds üretilir. <br>
+          "IP adresi şudur" ya da "böyle bir makine yoktur" şeklindedir. <br>
+          Her iki Respond'ta çözümleme yapıldıktan sonra alınır. <br>
+        </p>
+        <p>
+          Eğer çözümleme yapılamadıysa; 6.aşamadan devam edilir. <br>
+          6.aşama NetBIOS Name Cache'tir. <br>
+          <b><i>NetBIOS Name Cache</i></b> bir tablodur. <b><i>-> cmd > nbtstat -c</i></b> <br>
+          Respond'un arkasında DNS Suffix yok ise bu bir NetBIOS Name'dir. <br>
+          Örneğin; pc01 [192.168.4.44] <br>
+          NetBIOS Name -> Maksimum 16 karakter olabilir. 16. karaktere bir şey yazamayız. O karakteri NetBIOS Name oluşturan servis kullanır. Dolayısıyla biz 15 karakter kullanabiliriz. <br>
+          Örneğin Benimgüzelbilgisayarım12 ve Benimgüzelbilgisayarım13 adında iki NetBIOS Name üretirsek bu makinelerin isimleri aslında Unique olmazlar. Çünkü ilk 15 karakterleri birebir aynıdır. Bu sebeple isim çakışması olur. Bu tarz isimler verilmemelidir. <br>
+          NetBIOS Name Cache ayrı bir dosya olarak tutulur. Host Name Cache ile ayrıdır. <br>
+          <b><i>NetBIOS Name Cache'i silmek -> nbtstat -R</i></b>
+        </p>
+        <p>
+          6.aşamadan da yanıt gelmezse; <br>
+          7.aşama yani <b><i>WINS Server</i></b>'a başvurulur. NetBIOS Name'leri otomatik olarak öğrenebilen ve NetBIOS sorgularına yanıt verebilen servistir. <u>WINS Server'un geliştiricisi Microsoft'tur.</u> <br>
+          Aynı şekilde DNS Server da Host Name'leri otomatik olarak öğrenebilen ve Host Name sorgularına yanıt verebilen bir servistir.
         </p>
         <p>
             WINS'ten cevap gelmez ya da ortamda yok ise; <br>
