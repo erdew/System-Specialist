@@ -29,8 +29,8 @@ Windows Server üzerinde yapılacaklar;
 ✔ Dosyaları Compress yap. @done(23-01-19 22:06)
 ✔ Herhangi bir dosyayı kriptola. @done(23-01-20 11:57)
 ✔ Kriptolu ya da Compress edilmiş dosyaların farklı bir renkte görünmesini sağla. @done(23-01-20 12:00)
-☐ Kriptolanan tüm dosyalara Admin'in erişmesini sağla.
 ☐ EFS Recovery Agent üret.
+☐ Kriptolanan tüm dosyalara Admin'in erişmesini sağla.
 ☐ DFS Server kur.
 ☐ Paylaşımları senkronize et.
 ☐ Print Server kur.
