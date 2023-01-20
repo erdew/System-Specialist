@@ -129,8 +129,9 @@
           > Folder <br>
           > View <br>
           > Options <br>
+          > Chenge folder and search options
           > View <br>
-          > Show Encrypted or Compressed NTFS files in color.
+          > Show encrypted or compressed NTFS files in color.
         </p>
 
         <hr>
@@ -139,11 +140,12 @@
         <p class="bg-script">
           > Folder <br> 
           > Properties <br>
-          > Advance <br>
+          > General
+          > Advanced <br>
           > Detail
         </p>
         <p>
-          Bu buton kriptolama yapınca açılır ve Public Key'i gösterir. Yukarıdaki konuma her bir User kriptolama yaptığında Admin'inde Public Key'i eklenecek. Bu Public Key dosyayı Admin için üretilecek olan Private Key ile açabilecek. Bu dosyayı  kriptolayan User'ın anahtarlatı kullanılarak yapılır. Bu sebepleme diğer User'lar "Access Denied" olurlar. Kriptolamaya dahil etmek istediğimiz User EFS Recovery Agent olmalıdır. Bu senaryoda bu User Admin'dir. Hedefimiz başka User'ların kriptoladığı dosyaları Admin hesabının açabilmesi. Bu hedefi gerçekleştirmek için Admin'in "EFS Recovery Agent" olmasından başka bir yol yoktur. EFS Recovery Agent'in hangi User olacağını belirleyebilmek için minimum "Local Admin" düzeyinde bir yetkiye ihtiyaç vardır.
+          Bu buton kriptolama yapınca açılır ve Public Key'i gösterir. Yukarıdaki konuma her bir User kriptolama yaptığında Admin'inde Public Key'i eklenecek. Bu Public Key dosyayı Admin için üretilecek olan Private Key ile açabilecek. Bu dosyayı  kriptolayan User'ın anahtarları kullanılarak yapılır. Bu sebeple diğer User'lar "Access Denied" olurlar. Kriptolamaya dahil etmek istediğimiz User, EFS Recovery Agent olmalıdır. Bu senaryoda EFS Recovery Agent, Admin'dir. Hedefimiz başka User'ların kriptoladığı dosyaları Admin hesabının açabilmesi. Bu hedefi gerçekleştirmek için Admin'in "EFS Recovery Agent" olmasından başka bir yol yoktur. EFS Recovery Agent'in hangi User olacağını belirleyebilmek için minimum "Local Admin" düzeyinde bir yetkiye ihtiyaç vardır.
         </p>
         <span>
           "EFS Recovery Agent" aslında bir kimliktir. Bu kimliği üzerinde kim taşırsa o kişi "EFS Recovery Agent" olur. User'lar oluşturulmadan önce EFS Recovery Agent kimliğinin oluşturulması gerekir. Çünkü User'lar üretilmeden önce tanımlanmazsa o üretilene kadar yapılan hiç bir kriptolu dosyaya erişimi olamaz. EFS Recovery Agent hakkında üç madde sıralayabiliriz;
@@ -308,8 +310,8 @@
         Media klasörü yeşil işaret alır. <br>
       </p>
       <p class="bg-script">
-        > DFS Management 
-        > Replication 
+        > DFS Management <br>
+        > Replication <br>
         > sirket.com\Tüm Paylaşımlar\Media -> Görünür durumda olur.
       </p>
       <p>

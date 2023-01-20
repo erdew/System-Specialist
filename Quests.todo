@@ -27,7 +27,8 @@ Windows Server üzerinde yapılacaklar;
 ✔ Bir klasöre kota belirle. @done(23-01-19 21:56)
 ✔ Dosya uzantılarına göre kısıtlama yap. @done(23-01-19 22:02)
 ✔ Dosyaları Compress yap. @done(23-01-19 22:06)
-☐ Kriptolu ya da Compress edilmiş dosyaların farklı bir renkte görünmesini sağla.
+✔ Herhangi bir dosyayı kriptola. @done(23-01-20 11:57)
+✔ Kriptolu ya da Compress edilmiş dosyaların farklı bir renkte görünmesini sağla. @done(23-01-20 12:00)
 ☐ Kriptolanan tüm dosyalara Admin'in erişmesini sağla.
 ☐ EFS Recovery Agent üret.
 ☐ DFS Server kur.
