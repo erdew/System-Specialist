@@ -53,49 +53,61 @@
 
       .container {
         max-width: 800px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
       }
 
       .bg-script {
         color: rgb(139, 233, 253);
         background-color: #31333a;
         padding: 20px;
+        border: 1px solid rgb(139, 233, 253);
         border-radius: 10px;
         text-align: start;
         font-size: 15px;
         line-height: normal;
       }
 
+      .navigation\a:hover {
+        color: #31333a;
+        background-color: rgb(139, 233, 253);
+      }
+
     </style>
   </head>
-  <body class="container">
-    <div class="container mt-5">
+  <body>
+    <div class="container p-4 mt-2 mb-5">
         <h1><a href="../index.html" class="display-4">07.01.2022</a></h1>
-        <h4>Name Resolution</h4>
+
+        <hr>
+
+        <h4>Name Resolution'a hazırlık</h4>
         <p>
             Password normal şartlarda her makinede 42 günlük ömre sahiptir, bu sürenin sonunda değiştirilmesi istenir.
         </p>
         <p class="bg-script">
-            > Group Policy <br>
-            > Domains <br>
-            > company.com <br>
-            > Default Domain Policy <br>
-            > Right Click <br>
-            > Edit <br>
-            > Computer Configuration <br>
-            > Policies <br>
-            > Windows Settings <br>
-            > Security Settings <br>
-            > Account Policy
+          <b><i>\Server Manager <br>
+           \Group Policy Management <br>
+           \Domains <br>
+           \company.com <br>
+           \Default Domain Policy <br>
+           \Right Click <br>
+           \Edit <br>
+           \Computer Configuration <br>
+           \Policies <br>
+           \Windows Settings <br>
+           \Security Settings <br>
+           \Account Policy</i></b>
         </p>
         <p>
           Password'lar ile ilgili bilgiler yukarıdaki konumda bulunur. (Group Policy konusu ayrı olarak işlenecektir)
         </p>
         <p class="bg-script">
-            > Server Manager <br>
-            > DNS <br>
-            > DC <br>
-            > Forward Lookup Zones <br>
-            > company.com -> Bu konumda DC'nin IP'sini doğrula. <br>
+          <b><i>\Server Manager <br>
+           \DNS <br>
+           \DC <br>
+           \Forward Lookup Zones <br>
+           \company.com</i></b> -> Bu konumda DC'nin IP'sini doğrula. <br>
             (Same as parent folder) -> Eski IP'leri sil.
         </p>
         <p>
@@ -103,7 +115,7 @@
             Ayrıca tüm sanal makineler üzerinde sadece bir tane Ethernet kartı bulunduruldu ve bu kartta External Switch'e bağlandı.
         </p>
 
-        <h4>Name Resolution(İsim Çözümlemesi)</h4>
+        <h2>Name Resolution(İsim Çözümlemesi)</h2>
         <p>
             Network'teki sorunların çoğu buradaki bilgi eksikliğinden kaynaklanır. <br>
             İsim = Cihazlara verilen isimdir. <br>
@@ -111,9 +123,9 @@
             <b>1 FQDN, 2 NetBIOS Name.</b>
         </p>
         <p class="bg-script">
-            > server1.company.com -> FQDN(Full Qualified Domain Name) <br>
-            > server1(ilk noktaya kadar) -> Hostname <br>
-            > company.com -> DNS Suffix -> İlk noktadan sonraki tüm kısımdır.
+          <b><i>\server1.company.com</i></b> -> FQDN(Full Qualified Domain Name) <br>
+          <b><i>\server1</i></b>(ilk noktaya kadar) -> Hostname <br>
+          <b><i>\company.com</i></b> -> DNS Suffix -> İlk noktadan sonraki tüm kısımdır.
         </p>
             
         <p>
@@ -126,16 +138,16 @@
             Bunu söylemenin yöntemlerinden birisi DNS'tir.
         </p>
         <p class="bg-script">
-            > Name to IP -> İsimden IP'ye yapılan çözümleme isim çözümlemesidir.
+          <b><i>\Name to IP</i></b> -> İsimden IP'ye yapılan çözümleme isim çözümlemesidir.
         </p>
         <p>
           -> İstenirse MAC Adresine de çözümleme yapılabilir. MAC Adresi = Ethernet kartı'dır. <br>
           -> IP'den MAC Adresine dönüşüm ARP'dir. İletişimin temelinde ARP yatar. <br>
         </p>
         <p class="bg-script">
-          > DC <br>
-          > cmd <br>
-          > arp -a -> Gateway'den başlar daha önceden iletişime geçtiği tüm IP'leri ve MAC adreslerini listeler.
+          <b><i>\DC <br>
+         \cmd <br>
+         \arp -a</i></b> -> Gateway'den başlar daha önceden iletişime geçtiği tüm IP'leri ve MAC adreslerini listeler.
         </p>
         <p>
           <b>
@@ -143,64 +155,72 @@
           </b>
         </p>
         <p class="bg-script">
-            > pint server-2 -> İsim çözümlesini tetikler. <br>
+          <b><i>\pint server-2</i></b> -> İsim çözümlesini tetikler. <br>
             -> Arkasına Suffix yazmadığımız için bunu NetBIOS Name olarak algılar. <br>
-            > Enter <br>
-            > FQDN'e çevirir. <br>
+            <b><i>\Enter</i></b> <br>
+           -> FQDN'e çevirir. <br>
             -> FQDN ile bulduğu IP'ye Ping atar.
         </p>
         <p>
           <b>Herhangi bir makine DNS Suffix'i nasıl öğrenir ve bunu makineye nasıl söyleriz?</b> <br>
         </p>
         <ol>
-          <li>Makineyi Work Group'tan çıkarıp Domain'e üye edersek hangi Suffix'i kullancağını otomatik olarak öğrenir.</li>
-          <li class="bg-script">Makineyi Domain'e katmadan Suffix kullanmasını istersek; <br>
-            <b><i> > DHCP <br>
-              > Scope Options</i></b>'tan DNS Suffix söylenebilir.</li>
+          <li class="bg-script">Makineyi Work Group'tan çıkarıp Domain'e üye edersek hangi Suffix'i kullancağını otomatik olarak öğrenir.</li>
+          <li class="bg-script mt-1">Makineyi Domain'e katmadan Suffix kullanmasını istersek; <br>
+            <b><i>\DHCP <br>
+              \Scope Options</i></b>'tan DNS Suffix söylenebilir.</li>
           <li class="bg-script mt-1">Makineyi Domain'e üye etmeden; <br>
-            <b><i>> Server Manager <br>
-              > Local <br>
-              > Domain <br>
-              > Computer Name <br>
-              > Change <br>
-              > Work Group -> More <br>
-              > Primary DNS Suffix</i></b> <br>
+            <b><i>\Server Manager <br>
+              \Local <br>
+              \Domain <br>
+              \Computer Name <br>
+              \Change <br>
+              \Work Group -> More <br>
+              \Primary DNS Suffix</i></b>
               -> Buraya ne yazarsak kullanması gerektiği yerde otomatik olarak bu DNS Suffix'i kullanır. Buradan yaparsak artık sadece bunu kullanır.</li>
           <li class="bg-script mt-1">Makinenin üzerindeki; <br>
-             <b><i>Ethernet Port <br>
-              > Properties <br>
-              > Advance <br>
-              > DNS <br>
-              > DNS Suffix for this connect</i></b> <br>
+             <b><i>\Ethernet Port <br>
+              \Properties <br>
+              \Advance <br>
+              \DNS <br>
+              \DNS Suffix for this connect</i></b>
               -> Buraya yazacağımız herhangi bir Suffix'i, DNS Suffix olarak kullanmaya bağlar. <br>
-              <b><i>Append Primary[+]</i></b> seçili olduğunda 3.aşama çalışabilir.</li>
+              <b><i>\[+]Append Primary</i></b> -> seçili olduğunda 3.aşama çalışabilir.</li>
         </ol>
        
-        <h4>Host Name Resolution Process</h4>
+        <h2>Host Name Resolution Process</h2>
+
+        <h5>1.Aşama; <b><i>Kendisi mi?</i></b></h5>
         <p>
-            Önce aranan hedef isim kendisi mi diye kontrol eder. <br>
-            Client'ler öğrendikleri bilgileri önbellekte belli bir süre tutarlar. <br>
-            Host Name, Cache'te daha önceden çözümlediği isimleri tutar. <br>
-            Daha doğrusu isim çözümlemelerini tutar.
+          Aranan hedef ismin kendisi mi olduğunu kontrol etmesidir.
+        </p>
+
+        <h5>2.Aşama; <b><i>Host Name Cache</i></b></h5>
+        <p>
+          Client'ler öğrendikleri bilgileri önbellekte belli bir süre tutarlar. <br>
+          Host Name, Cache'te daha önceden çözümlediği isimleri tutar. <br>
+          Daha doğrusu isim çözümlemelerini tutar.
         </p>
         <p class="bg-script">
           Görmek için; <br>
-          > cmd <br>
-          > ipconfig /displaydns -> Var ise listelenir.
+         \cmd <br>
+         \ipconfig /displaydns -> Var ise listelenir.
         </p>
             Bu bilgi saniyelerle sınırlıdır. Adres çözümlendikten sonra; 1200 saniye yani 20 dakika boyunca bellekte tutulur. Bu süre içerinde adres değişmiş bile olsa yine de bellekteki adrese gidilir. <br>
             Cache'e güvenmiyorsak, yani IP'nin değiştiğini düşünüyorsak, Manuel olarak hafızayı sileriz. <br>
         <p>
         <p class="bg-script">
-          <b><i> > ipconfig /flushdns</i></b> -> Komutu yazdığınız makinenin <i>Host Name Cache</i>'ini temizler. <br>
+          <b><i>\ipconfig /flushdns</i></b> -> Komutu yazdığınız makinenin <i>Host Name Cache</i>'ini temizler. <br>
         </p>
+
+        <h5>4.Aşama; <b><i>Hosts File</i></b></h5>
         <p>
           Cache de boş ise 4.aşamaya geçer. <br>
           4.Aşama; <i>Hosts File</i>'a bakar. -> Yani aradığı makine kendisi değil ve daha önceden o isme çözümleme yapılmamış ise <i>Hosts Name</i>'e bakar. <br>
           Her Windows makine için Hosts Name dosyası <u>aynı yerdedir</u>; <br>
         </p>
         <p class="bg-script">
-          <b><i> > C \ Windows \ System32 \ Drivers \ etc \ hosts</i></b> <br>
+          <b><i> \C \Windows \System32 \Drivers \etc \hosts</i></b> <br>
         </p>
         <p>
           Bu dosyanın, dosya uzantısı yoktur! <br>
@@ -211,20 +231,22 @@
           Hosts File'ın içine bir kayıt yaparsak bize sormadan bunu Host Name Cache'e alır ve süresiz bir şekilde orada tutar. Bu bilgi Cache'ten komut ile silinemez sadece Host File'a giderek direkt kaydı silmek gerekir. <br>
           <b><i>127.0.0.1 www.youtube.com</i></b> -> Bu bilgiyi Hosts File'a girersek; <b><i>FQDN</i></b> girmiş oluruz. youtube.com'un içindeki www makinesine çözümleme yapar. 127.0.0.1 girdiğimiz için de çözümleme yapan makine Youtube olmadığı için artık Youtube erişilemez durumda olur. <br>
         </p>
+
+        <h5>5.Aşama; <b><i>DNS Server'dır.</i></b></h5>
         <p>
-          5.aşama <b><i>DNS Server'dır.</i></b>
-          IP bulunamazsa; İsimle IP adresi eşleşmezse böyle bir çözümleme yapamadığı için, "Böyle bir makine olmadığını belirten" bir <b><i>Respond</i></b> verir. DNS Servera ğdaki otoritedir(Kendi kapsamında, Network'ünde). DNS Server'daki isim çözümleme, yapılamıyorsa bunu da söylemek üzerine kurulur. Yani olumlu ya da olumsuz şekilde de Respond verir. 
-          Olumlu ise Respond, Host File olarak gelir. <br>
-          Olumsuz ise Respond olumsuz olarak döner ve bir sonraki aşamaya geçilir, yani NameBIOS Name olarak döner.
-          Soruyu soran makine herhangi bir DNS Suffix biliyorsa, sorgunun ortasına ekler.(Sadece NetBIOS girdiysek) sorguyu Host Name'e çevirir. Bu şekilde soruyu sorar. -> Makine(NetBIOS Name), aşamalardan herhangi birinde yok ise çözümleme başarısız olur. <br>
+          IP bulunamazsa; İsimle IP adresi eşleşmezse böyle bir çözümleme yapamadığı için, "Böyle bir makine olmadığını belirten" bir <b><i>Respond</i></b> verir. DNS Servera ğdaki otoritedir(Kendi kapsamında, Network'ünde). DNS Server'daki isim çözümleme konusunda yetkili olduğu için  olumlu ya da olumsuz şekilde de Respond verir. 
+          Olumlu ise Respond; Host File olarak gelir. <br>
+          Olumsuz ise Respond; bulunamadığını bildirir ve bir sonraki aşamaya geçilir.
+          Soruyu soran makine herhangi bir DNS Suffix biliyorsa, sorgunun sonuna otomatik olarak bu DNS Suffix'i ekler.(Sadece NetBIOS girdiysek) sorguyu Host Name'e çevirir. Bu şekilde soruyu sorar. -> Makine(NetBIOS Name), aşamalardan herhangi birinde yok ise çözümleme başarısız olur. <br>
           5.aşamada yani DNS Server'da 2 çeşit Autheritive Responds üretilir. <br>
           "IP adresi şudur" ya da "böyle bir makine yoktur" şeklindedir. <br>
           Her iki Respond'ta çözümleme yapıldıktan sonra alınır. <br>
         </p>
+
+        <h5>6.Aşama; <b><i>NetBIOS Name Cache</i></b>'tir.</h5>
         <p>
           Eğer çözümleme yapılamadıysa; 6.aşamadan devam edilir. <br>
-          6.aşama NetBIOS Name Cache'tir. <br>
-          <b><i>NetBIOS Name Cache</i></b> bir tablodur. <b><i>-> cmd > nbtstat -c</i></b> <br>
+          <b><i>NetBIOS Name Cache</i></b> bir tablodur. <b><i>-> cmd\nbtstat -c</i></b> <br>
           Respond'un arkasında DNS Suffix yok ise bu bir NetBIOS Name'dir. <br>
           Örneğin; pc01 [192.168.4.44] <br>
           NetBIOS Name -> Maksimum 16 karakter olabilir. 16. karaktere bir şey yazamayız. O karakteri NetBIOS Name oluşturan servis kullanır. Dolayısıyla biz 15 karakter kullanabiliriz. <br>
@@ -232,28 +254,38 @@
           NetBIOS Name Cache ayrı bir dosya olarak tutulur. Host Name Cache ile ayrıdır. <br>
           <b><i>NetBIOS Name Cache'i silmek -> nbtstat -R</i></b>
         </p>
+
+        <h5>7.Aşama; <b><i>WINS Server</i></b></h5>
         <p>
           6.aşamadan da yanıt gelmezse; <br>
           7.aşama yani <b><i>WINS Server</i></b>'a başvurulur. NetBIOS Name'leri otomatik olarak öğrenebilen ve NetBIOS sorgularına yanıt verebilen servistir. <u>WINS Server'un geliştiricisi Microsoft'tur.</u> <br>
           Aynı şekilde DNS Server da Host Name'leri otomatik olarak öğrenebilen ve Host Name sorgularına yanıt verebilen bir servistir.
         </p>
+
+        <h5>8.Aşama; <b><i>NetBIOS Name Broadcast</i></b></h5>
         <p>
             WINS'ten cevap gelmez ya da ortamda yok ise; <br>
             8.aşama yani <b><i>NetBIOS Name Broadcast</i></b> yapılır. -> Network'e bağırır. -> Aradığımız ne ise o Broadcast Domain'ine kadar sorgular ve bir makine sorguyu alırsa çözülür.
         </p>
+
+        <h5>9.Aşama; <b><i>LMHOST File</i></b></h5>
         <p>
             Broadcast ile de yanıt gelmezse; 9.aşama yani <b><i>LMHOST File</i></b>'a bakılır. Hosts File ile aynı konumda LMHOST'un Sample'ı yer alır. Bu dosyanın da bir uzantısı yoktur. İçerisine girip bilgiler eklendikten sonra <u>uzantılı bir şekilde kaydedersek çalışmaz.</u> <br>
-            Kayıtlar; 192.168.2.40 ornek şeklinde yapılır. <br>
+            Kayıtlar; 192.168.2.40 şeklinde yapılır. <br><br>
             <b><i>Host Name File'dan bir giriş olduğunu anlamak için; <br>
             Host Name Cache silinir, silinmeyen kayıt var ise Host Name'den giriş olmuş demektir.</i></b>
         </p>
+
+        <hr>
         
-        <div class="m-5 text-center">
-          <a href="../December-12/31-12-2022.html" class="bg-script m-5">31.12.2022</a>
-          <a href="08-01-2023.html" class="bg-script m-5">08.01.2023</a>
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="../December-12/31-12-2022.html" class="bg-script">31.12.2022</a>
+            <a href="08-01-2023.html" class="bg-script ">08.01.2023</a>
+          </div>
         </div>
-        <div class="mt-4"></div>
     </div>
+   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </body>
 </html>

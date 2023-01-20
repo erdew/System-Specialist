@@ -72,27 +72,29 @@
         <h1><a href="../index.html" class="display-4">25.12.2022</a></h1>
         <h4>Sanal Makineyi DHCP Server yapmak</h4>
         <p>
-            Hyper-V'de DHCP Server olarak belirleyeceğimiz Sanal Makinenin Switch Port'unu External'dan Internal'a alıyoruz. Static IP atıyoruz(Örneğin; 192.168.0.10). DHCP Servisini kurabilmek için makinenin Static IP'si olmak zorundadır. <br>
-            DC'yi seçtiğimi için öncelikle DC'nin Cache'ini temizliyoruz ki bir karışıklık yaşanmasın. Fakat bunu yapmak yerine yeni bir Sanal Makine oluşturuyoruz.
+            Hyper-V'de DHCP Server olarak belirleyeceğimiz Sanal Makinenin Switch Port'unu External'dan, Internal'a alıyoruz. Static IP atıyoruz(Örneğin; 192.168.0.10). DHCP Servisini kurabilmek için makinenin Static IP'si olmak zorundadır. <br>
+            DC'yi seçtiğimiz için öncelikle DC'nin Cache'ini temizliyoruz ki bir karışıklık yaşanmasın. Fakat bunu yapmak yerine direk yeni bir Sanal Makine de oluşturulabilir.
         </p>
         <p class="bg-script">
           > Server Manager <br>
           > Tools <br>
+          > DNS <br>
           > DC <br>
-          > Forward Lookup Zones <br>
-          > sirket.com <br>
-          > (Same as Parent Folder) 192.168.0.9 <br>
           > Right Click <br>
           > Clear Cache
+          > Forward Lookup Zones <br>
+          > sirket.com <br>
+          > (Same as Parent Folder) 192.168.0.10 <br>
+          > Right Click <br>
+          > Delete
         </p>
         <p>
           Yukarıdaki işlemi ya da yeni bir Sanal Makineyi oluşturduktan sonra makineyi DHCP Server yapmak için şu yolu izleriz;
         </p>
         <p class="bg-script">
-          > Manage <br>
-          > Add Role <br>
-          > DHCP Server <br> 
-          > [+]include 
+          > Server Manager <br>
+          > Add Roles and Features <br>
+          > DHCP Server <br>
         </p>
         <p>
           Yukarıdaki adımdan sonra bir Scope oluşturmamız gerekiyor. Scope IP'lerin bulunduğu ve dağıtmak istediğimiz IP havuzu anlamına gelir. Ardından Complete DHCP Configuration'a tıklayarak devam ediyoruz. <br>
@@ -127,13 +129,13 @@
 
         <h4>DHCP Server'da Scope Oluşturmak</h4>
         <p class="bg-script">
-          > Server Manager 
-          > Tools 
-          > DHCP 
-          > IPv4 
-          > Right Click 
-          > New Scope Wizard 
-          > Scope ismi(Mantıklı, açıklayıcı bir isim tercih edilmeli)
+          > Server Manager <br>
+          > Tools <br>
+          > DHCP <br>
+          > IPv4 <br>
+          > Right Click <br>
+          > New Scope(Wizard) <br>
+          > Scope ismi(Mantıklı, açıklayıcı bir isim tercih edilmeli) <br>
           > Scope'akki IP Address Range belirlenir. Örneğin 192.168.0.0 - 192.168.0.100
         </p>
         <p>
@@ -149,7 +151,7 @@
           > Default Gateway
         </p>
         <p>
-          -> Diğer Server'ların(DNS ve WINS) IP'lerini ve Domain Name bilgilerini girmemizi ister. Şimdi mi yoksa daha sonra mı yapacağımızı sorar. Hayır dersekk sadece IP dağıtır fakat Client'lerin Gateway'leri olmaz.
+          -> Diğer Server'ların(DNS ve WINS) IP'lerini ve Domain Name bilgilerini girmemizi ister. Şimdi mi yoksa daha sonra mı yapacağımızı sorar. Hayır dersek sadece IP dağıtır fakat Client'lerin Gateway'leri olmaz.
         </p>
         <p class="bg-script">
           > Default Gateway, Örneğin 192.168.0.1(Network'ün ilk IP'si verilir)
@@ -197,9 +199,7 @@
           > DC <br>
           > Scope <br>
           > Right Click <br>
-          > Display Static <br>
-          > Right Click <br>
-          > Limited to
+          > Display Statistics
         </p>
         <p>
           -> Kiralama süresini bu konumdan belirleriz. Unlimited yaparsak süresiz bir şekilde IP atanmış olur. O Scope'taki her IP için uygular. Bu tarz bir uygulamayı o Network'te çok sayıda IP dağıtabiliyorsak uygulamalıyız. Kısıtlı bir IP olmamalı.
@@ -211,7 +211,6 @@
           > DC <br>
           > Scope <br>
           > Right Click <br>
-          > Display Static <br>
           > Right Click <br>
           > Properties <br>
           > End

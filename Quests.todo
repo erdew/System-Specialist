@@ -29,21 +29,21 @@ Windows Server üzerinde yapılacaklar;
 ✔ Dosyaları Compress yap. @done(23-01-19 22:06)
 ✔ Herhangi bir dosyayı kriptola. @done(23-01-20 11:57)
 ✔ Kriptolu ya da Compress edilmiş dosyaların farklı bir renkte görünmesini sağla. @done(23-01-20 12:00)
-☐ EFS Recovery Agent üret.
-☐ Kriptolanan tüm dosyalara Admin'in erişmesini sağla.
-☐ DFS Server kur.
-☐ Paylaşımları senkronize et.
-☐ Print Server kur.
-☐ Printer oluştur.
-☐ Printer Pooling oluştur.
-☐ Network Printer oluşturup, File Server'a Connect et.
-☐ DHCP Server kur.
-☐ Scope oluşturup, Client'lere IP dağıt.
-☐ Client'lerin DHCP Server'dan IP alabilmesini sağla.
-☐ DHCP Service'in sürekliliğini sağla.
-☐ Split Scope uygula.
-☐ Otomatik Split Scope uygula.
-☐ DHCP'nin veritabanı Backup ve Restore işlemlerini uygula.
+✔ EFS Recovery Agent üret. @done(23-01-20 15:15)
+✔ Kriptolanan tüm dosyalara Admin'in erişmesini sağla. @done(23-01-20 15:15)
+✔ DFS Server kur. @done(23-01-20 15:31)
+✘ Paylaşımları senkronize et. @cancelled(23-01-20 15:31)
+✔ Print Server kur. @done(23-01-20 18:36)
+✔ Printer oluştur. @done(23-01-20 18:36)
+✔ Printer Pooling oluştur. @done(23-01-20 18:36)
+✘ Network Printer oluşturup, File Server'a Connect et. @cancelled(23-01-20 18:36)
+✔ DHCP Server kur. @done(23-01-20 18:36)
+✔ Scope oluşturup, Client'lere IP dağıt. @done(23-01-20 18:36)
+✘ Client'lerin DHCP Server'dan IP alabilmesini sağla. @cancelled(23-01-20 18:36)
+✘ DHCP Service'in sürekliliğini sağla. @cancelled(23-01-20 18:36)
+✘ Split Scope uygula. @cancelled(23-01-20 18:37)
+✘ Otomatik Split Scope uygula. @cancelled(23-01-20 18:37)
+✘ DHCP'nin veritabanı Backup ve Restore işlemlerini uygula. @cancelled(23-01-20 18:37)
 ☐ DNS Server kur.
 ☐ Conditional Forwarders belirle.
 ☐ Secondary Zone oluştur.

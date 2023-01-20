@@ -276,7 +276,7 @@
 
         <h4>DHCP Discover</h4>
         <p>
-          IP Adresisi olmayan cihazın(Client'in), IP Adresi alabilmek için yaptığı Broadcast'tir. Amaç ortamdaki DHCP Server'ı bulmaktır. Yapılan bu Broadcast maksimum Router'a kadardır. Router'lar Broadcast yayınları geçirmezler, Client o Router'a kadar olan yola Network denir.
+          IP Adresisi olmayan cihazın(Client'in), IP Adresi alabilmek için yaptığı Broadcast'tir. Amaç ortamdaki DHCP Server'ı bulmaktır. Yapılan bu Broadcast maksimum Router'a kadardır. Router'lar Broadcast yayınları geçirmezler, Client'ten Router'a kadar olan yola Network denir.
         </p>
 
         <h4>DHCP Offer</h4>
@@ -295,7 +295,7 @@
           Bu aşama ilk bakışta biraz gereksiz gibi görünebilir fakat şöyle bir fonksiyonu varıdr; Örneğin Network'te birden fazla DHCP Server bulunuyor, DHCP1 ve DHCP2 kendi Scope'larından birer IP önerdiler. Diyelimki DHCP1'in önerdiği IP önerildi. Bu durumda DHCP2 aralarındaki yarışı kaybetmiş olur. DHCP2 kaybettiği içinde NAK adıverilen bir Broadcast yayınlar. Bu yayının fonksiyonu şudur; Eğer DHCP Server Scope'tan bir IP çıkarırsa normal şartlarda bunu yerine koyamaz fakat NAK Broadcast'i bunu sağlar. Daha doğrusu Network'un bu IP'nin tekrar Scope'ta olduğunu ve tekrar önerilebileceğini bildirir.
         </p>
         <p>
-          Yukarda bahsettiğimiz bu 4 aşamaya kısaca DORA ismi verilmiştir. <br>
+          Yukarıda bahsettiğimiz bu 4 aşamaya kısaca DORA ismi verilmiştir. <br>
           DHCP Client, her kapatılıp tekrar açıldığında süreç Discover aşamasından başlatılar. Fakat bu defa kendisine daha önceden verilen IP Adresinin ona tekrardan verilmesini talep eder. Aynı IP Adresini geri verilebilmesi için  Client'ler tarafından bu IP Adresleri kiralanırlar. Bu kiralama süreci gerçektende aslında bir kontrat'tır. Microsoft DHCP için bu IP Adreslerinin kiralanabilme süresi 8 gündür. Bunun anlamı şudur; Bir IP Adresi DHCP Server'ın Scope'undan çıkarıldıysa ve bir DHCP Client'e önerilip o Client tarafından kiralanıldıysa, o Client çalışsın veya çalışmasın her koşulda 8 gün boyun o IP Adresini meşgul eder. Dolayısıyla o IP Adresi Client kapalıyken başka bir Client'e atanmaz. İstenirse bunun engellendiği yani Client'in kapandığı durumda onun kapanmadan önce sahip olduğu IP Adresini direkt olarak başka bir DHCP Client'e önermesi de mümkündür. Bu durum genellikle ISP'lerin müşterilerinin Modem'lerinin dış bacaklarına atadıkları gerçek IP'ler için gerçekleşir. Gerçek IP'ler çok kıymetli ve sınırlı oldukları için sürekli en verimli şekilde kulanılmak durumundadırlar. Bu sebeple kendimiz kurduğumuz Private IP'ler kullandığımız Network'ler için IP'lerin kiralanması, hatta süresiz kiralanması(Süresiz kiralama da mümkündür) en mantıklısıdır.
         </p>
 
