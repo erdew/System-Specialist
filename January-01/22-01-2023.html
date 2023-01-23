@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>22.01.2023</title>
+    <link rel="icon" type="image/x-icon" href="../eg_favicon.JPG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 14px;
+        color: #e2e3e7;
+        background-color: #232529;
+        /*
+        e2e3e7
+        c4c7cf
+        868d9a
+        696e79
+        41454c
+        35383f
+        292c31
+        232529
+
+        31333a
+        */
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: rgb(139, 233, 253);
+      }
+
+      a{
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #e2e3e7;
+      }
+
+      .container {
+        max-width: 800px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+      }
+
+      .bg-script {
+        color: rgb(139, 233, 253);
+        background-color: #31333a;
+        padding: 20px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+        text-align: start;
+        font-size: 15px;
+        line-height: normal;
+      }
+
+      .navigation\a:hover {
+        color: #31333a;
+        background-color: rgb(139, 233, 253);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container p-4 mt-2 mb-5">
+        <h1><a href="../index.html" class="display-4">22.01.2023</a></h1>
+        
+        <p>
+            Point to Point internet; Benim sunucum(örneğin modem) PPOE ile ISP'ye bağlıdır(genelde). Noktadan noktaya bizim evdeki modemimiz ile ISP'nin bağlanmasına verilen isimdir.
+        </p>
+        
+        <p>
+            Kullanıcılar VPN yapsınlar fakat bizim istediğimiz koşulları sağlıyorsa VPN yapabilsin istiyoruz. <br>
+            Yani yalnızca koşulları sağlayabilenler VPN bağlantısını yapabilsinler. <br>
+        </p>
+
+        <h4>NPS(Network Policy) - (RADIUS)</h4>
+        <p>
+            Yukarıda bahsettiğimiz önkoşulları sağlayan hizmet NPS'tir. <br>
+            Yani belirli koşulları sağlayan Client'lerin bağlanabilmesini sağlayan Service'tir. <br>
+            Eski ismi RADIUS'tur, sektörde hala bu isimle anılır. <br>
+            Sadece VPN bağlantısı için de kullanılmaz, örneğin Wireless bağlantılar için de kullanılabilir. <br>
+            Wireless bağlantısının yapılabilmesini de koşullandırabilir. <br>
+            Örneğin gece 00:00'dan sonra WiFi kullanılmasın gibi koşul belirlenebilir. <br>
+            Bağlantı yapmak isteyen VPN Client, direkt Domain Controller'a gitmeyecek önce NPS'e gidecek, koşullar kontrol edilecek. Hatta gerekirse NPS'in kendisi DC'ye gidebilir. Koşullar sağlanırsa bağlantı yapılır. <br>
+        </p>
+
+        <h5>NPS nereye kurulabilir?</h5>
+        <p>
+            Herhangi bir Server'în üzerine kurulabilir, hatta DC'nin üzerine bile kurulabilir. <br>
+            VPN Server'ın üzerine kurulması önerilir fakat bunu yaptığımızda herhangi bir konfigürasyon yapmak gerekmez. <br>
+            Otomatik olarak VPN Server ve NPS birbirlerini görürler.
+            O sebeple senaryomuzda farklı bir Server'a ekleyeceğiz. <br>
+            Örneğin DC'nin üzerine kuralım; <br>
+        </p>
+        <p class="bg-script">
+            > Server Manager <br>
+            > Add Roles <br>
+            > [+]Network Policy and Access Services <br>
+            > Next <br>
+            > Install
+        </p>
+
+        <p>
+            NPS Arayüz için;
+        </p>
+        <p class="bg-script">
+            > Tools <br>
+            > Network Policy Server
+        </p>
+        <ol>
+            <span><b>NPS'te ne yapmamız gerekiyor;</b></span>
+            <li>NPS'i, VPN Server'a tanıtacağız.</li>
+            <li>VPN Server'ı RADIUS'a tanıtacağız(yani karşılıklı).</li>
+            <li>NPS üzerinde bağlantı koşullarını belirleyeceğiz.</li>
+        </ol>
+
+        <h5>NPS'i, VPN Server'a nasıl tanıtırız?</h5>
+        <p>
+            RADIUS'un Client'ı VPN Server'dır. <br>
+        </p>
+        <p class="bg-script">
+            > NPS <br>  
+            > RADIUS Clients <br>
+            > Right Click <br>
+            > New <br>
+            > Address: VPN Server'ın IP'si yazılır. <br>
+            > Address, Verify'a tıklanarak girilir. -> İki Server'da içeride(Network'te) oldukları için Internal Interface'in IP'si girilir.<br>
+            > Resolve <br>
+            > OK -> IP'yi getirir. <br>
+            > Friendly Name: VPN Server1 -> Olabilir ya da gerçek ismi ne ise onu girebiliriz. <br>
+            > [+]Manuel <br>
+            > Shared Secret: NPS ile VPN Server'ın arasındaki iletişim için girilen parola.
+        </p>
+
+        <p>VPN Server'a gideriz;</p>
+        <p class="bg-script">
+           > Routing and Remote Access <br>
+           > SERVER2016-20 <br>
+           > Right Click <br>
+           > Properties <br>
+           > Security <br>
+           > Authentication provider: Default'ta Windows'tur, bu direkt DC'ye gönderir. <br>
+           > RADIUS Authencition’u seçersek direkt o RADIUS'a gönderilir. <br>
+           > Configure <br>
+           > Server Name: 192.168.0.10 <br>
+           > Shared Secret: NPS'te girdiğimiz şifre. br
+        </p>
+        
+        <h5>Koşulları belirlemek</h5>
+        <p>
+            Örnek koşullarımız; <br>
+            Sadece haftasonu gelinecekse, sadece L2TP ile kullanıyorsa bağlanabilsin. 
+        </p>
+        <p class="bg-script">
+            > Policies <br>
+            > Network Policies <br>
+            > Right Click <br>
+            > New <br>
+            > Policy Name: Haftasonu Domain Admini ve L2TP ise izinli <br>
+            > Next <br>
+            > Add <br>
+            > User Groups(Örneğin) <br>
+            > Add <br>
+            > Domain Admins(Örneğin) <br>
+            > Day and Time Restrictions(Örneğin) <br>
+            > Cumartesi, Pazar'ın örneğin 09:00'dan 20:00'a kadar seçilir ve [+]Permitted işaretlenir. -> Permitted: Sadece bu alanın seçildiğini onaylar. <br>
+            > Tunnel Type(Örneğin) <br>
+            > [+]L2TP <br>
+            > Next <br>
+            > Access Granted -> Yukarıdaki şartları sağlayanlara izin ver. <br>
+            > EAP Type <br>
+            > Add <br>
+            > EAP v2(Kriptoloji seçilir) <br>
+            > Constraints -> Idle Timeout: Disconnect after 30(Örneğin) -> User hiç bir şey yapmadan 30 dakika durursa, VPN bağlantısı kesilir. <br>
+            -> Session Timeout -> Çalışıyor bile olsa, ne olursa olsun Disconnect after 30(Örneğin) -> 30 dakika sonra VPN bağlantısı kesilir. <br>
+            > Next <br>
+            > Summary <br>
+            > Next
+        </p>
+        <p>
+            NPS ile biden fazla koşul eklemiş olduk. <br>
+            Bu aşamadan sonra koşulları değiştirmek istiyorsak, üzerlerine gidip Edit yaparız.
+        </p>
+
+        <h5>RADIUS Server'ın Client'ı kimler olabilir?</h5>
+        <p>
+            Bir Access Point'te olabilir. <br>
+            Access Point Wireless bağlantıdaki herhangi bir cihazdır. <br>
+            Modeme Wireless bağlantıyı yapabilmek için sadece Password sorması yerine, aynı yukarıdaki gibi koşullar ekleyebiliriz. <br>
+            Yani sadece VPN Server, RADIUS Server'ın Client'i olmak zorunda değildir.
+        </p>
+
+        <h5>User'ın üzerinde koşulların çalışmaması durumunda;</h5>
+        <p class="bg-script">
+            > Active Directory <br>
+            > Users <br>
+            > Administrator <br>
+            > Properties <br>
+            > Dial-in <br>
+            > [+]Allow Access -> Seçili ile RADIUS'tan vs. kontrol  bedilmez, her yere erişebilir. <br>
+            > [+]Control access through NPS Network Policy -> Ortamda RADIUS var ise ayar burada olmalı(Bu seçili olmalı).
+        </p>
+
+        <h4>Side to Side VPN</h4>
+        <p>
+            Bir şirketimiz var. <br>
+            Merkez şube ve başka şubelerimiz var. <br>
+            İstiyoruz ki; Merkez, şubeye, şube ise merkeze bağlanabilsin. <br>
+            Şubeler arası hat alınabilir fakat çok maliyetlidir. <br>
+            Hem merkez hem de şubeler aslında internete çıkıyorlar. <br>
+            İnternet üzerinden birbirlerine erişmelerini sağlamak isttiyoruz. <br>
+            Bunu sağlayan teknoloji; "Side to Side VPN'dir".
+        </p>
+        <p>
+            Hem merkezde hem de şubelerde VPN Server'lar kurulur. <br>
+            Bu VPN Server'lar birbirlerine bağlanacaklar. <br>
+            Her bir şubede bir tane VPN Server, merkezdeki VPN Server'a bağlanır.
+        </p>
+
+        <h5>Nasıl yapılır?</h5>
+        <p class="bg-script">
+            Merkez binaya yani VPN Server'a gidilir. <br>
+            > Routing and remote access <br>
+            > SERVER2016-20 <br>
+            > Network Interface <br>
+            > right Click <br>
+            > Demand-Dial Interface <br>
+            > Interface name: sirket0-7(örneğin) <br>
+            > Connection Type: VPN'mi PPPoE(dİREKT BİR M ODEM ÜZERİNDE) -> VPN'i seç. <br>
+            > VPN Type: VPN Server başka bir VPN Server'a bağlanacaksa kendisi VPN Client gibi davranır, bunun için tünel Protokolü belirlememizi ister: PP2P ile bağlanabiliriz. <br>
+            > Destination Address: 10.3.34.127(örneğin) <br>
+            > Protocols and Security: [+]Route IP packets on this interface
+        </p>
+        <p>
+            Yukarıdaki "Protocols and Security'teki" seçili olmayan seçenek kritiktir. <br>
+            Benim VPN Server'ım karşı VPN Server'da bir kullanıcı hesabı üzerinden doğrulanmalı. <br>
+            Add a user account so a remote router can dial in'i Enable yaparsak, benim VPN Server'ımın Local'inde ismi sirket0-7(örneğin) diye bir isim oluşturur. 
+        </p>
+        <p class="bg-script">
+            > Protocols and Security: [+]Add a user account so a remote router can dial in -> Seçilir. <br>
+            > Static Routes for Remote Networks -> Bu Side to Side VPN bağlantısı yapılırken kullanılacak yol girilir. <br>
+            > Add 192.168.7.0 255.255.255.0 -> Karşı Network'ün iç IP'si girilir. <br>
+            > Dial-in Credentials -> Oluşturulan o hesaba Password belirliyoruz. <br>
+            > Dial-out Credentials -> Karşı taraftaki VPN Server'ın oluşturduğu Dial'-in User'ın bilgilerini buraya gireriz; <br>
+            sirket0-7(Bu hesabı karşı taraf açtı benim için, aynı hesabı ben de açabilirim fark etmez.) <br>
+            Yukarıda bahsedilen hesap bu VPN Server'ın Local'inde açılır.
+            Dial-out Credentials; <br>
+            > Username: sirket0-7 <br>
+            > Domain: SERVER2016-27 <br>
+            > Password: Girdiğimiz Password girilir. <br>
+            > Next <br>
+            > Finish
+        </p>
+        <p>
+            Bu noktada sirket0-7 adında bir User Local'e oluşturulmuş oldu. <br>
+            Dial-in tab'ında User'ın Allow Access'i olduğunu görebiliriz. <br>
+            Özetle bu User'ı biz karşı taraf için üretiyoruz.
+        </p>
+
+        <p>
+            Her bir DNS Server'da;
+        </p>
+        <p class="bg-script">
+            > Routing and Remote Access <br>
+            > SERVER2016-20 <br>
+            > Network Interfaces <br>
+            -> Bu bölümde oluşturulan User'lar görünür. Bu User'ların Şifrelerini Domian bilgisini ve adını doğru ise bağlantı yapılır. <br>
+            > User <br>
+            > Connect
+        </p>
+        <p>
+            Side to Side VPN ile Network üzerinden makineler birbirlerine erişebilirler. <br>
+            İç Network IP'leri ile birbilerine erişebilirler. <br>
+            İçerideki VPN Server ile içerideki makineler aynı Switch'e bağlı olmaları ya da birbirlerine erişebiliyor olmaları gerekiyor. <br>
+
+        </p>
+        <p>
+            User'ları Local'de açtığımız için direkt Windows üzerinden gitmeli, RADIUS üzerinden değil. <br>
+            Tersi için User'ları Active Directory üzerinden açmak gerekir.
+        </p>
+        <p class="bg-script">
+            User <br>
+            Right Click <br>
+            Properties <br>
+            Options <br>
+            [+]Demand-dial -> Eskiden telefon hattından internet kullanılan dönemlerde sürekli bağlı kalmak ekonomik bir şey değildi, o sebeple bu seçenek kullanırdı. <br>
+            [+]Persistent Connection -> Bir kez bağlanırsa, artık bir daha bağlantı kopmaz. Bunu seçeriz.
+        </p>
+
+        <p>
+            Eğer modemin arayüzünde Side to Side VPN var ise, karşı tarafta da denk bir modemde de var ise bağlantı yapılabilir. <br>
+            Bu şekilde karşıdaki modemin bağlı olduğu Network'ünde Private IP'ye sahip olan makinelerine erişim sağlayabiliriz. <br>
+            Yani evlerimizdeki modemler de Side to Side VPN bağlantısı yapabilirler.
+        </p>
+
+        <h4>Web Server</h4>
+        <p>
+            Sanalda kurmak için VPN Server'ın üzerindeki Service'leri silebiliriz ya da yeni bir sanal makine kurabilirsin. <br>
+            DNS Server olan makinede Remote Access, DNS, Web Server vs. Remove'la, sadece File Server kalsın.
+        </p>
+        <p>
+            DC'ye gideriz; <br>
+            NPS kaldırabiliriz, kullanmayacağımız için. <br>
+            Servis kaldırdığın tüm makinelerde mutlaka bir Restart yap. <br>
+            DC'nin tek Interface'i vardı, bunu External'a çekeriz. <br>
+            IP'sini değiştiririz: 10.3.34.103/24 <br>
+            G: 10.3.34.1 <br>
+            DNS: 127.0.0.1 <br>
+        </p>
+        <p class="bg-script">
+            > DNS Manager <br>
+            > DC <br>
+            > sirket3.com <br>
+            -> (Same as parent folder)'larda sadece doğru olan IP kalsın, gerisini sil. <br>
+            -> DC'nin IP'sinin güncellendiğinden emin ol.
+        </p>
+
+        <p>
+            Önceden VPN Server olan makineye gideriz; <br>
+            İki tane Interface'i vardı, Internal'a bağlı olan Interface'i Remove et(Makineyi kapatman gerekir). <br>
+            Üzerinde sadece External Interface kalsın. <br>
+            IP'si 10.3.34.123/24 <br>
+            D: 10.3.34.1 <br>
+            DNS: 10.3.34.103 -> DNS DC'nin üzerinde olduğu için. <br>
+            DC'ye geçip DNS'te bu makinenin IP'sinin güncellendiğini gör.
+        </p>
+
+        <p>
+            3.makineye geçeriz. <br>
+            External'a bağlı bir Interface'i olmalı. <br>
+            IP: 10..3.34.140 <br>
+            D 10.3.34.1 <br>
+            DNS: 10.3.34.103 <br>
+        </p>
+        <p class="bg-script">
+            Önceden VPN Server olan makinede; <br>
+            > cmd <br>
+            > ipconfig /registerdns <br>
+        </p>
+
+        <p>
+            Biz Sunucu tarafıyla ilgilendiğimiz için; sitenin nasıl yayınlanacağı ile ilgileneriz. <br>
+            Bunu yapabilmek için bir Server'ı, Web Server haline getireceğiz.
+        </p>
+        
+        <h5>Web Server Kurulumu</h5>
+        <p>
+            Önceden VPN Server olan makinede; <br>
+            Server OS, <br>
+            Static IP'si olmamız gerekir, <br>
+            Local Admin yetkisi gereklidir.
+        </p>
+        <p class="bg-script">
+            > Server Manager <br>
+            > Add Roles <br>
+            > [+]Web Server(IIS) -> Microsft'un Web Server'ının ismi IIS'tir. Windows Server OS'ın üzerine kuracaksak bu seçilir. <br>
+            > Next <br>
+            > Next <br>
+            > Role Services -> [+]HTTP Redirection, eklenir. <br>
+            > Install
+        </p>
+        <p>
+            Web Server aslında Web Hosting yapan makinedir. <br>
+        </p>
+        <p class="bg-script">
+            > Tools <br>
+            > Internet Information Services Manager <br>
+            > SERVER2016-20 <br>
+            > Sites <br>
+            > Default Web Site -> Varsayılan olarak burada bir Web Sitesi yayındadır. <br>
+            > Default Documents -> Varsayılandaki dosyaları listeler. Sırayla tepeden aşağıya doğru dosyaları tarar. <br>
+            > Right Click <br>
+            > Manage Website <br>
+            > Advanced <br>
+            > Physcal Path'i görürüz, sayfa tetiklenirse nereye gideceğini söyler. <br>
+
+            <br>
+            > Browser'a gidilir; <br>
+            > http://10.3.34.120
+        </p>
+        <p class="bg-script">
+            > C <br>
+            > inetpub <br>
+            > wwwroot <br>
+            -> Burada Default sayfanın kaynağını görürür.
+        </p>
+        <p class="bg-script">
+            > IIS Manager <br>
+            > Edit Site <br>
+            > Binding <br>
+            > Type -> http <br>
+            > IP: 10.34.120(Bu IP'ye geliniyorsa) <br>
+            > Port -> 80 <br>
+            > Host name: örneğin; www.sirket0.com -> Şeklinde girilse de yukardaki IP'ye gitmesini isteyebiliriz.
+        </p>
+        <p>
+            Yukarıdaki IP istenirse, http protokolü ile bu IP'ye git denir. HTTP olduğu için 80 numaralı Port'a gider. <br>
+            İstek Port'tan girer, Server hangi sayfayı istediğimizi anlar ve aradığımız sayfanın ismini Default Documents'te arar, bulursa çalıştırır.
+        </p>
+        <p>
+            Host name: örneğin; www.sirket0.com -> Şeklinde girilse de yukardaki IP'ye gitmesini isteyebiliriz. <br>
+            Yukarıdaki şekilde girersek; <br>
+            İsim çözümleme süreci tetiklenir. <br>
+            Bu makinenin TCP/IP ayarlarında hangi DNS yazılı ise bizim makinemiz bu isim çözümlemesini yaptırmak üzere orayı sorgular. <br>
+            DNS, bu ismi(www.sirket0.com) bilmediği için IP çözümlemesini yapamaz. <br>
+            DNS www diye bir kayıt arar, DNS Server derki böyle bir makine yok. <br>
+            İşte bunun internetteki karşılığı; internette gidip Domain satın almaktır. <br>
+            O sebeple DNS'e gidip www kaydını girmemiz gerekiyor.
+        </p>
+        <p class="bg-script">
+            > DC <br>
+            > DNS Manager <br>
+            > Forward lookup zones <br>
+            > sirket0.com <br>
+            > Boş bir yere Right Click <br>
+            > New <br>
+            > www <br>
+            > Web Server'ın IP Adresi(10.3.34.120)
+        </p>
+        <p>
+            Eğer web Server'ın üzerindeysek; <br>
+            IP ve Hostname vermediysek; <br>
+            Default Sayfayı görebilmek için; <br>
+            Browser'a www.localhost yazabiliriz. <br>
+            Yani Default'ta bu şekilde görüntülenebilir. <br>
+            sadece localhost yazsak bile kendi kendine başına http koyarak arar.
+        </p>
+
+        <h5>Binding'leri Default duruma getir</h5>
+        <p class="bg-script">
+            > IIS Manager <br>
+            > Edit Site <br>
+            > Binding <br>
+            > Unassigned -> Default hale getirip, kendi kurulumumuzu yapacağız.
+        </p>
+
+        <h5>Siteyi editlemek</h5>
+        <p class="bg-script">
+            > C <br>
+            > New Folder <br>
+            > sirket0.com(örneğin) -> Bunun içine inetpub'ın içindeki iisstrart.htm'i kopyala. <br>
+            > htm dosyasını editle.
+        </p>
+
+        <h5>Siteyi yayına almak</h5>
+        <p class="bg-script">
+            > IIS Manager <br>
+            > SERVER2016-20 <br>
+            > Sites <br>
+            > Right Click <br>
+            > New Website <br>
+            > Site name: sirket0.com(örneğin) <br>
+            > Physical path: C'de oluşturduğumuz klasörün konumu girilir. <br>
+            > Binding <br>
+            > http, 10.3.34.120, 80 <br>
+            > Hostname www.sirket0.com
+        </p>
+        <p>
+            Yukarıdaki IP'ye, Hostname'e ve Port'a ulaşılmak isteniyorsa Default sayfayı açar. <br>
+            ww  w.sirket0.com girdiğimiz DNS'ê gider. <br>
+            DNS www üzerinden 10.3.34.120'ye yönlendirir. <br>
+            80 numaralı Port'tan siteyi yayınladı.
+        </p>
+        <p>
+            Eğer Web Server içerideyse; <br>
+            Dışarıdan bir makineye buraya erişmek isterse ne yazacak ? <br>
+            www.sirket0.com -> Bu yine isim çözümlemesini tetikler. <br>
+            Soruyu soran makine hangi DNS'e bağlı ise ona sorar. <br>
+            www domaini alındıysa <br>
+            O Network'ün dış bacağına yönlendirecek <br>
+            Dış bacak Port Forwarding yapacak(Eğer Web Server içeride bir yerde duruyor ise).
+        </p>
+        
+        <p>
+            Domain satışı yapabilmek için Register olmak gerekir. <br>
+            Lisanslı olması gerekir. <br>
+            Domain'i veren şirket; Root'un altındaki www'un altındaki .com'un altında bir register açacak. <br>
+            Bunu yapma yetkisi herkese verilmez. Register olanlara verir. <br>
+            IANA üzerinden lisanslanırlar. <br>
+            Para ödeyip, bu hakkı satın alırlar.
+        </p>
+        <hr>
+        
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="21-01-2023.html" class="bg-script">21.01.2023</a>
+            <a href="" class="bg-script ">xxx</a>
+          </div>
+        </div>
+        
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
