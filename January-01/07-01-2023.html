@@ -87,27 +87,27 @@
         </p>
         <p class="bg-script">
           <b><i>\Server Manager <br>
-           \Group Policy Management <br>
-           \Domains <br>
-           \company.com <br>
-           \Default Domain Policy <br>
-           \Right Click <br>
-           \Edit <br>
-           \Computer Configuration <br>
-           \Policies <br>
-           \Windows Settings <br>
-           \Security Settings <br>
-           \Account Policy</i></b>
+           > Group Policy Management <br>
+           > Domains <br>
+           > company.com <br>
+           > Default Domain Policy <br>
+           > Right Click <br>
+           > Edit <br>
+           > Computer Configuration <br>
+           > Policies <br>
+           > Windows Settings <br>
+           > Security Settings <br>
+           > Account Policy</i></b>
         </p>
         <p>
           Password'lar ile ilgili bilgiler yukarıdaki konumda bulunur. (Group Policy konusu ayrı olarak işlenecektir)
         </p>
         <p class="bg-script">
-          <b><i>\Server Manager <br>
-           \DNS <br>
-           \DC <br>
-           \Forward Lookup Zones <br>
-           \company.com</i></b> -> Bu konumda DC'nin IP'sini doğrula. <br>
+          <b><i>> Server Manager <br>
+            > DNS <br>
+            > DC <br>
+            > Forward Lookup Zones <br>
+            > company.com</i></b> -> Bu konumda DC'nin IP'sini doğrula. <br>
             (Same as parent folder) -> Eski IP'leri sil.
         </p>
         <p>
@@ -123,9 +123,9 @@
             <b>1 FQDN, 2 NetBIOS Name.</b>
         </p>
         <p class="bg-script">
-          <b><i>\server1.company.com</i></b> -> FQDN(Full Qualified Domain Name) <br>
-          <b><i>\server1</i></b>(ilk noktaya kadar) -> Hostname <br>
-          <b><i>\company.com</i></b> -> DNS Suffix -> İlk noktadan sonraki tüm kısımdır.
+          <b><i>> server1.company.com</i></b> -> FQDN(Full Qualified Domain Name) <br>
+          <b><i>> server1</i></b>(ilk noktaya kadar) -> Hostname <br>
+          <b><i>> company.com</i></b> -> DNS Suffix -> İlk noktadan sonraki tüm kısımdır.
         </p>
             
         <p>
@@ -138,16 +138,16 @@
             Bunu söylemenin yöntemlerinden birisi DNS'tir.
         </p>
         <p class="bg-script">
-          <b><i>\Name to IP</i></b> -> İsimden IP'ye yapılan çözümleme isim çözümlemesidir.
+          <b><i>> Name to IP</i></b> -> İsimden IP'ye yapılan çözümleme isim çözümlemesidir.
         </p>
         <p>
           -> İstenirse MAC Adresine de çözümleme yapılabilir. MAC Adresi = Ethernet kartı'dır. <br>
           -> IP'den MAC Adresine dönüşüm ARP'dir. İletişimin temelinde ARP yatar. <br>
         </p>
         <p class="bg-script">
-          <b><i>\DC <br>
-         \cmd <br>
-         \arp -a</i></b> -> Gateway'den başlar daha önceden iletişime geçtiği tüm IP'leri ve MAC adreslerini listeler.
+          <b><i>> DC <br>
+            > cmd <br>
+            > arp -a</i></b> -> Gateway'den başlar daha önceden iletişime geçtiği tüm IP'leri ve MAC adreslerini listeler.
         </p>
         <p>
           <b>
@@ -155,9 +155,9 @@
           </b>
         </p>
         <p class="bg-script">
-          <b><i>\pint server-2</i></b> -> İsim çözümlesini tetikler. <br>
+          <b><i>> pint server-2</i></b> -> İsim çözümlesini tetikler. <br>
             -> Arkasına Suffix yazmadığımız için bunu NetBIOS Name olarak algılar. <br>
-            <b><i>\Enter</i></b> <br>
+            <b><i>> Enter</i></b> <br>
            -> FQDN'e çevirir. <br>
             -> FQDN ile bulduğu IP'ye Ping atar.
         </p>
@@ -168,24 +168,24 @@
           <li class="bg-script">Makineyi Work Group'tan çıkarıp Domain'e üye edersek hangi Suffix'i kullancağını otomatik olarak öğrenir.</li>
           <li class="bg-script mt-1">Makineyi Domain'e katmadan Suffix kullanmasını istersek; <br>
             <b><i>\DHCP <br>
-              \Scope Options</i></b>'tan DNS Suffix söylenebilir.</li>
+              > Scope Options</i></b>'tan DNS Suffix söylenebilir.</li>
           <li class="bg-script mt-1">Makineyi Domain'e üye etmeden; <br>
-            <b><i>\Server Manager <br>
-              \Local <br>
-              \Domain <br>
-              \Computer Name <br>
-              \Change <br>
-              \Work Group -> More <br>
-              \Primary DNS Suffix</i></b>
+            <b><i>> Server Manager <br>
+              > Local <br>
+              > Domain <br>
+              > Computer Name <br>
+              > Change <br>
+              > Work Group -> More <br>
+              > Primary DNS Suffix</i></b>
               -> Buraya ne yazarsak kullanması gerektiği yerde otomatik olarak bu DNS Suffix'i kullanır. Buradan yaparsak artık sadece bunu kullanır.</li>
           <li class="bg-script mt-1">Makinenin üzerindeki; <br>
-             <b><i>\Ethernet Port <br>
-              \Properties <br>
-              \Advance <br>
-              \DNS <br>
-              \DNS Suffix for this connect</i></b>
+             <b><i>> Ethernet Port <br>
+              > Properties <br>
+              > Advance <br>
+              > DNS <br>
+              > DNS Suffix for this connect</i></b>
               -> Buraya yazacağımız herhangi bir Suffix'i, DNS Suffix olarak kullanmaya bağlar. <br>
-              <b><i>\[+]Append Primary</i></b> -> seçili olduğunda 3.aşama çalışabilir.</li>
+              <b><i>> [+]Append Primary</i></b> -> seçili olduğunda 3.aşama çalışabilir.</li>
         </ol>
        
         <h2>Host Name Resolution Process</h2>
@@ -203,14 +203,14 @@
         </p>
         <p class="bg-script">
           Görmek için; <br>
-         \cmd <br>
-         \ipconfig /displaydns -> Var ise listelenir.
+          > cmd <br>
+          > ipconfig /displaydns -> Var ise listelenir.
         </p>
             Bu bilgi saniyelerle sınırlıdır. Adres çözümlendikten sonra; 1200 saniye yani 20 dakika boyunca bellekte tutulur. Bu süre içerinde adres değişmiş bile olsa yine de bellekteki adrese gidilir. <br>
             Cache'e güvenmiyorsak, yani IP'nin değiştiğini düşünüyorsak, Manuel olarak hafızayı sileriz. <br>
         <p>
         <p class="bg-script">
-          <b><i>\ipconfig /flushdns</i></b> -> Komutu yazdığınız makinenin <i>Host Name Cache</i>'ini temizler. <br>
+          <b><i>> ipconfig /flushdns</i></b> -> Komutu yazdığınız makinenin <i>Host Name Cache</i>'ini temizler. <br>
         </p>
 
         <h5>4.Aşama; <b><i>Hosts File</i></b></h5>
