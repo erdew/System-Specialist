@@ -67,11 +67,10 @@
         line-height: normal;
       }
 
-      .navigation\a:hover {
+      .navigation > a:hover {
         color: #31333a;
         background-color: rgb(139, 233, 253);
       }
-
     </style>
   </head>
   <body>
@@ -139,13 +138,13 @@
 
         <h5>RRAS olmasını istediğimiz makinede;</h5>
         <p class="bg-script">
-            \Server Manager <br>
-            \Add Roles <br>
-            [+]Remote Access <br>
-            \Next <br>
-            \Next <br>
-            [+]Routing → Seçersek kendisi otomatik olaran ortak Service'i olan [+]VPN'i de seçer. <br>
-            Install
+            > Server Manager <br>
+            > Add Roles <br>
+            > [+]Remote Access <br>
+            > Next <br>
+            > Next <br>
+            > [+]Routing → Seçersek kendisi otomatik olaran ortak Service'i olan [+]VPN'i de seçer. <br>
+            > Install
         </p>        
         <p>
             Yukarıdaki işlem bildiğimiz Router’ların yaptığı Routing işlemini bir Server’a yaptırmak için kullanılır.
@@ -153,17 +152,17 @@
 
         <h5>Configuration için;</h5>
         <p class="bg-script">
-            \Server Manager <br>
-            \Tools <br>
-            \Routing and Remote Access
+            > Server Manager <br>
+            > Tools <br>
+            > Routing and Remote Access
         </p>
       
         <h5>Routing and remote Access</h5>
         <p class="bg-script">
-            \SERVER2016-20 → Servis kurulu ama aktif olmadığını görüyoruz. <br>
-            \Right Click <br>
-            \Enable Remote Access <br>
-            \Next <br>
+            > SERVER2016-20 → Servis kurulu ama aktif olmadığını görüyoruz. <br>
+            > Right Click <br>
+            > Enable Remote Access <br>
+            > Next <br>
             (Ne hizmeti vermek istediğimizi sorar) <br>
             [+]VPN’mi? <br>
             [+]NAT mı? <br>
@@ -179,24 +178,24 @@
 
         <h5>İlk aşamada LAN Routing yapacağız;</h5>
         <p class="bg-script">
-            \Next <br>
-            \Next <br>
-            \Finish <br>
-            \Start → Servisi Start eder.
+            > Next <br>
+            > Next <br>
+            > Finish <br>
+            > Start → Servisi Start eder.
         </p>
             
         <h5>Routing and Remote Access</h5>
         <p class="bg-script">
-            \SERVER2016-20 <br>
-            \Network Interfaces → Interface’leri gösterir. Durumlarını gösterir, (çalışıyor ve connector vs.) <br>
-            \Remote Access Client → Uzaktan bağlananları gösterir.
+            > SERVER2016-20 <br>
+            > Network Interfaces → Interface’leri gösterir. Durumlarını gösterir, (çalışıyor ve connector vs.) <br>
+            > Remote Access Client → Uzaktan bağlananları gösterir.
         </p>
         <p class="bg-script">
-            \IPv4 <br>
-            \\General → Gelen ve giden IP’lerin miktarını vs. gösterir. <br>
-            \\Static Route <br>
-            \\Right Click <br>
-            \\\Show Routing → Hangi Network’lere gitmeyi bildiği gösterir.(Broadcast’ler vs dahil)
+            > IPv4 <br>
+            > General → Gelen ve giden IP’lerin miktarını vs. gösterir. <br>
+            > Static Route <br>
+            > Right Click <br>
+            > Show Routing → Hangi Network’lere gitmeyi bildiği gösterir.(Broadcast’ler vs dahil)
         </p>
         <p>
             Şuanda hala diğer Network’lere erişim olmaz.
@@ -207,8 +206,8 @@
 
         <h5>Static olarak eklemek;</h5>
         <p class="bg-script">
-            \Static Route <br>
-            \\New Static Router → interface: EXT <br>
+            > Static Route <br>
+            > New Static Router → interface: EXT <br>
             destination: 192.168.13.0 →(Hangi Network’e gidilecek?) <br>
             Subnet: 255.255.255.0 → Hedefin Subnet’i. <br>
             Hangi Interface’ten paketler çıkacak: 10.3.34.100
@@ -220,11 +219,11 @@
        
         <h5>Yaptığımız Static Router’ları siliyoruz;</h5>
         <p class="bg-script">
-            \Routeing and remote access <br>
-            \SERVER2016-20 <br>
-            \Right Click <br>
-            \\All Tasks <br>
-            \\\Restart
+            > Routeing and remote access <br>
+            > SERVER2016-20 <br>
+            > Right Click <br>
+            > All Tasks <br>
+            > Restart
         </p>
         <p>
             Yukarıdaki işlem ile Service yeniden başlatıldı.
@@ -233,30 +232,30 @@
         
         <h5>RRAS’ta RIP açmak için;</h5>
         <p class="bg-script">
-            \ Routeing and remote access <br>
-            \ SERVER2016-20 <br>
-            \ IPv4 <br>
-            \\ General <br>
-            \\ Right Click <br>
-            \\\ New Routing Protocol <br>
-            \\\ RIP gelir.(NASIL GELDİĞİNİ PC’DE DENEYEREK TEKRAR GÖR) <br>
-            \\\ RIP <br>
-            \\\ Right Click <br>
-            \\\\ New Interface → Network’ler hangi Interface’ten birbirleri ile konuşacaksa o Interface seçilir. <br>
-            \\\\ EXT <br>
-            \\\\ RIP’in hangi versiyonu ile çalışacağımızı sorar, Default’ta bırak. <br>
-            \\\\ OK
+            > Routeing and remote access <br>
+            > SERVER2016-20 <br>
+            > IPv4 <br>
+            > General <br>
+            > Right Click <br>
+            > New Routing Protocol <br>
+            > RIP gelir.(NASIL GELDİĞİNİ PC’DE DENEYEREK TEKRAR GÖR) <br>
+            > RIP <br>
+            > Right Click <br>
+            > New Interface → Network’ler hangi Interface’ten birbirleri ile konuşacaksa o Interface seçilir. <br>
+            > EXT <br>
+            > RIP’in hangi versiyonu ile çalışacağımızı sorar, Default’ta bırak. <br>
+            > OK
         </p>
        
         <h5>Karşı taraftaki makineler de RIP ekledikleri durumda;</h5>
         <p class="bg-script">
-            \Routeing and remote access
-            \SERVER2016-20
-            \IPv4
-            \\General
-            \\\Static Routes
-            \\\Right Click
-            \\\\Show IP Routings → Öğrendiği Network’leri bu kısımdan görebiliriz.
+            > Routeing and remote access
+            > SERVER2016-20
+            > IPv4
+            > General
+            > Static Routes
+            > Right Click
+            > Show IP Routings → Öğrendiği Network’leri bu kısımdan görebiliriz.
         </p>
         <p>
             Otomatik bir şekilde birbirlerini öğrenmiş oldular.
@@ -289,11 +288,11 @@
             Gateway, RRAS’te(bizim senaryomuzda)
         </p>
         <p class="bg-script">
-            \RRAS: 192.168.0.1 <br>
-            \Routing and remote Access <br>
-            \SERVER2016-20 <br>
-            \IPv4 <br>
-            \Static Routes
+            > RRAS: 192.168.0.1 <br>
+            > Routing and remote Access <br>
+            > SERVER2016-20 <br>
+            > IPv4 <br>
+            > Static Routes
         </p>
         <p>
             RRAS’ın üzerinde Static Routes’ın içerisinde 8.8.8.8 var mı diye kontrol eder. <br>
@@ -328,19 +327,19 @@
 
         <h5>NAT Configuration</h5>
         <p class="bg-script">
-            \Routing and Remote Access <br>
-            \SERVER2016-20 <br>
-            \\IPv4 <br>
-            \\General <br>
-            \\Right Add <br>
-            \\\New Routing Protocol <br>
-            \\\NAT
+            > Routing and Remote Access <br>
+            > SERVER2016-20 <br>
+            > IPv4 <br>
+            > General <br>
+            > Right Add <br>
+            > New Routing Protocol <br>
+            > NAT
         </p>
      
         <p class="bg-script">
-            \\NAT <br> 
-            \\Right Click <br>
-            \\\New Interface → Hangi interface içeriye hangisi dışarıya bağlı, bunu söylemek durumundayız.
+            > NAT <br> 
+            > Right Click <br>
+            > New Interface → Hangi interface içeriye hangisi dışarıya bağlı, bunu söylemek durumundayız.
         </p>
         <p>
             Örneğin EXT’i seçip OK dersek, bu Private mi, Public mi diye sorar.
@@ -387,16 +386,16 @@
             Eğer Remote Desktop talebiyle geliniyorsa o paketi al şuraya gönder diyeceğiz.
         </p>
         <p class="bg-script">
-            \Routing and Remote Access <br>
-            \SERVER2016-20 <br>
-            \IPv4 <br>
-            \\NAT <br>
-            \\Double Click <br>
-            \\\Service and Ports <br>
-            \\\[+]Remote Desktop <br>
-            \\\Edit <br>
-            \\\[+]On this Interface’e 3389’lu Port’a bir talep gelirse; <br>
-            \\\Private address: [192.168.0.10]’a gönder.
+            > Routing and Remote Access <br>
+            > SERVER2016-20 <br>
+            > IPv4 <br>
+            > NAT <br>
+            > Double Click <br>
+            > Service and Ports <br>
+            > [+]Remote Desktop <br>
+            > Edit <br>
+            > [+]On this Interface’e 3389’lu Port’a bir talep gelirse; <br>
+            > Private address: [192.168.0.10]’a gönder.
         </p>
        <p>
             3389 RDP(Remote Desktop Protocol)’ün standart Port’udur. <br>
@@ -404,9 +403,9 @@
             Remote Desktop Enable olmalıdır.
        </p>
        <p class="bg-script">
-            \Server Manager <br>
-            \Remote Desktop <br>
-            \\Enable
+            > Server Manager <br>
+            > Remote Desktop <br>
+            > Enable
        </p>
        <p>
             Şuanda DC’ye Remote Desktop ile bağlanabildiğimiz için; <br>
@@ -529,12 +528,12 @@
             Fakat bu sanal bir kapı olduğu için sayı önemsizdir.
         </p>
         <p class="bg-script">
-            \Routing and remote Access <br>
-            \SERVER2016-20 <br>
-            \\Ports <br>
-            \\Right Click <br>
-            \\\Properties <br>
-            \\\Devices → Port’ların sayısını gösterir, bu Port’ları arttırdığımız gibi azaltabiliriz de.
+            > Routing and remote Access <br>
+            > SERVER2016-20 <br>
+            > Ports <br>
+            > Right Click <br>
+            > Properties <br>
+            > Devices → Port’ların sayısını gösterir, bu Port’ları arttırdığımız gibi azaltabiliriz de.
         </p>
         <p>
             Örneğin PPTP’yi 0 yapmayı denediğimizde Protokol buna izin vermez.
@@ -552,12 +551,12 @@
             Bunun için;
         </p>
         <p class="bg-script">
-            \DC; <br>
-            \Active Directory’e gidilir. <br>
-            \Kime izin vereceksek Active Directory’den o kişiyi buluyoruz. <br>
-            \Hesabı açıyoruz; <br>
-            \Dial-in Tab’ına giriyoruz. <br>
-            \Network Access Permission bölümüne gidiyoruz; <br>
+            > DC; <br>
+            > Active Directory’e gidilir. <br>
+            > Kime izin vereceksek Active Directory’den o kişiyi buluyoruz. <br>
+            > Hesabı açıyoruz; <br>
+            > Dial-in Tab’ına giriyoruz. <br>
+            > Network Access Permission bölümüne gidiyoruz; <br>
             [+]Allow Access → Şartsız, koşulsuz izin verir. <br>
             [+]Deny Access →  Şartsız, koşulsuz izin vermez. <br>
             [+]Control access through NPS Network Policy → Ancak Network Policy’den geçebilirse bağlanabilsin. 
@@ -574,37 +573,37 @@
 
         <h5>Nasıl hazırlanır?</h5>
         <p class="bg-script">
-            \Control Panel <br>
-            \\Network and Sharing Center <br>
-            \\\View network status <br>
-            \\\\Set up a new connection or network <br>
-            \\\\\ → Ne tür bir bağlantı yapılacak? İnternete mi bağlanacaksın yoksa bir iş alanına bağlnacaksın ? <br>
+            > Control Panel <br>
+            > Network and Sharing Center <br>
+            > View network status <br>
+            > Set up a new connection or network <br>
+            >  → Ne tür bir bağlantı yapılacak? İnternete mi bağlanacaksın yoksa bir iş alanına bağlnacaksın ? <br>
             Bir ikinciyi seçeriz. <br>
-            \\\\\Nasıl bir bağlantı istersin ? <br>
-            \\\\\VPN <br>
-            \\\\\Bağlanacağımız makinenin bağlı olduğu Network’ün dışarıya bakan Interface’inin IP’si girilir. <br>
+            > Nasıl bir bağlantı istersin ? <br>
+            > VPN <br>
+            > Bağlanacağımız makinenin bağlı olduğu Network’ün dışarıya bakan Interface’inin IP’si girilir. <br>
             Örneğin: 10.3.34.120 → Bu gerçek senaryoda gerçek bir IP olur. Biz denemek için yine Private IP kullanıyoruz. <br>
-            \\\\\Destination name girilir → VPN-PPTP → Bu protokol ile gireceğimiz için böyle bir isim verdik. <br>
+            > Destination name girilir → VPN-PPTP → Bu protokol ile gireceğimiz için böyle bir isim verdik. <br>
             Ortadaki seçeneği Ewnable yap[+] → Bir kere Authentication yaptıktan sonra her bağlantı yapıldığında tekrar tekrar sormasını engeller, yapılan Authentication’ı hatırlar.
         </p>
         <p>
             Artık yeni bir Ethernet oluşturmuş olduk.
         </p>
         <p class="bg-script">
-            \Ethernet <br>
-            \Properties <br>
-            \Security <br>
-            \Type of VPN <br>
-            \PPTP → seçeriz. En gelişmiş olan IKEV2’dir, varsayılanda o seçilidir. <br>
+            > Ethernet <br>
+            > Properties <br>
+            > Security <br>
+            > Type of VPN <br>
+            > PPTP → seçeriz. En gelişmiş olan IKEV2’dir, varsayılanda o seçilidir. <br>
             Bir seçim yapmazsak en güvenilirden en legacy olana doğru Port arar ve müsait olanı otomatik seçer. <br>
             Aynı sekmenin en altında Authentication yapılır. <br>
             Authentication bilgisinin kriptolanması gerekiyor. <br>
             Tünel kriptolanacak; <br>
-            \Hangisini seçeceksin ? <br>
-            \Allow these protocols → Nispeten daha eski olan kriptoplamaları kapsar. <br>
+            > Hangisini seçeceksin ? <br>
+            > Allow these protocols → Nispeten daha eski olan kriptoplamaları kapsar. <br>
             Yukarıdaki (Use Extensible Authen… (EAP)) → Güncel Kriptolama protokollerini kapsar. <br>
             [+]Enable yapıp; <br>
-            \OK
+            > OK
         </p>
         <p>
             Bağlantı kurulmaya hazır. <br>
@@ -617,12 +616,12 @@
         </p>
 
         <h5>L2TP ile bağlanmak için;</h5>
-        <p>
-            \VPN Server’da; <br>
+        <p class="bg-script">
+            > VPN Server’da; <br>
             L2TP Port’u olup olmadığına emin olacağız. <br>
-            \SERVER2016-20’nin <br>
-            \Properties <br>
-            \Security <br>
+            > SERVER2016-20’nin <br>
+            > Properties <br>
+            > Security <br>
             [+]Allow custom Ipsec policy for L2TP → <br>
             L2TP’de kullanılacak olan paraloyı belirlemeliyiz. <br>
             Servisi Restart ederiz.
@@ -633,14 +632,14 @@
             Ya da yeni bir Ethernet oluştururuz.
         </p>
        <p class="bg-script">
-            Internet address: 10.3.34.120 <br>
-            name: VPN-L2TP <br>
-            Ethernet <br>
-            Properties <br>
-            Security <br>
-            Type of VPN <br>
-            Layer <br>
-            Advanced → ilk’ini [+] enable <br>
+            > Internet address: 10.3.34.120 <br>
+            > name: VPN-L2TP <br>
+            > Ethernet <br>
+            > Properties <br>
+            > Security <br>
+            > Type of VPN <br>
+            > Layer <br>
+            > Advanced → ilk’ini [+] enable <br>
             Üstteki Authencition’u seç
        </p>
         <p>
@@ -654,10 +653,10 @@
             Protokolü değiştirerek Connect olduk.
         </p>
         <p class="bg-script">
-            \Ethernet <br>
-            \Right Click <br>
-            \Status <br>
-            \Details → Detaylar görüntülenir.
+            > Ethernet <br>
+            > Right Click <br>
+            > Status <br>
+            > Details → Detaylar görüntülenir.
         </p>
         
         <hr>
@@ -665,11 +664,11 @@
         <div class="text-center container p-3 bg-script">
           <div class="d-flex justify-content-evenly navigation">
             <a href="15-01-2023.html" class="bg-script">15.01.2023</a>
-            <a href="" class="bg-script ">22.01.2023</a>
+            <a href="22-01-2023.html" class="bg-script ">22.01.2023</a>
           </div>
         </div>
- 
     </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </body>
 </html>
