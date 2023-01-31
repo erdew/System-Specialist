@@ -94,8 +94,528 @@
           -> IIS Servisi Ethernet'te gidip kaç tane IP görürse buraya getirir. <br>
           Sunucuya eklediğimiz tüm IP'leri görürüz.
         </p>
+
+        <p class="bg-script">
+          > DNS <br>
+          > New Host <br>
+          > www <br>
+          > IP Address 10.3.34.220 <br>
+        </p>
+
+        <p>
+          Yukarıdaki sekmeden bu IP'yi girdiğimizde sirket0.com'a gidenler yukarıdaki IP'ye yönlenirler.
+        </p>
+
+        <p>
+          İki farklı site aynı Server üzerinde bulunabilir.
+          IIS, DNS'ten aynı IP'ye yönlendirilen talepleri, Host Name'lerine göre ayırır.
+        </p>
         
+        <h5>Port Numarasını değiştirmek;</h5>
+        <p>
+          HTTP Port'u TCP/80 Numaralı Port'tur. <br>
+          http://www.sirket0.com -> <br>
+          -> http:// -> TCP/80 Numaralı Port'a gitmek istiyorum. <br>
+          -> Domain Name'i sirket0.com olan <br>
+          -> www -> Ýsimli olan makineye gitmek istiyorum, demektir. <br>
+          Yukarıdaki Port Number'ı örneğin 8000 yaparsak, talebi 80'den bekleyeceği için karşılayamaz. <br>
+          http://www.sirket0.com:8000 -> 8000 Port'undan istediğimizi bildirmemiz gerekir(Eğer bir ISS Servise gidiyorsak; baþka bir Port'a gitmek için). <br>
+          Bunun önüne geçmek için standart bir Port Numarası belirlenmiştir. <br>
+          IP ile gidildiğinde Default Page olmasa bile o sayfa açılır(Host Name olmasa bile).
+          Edit Binding ile hangi IP'ye hangi Host Name ve Port ile gelinirse gibi bir koşul belirlemiş oluruz.
+        </p>
+
+        <p>
+          DNS'te örneðin "wwww" isimli New Host açarsak; <br>
+          IP'sini de IIS Server'ının üzerine yazarsak yani 10.3.34.220. <br>
+          http://wwww.sirket0.com -> TCP 80'den girip, IIS Server'a çıkar. <br>
+          IIS Servis'i "wwww" isimli makinenin istendiğini algılar, Sites'ı kontrol eder. <br>
+          "wwww" bulamadığı için Defualt Page'i açar.
+        </p>
         
+        <p class="bg-script">
+          Bir sayfaya birden fazla Host Name tanımlanabilir. <br>
+          > Örneğin sirket0.com'a; <br>
+          > Right Click <br>
+          > Add Site Binding üzerinden wwww de girilirse, o talep geldiği zamanda sayfaya ulaşılabilir.
+        </p>
+
+        <p>
+          Bu aşamaya kadar Web Server kurduk ve üzerinde site yayınlamış olduk. <br>
+          Yakın zamana kadar HTTP ile erişmek yeterliydi. <br>
+          Güvenlikle alakalı sorun çıkmaya başladı. <br>
+          Gidip, gelen verinin güvenliği ile alakalı sorunlar çıkmaya başladı. <br>
+          Sunucuyla olan tüm iletişim kriptolanmaya başladı. <br>
+          İletişim durumunda gönderilen paketlerin çalınması önlenemiyor fakat paketler kriptoplanabiliyorlar. <br>
+          Aradaki bağlantıdaki tüm paketler SSL(Secure Socket Layer) Sertifikası ile, uçtan uca şifreleme) kriptoplanır.
+        </p>
+
+        <h5>HTTPS Protokolünün(Secure HTTP) kullanımı</h5>
+        <p>
+          Trafiğin kriptolanması nasıl yapılacak? <br>
+          Public ve Private Key Sertifikaları bu konuda da çalışıtırılacak.
+        </p>
+
+        <p>
+          HTTPS yapmak istiyorsak, buna uygun serfikaları elde etmemiz gerekir; <br>
+          Web Sayfasına giriyorsak, sayfa bağlantıyı yapan cihaza Public Key'i gönderir. <br>
+          Bunu kitleyip Server'a geri göndermesini ister, Paket'i açabilecek bilgiye Server sahip olur.
+        </p>
+        
+        <h5>Bu Sertifikaları nasıl edineceğiz?</h5>
+        <h6>1) Self Sign(Web Server'ın kullanacağı sertifikaları kendisinin üretmesi) <br></h6>
+        <p class="bg-script">
+          (Public ve Private) <br><br>
+          > IIS Manager <br>
+          > SERVER2016-20(IIS Server'ın kendisine, Patent Folder) <br>
+          > Server Certificates <br>
+          > Double Click <br>
+          > Actions Tab'ı açılır. <br>
+          > Create Self-Signed Certificate(1.Yöntem) <br>
+          > Specify a friendly name: <br>
+          -> www.sirket0.com <br>
+          -> Bu Host Name ile gelirse geçerli olsun anlamına gelir ya da *.sirket0.com <br>
+          -> sirket0.com Domain'indeki tüm Host Name'ler geçerli olsun anlamına gelir. <br>
+          Son kullanıcı https yazarak bu sayfaya erişecek. <br><br>s
+          https://www.sirket0.com <br>
+          host name: www <br>
+          domain name: sirket0.com <br><br>
+          > [Web Hosting] <br>
+          > OK
+        </p>
+
+        <p>Bu noktadan itibaren bir sertifika üretir;</p>
+        <p class="bg-script">
+          > Üretilen Sertifikaya; <br>
+          > Double Click <br>
+          Kimin ürettiği, geçerlilik süresi vs görüntülenir. <br>
+          > Details 
+        </p>
+
+        <h5>Sertifikayı edindikten sonra ne yapalır?</h5>
+        <p>
+          Artık sayfa üzerinde bu sertifikayı kullanmalıyız. <br>
+          Sertifakayı üretmiş olmak, sayfayı HTTPS yapmaz. <br>
+          Ancak sertifikayı bağlarsak HTTPS olur.
+        </p>
+
+        <p class="bg-script">
+          > IIS Manager <br>
+          > SERVER2016-20 <br>
+          > Sites <br>
+          > sirket0.com <br>
+          > Site Bindings <br>
+          > Add Site Bindings <br>
+          > Type -> https -> HTPS'in Port Numarası 443'tür. <br>
+          > Host Name <br>
+          -> www.sirket0.com <br>
+          -> Sayfaya nasıl geliniyorsa, o şekilde yazarız. <br>
+          Bu Host Name ile 443'e geliniyorsa anlamına gelir. <br>
+          > SSL Certificate <br>
+          -> [*.sirket0.com] <br>
+          -> Ürettiğimiz Sertifika.
+        </p>
+
+        <p>
+          Bu noktada siteye; <br>
+          www.sirket0.com şeklinde erişmeye çalıştık; <br>
+          ERR_CERT_AUTHORITY_INVALID -> Geçersiz bir Authority Sertifikası hatası verir. 
+        </p>
+          
+        <h6>Bu uyarıyı neden veriyor?</h6>
+        <p>
+          Bu sertifikayı kullanıdığımızda; Web Hosting yapan firmaya/kişiye güvenmiş oluyoruz. <br>
+          Ancak bu kişi ya da şirket güvenilir olmayabiliriz. <br>
+          Örneğin banknın web sayfasına girmek istiyoruz. <br>
+          Beklenti bankanın sertifika göndermesi. <br>
+          Web Hosting'i yapan Server kendi Sertifikasını bağlantıyı yapan makineye gider. <br>
+          Sizin banka ile aranızdaki tüm trafiği enkripto edebilir, hatta o trafiği o yönetir. <br>
+          Kriptolu paketi açıp, tekrar kapatıp bankaya o şekilde gönderiyor. <br>
+          Özet olarak bu sertifakayı aldığınız Server'a güvenmek zorundasınız.
+        </p>
+
+        <p class="bg-script">
+          > Gelişmiş -> Tarayıcıda bu uyarıyı aldıktan sonra; <br>
+          > Link'e tıklanıp sayfa açılabilir.
+        </p>
+
+        <h6>Bu güven ilişkisi nasıl kurulabilir?</h6>
+        <p>
+          Dünyada bu sertifakaları dağıtabilen firmalar kurulmuştur. <br>
+          Microsoft'un kendisinin de vardır. <br>
+          Bütün işletim sistemlerin içerisindeki Browser'lara gömülüdür. <br>
+          Browser'lar bu Server'lara güvenirlir. <br>
+          Trusted Root Certification -> Lisanslı, güvenilir Sertifika dağıtan firmalara denir. <br>
+          Bu Firmalardan herhangi birinden sertifika alırsak, sayfamız otomatik olarak güvenilir olur. <br>
+          Tarayıcı tarafından o şekilde işaretlenir. <br>
+          Browser değişirse, güvendiği Server'lar da değişebilir.
+        </p>
+
+        <p class="bg-script">
+          > Chrome <br>
+          > Ayarlar <br>
+          > Gizlilik ve Güvenlik <br>
+          > Güvenlik <br>
+          > Cihaz sertifikaları yönet <br>
+          > SSL Sertifikaları <br>
+          > Trusted Root Certification Authorities <br>
+          -> Dünyadaki güvenirlir sertifika dağıtan firmaları listelenir.
+        </p>
+
+        <h6>Bir makinede Sertifakaların Yönetim Ekranı(CA) açmak;</h6>
+        <p class="bg-script">
+          > run <br>
+          > mmc(Microsoft management console) <br>
+          > File <br>
+          > Add/Remove Snap-in <br>
+          > Certificates <br>
+          > Add <br>
+          > [+]Computer account -> Bu bilgisayardaki tüm sertifikaları görmek istiyorum demektir. <br>
+          > [+]Local -> Bu makinedeki sertifikaları görmek istiyorum. <br>
+          > OK <br>
+          -> Sertifikalar listelenir. <br>
+          > Console Root <br>
+          > Certificates <br>
+          > Trusted Root Certification Authorities <br>
+          > Certificates -> Aynı isimler burada da listelenir.
+        </p>
+
+        <p>
+          Bu listede olmayan firmalar da vardır. <br>
+          Bunları otomatik olarak Windows 10'lar yakalar. <br>
+          Ev anahtarı örneğine göre yukarıda gördüğümüz Root CA'ler Kale Kapı'dır. <br>
+          Sub Ordinate CA'ler de o kilidi satın aldığımız mağaza olarak hayal edelebilir. <br>
+          Güvenilir olan yukarıdaki sertifikalar, trafikteki iletişimin güvenliğini garanti eder. <br>
+          Eğer güvenlik sağlanamazsa maddi olarak bir bedel öderler. <br>
+          Hatta zarara karşılık bir maddi ödeme de yapıyorlar.
+        </p>
+
+        <h6>2)Trusted Root Certification firmalarından sertifika almak.</h6>
+        <p>
+          Genelde bu yöntem kullanılır. <br>
+          comodo SSL Certificate <br>
+          -> Sahibi Türk olan güvenilri sertifika satan ünlü firmalardan birisi. <br>
+          www.alanadi.com ve alanadi.com şeklinde şifreleme yaptırabiliyor. <br>
+          Yıllık 24 dolar. <br>
+          Alan adı ve Sunucu tipi seçilir. <br>
+          Örneğin ödeme yapıp, .pfx uzanatılı sertifikayı indirdikten sonra;
+        </p>
+
+        <p class="bg-script">
+          > IIS Manager <br>
+          > SERVER2016-20 <br>
+          > Sertifika Servisleri <br>
+          > Double Click <br>
+          > Actions <br>
+          > Import -> .pfx uzantılı sertifayı ve parolasını gireriz, <br>
+          > [Web Hosting] -> Seçilir.
+        </p>
+
+        <p>Bu noktadan sonra;</p>
+
+        <p class="bg-script">
+          > IIS Manager <br>
+          > SERVER2016-20 <br>
+          > Sites <br>
+          > sirket0.com <br>
+          > Right Click <br>
+          > Site Bindings <br>
+          > Add <br>
+          > Edit Site Binding -> Yukarıda satın alıp eklediğimiz sertifikayı ekleriz.
+        </p>
+
+        <p>
+          Positive Wildcard olarak geçen sertifikalar da örneğin; *.alanadi.com şeklinde şifreleme yapabilir. <br>
+          Daha pahalıdır. <br>
+          Premium'u da vardır, farkı garanti bedelinin daha yüksek olmasıdır. <br>
+          Multi Domain -> Birden fazla Domain'imiz var ise hepsini kapsayacak paketler de satılıyor.
+        </p>
+
+        <h6>3)Kendi CA'imizi kendimiz kurup, yönetebiliriz.</h6>
+        <p>
+          Kendi şirketimizin Trusted CA'yi olabiliriz. <br>
+          Bunu yaptığımızda sadece kendi Domain'imizde Trusted olur. <br>
+          Sertifikaya para vermek istemediğimizde uygulayabiliriz. <br>
+          Private CA olur.
+        </p>
+
+        <h5>Domain'e CA kurmak için gerekenler;</h5>
+        <p>
+          1)Server OS <br>
+          2)Static IP <br>
+          3)Work Group'ta ise Minimum Local Admin yetkisi gerekir, eğer Domain'e üye bir makineyi CA yapmak istiyorsak, minimum Domain Admin yetkisi gerekir. <br>
+          -> CA kurulacak makinenin Domain'e üye olması gerekmek, örneğin Work Group olan bir makine de olsa eğer o Domain'e erişimi var ise yapılabilir.
+        </p>
+
+        <h6>Eğer bir makineye CA kurarsak;</h6>
+        <p>
+          Artık makinenin ismini değiştiremeyiz. <br>
+          Üye ise Domain'den çıkartamayız. <br>
+          Başka bir Domain'e ekleyemeyiz. <br>
+          Work Group'ta ise orada, Domain de ise orada kalır. <br> <br>
+
+          Güven ilişkisi için bu şekilde sabit olması gerekiyor. <br>
+          Authorite makine sabit olmalı fakat IP'si değişebilir. <br> <br>
+
+          CA olacak makinenin ismi ve Domain üyeliği yapılacaksa önceden yapılmış olmalı. <br>
+          CA direkt olarak eğitim için DC'nin üzerine de kurulabilir fakat bunun için ayrı bir makineye kurmak idealidir.
+        </p>
+
+        <p class="bg-script">
+          > Server Manager <br>
+          > Add Roles <br>
+          > Active Directory Certificate Services[+] <br>
+          > Next -> Yukarıdaki uyarıları burada yazar. <br>
+          > AD CS <br>
+          > Role Services -> Network Device Enrollment Service -> Netwwork cihazları(Router, Switch) için de SSL Sertifikası üretir. Bu hariç hepsini seç. <br>
+          > Next -> Bu kurulum, bu makineye aynı zaman IIS Servisini de kuracağını söyler. <br>
+          > Install
+        </p>
+
+        <h6>Yüklendikten sonra;</h6>
+        <p class="bg-script">
+          > AD CS Configuration <br>
+          > Seçtiğimiz rollerin bazıları Enterprise Admin yetkisi ister, o User'ı girip devam edilir(O hesap ile Log-on'sak otomatik doldurur.) <br>
+          > Role Services -> [+]ılk 3'ü seç, <br>
+          [+] -> Enrollment Web Service -> Seçildiği zaman önce diğerlerinin kurulması gerektiğini söyler. <br>
+          [+] En sonuncuyu da seç <br> <br>
+          > Setup Type -> Domain'e üye bir CA'mı kuracaksın, yoksa tek bir CA'mi kuracaksın. <br>
+          > CA Type -> Ortamda Root CA olmadan Subordinate CA kurulamaz. <br>
+          şirkette en az bir tane Root CA olmak zorundadır.
+          Bu sertifikaların dağıtımını direkt Root yapmaz, Root sadece üretir.
+          Root Fabrika olarak hayal edilebilir.
+          Subordinate'ler dağıtımı/satışı yapar. <br> <br>
+          > Private Key -> Amacımız Private Key'ler üretmek. <br>
+          Yeni bir Private Key mi üreteceğini ya da varolanı mı kullanacağını sorar.
+          Biz yeni üretmesini seçeriz. <br> <br>
+          > Kriptoloji seçmemizi ister. <br>
+          [+]Microsoft <br>
+          Burada hazır anahtar kalıpları listelenir.
+          Key Length artırırsak sertifikanın güvenilirliği artar.
+          Fakat bunun bedeli Client ve Server'ları CPU'larını daha fazla yormaktır.
+          Varsayılan kullnılabilir. <br> <br>
+          > CA Name -> Default isim bırakabilirsin. <br>
+          > Validity Period(Geçerlilik süresi) -> Default 5 yıl. <br>
+          > Certificate Databe -> CA'ye ait datalar Log'lanır. <br>
+          > Authenticatin Type -> Servisi verenle alan arasında bir kimlik doğrulaması gerekir.
+          Bunu Domain'e üyü iki makine yaparsa, güven ilişkisi otomatik olarak kurulur. <br>
+          [Windows Aut] -> Active Directory üzerinden doğrulama. <br> <br>
+          > Server Certificate -> ılk Private Key'e sahip olan sertifikayı oluşturuz. <br>
+          Önce CA Servisini kurup sonra tanımlamak için [+]Choose and Assing seçilir. <br>
+          > Summary <br>
+          > Configure
+        </p>
+
+        <p>
+          Bittikten sonra yukarıda seçemediğimiz bir rol daha vardı. <br>
+          Otomatik olarak bu Rolü de seçebilmemiz için bizi konfigürasyona yönlendirir. <br>
+          Varsayılan ayarlardan ilerle. <br>
+          O rolü ekledikten sonra. <br>
+          Service Account For CES konumunda -> IIS_ISRS grubuna üye olmadığımız için hata verir, çözüm için;
+        </p>
+
+        <p class="bg-script">
+          > Active Directory <br>
+          > AD Users <br>
+          > sirket0.com <br>
+          > Built in <br>
+          > IIS_IUSRS <br>
+          > Members <br>
+          > Add <br>
+          > Administrator -> Admin hesabı bu gruba eklenmiş oldu. <br>
+          > Bu noktadan sonra Log-in olup, konfigürasyona devam edilebilir. <br>
+          > Server C. -> Mevcut olan seçilip devam edilir. <br>
+          > Configure -> Kurulum tamamlandı.
+        </p>
+
+        <p class="bg-script">
+          > CA <br>
+          > Tools <br>
+          > Certification Authority <br>
+          > sirket0-DC0-CA <br>
+          > Pending Request -> Onay bekleyen sertifika talepleri burada görünürler.
+        </p>
+
+        <p>
+          Talep onayladıysa;
+        </p>
+        <p class="bg-script">
+          > Issued Requests'in içerisine düşer.
+        </p>
+
+        <p>
+          Reddedilmiş Sertifika talepleri;
+        </p>
+        <p class="bg-script">
+          > Failed Requests'te listelenir.
+        </p>
+
+        <p>
+          Önce güven ilişkisi kurulmuş ve bir sebepten sertifikanın geçersiz olmasını istiyorsak ya da hizmet süresi doldu ve yenilenmediyse; <br>
+          Geri aldığımız sertifikalar;
+        </p>
+        <p class="bg-script">
+          > Revoked Certificates'te listelenir. <br>
+          -> Güven ilişkisini kestiklerini listeler. <br>
+          Browser'lar bu listeyi otomatik olarak öğrenirler.
+        </p>
+
+        <p>
+          CA Server'dan Sertifika istemenin 2 yöntemi vardır. <br>
+	        Eğer Web Server Sertifikası istiyorsak;
+        </p>
+        <p class="bg-script">
+          > IIS <br>
+          > SERVER2016-20 <br>
+          > Server Certificates <br>
+          > Create Domain Certificate  <br>
+          -> Bunun çalışmşası için CA Server ile Web Server'ın aynı Domain'de olması gerekir. <br>
+          > Common name: -> Örneğin; www.sirket0.com -> Bu Single Domain, sadece www anlamına gelir. <br>
+          host name değişirse bile kullanmak istersek; *.sirket0.com şeklinde kullanılır. <br>
+          Geriye kalanları Random gir. <br> <br>
+          > Online Certification Authority <br>
+          > Select <br>
+          > Domain'de kurduğumuz CA Server'ı seçeriz. <br>
+          > Friendly Name: *.sirket0.com  <br>
+        </p>
+
+        <p>
+          Sertifika "Server Certificates" ekranında görünür. <br> <br>
+          
+          Hangi Web Sitesinde kulllanacaksak Edit Site Binding sekmesinden aldığımız sertifika seçilir. <br> <br>
+
+          Domain'deki tüm makinelere yeni kurulan CA'in güvenilir bir CA olduğunu söylemek istiyoruz. <br>
+          Yani Trusted Root CA'lerinin arasına kendi kurduğumuz CA'yi eklemek istiyoruz. <br>
+          Kendi Domain'imizin içinde bunu yapabiliriz.
+        </p>
+
+        <p>
+          Bunu yapmanın 2 aşaması vardır. <br>
+          1.aşama Root CA'in, CA Sertifikasını edinmek. <br>
+          2.aşama; Domain'imizdeki tüm makinelere indirdiğimiz bu sertifikayı yüklemek.
+        </p>
+
+        <h6>Root CA'in, CA Sertifikasını edinmek</h6>
+        <p>
+          Yapabilen kişi, Enterprise ya da Domain Admin yetkisine sahip olmalıdır.
+        </p>
+        <p class="bg-script">
+          > CA Server'ına Browser üzerinden bağlanırız; <br>
+          https://dc0.sirket0.com -> CA Server kuduğumuz makinenin Host Name'i ve FQDN'i. <br>
+          https://dc0.sirket0.com/certsrc -> yazılır. <br> <br>
+          Ekran geldiğinde; <br>
+          > Continue <br>
+          > Login olmamızı ister, yetkiyi onaylamak için. <br> <br>
+          Yetkimiz yoksa devam edemeyiz. <br>
+          Karşımıza gelecek olan ekrandan Sertifika talep edebiliriz. <br>
+          Örneğin,  <br>
+          Download a CA certificate -> CA Server'ı CA Server yapan sertifikaları talep edebilriiz. <br>
+          Certificate chain -> Sertifika Zincirinin tamamını talep ederiz. <br> <br>
+          > Download a CA certificate, certificate chain, or CRL <br>
+          > Current[sirket0-DC0-CA] <br>
+          > [DER] <br>
+          > Download CA certificate chain -> Bütün ilişkiyi Download eder. <br>
+          .p7b uzantılı bir dosya download olur.
+        </p>
+
+        <h6>Domain'imizdeki tüm makinelere indirdiğimiz bu sertifikayı yüklemek</h6>        
+        <p>
+          Bunun için Group Policy kullanılır. <br>
+          Tüm makinelere tek bir seferde uygulamak için.
+        </p>
+        <p class="bg-script">
+          > DC <br>
+          > Server Manager <br>
+          > Tool <br>
+          > Group Policy <br>
+          > Forest <br>
+          > Domains <br>
+          > sirket0.com <br>
+          > Default Domain Policy <br>
+          > Right Click <br>
+          > Edit... <br>
+          > Computer <br>
+          > Policies <br>
+          > Windows Settings <br>
+          > Security Settings <br>
+          > Pulic Key Policies <br>
+          > Trusted Root Certification Autorities <br>
+          > Right Click <br>
+          > Import... -> ındirdiğimiz o sertifikayı buraya import ederiz. <br>
+          Bu da Domain'deki tüm makinelere o sertifikayı yüklemiş olur. <br>
+          > Browse <br>
+          > [.p7b] uzantısını seç(görünmesi için). <br>
+          -> Devamında nereye ekleyeceğini sorar.
+        </p>
+
+        <p>
+          Makineler Restart olduğunda bu güncellemeyi alırlar. <br>
+          Restart olmasalar bile 90+30 dakika içerisinde Refresh olurlar. <br>
+          Makinelerin tamamının aynı anda gelmelerini engellemek için sırayla 30. dakikaya kadar dağıtır. <br>
+          Bu süreyi beklemeden ve Restart etmeden Refresh etmek için;
+        </p>
+        <p class="bg-script">
+          > Client <br>
+          > run <br>
+          > cmd <br>
+          > gpupdate /force -> Yapılan güncellemeyi hemen alır.
+        </p>
+
+        <h5>Windows Software Update Service(WSUS)</h5>
+        <p>
+          Microsoft'un Windows Update'leri her ay'ın ikinci Salı'sında yayınlanır. <br>
+          Windows olan Client'ler Windows'un Update'lerini almak için Web Server'a giderler. <br>
+          500 makineden örneğin 300 tanesi Windows ise aynı anda bu Update'i alırlar. <br>
+          Bunu Default'ta otomatik olarak yaparlar. <br>
+          Aynı Update'i her makine için Download etmek gerekecek. <br>
+          Bunun önüne geçmek için sadece bir makinenin Update'e gitmesi sağlanır. <br>
+          O makine yapılan Update'leri test eder. <br>
+          Bu bir test makinesi olarak çalışır. <br>
+          Test ettiği makineleri de herkese yükler. <br>
+          ınternet hattını sadece bu makine kullanır. <br>
+          Geriye kalan Network'e LAN hattı üzerinde Update'ler. <br>
+          - Service Pack -> Daha önce yayınlanan tüm yamaları içerir. Update'lerin tümünü kapsar.
+        </p>
+
+        <h6>WSUS kurmak için gerekenler;</h6>
+        <p>
+          1)Server OS, <br>
+          2)Tercihen Domain'e üye olmalı. <br>
+          3)Static IP'li olmalı. <br>
+          4)Minimum Local Admin yetkisi. <br>
+          5)Görevi icabı internete çıkabiliyor olmalıdır.
+        </p>
+
+        <p class="bg-script">
+          Kurulum; <br>
+          > Web Server <br>
+          > Server Manager <br>
+          > Add Role <br>
+          > Windows Server Update Services
+        </p>
+
+        <p>
+          Bu makine yamaları nerede tutacak? <br>
+          ıstersek harici bir makineye SQL Server kurup onu bu makineye bağlayabiliriz.
+        </p>
+        <p class="bg-script">
+          > Content -> Veritabanı nerede duracak?
+        </p>
+        <p>
+          Ya bir NAS, SAN ya da yine bu makinede ve mümküse ikinci bir Disk'in üzerinde durmalı, C'de değil! Bu Disk'in boyutu büyük olmalıdır. Çünkü sürekli yama indirecek ve şirketteki makinelerin işletim sistemi çeşitliliğine göre farklı yamalar indirecek. <br>
+          -> E:\WSUS -> Örneğin; E'nin altına git, WSUS adında bir klasör aç anlamına gelir.
+        </p>
+
+        <hr>
+         
+        <h5>Bilinmesi gereken Port numaraları</h5>
+        <p class="bg-script">
+          http /tcp -> 80 <br>
+          https /tcp -> 443 <br>
+          ftp /tcp -> 21 <br>
+          rdp -> 3389
+        </p>
+
         <hr>
         
         <div class="text-center container p-3 bg-script">
