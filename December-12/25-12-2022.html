@@ -11,24 +11,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
 
-    <style>
+  <style>
       body {
-        font-family: 'Source Code Pro', monospace;
-        font-size: 14px;
-        color: #e2e3e7;
-        background-color: #232529;
-        /*
-        e2e3e7
-        c4c7cf
-        868d9a
-        696e79
-        41454c
-        35383f
-        292c31
-        232529
+          font-family: 'Source Code Pro', monospace;
+          font-size: 14px;
+          color: #e2e3e7;
+          background-color: #232529;
+          /*
+          e2e3e7
+          c4c7cf
+          868d9a
+          696e79
+          41454c
+          35383f
+          292c31
+          232529
 
-        31333a
-        */
+          31333a
+          */
       }
 
       h1 {
@@ -44,32 +44,42 @@
       }
 
       a{
-        text-decoration: none;
+         text-decoration: none;
       }
 
       a:hover {
-        color: #e2e3e7;
+         color: #e2e3e7;
       }
 
       .container {
-        max-width: 800px;
+          max-width: 800px;
+          border: 1px solid rgb(139, 233, 253);
+          border-radius: 10px;
       }
 
       .bg-script {
-        color: rgb(139, 233, 253);
-        background-color: #31333a;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: start;
-        font-size: 15px;
-        line-height: normal;
+          color: rgb(139, 233, 253);
+          background-color: #31333a;
+          padding: 20px;
+          border: 1px solid rgb(139, 233, 253);
+          border-radius: 10px;
+          text-align: start;
+          font-size: 15px;
+          line-height: normal;
       }
 
-    </style>
+      .navigation > a:hover {
+          color: #31333a;
+          background-color: rgb(139, 233, 253);
+      }
+  </style>
   </head>
-  <body class="container">
-    <div class="container mt-5">
+  <body>
+    <div class="container p-4 mt-2 mb-5">
         <h1><a href="../index.html" class="display-4">25.12.2022</a></h1>
+
+        <hr>
+
         <h4>Sanal Makineyi DHCP Server yapmak</h4>
         <p>
             Hyper-V'de DHCP Server olarak belirleyeceğimiz Sanal Makinenin Switch Port'unu External'dan, Internal'a alıyoruz. Static IP atıyoruz(Örneğin; 192.168.0.10). DHCP Servisini kurabilmek için makinenin Static IP'si olmak zorundadır. <br>
@@ -485,13 +495,16 @@
           Üretileen Scope'u farklı network'leri içerecek kadar büyük bir aralık belirlersek; kendisi otomatik Scope'lara ayırır. Bunu <b>Superscope</b> klasörü altında listeler. Tek tek uğraşmaya gerek kalmaz, sadece kolay yönetim sağlar.
         </p>
 
-        
-        <div class="m-5 text-center">
-          <a href="24-12-2022.html" class="bg-script m-5">24.12.2022</a>
-          <a href="31-12-2022.html" class="bg-script m-5">31.12.2022</a>
+        <hr>
+
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="24-12-2022.html" class="bg-script">24.12.2022</a>
+            <a href="31-12-2022.html" class="bg-script">31.12.2022</a>
+          </div>
         </div>
-        <div class="mt-4"></div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </body>
 </html>
