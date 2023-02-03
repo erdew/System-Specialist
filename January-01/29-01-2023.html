@@ -79,9 +79,314 @@
 
         <hr>
         
+        <p class="bg-script">
+          > Server Manager <br>
+          > Tools <br>
+          > WSUS <br>
+          -> İlk Konfigürasyon için Tools'taki konuma gidilir.
+        </p>
+
+        <p>
+          Bu konfigürasyon yapılırken Microsoft'un Update'leri sağlayacak Server'larına bağlantı kurulur.
+          Önce Microsoft'un Server'larına bağlanıp yapılabilecek ait tüm Update'ler listelenip, indirmiye hazır olması için hazırlanır.
+          İlk açılan ekranda mümkün olan tüm diller görünür.
+          Kullandığımız iiletim sisteminin hangi dilde olduğu bu noktada önemlidir.
+          (işletim sisteminin setup dili)
+          Birden fazla dil seçebiliriz.
+          Fakat bu çok sayıda yama anlamına gelir.
+          Şirkette özellikle Türkçe ve İngilizce seçilmelidir.
+        </p>
         
+        <p class="bg-script">
+          > Products(Microsoft'un ürünleri) <br>
+          -> Örneğin şirketimizde Office 2016 var ise seçeriz. <br>
+          (Biz sanal makinede Server 2016'ları seçiyoruz.) <br>
+          > Classifications <br><br>
+          -> Bu seçtiğin ürünlerle alakalı neleri Update etmek istediğini sorar. <br>
+          -> Genel Upgrade'ler, Driver'ler vs. ayrı ayrı seçilebilir. <br>
+          (Sanalda Default'ta bırak, şirkette tamamını seçmen önerilir.) <br>
+          > Sync Schedule <br><br>
+          -> Kritik yamaların listesini indirmek için Senkronizasyon başlatır. <br>
+          -> Otomatik seçilirse bunun için belli bir zaman belirleriz. <br>
+          (Örneğin internetin yoğun kullanılmadığı saatler seçilir.)
+        </p>
+
+        <p>
+          Kurulumdan sonra;
+        </p>
+
+        <p class="bg-script">
+          > Update Services <br>
+          > SERVER2016-23 <br>
+          > Synronize Now <br>
+          -> Senkronizasyonu başlatır.
+        </p>
+
+        <p class="bg-script">
+          > Update Services <br>
+          > SERVER2016-23 <br>
+          > Updates <br>
+          -> Bu sekmede yapılan tüm Update'ler gçrüntülenebilir. <br>
+          > All Updates <br>
+          -> Yapılmış Update'leri koşullu listelemeni sağlayacak sekmeleri barındırır.
+        </p>
+
+        <p>
+          Amacımız Client'lere update'leri bu makine üzerinden yapmak olduğu için; Client'lere gidip, Windows Update Server'a direkt gitmelerini engelleyip, Domain'in içerisine kurduğumuz WSUS'a yönlendirmemiz gerekiyor.
+        </p>
         
+        <h5>Domain'deki Client'leri WSUS'a yönlendirmek</h5>
+        <p class="bg-script">
+          > DC <br>
+          > Group Policy <br>
+          > Forest <br>
+          > sirket3.com <br>
+          > Default Domain Policy <br>
+          > Right Click <br>
+          > Edit... <br>
+          > Computer <br>
+          > Policies <br>
+          > Administrator Templates <br>
+          > Windows Components <br>
+          > Windows Update <br>
+          -> Configure Update -> Double Click <br>
+          Configure Automatic Updates -> Enable[+] <br>
+          -> Configure Automatic updating: <br><br>
+           > Notify for download and notify for install(makinenin başındaki kişiye sorar) <br>
+           > Auto download and notify intall -> Download etmek için sormaz, kurmak için sorar. <br>
+           > Auto download schedule the intall -> sormadan download eder, belirlenen saatler içinde sormadan Install eder(Restart gerekirse o saat diliminde Restart'lar). <br>
+          (Auto download and notify intall -> İdeal seçimdir.) <br><br>
+
+          > Supported on: işletim sistemi en az x olacak, aşağısı Update alamaz. <br>
+          -> Specify intranet microsoft update service location <br>
+          -> Hangi Update Server'ına gideceğini belirliyoruz. <br> <br>
+
+           > Enable[+] <br>
+           > Set the intranet update... <br>
+           -> http://10.3.34.103(WSUS'u kurduğumuz makinenin IP'si, ancak bu yetersizdir, çünkü WSUS 80 Port'undan hizmet vermiyor(şuanda)) -> Port'u kontrol etmek için; WSUS'a git, IIS'e gir. SERVER2026-20, Sites, WSUS, Set Bindings -> Örneğin 8530 Port numarası görürüz. <br>
+          O yüzden şu şekilde yazmalıyız: <br>
+           -> https://10.3.34.103:8530 <br>
+           -> https://10.3.34.103:8530(Bir alt sekme) <br> <br>
+          
+          (Opsiyonel konfigürasyon) <br>
+          > Automatic Update detection frequency -> otomatik update tarama sıklığı <br>
+          -> Default'ta 22 saatte bir Client'ler deneleme yaparlar. <br>
+          -> Gerçekte Default bırakılabilir, günde bir kere sorması yeterli. <br> <br>
+          
+          (Opsiyonel konfigürasyon) <br>
+          > Allow non-administrators to receive update notifications <br>
+          -> Administrators grubuna üye olmayanlar da "Update var!" uyarısını alsınlar mı? <br> <br>
+          
+          (Opsiyonel konfigürasyon) <br>
+          > Turn on Software Notifications <br> <br>
+          
+          (Opsiyonel konfigürasyon) <br>
+          > Allow Automatic Updates immediate installation
+        </p>
+
+        <p>
+          Yukarıdaki işlemi yaptıktan sonra sanalda tüm makinelere; <br>
+          gpupdate yap. <br>
+          WSUS olan makinenin donanımı arttırman gerekebilir. <br>
+          Deneme bittikten sonra kaynakları eski ayarına çevir. <br>
+          (Gerçekte çok daha fazla kaynak verilir)
+        </p>
         
+        <p class="bg-script">
+          > Update Services <br>
+          > SERVER2016-20 <br>
+          > Updates <br>
+          > All updates
+        </p>
+
+        <p>
+          -> Bu konumda listelenen Update'ler henüz Approved değildir, Approved edildiği durumda, edilen Update önce Download edilir sonra Install edilir. <br>
+          Listedeki bazı Update'ler birbirlerine bağlıdır. <br>
+          Önce başka bir Update kurulmalıdır ki diğeri yönlenebilsin.
+        </p>
+
+        <p class="bg-script">
+          > Computers <br>
+          > Right Click <br>
+          > Add Computer Group
+        </p>
+
+        <p>
+          -> Örneğin Server 2016 -> Tüm Server 2016'ya sahip makineleri buraya toplayarak yalnızca onunla ilgili Update'leri almalarını sağlayabiliriz. <br>
+          Unassigned Computersta; <br>
+          Shift ile Server 2016'ları seçip sağ tıklayıp "Change Membership" yaparız. <br>
+          Oluşturduğumuz Server 2016 grubuna ekleriz.
+        </p>
+
+        <p class="bg-script">
+          > Updates <br>
+          > All Updates <br>
+          > New Update View
+        </p>
+
+        <p>
+          -> Çok fazla Update var ise,  <br>
+          Updates'in altına yeni bir Update konumu oluşturuyoruz. <br>
+          Updates for a specific product[+] <br>
+          Örneğin Server 2016'yı ilgilendiren Update'leri toplama istiyorsak; <br>
+          [+]Server 2016'lar seçilir. <br>
+          Uygun bir isim girilir. <br>
+          -> Bu sayede Updates Path'inin altına koyduğumuz isimde bir Path daha oluşturmuş ve ilgili Update'leri toplamış oluruz. <br>
+          -> Bu noktadan sonra istediğimizi seçer Approve denir. <br>
+          Karşımıza bir liste çıkar, Grupladığımız bilgisayarları gösterir, Server 2016'yı seçersek o grubun altındaki makinelere yukarıda seçtiğimiz Update'leri yaptırır.  <br>  <br>
+          Fakat bunu direkt yaparsak, makineler Update yapılırken kullanılamaz hatta Update'ten sonra çalışanlar makinelerinde sorun yaşayabilirler.  <br>
+          Önce bir test ortamı hazırlamalıyız.  <br>
+          Update yapacağımız işletim sistemine örnek bir işletim sistemini taşıyan sanal makine kurarız.  <br>
+          O işletim sisteminde şirketteki çalışanların kullandığı programlar da yüklenir.  <br>
+          Bu makine çalışma ortamında kullanılıyormuş gibi olmalıdır.
+        </p>
+
+        <p>
+          Test grupları oluşturulur. <br>
+          Örneğin; önce Windows 2016 - Test grubu oluşturulur. <br>
+          O gruba kurduğumuz makineleri buraya ekleriz. <br>
+          Yapılacak Update'leri önce bu gruba Approve ederiz. <br> <br>
+
+          Direkt olarak genele Approve kesinlikle yapılmamalıdır! <br> <br>
+
+          Critic ve Security Update'lerin hepsini yüklemek önerilir. <br>
+          Bu Update'lerin tamamı da test makinelerinde test edildikten sonra genele Approve edilmelidir.
+        </p>
+
+        <p class="bg-script">
+          > Update Services <br>
+          > SERVER2016-20 <br>
+          > Options <br>
+          -> Bu konumda önceden yaptığımız tüm ayarlar değiştirilebilir.
+        </p>
+
+        <p>
+          Örneğin; <br>
+          WSUS Server Cleanup Wizard <br>
+          -> Bağlantıda olmadığı Serverları,  <br>
+          kullanılmayan, ihtiyaç duyulmayan verileri siler vs. <br>
+          WSUS'ta herhangi bir rapor alabilmek için iki ayrı uygulama yüklememiz gerekir. <br>
+          (Online için Teams'te WSUS klasörünün içindeki setup'lar WSUS olan makineye kurulur.  <br>
+          Önce SQL bileşenini kur, sonra diğerini.)
+        </p>
+
+        <p class="bg-script">
+          > Update Services <br>
+          > SERVER2016-20 <br>
+          > Computers <br>
+          > Right Click <br>
+          > Computer Report <br>
+          -> Artık herhangi bir raporu yükleme yaptığımız için görüntüleyebiliriz.
+        </p>
+
+        <p class="bg-script">
+          > Options <br>
+          > Email Notifications <br>
+          -> İstersek durum raporlarını mail olarak alabiliriz. <br>
+          -> Bunun için mail server kurmak gerekir(daha sonra anlatılacak).
+        </p>
+
+        <p>
+          Downstream Server'lar;
+          Bu WSUS'tan Update'leri indirmeye ayarlanmış diğer WSUS'ları ifade eder.
+        </p>
+
+        <p>
+          Herhangi bir Client makine Update'i nereden(hangi WSUS'tan) alıyor?
+        </p>
+
+        <p class="bg-script">
+          > run <br>
+          > regedit <br>
+          > Computer\HKEY_LOCAL_MAHINE\SOFTWARE\Policies\Microsoft\Windows\ ( teams'ten bak tam konum için )
+        </p>
+        
+        <h4>Active Directory ve Group Policy'ler</h4>
+        <p>
+          Active Directory(AD), Domain içindeki tüm kullanıcı hesapları, computer, printer, yönetimsel grupları oluşturmamızı ve yönetmemizi sağlayan merkezi bir yönetim aracıdır.
+          Merkezi yönetimden kasıt bir tane veritabı üretmek ve bu veritabanı üzerinden hesapları yönetmektir.
+        </p>
+        <p>
+          Active Directory'de üretilen x User'ı Domain'deki tüm makinelerden eş zamanlı olarak(kapatmadan) Log-on olabilir ve Network'teki hizmelere erişebilir.
+        </p>
+        <p>
+          Eğer Active Directory Servisini bir Server işletim sisteminin üzerine kurarsak, bu makineye Domain Controller(DC) adıverilir.
+        </p>
+        <p>
+          Sadece Server işletim Sistemleri üzerine Active Directory kurabiliriz.
+          Client'lara Active Directory kurulamaz.
+        </p>
+        <p>
+          Domain; Tüm hesapların, merkezi yönetildiği bir Domain Controller'a sahip olan güvenlik sınırıdır.
+        </p>
+        <p>
+          Cache'ten Log-on, daha önce Domain'deki bir makineden Active Directory aracılığıyla en az bir kere Log-on olduğu durumda çalışır.
+        </p>
+        <p>
+          Additional Domain Controller, hizmet devamlılığını sağlayan, ikinci veya daha sonraki Domain Controller'lara verilen isimdir.
+        </p>
+        <p>
+          Additional DC kurduğumuz zaman ilk DC'de olan veritaban� Active Directory Replication ile birbirlerine senkronize olurlar.
+        </p>
+        <p>
+          Bir makineye Active Directory kurmak için aynı zaman DNS hizmeti de kurulmalı.
+          DC'lar aslında birer DNS Server'lardır.
+          ADC'lere de DNS Server kurulmalıdır.
+          DNS'in veritabanı da Active Directory'inin veritabanı içinde olursa, ADC'lerle bu bilgi de senkronize olur.
+          Bu şekilde ilk DC'de kurduğumuz DNS Primary olduğu için diğerinde de Primary Zone olur.
+          Bu sayede birinci DC'nin yapabildiği her şeyi, ADC de yapabilir durumda olur.
+        </p>
+        <p>
+          Şirket ne kadar büyük olursa olsun teori ve pratikte tek bir Domain ile yönetilebilir.
+          Fiziksel olarak şubelerin arasında istediği kadar mesafe olsun Side to Side VPN ile bağlantı kurulabilir.
+          Yani uzaktaki bir User'da DC'ye erişebilir.
+        </p>
+        <p>
+          İlk oluşturulan Domain'e Forest'ın Root Domain'i denir.
+          Bu Forest'ın altında oluşturulan Domain'e, Child Domain adıverilir.
+          -> Bunu oluşturabilmek için;
+          Bir tane Root Domain gerekenler;
+          Root Domain'i yönetecek bir DC,
+          Child Domain'i yönetecek bir DC,
+          Bu iki Domain'in, DC'lerin birbirleri ile fiziksel bir iletişim olması gerekir.
+          Aralarında süreklilik ihtiyacı olan bir bağlantı olur.
+        </p>
+        <p>
+          Child Domain aslında yeni Domain'dir.
+          Örneğin sirket.com, ist.sirket.com(child).
+          Bu iki Domain'in arasıda sadece hiyerarşik bir bağlantı vardır.
+          Birbirlerinin veritabanlarına sahip olmazlar.
+          Child Domain'deki DC, bulunduğu Domain'i yönetmek için kurulmuştur.
+          İki Domain'inde farklı farklı Admin'leri vardır(Hesapları farklıdır).
+        </p>
+        <p>
+          İki Domain(Domain ve Child Domain) üzerinde tam yetkili olan Admin, Enterprise Admin'dir.
+        </p>
+        <p>
+          İki Domain'de de isimler ve IP'ler aynı olabilir fakat birbirleri arasındaki iletişim sağlanamaz, bu durumda.
+        </p>
+        <p>
+          Mevcut şirkete bağlı yeni bambaşka bir şirketin de Domain Tree'si ile mevcut Domain Tree'nin de tamamına "Forest" adıverilir.
+          Bir Root Domain ve Domain Child'ların tümünü "Domain Tree" adıverilir.
+          En tepedeki, Domain'in kalbi olan Domain'e de "Tree Root Domain" adıverilir.
+        </p>
+        <p>
+          Yukarıdaki bağlantılardan herhangibirindeki bir User bağlı olunan herhangi bir Domain'in içindeki bir makineye Log-on olabilir.
+          Fakat yetkili olmaz.
+          Enterprise Admin de tüm makinelere Log-on olabilir ve tamamında tam yetkilidir.
+        </p>
+        <p>
+          Log-on olmak Domain için özel bir istek olduğu için bu istekler kendi Domain'lerinde hiyerarşik olarak sırayla Active Directory'lere gitmek durumunda olurlar.
+          Yani iki farklı şirketin birinden diğerindeki herhangi bir makineye Log-on olunacaksa her bir Domain için sırayla DC'ye gidilir.
+          Domain'ler arasındaki WAN bağlantıysıyla hedefe kadar gidilir.
+        </p>
+        <p>
+          Eğer direkt olarak Ping atılırsa; paket direkt ISP'ye oradan da hedefe gönderilir ve cevap için de tersi yol izlenir.
+        </p>
+        <p>
+          İlk kurulan Domain Forest'ın Root Domain'idir.
+        </p>
+
         <hr>
         
         <div class="text-center container p-3 bg-script">
