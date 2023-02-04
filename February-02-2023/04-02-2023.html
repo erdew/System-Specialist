@@ -182,10 +182,11 @@
             > Domain Controller Options ->
         </p>
 
-        <h5>Domain Controller Options ekranı</h5>
-        <h6>Forest, Domain functional levels.</h6>
+        <h4>Domain Controller Options ekranı</h4>
+        <h5>Forest, Domain functional levels.</h5>
+
+        <h6>Domain Functional Level</h6>
         <p>
-            <b><i>Domain Functional Level</i></b>: <br>
             Domain içindeki DC'larin işletim sistemine bağlı değişebilecek bir ayardır. <br>
             Diyelim 3 tane DC var üzerlerindeki Server işletim sistemleri farklı olsun. <br>
             Bu Server'lar arasında ciddi anlamda farklılar olabilir. <br>
@@ -198,8 +199,10 @@
             Örneğin; Domain functional level'i Windows Server 2016'yı seçersek, bu Domain'de minimum 2016 olduğunu iddia ederiz. Deminki senaryoda bunu 2008'e ayarlamak durumundayız. <br>
             Burada karar mekanizmasına etki eden Domain Controller'ların işletim sistemi etki eder(En düşüğü belirlenir). <br>
             Ortamda daha düşük Level'da bir işletim sistemi olmasına rağmen daha yüksek bir fonksiyon seçersek, bu düşük olan sistem artık yok sayılır, kullanılamaz. Diğper DC'ler ile arasında iletişim olmaz. <br><br>
+        </p>
 
-            <b><i>Forest Functional Level</i></b>: <br>
+        <h6>Forest Functional Level</h6>
+        <p>
             Forest'taki Domain'lerin en düşük Level'ına göre Forest Functional Level ayarlanabilir. <br>
             Örneğin; 3 farklı Domain'imiz olsun(Birisi birinin Subdomaini vs.) Domain'lerin içindeki minimum level'deki işletim sistemi o Domain'lerin Level'ını belirler. O Domain Level'ların arasında 3 domain'in içinden en düşüğünü seçmek durumundayız. <br>
             Yani örneğin; Domain'lerin bir tanesinin Domain Level'ı 2008 ise Forest Level'da 2008 olmak durumunda kalır. <br>
@@ -210,6 +213,88 @@
             <b><i>Forest veya Domain Level'ları sonradan yükseltilebilirler fakat artık düşürülemezler(Açtığı özellikleri artık geri alamaz).</i></b>
         </p>
 
+        <h6>DNS</h6>
+        <p>
+            [+]Domain Name System(DNS) server <br>
+            Yukarıdaki check'i kaldırırsak; Active Directory çalışmaz. Çünkü DNS Active Directory'e gelenleri yönlendiremez. <br>
+            Bu check'i kaldırırsak ya bu makineye ya da başka bir makineye DNS kurmak zorunda kalırız ve bu zahmetli bir iştir. <br>
+            Bu sebep check'lenmesi önerilir.
+        </p>
+
+        <h6>Global Catalog(GC)</h6>
+        <p>
+            Bir şirket, yani bir Domain ve ist.sirket yani Subdomain'inin olduğunu varsayalım. <br>
+            sirket'in User'larından birisi subdomian'deki bir makineye Log-on olmak isterse;  <br>
+            Onun muhattabı olan DC sirket'in içindeki User'ı bilmediği için onu bilen DC'ye gitmek zorundadır. <br>
+            Bunu yapabilmek içinde o DC'nin adresini öğrenebileceği Glocal Catalog'tan bu bilgiyi alır.
+        </p>
+        <p>
+            Global Catalog, Forest bazında bir veritabanıdır. <br>
+            x user; DC01'de tutulur. <br>
+            y user; DC02'de tutulur. <br>
+            şeklinde kayıtlar tutar. <br><br>
+            
+            Ayrıca User'lar bir objedir, Printer'lar bir objedir vs. bu objelerin kendilerini bilmez sadece adreslerini tutar. <br>
+            Forest'ta en az bir tane Global Catalog olmak zorundadır. <br>
+            Doğal olarak birden fazla olabilir. <br>
+            Varsayılanda Forest'ta ilk kurulan DC otomatik olarak Global Catalog veritabanına sahip olur(Bunu da yapmayı bize zorunlu kılar, çünkü olmazsa olmaz). <br>
+            Bu veritabanı; NTDS.DIT'in içine gömülür.
+        </p>
+        <p>
+            Eğer çoklu Domain yapısı içerisindeysek ve ilk kurduğumuz DC'yi kaybedersek bu veritabanları da uçar. <br>
+            Bu DC'nin yanına birde sürekli senkron olacak ADC kurmamız gerekir. <br>
+            Senkron çalıştıkları için bu veritabanı da iki tane olur. <br>
+            Sürekli olarak replikasyon yani veri trafiği yaparlar. <br>
+            İkisi arasındaki veri aktarım hızı önemlidir. <br>
+            Fakat günümüzde artık bu bir sorun değildir. <br>
+            Özetle iki DC'ye de Global Catalog seçilir. <br>
+            İlki zaten seçilmek zorundadır.
+        </p>
+
+        <h6>Read only domain controller(RODC)</h6>
+        <p>
+            Örneğin küçük bir şube açtık, gidip oraya da bir DC kurduk, fakat bu ADC olarak kurduk, doğal olarak. <br>
+            Bu ADC Writable özelliğe sahiptir. <br>
+            Bu güvenlik riski barındırır, çünkü bağlı olduğu DC'nin sahip olduğu tüm bilgiler bu ADC'nin üzerinde de var ve istenirse silinebilir veya değiştirilebilir vs. <br>
+            Bu ADC müdahale edebileceğimiz kadar yakında olmadığı için sadece Read only yaparak, o ADC'nın sadece veritabanlarını tek yönlü olarak güncelleyebiliriz.
+        </p>
+
+        <h6>Directory Services Restore Mode(DRSM)</h6>
+        <p>
+            Active Directory veritabanının Backup'ını Restore ederken kullanacağımız şifreyi bu kısımda belirleriz. <br>
+            Bu parola daha sonradan değiştirilebilir. <br>
+            Backup'tan geri yüklemek istediğimiz bu parola sorulur. <br>
+            Dikkat edilmesi gereken şey; bu DC'nin backup'ını aldık ve sadece bu DC'nin veritabanın yedeğini geri yüklerken kullandığımız bir paroladır. <br>
+            Sadece bu iş için belirlenir. <br>
+            Domain ya da Forest Admin'in parolası değildir.
+        </p>
+
+        <h6>Create DNS delegation</h6>
+        <p>
+            Child Domain kurulduktan sonra bunu da kuracağız. <br>
+            Şimdilik atlıyoruz.
+        </p>
+
+        <h6>Additional Options</h6>
+        <p>
+            Alt alanda Network'e bir Broadcast atar. <br>
+            Burada yazan bu isme ait bir Computer veya Domain ismi var mı diye sorguladı. <br>
+            Varsa yani isim çakıştı ise girdiğimiz ismin sonuna 0 ekler. <br>
+            Bunun anlamı ya bu isimde bir makine ya da domain vardır. <br>
+            Bu uyarıyı aldıktan sonra devam etmemiz gerekir. <br>
+            İsim çözümlemesi hostname ve suffix'le yapılıyordu. <br>
+            Fakat domain'e direkt NETBIOS Name ile de erişebilir, eğer bu çakışma olur ve devam edersek sonunda 0 olacağı için erişemeyiz. <br>
+            Özetle bu çakışma olursa, çakışmaya sebep olan makinenin adı değiştirilip kurulma öyle devam edilmelidir.
+        </p>
+
+        <h6>Paths</h6>
+        <p>
+            Yukarıda bahsedilen veritabanı ve log dosyalarını hangi konumda oluşturacağını belirler. <br>
+            SYSVOL klasörü -> Temelde iki bilgi barındırır, oluşturduğumuz tüm Group Policy'ler ve Domian'de çalıştıracağımız tüm Script'ler bu klasörde bulunur ve bu klasör Default'ta paylaşımda olan bir klasör olacak. <br>
+            Bu klasörün de nereye kurulacağını bu kısımda belirliyoruz, daha doğrusu kendisi bunu belirliyor. <br>
+            Yukarıdaki yüm klasörlerin açılacağı disk'in NTFS dosya sistemine sahip olması gerekiyor yoksa Setup tamamlanamaz.
+        </p>
+        
 
 
 
@@ -218,7 +303,7 @@
         
         <div class="text-center container p-3 bg-script">
           <div class="d-flex justify-content-evenly navigation">
-            <a href="" class="bg-script">xxx</a>
+            <a href="../January-01/29-01-2023.html" class="bg-script">29.01.2023</a>
             <a href="" class="bg-script ">xxx</a>
           </div>
         </div>
