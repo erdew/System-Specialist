@@ -294,7 +294,118 @@
             Bu klasörün de nereye kurulacağını bu kısımda belirliyoruz, daha doğrusu kendisi bunu belirliyor. <br>
             Yukarıdaki yüm klasörlerin açılacağı disk'in NTFS dosya sistemine sahip olması gerekiyor yoksa Setup tamamlanamaz.
         </p>
-        
+
+        <p>
+            İlk DC'yi oluşturduğumuz için bu makinenin Local Admin'i, Domain ve Enterprise Admin'in yetkisine yükseltilecek. <br>
+            Bu sebeple Local Admin'i mevcut şifresi de Domain ve Enterprise Admin'in hesap şifresi olacak.
+        </p>
+
+        <h6>Prerequisites Check</h6>
+        <p>
+            Uyarı ya da hatalarımızı bildiren konumdur. <br>
+            Yaptığımız kuruluma göre karşılaşabileceğimiz sorunları ve önerileri bildirir. <br>
+            Bu aşamadan sonra Install edebiliriz.
+        </p>
+
+        <h5>Kurulumdan sonra</h5>
+        <p>
+            Default'ta otomaik olarak bizi NETBIOS Name ile Log-on olabilmek için Administrator'un Password'unu sorar.
+        </p>
+
+        <p class="bg-script">
+            > Server Manager <br>
+            > Tools <br>
+            > Active Directory Users and Computers <br>
+            > Domain(erdem.com) <br>
+            > Domain Controllers -> Bu Domain'deki tüm DC'leri listeler. <br>
+            > Computers -> Domain'e üye tüm makineleri listeler. <br>
+            > Builtin -> Domain'deki yerleşik gelen User Group'ları ve Yetkilerini listeler. <br>
+            > Users -> Domain User'ları ve User Group'ları listteler.
+        </p>
+        <p>
+            User'a sağ tıklayarak New, User oluşturulabilir. <br>
+            Oluşturduktan sonra herhangi bir User Group'un Member'ı yapabiliriz. <br>
+            Sadece User oluşturmak yeterli değildir. <br>
+            Bir Domain User sadece Domain'e üye olan Computer'lardan Log-on olabilirler.
+        </p>
+        <p>
+            DC'de bir değişiklik yapıldığında, Client'ler yukarıda bahsettiğimiz paylaşımda olan Policies klasöründen değişiklikleri alır. <br>
+            Bu klasörün paylaşımda olmasının sebebi budur.
+        </p>
+        <p>
+            DC'de DNS Manager'a gittiğimizde, Domain(erdem.com)'in altındaki _tcp'de bu Domain'in bulunduğu Forest'taki Global Catalog'un kaydının oluşturulduğunu görürüz. <br>
+            DNS Network üzerinde birbirlerine erişmek isteyen makineleri aslında yönlendiren bir servis olduğu için, DNS düzgün çalışmazsa, Client'ler _gc'ye erişemezler. <br>
+            Bu konumdaki _kerberos -> Authentication Protokolüdür, bu Authentication'ı yapacak olan makineyi bildirir. <br>
+            Özetle DC'yi bir makine bulacaksa bunu DNS'e sorar. <br>
+            Eğer _kerberos dosyası _tcp'nin içinden silinirse artık Authentication işlemi yapılamaz. <br>
+        </p>
+        <p>
+            Diyelimki bu dosyalardan herhangi biri silindi;
+        </p>
+        <p class="bg-script">
+            > Tools <br>
+            > Services <br>
+            > Netlogon <br>
+            > Right Click <br>
+            > Restart -> DNS'teki tüm kayıtları teker teker varsayılandaki halinde tekar oluşturur. <br>
+            Bunu hangi makinede yaparsak o makineye ait olan kayıtları gidip DNS'e yazar.
+        </p>
+        <p>
+            Yukarıdaki işlemi bir durumda daha yapabiliriz; <br>
+            Diyelim DNS'i açtık ve olması gereken kayıtlar yüklenmedi. <br>
+            Bu durumda Active Directory servisini vs. komple kaldırıp tekrar kurmak zorunda değiliz. <br>
+            Direkt aynı konumdan Restart edersek düzelir.
+        </p>
+        <p>
+            Eğer yukarıdaki işlemi yapmazsak; direkt makineyi Restart'layabiliriz. <br>
+            Fakat bu durumda DNS'e erişemeyeceği için, açılması çok uzun sürer. <br>
+            Bunu yapmak yerine direkt Netlogon Restart'lamak idealdir.
+        </p>
+
+        <h5>Herhangi bir makine Domain'e nasıl Join edilir?</h5>
+        <p>
+            Domain'e, "Home Edition" haricinden herhangi bir Windows makineyi Domain'e ekleyebiliriz. <br>
+            Makinenin, Domain'e katılabilmesi IP'si DC'ye erişebilecek şekilde konfigüre edilmiş olması gerekir. <br>
+            Makinenin, Domain'deki DNS'e kesinlikle erişebiliyor olması gerekir yani Domian'deki DNS'in IP'sini biliyor olması gerekir. <br>
+            Bir makineyi Domain'e sokacaksan varsayılanda Domain Admin'leri istediği sayıda mkianeyi Domain'e katabilir, Domain User'ları varsayılanda 10 tane makineyi Domain'e katabilir. <br>
+            Bu kapatılabilir veya sayı değiştirilebilir. <br>
+            Group Policy'de gösterilecek. <br>
+            Local Admin, Local Admin olduğu makineyi Domain'e katamaz. <br>
+            İstersek bir User'a sadece Domain'e makine katma yetkisi verilebilir. <br>
+            Buna Delegasyon yani spesifik olarak bir yetki vermek anlamına gelir.
+        </p>
+        <p class="bg-script">
+            > Client <br>
+            > Server Manager <br>
+            > Ethernet -> Doğru IP ve doğru DNS IP'si gir.
+        </p>
+        <p>
+            IP'leri doğru verdiğimzi kontrol için; <br> 
+            CMD'ye ping dc100.erdem.com <br>
+            Yanıt alırsak herşey yolunda demektir.
+        </p>
+        <p class="bg-script">
+            Domain'e katmadan önce makinenin ismini değiştir; <br>
+            > System Properties <br>
+            > Change    
+        </p>
+
+        <p class="bg-script">
+            Domain'e katmadan önce makinenin ismini değiştir; <br>
+            > System Properties <br>
+            > Change <br>
+            > Domain <br>
+            > erdem.com <br>
+            -> Yetkiyi kontrol etmek için Log-in olmamızı ister.    
+        </p>
+
+        <p>
+            DC'ye gidip, Active Directory'de Computer'ların içinde artık bu makinenin Join olduğunu yani burada listelendiğini görebiliriz. <br>
+            Oluşturduğumuz herhangi bir Domain User artık bu makineye Log-on olabilir. <br><br>
+            Active Directory üzerinden User üretirken belirlediğimiz Account Name'i girerek Log-on olur. <br>
+            Eğer sanalda Log-on olmazsa, Hyper-V'nin Basic Session'ından dolayı olabilir. <br>
+            Enchassed buttonundan bunu değiştirerek Log-on olabilirsin.
+        </p>
 
 
 
