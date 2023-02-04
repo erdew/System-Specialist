@@ -178,11 +178,42 @@
             [+]Varolan Forest'a yeni bir Domain eklemek istiyoru(Zaten başka Domain'ler var, onların yanına veya altına(Subdomain) başka bir Domain daha eklemek istiyorsak). <br><br>
             [+]Yeni bir Forest oluşturmak istiyorum(İlk defa Domain oluştuyorsak, ilk defa DC kuruyorsak. Bu seçenek bu makinedeki Local Admin'i; Domain ve Forest Admin'e yükseltecek). <br><br>
             En alttakini seçtikten sonra; <br>
-            Root domain name: erdem.com(Türkçe karakter kullanma) <br><br>
-
+            > Root domain name: erdem.com(Türkçe karakter kullanma) <br><br>
+            > Domain Controller Options ->
         </p>
 
-        
+        <h5>Domain Controller Options ekranı</h5>
+        <h6>Forest, Domain functional levels.</h6>
+        <p>
+            <b><i>Domain Functional Level</i></b>: <br>
+            Domain içindeki DC'larin işletim sistemine bağlı değişebilecek bir ayardır. <br>
+            Diyelim 3 tane DC var üzerlerindeki Server işletim sistemleri farklı olsun. <br>
+            Bu Server'lar arasında ciddi anlamda farklılar olabilir. <br>
+            Bu üçünün senkron çalışmasını istiyoruz, aynı işleri aynı yetenekte ve kalitede yapmalarını istiyoruz. <br>
+            Fakat Server 2008 ile Server 2016'ın yetenekleri aynı olmadığından aynı hizmetleri aynı şekilde veremezler. <br>
+            Bu durumda; vasatta anlaşmak zorundayız, birinin kabiliyeti çok yüksek diğerinin çok az ise, mecburen en düşük kabiliyette çalıştırmak zorunda kalırız. <br>
+            Yapıdaki en düşük işletim sistemine göre hareket etmek zorunda kalıyoruz. <br>
+            Bu duruma Domain çerçevesinde karar verdiğimizde buna; Domain Functional Level adıveriliyor. <br>
+            Listede olabilecek Server'lar zaten listelenmiş durumda olurlar. <br>
+            Örneğin; Domain functional level'i Windows Server 2016'yı seçersek, bu Domain'de minimum 2016 olduğunu iddia ederiz. Deminki senaryoda bunu 2008'e ayarlamak durumundayız. <br>
+            Burada karar mekanizmasına etki eden Domain Controller'ların işletim sistemi etki eder(En düşüğü belirlenir). <br>
+            Ortamda daha düşük Level'da bir işletim sistemi olmasına rağmen daha yüksek bir fonksiyon seçersek, bu düşük olan sistem artık yok sayılır, kullanılamaz. Diğper DC'ler ile arasında iletişim olmaz. <br><br>
+
+            <b><i>Forest Functional Level</i></b>: <br>
+            Forest'taki Domain'lerin en düşük Level'ına göre Forest Functional Level ayarlanabilir. <br>
+            Örneğin; 3 farklı Domain'imiz olsun(Birisi birinin Subdomaini vs.) Domain'lerin içindeki minimum level'deki işletim sistemi o Domain'lerin Level'ını belirler. O Domain Level'ların arasında 3 domain'in içinden en düşüğünü seçmek durumundayız. <br>
+            Yani örneğin; Domain'lerin bir tanesinin Domain Level'ı 2008 ise Forest Level'da 2008 olmak durumunda kalır. <br>
+            Bunu yükseltebilmek için önce Domain Level'ı yükseltmek gerekir. <br>
+            Domain Level'ı yükseltebilmek için; o Domain'in içersindeki tüm Domain Controller'ların işletim sistemlerini yükseltmek gerekir. <br>
+            Tüm DC'lerim işletim sistemleri yapabileceğimiz en yüksek işletim sisteminde'de olmalıdır yani. <br>
+            Domain functional level'ı 2016 seçersek, o Domain'in içine artık Server 2012 yükleyemeyiz. Bunu ileride yapmak isteme ihtimalimiz var ise, önce Forest Level'ını 2012'ye çekeriz, sonra Domain Level'ı 2012 olarak belirlememiz gerekir. <br><br>
+            <b><i>Forest veya Domain Level'ları sonradan yükseltilebilirler fakat artık düşürülemezler(Açtığı özellikleri artık geri alamaz).</i></b>
+        </p>
+
+
+
+
+
         <hr>
         
         <div class="text-center container p-3 bg-script">
