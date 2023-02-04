@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>04.02.2023</title>
+    <link rel="icon" type="image/x-icon" href="../eg_favicon.JPG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 14px;
+        color: #e2e3e7;
+        background-color: #232529;
+        /*
+        e2e3e7
+        c4c7cf
+        868d9a
+        696e79
+        41454c
+        35383f
+        292c31
+        232529
+
+        31333a
+        */
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: rgb(139, 233, 253);
+      }
+
+      a{
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #e2e3e7;
+      }
+
+      .container {
+        max-width: 800px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+      }
+
+      .bg-script {
+        color: rgb(139, 233, 253);
+        background-color: #31333a;
+        padding: 20px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+        text-align: start;
+        font-size: 15px;
+        line-height: normal;
+      }
+
+      .navigation\a:hover {
+        color: #31333a;
+        background-color: rgb(139, 233, 253);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container p-4 mt-2 mb-5">
+        <h1><a href="../index.html" class="display-4">04.02.2023</a></h1>
+
+        <hr>
+        
+        <h4>Domain Ortamı Oluşturmak</h4>
+        <p>
+            Sanalda yeni bir makine oluşturuyoruz. <br>
+            Additional Domain Controller oluşturmak için. <br><br>
+
+            Her Domain'de en az bir tane DC gerekir, hatta bir ADC de gereklidir. <br><br>
+            
+            Her Domain'in birbirinden bağımsız Domain Admin'leri vardır. <br>
+            Her Domain Admin kkendi Domain'inde yetkilidir. <br>
+            Tüm Domain'lerde yetkili olan Admin; Enterprise Admin'dir.
+        </p>
+
+        <h5>Piyasada 2 durumla karşılaşabiliriz;</h5>
+        <p>
+            AD kuruludur ve yönetmemiz beklenir. <br>
+            Ya da bir danışmanlık işi yapacaksak; aynı gün içersiinden birden fazla firmaya bile gidebiliriz. <br>
+            Böyle bir durumda da muhtemelen sıfırdan kurulumlarla karşılaşabiliriz. <br><br>
+        </p>    
+        
+        <h5>Sıfırdan yeni bir Domain Controller kurmak</h5>
+         
+        <p>
+            Şablon olarak oluşturduğumuz VHD'yi diğerlerinin arasına yapıştırarak, ismini değiştir.(Örneğin DC1 veya DC2, kaç tane var ise sonuncuyu yaz) <br>
+            Sıfırdan Domain kuracağız. <br>
+            Bir firmaya gittik ve ortam Workgroup'ta bunu Domain'e çeviricez. <br>
+            Bir Domain oluşturmak için önce bir DC sonra onun hizmet devamlılığı için ADC kuracağız.
+        </p>
+        
+        <p class="bg-script">
+            > Hyper-V <br>
+            > New <br>
+            > New Machine <br>
+            > Sanal makinenin ismi -> Yukarıda kopyaladığımız ismi girebiliriz. <br>
+            > Generation ? -> Şablonun Generation'u kaç ise onu seç <br>
+            > 4096 -> Önerilir <br>
+            > [+]Use Dynamic <br>
+            > External Switch <br>
+            > Disk -> Use an existing... -> Kopyalayıp ismini değiştirdiğimizi seçeriz. <br>
+            > Processor'un -> Numver'ını 2 yap.
+            > OK
+        </p>
+
+        <h5>Active Directory kurmak için gerekenler</h5>
+        <ol>
+            <li>NTFS Dosya Sistemi olan diskin üzerine kurulmalıdır.</li>
+            <li>Server İşletim Sistemi(Client'lara kurulamaz)</li>
+            <li>Static IP</li>
+            <li>AD kurulmadan önce o makinenin ismi uygun bir şekilde değiştirilmelidir.</li>
+            <li>
+                <b><i>Duruma göre kurulmak için ihtiyaç duyulan yetkiler</i></b>; <br>
+                <b><i>Forest'ın(yapıdaki) ilk DC'yi kuruyorsak</i></b>, o makinede Local Admin olmak yeterli(zaten maksimum Local Admin olabiliriz). <br><br>
+                <b><i>Domain'e Additional Domain Controller kuruyorsak</i></b>; minimum Domain Admin olmamız gerekiyor. <br><br>
+                <b><i>Child Domain'e ilk DC'yi kuruyorsak</i></b>; yetkimiz Enterprise Admin(Forest Admin) olmak gerekir(Çünkü Child Domain oluşturmak Forest'ı değiştirmek anlamına gelir).<br><br>
+                <b><i></i>Child Domain'in ADC'ini kuruyorsak</i></b>; yetkimiz Domain Admin olmalıdır(Minimum)(Bulunduğu Domain üzerinde).<br><br>
+                <b><i>Child Domain değil de ilk kurduğumuz Domain'imize bağlı yeni bir Domain kurmak için</i></b>; yetkimiz minimum Enterprise Admin olmak gerekir(Forest üzerinde bir değişiklik yapmış oluyoruz).<br><br>
+                Domain'de ilk kurulan DC'nin olduğu makinedeki Local Admin; hem Domain Admin hem de Enterprise Admin'e yükseltilir.
+            </li>
+            <li>
+                Her <b><i>Domain</i></b> için en az bir tane DNS servisi gerekir. <br>
+                Eğer ilk DC'yi kuruyorsak, DNS'i kendisini göstermek ve kendisinin kurmasını sağlamak idealidir. <br>
+                Alternatifi; başka bir makineye kurduğumuz DNS'i de verebiliriz. <br>
+                Fakat Active Directory ile DNS'in aynı makinede olması idealidir.
+            </li>
+        </ol>
+        <p>
+            Active Directory'nin veritabanının ismi; <b><i>NTDS.DIT</i></b>(New Technology Directory Service). <br>
+            Microsoft önce NT isminde işletim sistemi çıkardı. <br>
+            Sonra NT1.0, 2.0, 3.0... diye devam etti. <br>
+            Sonra Windows 2000'den başladı ve şuanda kullandığımıza kadar geldi. <br>
+            Fakat bu veritabanın ismi hiç değişmedi. <br>
+            Buradan şu çıkartılabilir; Active Directory kurulacak olan bilgisayarın diski NTFS Dosya Sistemi'ne sahip olmalıdır. <br>
+            AD olan makinenin ismi daha sonradan değiştirilebilir fakat bu sonradan bazı problemlerin oluşmasına sebep olabilir. <br>
+            İdeali yani yapılması gereken AD kurulmadan önce o makinenin ismi uygun bir şekilde değiştirilmelidir.
+        </p>
+        <p>
+            İşletim Sistemi kurulduktan sonra Update'e gönderilmesi idealdir. <br>
+            Ayrıca makinenin isminin değiştirdikten sonra ve bunun gibi Restart istenen durumlarda kesinlikle ertelemeden Restart yap.
+        </p>
+
+        <h5>AD Servisinin kurulumu ve konfigürasyonu</h5>
+        <p class="bg-script">
+           > Manage <br>
+           > Add Role <br>
+           > Server Roles <br>
+           > Active Directory Domain Services <br>
+           > Next <br>
+           > Next <br>
+           > [+]Restart <br>
+           > Install
+        </p>
+
+        <h5>Promote this server to a domain controller</h5>
+        <p>
+            Promote this server to a domain controller -> Tıklayın Wizard başlar. <br><br>
+            [+]Varolan Domain'e DC eklemek istiyorum(ADC kurmak istiyorsak). <br><br>
+            [+]Varolan Forest'a yeni bir Domain eklemek istiyoru(Zaten başka Domain'ler var, onların yanına veya altına(Subdomain) başka bir Domain daha eklemek istiyorsak). <br><br>
+            [+]Yeni bir Forest oluşturmak istiyorum(İlk defa Domain oluştuyorsak, ilk defa DC kuruyorsak. Bu seçenek bu makinedeki Local Admin'i; Domain ve Forest Admin'e yükseltecek). <br><br>
+            En alttakini seçtikten sonra; <br>
+            Root domain name: erdem.com(Türkçe karakter kullanma) <br><br>
+
+        </p>
+
+        
+        <hr>
+        
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="" class="bg-script">xxx</a>
+            <a href="" class="bg-script ">xxx</a>
+          </div>
+        </div>
+        
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
