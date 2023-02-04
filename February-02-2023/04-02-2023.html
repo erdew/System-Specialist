@@ -407,7 +407,70 @@
             Enchassed buttonundan bunu değiştirerek Log-on olabilirsin.
         </p>
 
+        <h5>Additional Domain Controller Kurmak</h5>
+        <p>
+            Yine şablondan bir sanal makine daha oluşturuyoruz. <br>
+            Gereksinimler; <br>
+            Normal DC kurarkenki gereksinimlerle aslında aynıdır. <br>
+            Fakat burada yetki çok kritiktir. <br>
+            Minimum Domain Admin yetkisi gerekir. <br>
+            Var olan DC'lerden en az birine ve yapıdaki DNS'e kesinlikle erişebiliyor olması gerekir. <br>
+            Additional yapmak istediğimiz makineyi Domain'e üye etmeliyiz. <br>
+            Üye olduktan sonra ADC olmalıdır, ideali budur.
+        </p>
+        <p class="bg-script">
+            > Deployment Configuration <br>
+            > [+]Add a domain controller to an existing <br>
+            > Domain: erdem.com <br>
+            > Domain Admin seçilir(X User'la Log-on olsaydık, buraya otomatik onu girerdi).
+        </p>
+        <p>
+            İlk DNS'teki Zone Primary'di. <br>
+            ADC kurduğumuzda DNS'teki Zone bilgisi de bu makineye geçecek. <br>
+            ADC kurduğumuzda da DNS Server'ı kesinlikle kurmamız gerekir. <br>
+            Bu kurulduğu için DNS'in içindeki Domain(erdem.com)'ın Zone'u Primary olacaktır. <br>
+            Bunu kurmak bir zorunluluk değildir fakat bize hata töleransı kazanmış oluruz. <br>
+            Ayrıca Global Catalog(GC)'de aynı şekilde işaretlenmeli ki iki tane olsun. <br>
+            Forest'ta minimum iki tane GC olması kesinlikle gereklidir.
+        </p>
+        <p class="bg-script">
+            Additional Options <br>
+            > IFM -> <br>
+            DC ile ADC arasındaki iletişimde sahip olunması gereken bilgileri(veritabanlarını) bir Media(SSD, Flash Disk vs.)'a aktarabiliriz. <br>
+            İnternet üzerinden bu veriyi aktaramıyorsak, bu yöntem uygulanabilir.
+        </p>
 
+        <p>
+            ADC kurulduktan sonra; DC'nin DNS Manager'ında Domain'in altındaki _tcp'de ADC'nin _gc'si _kerberos'u vs'de listelenmiş olur. <br>
+            Minimum bu şekilde iki DC ve iki DNS olması çok önemlidir.
+        </p>
+
+        <p class="bg-script">
+            > DC <br>
+            > Server Manager <br>
+            > Active Directory Sites and Services <br>
+            > Sites <br>
+            > Default <br>
+            > Servers <br>
+            > DC100 -> DC200'ü görmeliyiz. <br>
+            > DC200 -> DC100'ü görmeliyiz. <br>
+            -> Yukarıdaki gibi görüntüleyebilirsek, partnerlik sağlanmış yani replikasyon başarılı bir şekilde yapılabiliyor anlamına
+        </p>
+        <p>
+            Yukarıdaki replikasyon için, örneğin şifre değişikliği yaptığımızda bunun gibi değişiklikleri ifade etmek için "Ergent Replication" ifadesi kullanılır. <br>
+            Bu değişikliklerin anında paylaşılmasını sağlar. <br>
+            User açmak ya da Password değiştirmeki gibi değişiklikleri kapsar. <br>
+            Çünkü Password ciddi anlamda önemlidir, birinde farklı diğerinde farklı olması ssöz konusu olamaz.
+        </p>
+
+        <p class="bg-script">
+            User logon name çeşitleri <br>
+            erdem.guzel <br>
+            erdemguzel <br>
+            eguzel <br>
+            erdemg <br>
+            -> Şirket politikası bunlardan birisini belirler biz de tüm User'ları bu belirlenmiş olan formata göre kullanırız.
+        </p>
 
 
         <hr>
