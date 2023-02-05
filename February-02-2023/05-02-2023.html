@@ -228,6 +228,165 @@
             Eğer kurulumu yaparken bu seçeneği seçmediysek; istersek Zone'a sağ tıklayarak yeni bir delegasyon oluşturabiliriz.
         </p>
 
+        <p>
+            Forest'taki tüm Domain'ler(Subdomain'ler dahil) hepsinin birbirleri arasında bir güven ilişkisi olmak zorundadır. <br>
+            Domain'ler arasında bize sorulmadan "Trust Relationship" oluşturulur. <br>
+        </p>
+
+        <h5>Active Directory Trust Types</h5>
+        <p>
+            BURAYA GÖRSELİ EKLE.
+        </p>
+
+        <h6>Parent/Child Trust</h6>
+        <p>
+            Forest 1 için, Domain D ile Domain E arasındaki güven ilişkisi. <br>
+            Child Domain'ini kurduğumuz zaman otomatik olarak oluşturulan bir güven tipidir. <br>
+            2 Way'dir yani iki yönlü güven ilişkisi vardır. <br>
+            Yani D, E'ye güvenirken, E de D'ye güvenir. <br>
+            Transtive Trust, yani geçişli güven tipindedir.
+        </p>
+
+        <h6>Transtive Trust(Geçişli Güven)</h6>
+        <p>
+            Eğer birbirinden farklı iki ve daha fazla Domain ortak bir Domain'e güveniyorsa, otomatik olarak birbirlerine de güvenirler. <br>
+            Birbirlerine güveniyor olmaları birbirlerinin içindeki kaynaklara erişebileceklerinin garantisi değildir. <br>
+        </p>
+
+        <h6>Tree/Root Trust</h6>
+        <p>
+            Forest'taki, Domian Tree'lerinin, Root Domain'leri arasında otomatik olarak kurulan güven tipidir. <br>
+            2 Way'dir ve Transtive'dir.
+        </p>
+
+        <h6>Shortcut Trust</h6>
+        <p>
+            Aynı Forest içindeki iki Domain arasında Manuel olarak kurulan güven tipidir. <br>
+            İstenirse 2 Way, yine istenirse Transtive yapılabilir, tercihe bağlıdır. <br>
+            Çünkü Manuel olduğu için buna biz karar verebiliyoruz. <br>
+            Manuel yapmak neden gereklidir? <br>
+            Otomatik olarak güven kurulduğunda çok sayıda HOP olabilir. <br>
+            Yani arada ne kadar Domain var ise aradaki tüm Domain'ler kontrol yaparlar. <br>
+            İstersek kaynak ile hedef arasında birbirlerini direkt olarak doğrulayabilmelerini sağlayabiliriz. <br>
+            Aslında Authentication'ın yolunu kısaltıyoruz. <br>
+            Otomatik olduğunda örneğin aradın 3-4 tane Domain var ise, aradakilerin hepsi Authentication yapmak durumunda kalıdı. <br>
+            Çok sayıda talep olduğunu düşünürsek, gereksiz bir trafik olduğu anlamına gelir. <br>
+            Eğer Shortcut güven ilişkisi yok ise Authentication uzun yoldan yapılır. <br>
+            Fakat Shortcut ile bu iki konumun arasındaki güven ilişkisini doğrudan birbirine bağlayabiliriz.
+        </p>
+
+        <h6>External Trust</h6>
+        <p>
+            İki ayrı Forest'ın sadece birer Domain'i arasında Manuel olarak kurulan bir güven tipidir. <br>
+            Yine 2 Way veya Transtive(Geçişli) yapılabilir. <br>
+            Birbirleri ile ilişkisi olan iki büyük şirketin birer iştirakinin birbirlerine güvendiği güven tipidir. <br>
+            Örneğin iki şirkette aynı tipte iki kağıt şirketine sahip ve bunların arasında bir ortaklık vs söz konusu, o zaman bunları External Trust ile birbirlerine güvendirebiliriz.
+        </p>
+
+        <h6>Forest Trust</h6>
+        <p>
+            Karşılaşma ihtimalimiz çok yüksektir. <br>
+            Yine iki ayrı şirket hayal edelim. <br>
+            Şirket 1, Şirket 2'yi satın alırsa, artık Şirket 1 şunu söyler, "Şirket 2 de benim". <br>
+            Dolayısıyla içindeki tüm donanım da aslında Şirket 1'in olur. <br>
+            Şirket 1'den, Şirket 2'deki herhangi bir makineye gidip, Log-on olmayı istemek normaldir. <br>
+            Bunun için iki Forest arasındaki fiziksel bağlantı kurulduktan sonra, iki Forest'ın Root Domain'leri arasında güven ilişkisi sağlandığında yukarıdaki talebimiz gerçekleşebilir. <br>
+            Forest Trust: İki Forest'ın birbirine güveninin Manuel olarak sağlandığı güven tipidir. <br>
+            Yine 2 Way veya Transtive(Geçişli) yapılabilir. <br>
+            Forest Trust varken, External Trust kurmak yine iki Forest arasındaki trafiği azaltmak için kurulabilir. <br>
+            Forest Trust'lar her bir Forest'ta ayrı ayrı kurulmalıdır.
+        </p>
+
+        <h6>Kerberos Realm Trust</h6>
+        <p>
+            Microsft olmayan bir Domain eğer Kerberos Realm Trust Authenticatin'ını kullanıyor ise, o Domain ile Microsft olan bir Domain arasında kurulabilecek Manuel güven tipidir. <br>
+            Yine istenirse; 2 Way veya Transtive(Geçişli) yapılabilir.
+        </p>
+
+        <h5>Forest Trust Kurmak</h5>
+        <p>
+            Sektörde karşılaşma ihtimalimizin en yüksek olduğu güven tipi olduğu için sanal makinelerde bunu kuracağız. <br><br>
+            İki Forest'ın DC'leri arasında kesinlikle fiziksel bir bağlantı olması gerekiyor. <br>
+            Bağlı olup olmadığımızın testini yapıyoruz;
+        </p>
+
+        <p class="bg-script">
+            > cmd <br>
+            > ping 10.3.34.177 <br>
+        </p>
+
+        <p>
+            Cevap gelirse ilk şart sağlanmıştır. <br><br>
+            İkinci şart; <br>
+            İki Forest arasındaki isim çözümlemesi ihtiyacının çözülmüş olması. <br>
+            Yani her iki Forest'taki DNS'leri birbirlerine Conditional Forwards etmemiz gerekir. <br>
+            İstersek direkt Forward'ta edebiliriz tabiki. <br>
+            Bu işlem karşılıklı olarak yapılmak zorundadır.
+        </p>
+
+        <p class="bg-script">
+            > DC100 <br>
+            > DNS <br>
+            > Forward Lookup Zones <br>
+            > ERDEM.COM <br>
+            > Conditional Forwarders <br>
+            > Right Click <br>
+            > New  <br>
+            > x.com 10.3.34.177(Forest Trust kurmak istediğimiz karşı DNS'in IP'sini gireriz)
+        </p>
+
+        <p>
+            Yukarıdaki isim çözümlemesini doğru yapıp yapmadığımızı test etmek zorundayız;
+        </p>
+
+        <p class="bg-script">
+            > cmd <br>
+            > ping dc107.x.com -> Karşı tarafın DNS'i hangi makinede ise direkt onun FQDN'ini yazarak test ederiz.
+        </p>
+
+        <p>
+            Şuanda Trust'ı kurabilme aşamasındayız. <br>
+            Peki nasıl kuracağız? <br>
+            Kendi DC'mize gideriz;
+        </p>
+
+        <p class="bg-script">
+            > DC <br>
+            > Tools <br>
+            > Active Directory Domains and Trusts <br>
+            > Right Click <br>
+            > Raise Forest Functional Level <br>
+            -> Windows Server 2016 yapmalıyız ki aşağıdakini de 2016 yapabilelim. <br><br>
+            
+            > IST.ERDEM.COM <br>
+            > Right Click <br>
+            > Raise Domain Functional Level <br>
+            -> Windows Server 2012 olduğunu istersek 2016'ya yükseltebildiğimizi görüyoruz.
+        </p>
+        
+        <p class="bg-script">
+            > ERDEM.COM <br>
+            > Right Click <br>
+            > Properties <br>
+            > Trusts <br>
+            -> Trust ilişkilerimizi burada görüntüleyebiliriz. <br>
+            > New Trust <br>
+            > Trust Name -> Bu işlemi minimum Enterprise Admin yapabilir. <br>
+            > Trust Type -> Forest trust'ı seçeriz, tüm Domain'lerin birbirlerine güvensini istiyorsak. <br>
+            > 2 Way seçtik. <br>
+            > Sides of Trust -> Both this domain and... seçersek Root Domain'ler marifitiyle aşağıya doğru ineriz. <br>
+            > Hedef Domain'de bunu yapma yetkin var mı diye hesap bilgisi ister. Yukarıdaki seçenekten dolayı bunu sorar. Çünkü karşı tarafında işini biz bu ekranda yapmak istiyoruz. <br>
+            > Outgoing Trust: Forest-wide -> Tüm Forest kapsamında güven ilişkisi kurmak istiyoruz. <br>
+            > Incoming Trust ile Outgoing'i doğrularız. <br><br>
+
+            -> Güven ilişkisi artık kurulmuştur. <br>
+            > ERDEM.COM <br>
+            > Right Click <br>
+            > Properties <br>
+            > Trusts -> Burada listelenir.
+        </p>
+
+
 
         <hr>
         
