@@ -357,7 +357,7 @@
             > Right Click <br>
             > Raise Forest Functional Level <br>
             -> Windows Server 2016 yapmalıyız ki aşağıdakini de 2016 yapabilelim. <br><br>
-            
+
             > IST.ERDEM.COM <br>
             > Right Click <br>
             > Raise Domain Functional Level <br>
@@ -386,6 +386,104 @@
             > Trusts -> Burada listelenir.
         </p>
 
+        <p>
+            Artık Forest kapsamında güven ilişkisi kurulduğu için, iki Forest'ın içindeki tüm User'lar birbirlerinin makinelerine Log-on olabilirler. <br>
+            Fiziksel olarak ilk şirketin x user'ı ikinci şirketin bir makinenin başına geçip kendi hesabından Log-on olur. <br>
+            Yani artık iki ayrı şirket sanki tek bir şirketmiş gibi çalışabilir. <br>
+            İki ayrı şirketten herhangi bir User iki şirketin içinde de belli bir seviyede yetkilendirilebilir. <br>
+            Hatta x user kendi makinesinden karşı Forest'ın üzerindeki paylaşımda olan herhangi bir klasöre yetkisi dahilinde erişebilir.
+        </p>
+
+        <p>
+            Özetle bir şirket başka bir şirketi satın aldığında, herhangi bir şekilde silip baştan kurmak vs. gibi durumla uğraşmaz bu şekilde Forest'lar birbirlerine güvendirerek, kullanmaya devam edebilir. <br>
+            Bir Domain User'ı eşzamanlı olarak kendi Domain'inde birden çok makinede Log-on olabildiği gibi artık diğer Forest'taki herhangi bir Domain'in içindeki herhangi bir makineden de eşzamanlı olarak Log-on olabilir.
+        </p>
+
+        <h6>Tüm Domain'lerin Active Directory'lerini tek bir ekrana yansıtmak</h6>
+        <p class="bg-script">
+            > run <br>
+            > mmc <br>
+            > File <br>
+            > Add/Remove Snap in <br>
+            > Active Directory Users and Computers <br>
+            > Add <br>
+            > OK
+        </p>
+
+        <p>
+            Yukarıdakini yaptıktan sonra; <br>
+            Aynı şeyi tekrar yaparak;
+        </p>
+
+        <p class="bg-script">
+            > run <br>
+            > mmc <br>
+            > File <br>
+            > Add/Remove Snap in <br>
+            > Active Directory Users and Computers <br>
+            > Add <br>
+            > OK
+        </p>
+
+        <p class="bg-script">
+            > Gelen ikinci Active Directory Users and Computers <br>
+            > Right Click <br>
+            > Change Domain <br>
+            [+]Save This Domain <br>
+            -> Görmek istediğimiz diğer Domain'i ekleriz.
+        </p>
+
+        <p>
+            Artık tek bir ekranda tüm Domain'leri ve Domain Controller'ları yönetebiliriz.
+        </p>
+
+        <h6>Active Directory Organizational Unit</h6>
+        <p>
+            Elimizdeki yapıyı düzgün bir şekilde yönebilmek için kullanması gerekir.
+        </p>
+        <p class="bg-script">
+            > DC
+            > Active Directory Users and Groups <br>
+            > ERDEM.COM <br>
+            > Right Click <br>
+            > New Organizational Unit <br>
+            Örneğin; Avrupa <br>
+            > Avrupa(ERDEM.COM'un altına) <br>
+            > Türkiye(Avrupa'nın altına) <br>
+            > İstanbul(Türkiye'nin altına) <br>
+            > IK Departmanı(İstanbul'un altına) <br>
+            -> Direkt olarak grup'lar üzerinden yetkileri vs. çok daha kolay yönetebiliriz. <br>
+            > IK Departman <br>
+            > Right Click <br>
+            > New User <br>
+            -> user x <br>
+        </p>
+        <p>
+            Bir Organizational Unit'i silersek, içindeki tüm objeleri de silmiş oluruz. <br>
+            Peki içinde ne olabilir ? <br>
+            Örneğin IK'daki User'ların tamamı olabilir. <br>
+            Silmeden önce içini mutlaka kontrol etmek durumundayız. <br>
+            Kazayla silinmesine önlem olarak sistem bunu otomatik olarak korumaya kalır. <br>
+            Eğer illa silmek istersek, bu korumayı kaldırmak zorundayız.
+        </p>
+
+        <h6>Bir Organizational Unit nasıl silinir?</h6>
+        <p class="bg-script">
+            > Active Directory Users and Computers <br>
+            > View <br>
+            > Advanced Features <br>
+            -> Silmek istediğimiz Organizational Unit'e; <br>
+            > Right Click <br>
+            > Properties <br>
+            > Object <br>
+            >[+]Protect object from accidental deletion.(Kazayla silinmeye karşı bu objeyi koru) -> Bu check kaldırılırsa Delete edilebilir.
+        </p>
+
+        <p>
+            Eğer Organizational Unit'i başka bir Organizational Unit'in altına taşımak(Move) istersek varsayılanda yine izin vermez. <br>
+            Çünkü alt alanda önce kaynağı kopyalar, sonra hedefe yapıştırır, en son kaynağı, kopyaladığı konumdan siler. <br>
+            Bu sebeple yukarıdaki gibi silmeye izin verdirmemiz gerekiyor.  
+        </p>
 
 
         <hr>
