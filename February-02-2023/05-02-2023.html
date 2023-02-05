@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="icon" type="image/x-icon" href="../eg_favicon.JPG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 14px;
+        color: #e2e3e7;
+        background-color: #232529;
+        /*
+        e2e3e7
+        c4c7cf
+        868d9a
+        696e79
+        41454c
+        35383f
+        292c31
+        232529
+
+        31333a
+        */
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: rgb(139, 233, 253);
+      }
+
+      a{
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #e2e3e7;
+      }
+
+      .container {
+        max-width: 800px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+      }
+
+      .bg-script {
+        color: rgb(139, 233, 253);
+        background-color: #31333a;
+        padding: 20px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+        text-align: start;
+        font-size: 15px;
+        line-height: normal;
+      }
+
+      .navigation\a:hover {
+        color: #31333a;
+        background-color: rgb(139, 233, 253);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container p-4 mt-2 mb-5">
+        <h1><a href="../index.html" class="display-4"></a></h1>
+        
+        <hr>
+
+        <h4>Child Domain Nasıl Kurulur?</h4>
+        <p>
+            Sanal için Pattern'den yeni bir Disk kopyalayıp adını değişitiriyoruz. <br>
+            Sanal Makine oluştururken CPU çekirdeğini 2'ye yükselt, yapılmazsa makineler çok yavaş çalışabiliyor. <br>
+            Gereksinimler; <br>
+            Child Domain'in ilk DC'sini kuruyorsak Enterprise Admin(Root Domian'in Admin'i) olmalıyız. Çünkü Root Domain'deki DC'lere erişebiliyor durumda olmalıdır. <br>
+            Child Domain'e ikinci DC'siyi kuracaksak Child Domain'in Domain Admin'i olmak yeterlidir. <br>
+            Root'taki DNS'e sorgu gönderebiliyor olmalı, ilk kurduğumuz bu Child Domain'in ilk DC'si. <br>
+            Erişebilmesi açısından Root ile aynı Network'ten bir IP veririz(Sanal için). <br>
+            DNS bilgisi olarak, kurulum bitene kadar ideali Root'taki DNS'i vermektir. <br>
+            Daha sonradan bu makinenin üzerine DNS kurarsak kendisini gösterecek şekilde konfigüre ederiz. <br>
+            Şart olmasada bu makineyi Domain'e katabiliriz. <br>
+            Work Group'ta olsa bile bu makine Child Domain olabilir. <br>
+            Bunu yaparken Root Domian'imiz ne ise onu gireriz. <br>
+            Örneğin; Domain: erdem.com <br>
+            Restart istediğinde mutlaka Restart et. <br>
+        </p>
+
+        <p class="bg-script">
+            > Root DC <br>
+            > Active Directory <br>
+            > Computers <br>
+            -> Yukarıda eklediğimiz makinenin Domain'e Join olduğunu görebiliriz.
+        </p>
+
+        <p>
+            DC300(Child Domain'in ilk DC'si)' giriş için;
+            Child Domain için ilk kurduğumuz DC'ye Log-on'u Enterprise Admin ile yapmalıyız. <br>
+        </p>
+        
+        <p class="bg-script">
+            > Root DC <br>
+            > DNS <br>
+            > Zone(erdem.com) <br>
+            -> Son eklediğimiz makineyi burada görürüz.
+            -> Makinenin IP ayarlarında DNS'i buraya girdiğimiz için.
+        </p>
+
+        <p>
+            DC300(Child Domain'in ilk DC'si)'e gideriz; <br>
+            Şuandan itibaren Active Directory kurarak, bu makineyi Domain Controller yapmamız gerekiyor. <br>
+        </p>
+
+        <p class="bg-script">
+            > DC300 Active Directory Configuration Wizard <br>
+            > Add a new domain to an existing forest(Var olan Forest'a yeni bir Domain ekleyeceğiz) <br>
+            > Select domain type [Child Domain] || [Tree Domain] <br>
+            -> Child Domain oluşturmak istiyoruz. <br>
+            > New domain name: ist -> ist.umit.com
+            > Next <br>
+            > Domain Functional Level -> İstanbul Domain'i için; 2016'da bırakmaya karar verebiliriz.(Şuanda ) <br>
+            > [+]DNS <br>
+            > [GC] <br>
+            > DRSM: Backup Restore için Password gir. <br>
+            > [+]Create DNS Delegation <br>
+            > Install
+        </p>
+
+        <p class="bg-script">
+            > Root DC <br>
+            > DNS <br>
+            > Zone(erdem.com) <br>
+            > IST -> Zone'un altına başlığında delegasyon geldi. <br>
+            -> İçinde sadece dc300.ist.erdem.com -> kaydı bulunur. <br>
+            -> Yukarıda Child Domain'e kurduğumuz DC'ye yönlendirir.
+        </p>
+
+        <p>
+            Eğer bir delegasyon oluşturursak, (Child Domain kendisinin bir üstündeki Domain'e diyorki; kendisinin onun Child'ı olduğunu söylüyor, sende zaten erdem.com Zone'u var, sana birisi ist.erdem.com'u sorarsa; bu sorguyu senin Zone'unun altına açtığın ist'e sor.)
+        </p>
+
+        <p>
+            DC300(Child Domain'in ilk DC'si)'e gideriz; <br>
+            administrator@ist.erdem.com <br>
+            Yukarıdaki şekilde Child Domain'deki DC'ye Child Domain yetkili olan hesapla giriş yapabiliriz. <br>
+            Bundan sonra Child Domain'in DC'sinden ist.erdem.com için User ürettiğimizde, giriş yaparken de aynı şekilde o kullanıcı kendisi bu şekilde(x.ist.erdem.com) şeklinde kendisini ifade etmeli.
+        </p>
+
+        <p>
+            Normalde admin hesapları dışında DC'ye Log-on yapılamaz. <br>
+            Fakat biz yeni bir sanal makine kurmadan alıştırma yapabilmek için normal Domain User'ların da Log-on olabilmelerini istiyoruz. <br>
+            Bu gerçek hayatta yapılmaz! <br>
+            Bu durumda aşağıdaki yolu izleriz;
+        </p>
+        <p class="bg-script">
+            > DC <br>
+            > Tools <br>
+            > Group Policy Management <br>
+            > forest > Right Click > Show All Domains <br>
+            > Domains <br>
+            > ist.erdem.com <br>
+            > Default > Right Click > Edit <br>
+            > Computer Configuration <br>
+            > Policies <br>
+            > Windows Settings <br>
+            > Security Settings <br>
+            > Local Policies <br>
+            > User Rightss Assignment <br>
+            > Allow log on locally <br>
+            > Double Click <br>
+            > Add User or Group <br>
+            -> ist\Domain Users <br>
+            -> ya da direkt everyone eklebilir kik daha sonradan bri Domain oluşturursak onlar da Log-on olabilsinler.
+        </p>
+
+        <p>
+            Yukarıdaki > Default > Right Click konumunda Edit görünmüyorsa, Enterprise Admin olarak giriş yapmamış olabiliriz. <br>
+            Yukarıdaki işlemden sonra DC'lerde; "cmd gpupdate /force" yapılır. <br>
+            Şuan'dan itibaren DC'lerden herkes Log-on olabilir.
+        </p>
+
+        <p>
+            Root Domain'den bir hesap ile Child Domain'deki bir makineye Log-on olabilir mi? ya da Log-on olabilmeli midir? <br>
+            Pratikte düşünürsek bu Domain'in bir ssahibi vardır. <br>
+            Tüm Domain'lerin sahibi olan kişi vardır. <br>
+            Bu pratik mantıkla Forest'taki herhangi bir User, yine aynı Forest'taki herhangi bir Domain'deki makineden Log-on olabilir, yeterki doğru olarak kendisini ifade etsin. <br>
+            Yani örneğin şu şekilde girmeli; x.y@erdem.com <br>
+            x.y.ist.erdem.com şeklinde ararsa giriş yapamaz.
+        </p>
+
+        <p class="bg-script">
+            > DC300 <br>
+            > DNS <br>
+            > IST.ERDEM.COM <br>
+            > Right Click <br>
+            > Properties <br>
+            > Forwarders <br>
+            > DC100(10.3.34.170)
+        </p>
+        <p>
+            Child Domain'deki herkes bu DNS'e sorgular. <br>
+            Bu DNS ist.erdem.com'da sözü geçen DNS'tir. <br>
+            Bu Child Domain dışında bir sorgu gelirse, Root'a gitmeden önce DC100'git yani bizim Root Domain'imize gidip sor. <br>
+            Yani sorguyu biz cevaplayamıyorsak, bir üstümüzdeki DNS'e sorduruyoruz. <br>
+            Daha doğru kendi kendine bu şekilde karar aldığını görüyoruz. <br>
+            Yukarıda gösterilen Forward otomatik olarak yapılmıştır.
+        </p>
+        
+        <hr>
+        
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="" class="bg-script">04.02.2023</a>
+            <a href="" class="bg-script ">xxxx</a>
+          </div>
+        </div>
+        
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
