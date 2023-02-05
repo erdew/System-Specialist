@@ -76,7 +76,7 @@
   </head>
   <body>
     <div class="container p-4 mt-2 mb-5">
-        <h1><a href="../index.html" class="display-4"></a></h1>
+        <h1><a href="../index.html" class="display-4">05.02.2023</a></h1>
         
         <hr>
 
@@ -215,14 +215,25 @@
             Bu Child Domain dışında bir sorgu gelirse, Root'a gitmeden önce DC100'git yani bizim Root Domain'imize gidip sor. <br>
             Yani sorguyu biz cevaplayamıyorsak, bir üstümüzdeki DNS'e sorduruyoruz. <br>
             Daha doğru kendi kendine bu şekilde karar aldığını görüyoruz. <br>
-            Yukarıda gösterilen Forward otomatik olarak yapılmıştır.
+            Yukarıda gösterilen Forward otomatik olarak yapılmıştır. <br>
+            Bizim Root Domian'inimizden dönen cevap Child Domain'deki DNS'e gelir, o DNS sorguyu yapana cevap verir.
         </p>
-        
+
+        <p>
+            Eğer Root Domain'inimizden, Child Domain'inimize doğru bir sorgu gelirse olur? <br>
+            Root Domain'deki bildiği DNS'e sorgu gelir. <br>
+            Delegasyon'larını kontrol eder ve sorguyla ilişkilendirilirse, orada bildirilen DNS'e gidip IP'sini o DNS'ten öğrenir. <br>
+            Delegasyon hiyerarşik olarak yukarıdan, aşağıya doğru sorgu olduğunda çalışır. <br>
+            DC'yi oluştururken [+]Create DNS Delegation'ı seçtiğimiz için bu yol otomatik olarak oluşturuldu. <br>
+            Eğer kurulumu yaparken bu seçeneği seçmediysek; istersek Zone'a sağ tıklayarak yeni bir delegasyon oluşturabiliriz.
+        </p>
+
+
         <hr>
         
         <div class="text-center container p-3 bg-script">
           <div class="d-flex justify-content-evenly navigation">
-            <a href="" class="bg-script">04.02.2023</a>
+            <a href="04-02-2023.html" class="bg-script">04.02.2023</a>
             <a href="" class="bg-script ">xxxx</a>
           </div>
         </div>
