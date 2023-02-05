@@ -485,13 +485,88 @@
             Bu sebeple yukarıdaki gibi silmeye izin verdirmemiz gerekiyor.  
         </p>
 
+        <p>
+            Örneğin bir Folder oluşturduk ve Share ettik. <br>
+            Securty sekmesinden Disable Inheritance yaptık. <br>
+            Sonra yine aynı konumdan istemediklerimizi çıkartıp ve örneğin Organizational Unit'ın içindeki ik_user_1'i bu listeye ekledik. <br> <br>
+            
+            Daha sonrada başka ik user'ları da olduğunu düşünelim. <br>
+            Çok fazla olduğunu düşünelim veya çok fazla olmasa bile IK'ya yeni birinin geldiğini düşünelim. <br>
+            Hatta IK User'ları için paylaşılan 80 tane Folder olduğunu varsayalım, bu durumda her bir Folder'a tek tek eklemek mi zorunda kalacağız ? <br>
+            Hayır, bunu yapabilmek için Group'ları kullanacağız.
+        </p>
+
+        <h5>Groups</h5>
+        <p>
+            Name: All_IK_Group <br>
+            Gruba çift tıklarız, Member'a gireriz, kim varsa tek tek ekleriz ya da User'ları ctrl+shift ile üzerlerine tıklayarak hepsini seçeriz ve sağ tıklayıp, Add to a Group'a ttıklarız ve All_IK_Group'u gireriz. <br>
+            Bu sayede herkes gruba eklenmiş olur. <br>
+            Bunu yaptıktan sonra direkt bu grubu o paylaşımda olan Folder'ın Security'sine sadece bu grubu eklersek, burada uygulayacağımız tüm izinler bu grubun tamamına etki eder. <br>
+            Şimdi bu grubu 80 tane klasöre yalnızca bir defa eklersek, artık IK grubunun içindeki User sayısı istediği kadar değişsin yapmamız gereken bir şey kalmaz. <br>
+            Yapmamız gereken tek şey User'ı gruba eklemek ya da çıkarmak. <br><br>
+            Hesapları direkt silmek yerine Disable etmek idealdir. <br>
+            Fakat artık bu User gerçekten geri gelmeyecekse direkt silinebilir.
+        </p>
+
+        <p>
+            Bir User oluşturduk, onu bir gruba ekledik ve o grubu bir kaynağa ekledik(İzinler atadık). <br>
+            Buna Microsoft kısaca AGP adını vermiştir. <br>
+            A: Account <br>
+            G: Global Group <br>
+            P: Permission <br>
+            Bir User oluştur, onu bir Global Group'ta topla, bu grubu kaynağa ekleyip izni ata anlamına gelir. 
+        </p>
+
+        <h6>Group Types</h6>
+        <p>
+            Group oluşturken iki seçenek görürüz bunlardan birisi; Group Type, diğeri Group Scope'tur. <br>
+            <b>Destribution Group</b>: Bu tipte bir grup açarsak, sadece bu grubun üyelerine mail atmak için kullanabilir. <br>
+            Yani bir exchange server bunu kullanabilir, yani smtp sserver kullanabilir. <br>
+            Eğer bu tipi seçersek; örneğin bu grup için bir Permission vs. kullanamayız. <br>
+            Yani bu grubun üyelerine sadece mail atabilmek için Destribution tipi seçilir.
+        </p>
+
+        <p>
+            Bir User birden fazla gruba üye olabilir. <br>s
+        </p>
+
+        <p>
+            <b><i>Security Group</i></b>: Hem Permission hem de Mail atmak için kullanılabilir. <br>
+            İkisi için de işe yarar. <br>
+            Bu sebeple genelde Security Type seçilir.
+        </p>
+
+        <p>
+            <b><i>Global Group</i></b>: Bu seçeceğini seçersek, bu grup sadece makinenin bulunduğu Domain'den üye alabilir. <br>
+            Yani sadece oluşturulduğu Domain'den üyeler kabul edebilir.
+        </p>
+
+        <p>
+            Tüm departmanları başka bir gruba eklemek istersek; direkt başka bir grup oluşturup, bu grubun var olan diğer grupları member olarak almasını sağlayabiliriz. <br>
+            Buna "Nested Group" denir. <br>
+        </p>
+
+        <p>
+            <b>Universal Group'un Scope'u<b>
+            Global Group Scope; sadece bulunduğu Domain'den üye alabilir. <br>
+            Universal Group; Forest'taki tüm Domain'lerden üyü alır. Yani başka bir Domain'inin, Child Domain'ininden bile üye alabilir. <br>
+        </p>
+
+        <p>
+            <b>Domain Local Group</b>; tüm Forest'lardan üye alabilir. <br>
+            Olabilecek en geniş kapsalım gruptur. <br>
+            Yukarıdakini uyguladığımızda; buna Microsoft AGGUDLP adını vermiştir. <br>
+            "Her Domain'de hesapları aç, önce kendi Domain'lerindeki bir gruba bu User'ları ekle, sonra bu grubuda aynı Domain içinde başka bir gruba ekle, sonra bunu her bir forest'ta yap, sonra universal grupları al kaynağın bulunduğu folder'da permission'larını ver." anlamına gelir. <br>
+            Olabilecek en kapsamlı yapıdır. <br>
+            Çok büyük oranda AGP ile çalışılır.
+        </p>
 
         <hr>
         
         <div class="text-center container p-3 bg-script">
           <div class="d-flex justify-content-evenly navigation">
             <a href="04-02-2023.html" class="bg-script">04.02.2023</a>
-            <a href="" class="bg-script ">xxxx</a>
+            <a href="#" class="bg-script ">xxxx</a>
           </div>
         </div>
         
