@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>12.02.2023</title>
+    <link rel="icon" type="image/x-icon" href="../eg_favicon.JPG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 14px;
+        color: #e2e3e7;
+        background-color: #232529;
+        /*
+        e2e3e7
+        c4c7cf
+        868d9a
+        696e79
+        41454c
+        35383f
+        292c31
+        232529
+
+        31333a
+        */
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: rgb(139, 233, 253);
+      }
+
+      a{
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #e2e3e7;
+      }
+
+      .container {
+        max-width: 800px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+      }
+
+      .bg-script {
+        color: rgb(139, 233, 253);
+        background-color: #31333a;
+        padding: 20px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+        text-align: start;
+        font-size: 15px;
+        line-height: normal;
+      }
+
+      .navigation\a:hover {
+        color: #31333a;
+        background-color: rgb(139, 233, 253);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container p-4 mt-2 mb-5">
+        <h1><a href="../index.html" class="display-4">12.02.2023</a></h1>
+        <p>
+            Site kullanma amaçlarından birisi Active Directory  Replikasyonunu optimize etmektir. <br>
+            Site Link Bridge Bypass: Önce aradaki Site Replike edilmeyi denenir, olmazsa, uçtaki Replike edilir. <br>
+            Teorik olarak Active Directory'nin üzerine 1 milyar 200 bin civarında obje bulunur. <br>
+            Replikasyonda bu objeler paylaşılır.
+        </p>
+        <p>
+            Dün kurduğumuz ISTANBUL konumuna yani ilk DC'yi kurduğumuz ve Domain'i oluşturduğumuz konuma ikinci DC'yi kuruyoruz. <br>
+            Oluşturdukttan sonra ismini değiştirip, Domain'e ekle. <br>
+            INT: 192.168.10.11 <br>
+            G: 192.168.10.1 <br>
+            DNS: 192.168.10.10 <br>
+            Additional Domain Controller olarak, Active Directory'i kur. <br>
+            Çok fazla SRV dosyası yedeğimiz olduğu için bu DC'de onları Check'lemeyebiliriz. <br>
+            Wizard'ta DC'nin shangi Site'a ait olacağını direkt seçebiliyoruz. <br>
+            Nereden Replicate edeceğini sorar, en yakın olandan yaparız.
+        </p>
+
+        <p>
+            DC'deyken(İlk kurduğumuz, Site'ları yönettiğimiz) repadmin /repsummary komutu ile, Site'lar arasındaki Replikasyonların arasından ne kadar zaman geçtiğini gösterir.
+        </p>
+        <p>
+            Windows PowerShell üzerinde, örneğin Site'lar hakkında bilgiler içeren küçük programlar yazılabilir ve programlar PowerShell üzerinden çağırıldığında çalışarak ürettiği sonuçları bize göstetir. <br>
+            Örnek olarak bir program Teams'te ve Gerekli klasörünün altında paylaşıldı, buraya görsel olarak ekle.
+        </p>
+
+        <p class="bg-script">
+            Active Directory Sites and Services
+            > ISTANBUL-1  <br>
+            > NTDS Settings <br>
+            > All Tasks <br>
+            > Check replication Topology <br>
+            -> Manuel olarak Replikasyonun Topolojisini tekrar kurgula, optimize et demektir.
+        </p>
+
+        <p class="bg-script">
+            Active Directory Sites and Services
+            > ISTANBUL-1  <br>
+            > NTDS Settings <br>
+            -> İçindeki dosyaların tamamını seçip;
+            > Right Click
+            > Replicate Now
+            -> Schedule'u beklemeden anında Replikasyon yapar.
+        </p>
+
+        <h5>Universal Group Membership Caching Nedir?</h5>
+        <p class="bg-script">
+            Active Directory Sites and Services
+            > ISTANBUL  <br>
+            > Right Click <br>
+            > Site Settings <br>
+            > [+] Enable Universal Group Membership Caching
+        </p>
+        <p>
+            Bir Site oluşturmuşuz ve 5-10 kişilik bir Site olduğunu düşünelim fakat bu Site Domain'deki tüm Site'lara erişebiliyor, herkese erişebiliyorlar yani. <br>
+            Örneğin bu Site'ın içindeki kişilerden biri o Site'ın dışında bir makineye Log-on olduğunda, Universal Group Membership'i var mı diye kontrol edilir. <br>
+            Bu kontrolü yapmak uzun süren bir işlemdir. <br>
+            Bu Site'taki Universal Group Membership bilgisini al ve bunu Cache'inde tut diyebiliriz. <br>
+            Bu Forest bazında bir yetkidir. <br>
+            Bu Site küçük bir Site olduğu için, sürekli merkeze gidip sorgula vs. dememiş oluyoruz. <br>
+        </p>
+        
+        <h6>Ne zaman kullanılır?</h6>
+        <p>
+            Ayrı bir Site olmalı <br>
+            Merkez Site ile bu Site arasındaki bağlantı hızı çok yavaş olmaz. <br>
+            Çok küçük bir Site olmalı.
+        </p> 
+
+        <h4>FSMO(Masters)(Flexible Single Master Operations)</h4>
+        <p>
+            Bir Forest'ta bilinmesi gereken beş ayrı Master Role vardır. <br>
+            Hepsi sadece DC'lere ait rollerdir. <br>
+        </p>
+
+        <p class="bg-script">
+            > cmd <br>
+            > NETDOM QUERY FSMO
+            -> 5 tane Master Role'ü hızlıca görmemizi sağlar.
+        </p>
+
+        <p>
+            Schema Master(Sikima mastır) <br>
+            Domain naming master <br>
+            PDC Emulator <br>
+            RID pool manager <br>
+            Infrastructure master
+        </p>
+            
+        <h4>Schema Master</h4>
+        <p>
+            Örneğin Acttive Directory'de herhangi bir Object'ten bahsedelim.
+            Mesela Computer'lardan herhangi bir bir Object'tir. <br>
+            Group'lardan ya da User'lardan herhangi biri de Object'tir. <br>
+            Bu Object'lerin üzerinde onları ifade eden, özellikleri belirtten ya da onları tarif eden, her bir değişken için "Attribute" denir. <br>
+            Örneğin bir User için Username, Password vs. birer Attribute.
+        </p>
+        <p>
+            Örneğin New User ya da New Group vs. dediğimiz de onları tarif eden tüm Attribute'lar belli bir konumda tutulurlar. <br>
+            Bu konum Schema Master Database'dir. <br>
+            Tüm Attribute'leri tutmakla beraber, bütün olarak "Class" adı altında gruplandırır. <br>
+
+            BURADAN SONRASINI KAYITTAN TEKRARLA.
+        </p>
+
+        <p>
+            Schema Master: Schema Veritabanının, Writable olduğu Domain Controller'dır.  <br>
+            Diğer DC'lerde de bu Database bulunur fakat Read-only'dir.
+        </p>
+        <p>
+            Schema Master, Forest'ta bir tane bulunur. <br>
+            Default'ta Forest'a kurulan ilk DC'nin üzerindedir. <br>
+            İstenirse, Forest'taki herhangi bir DC'ye Schema Master rolü devredilebilir. <br>
+            Bu da aynı anda iki tane Schema Master olamayacağını gösterir. <br>
+            Schema Master'a müdahale yetkisi, Schema Admins Group Member'larına özeldir. <br>
+            Default'ta Enterprise Admin'inidir. <br>
+            Fakat daha sonradan birini Enterprise Admin yaparsak otomatik olarak Schema Admins Group Member <u>olmazlar</u>. <br>
+            Schema Admin Member sadece o gruba üyedir, diğer tüm Admin'liklerde yetkisizdir.
+        </p>
+        <p>
+            Schema Master'a müdahale arayüzü; Active Directory Schema Snap-in'dir. <br>
+        </p>
+        <p>
+            Bazı Yönetim konsolları Server Manager Tools'ta görünmese de; <br>
+            Run'a mms yazarak, açılan ekranda Add/Remove Snap-in ekranından eklenerek görünebilir. <br>
+            Fakat "Hidden" olanları açmak için;
+        </p>
+        <p class="bg-script">
+            Active Directory Schema Snap-in Hidden'dır. <br>
+            > run <br>
+            > regsvr32 schmmgmt.dll <br>
+            -> Bu komut gizli olma özelliğini kapatır.
+        </p>
+
+        <p class="bg-script">
+            > run <br>
+            > mmc <br>
+            > File <br>
+            > Add/Remove Snap-in <br>
+            > Activa Directory Schema <br>
+            -> Arttık burada görünür.
+        </p>
+
+        <p class="bg-script">
+            > run <br>
+            > mmc <br>
+            > File  <br>
+            > Save As <br>
+            -> Ekranı direkt dosya gibi kaydederek kısayoldan tekrar kolayca erişilebilir.
+        </p>
+        
+        <p>
+            Active Directory Schema Snap-in'inde Class'ları ve Attribute'leri görebiliriz. <br>
+            Örneğin Attributes'un altında "userPrincipalName" User Objectt oluşturulurken doldurulan Attribute'leri tutar. <br>
+            Üzerine çift tıkladığımızda Global Catalog için Replike edilmesini sağlayan bölüm Check'lenmiş durumdadır. <br>
+            Örneğin "userPassword" GC'de Replike edilmez, çünkü hiç bir User şifresine göre aratılmaz, istersek GC'de Replike ettirebilir bu konumdan fakat gereksiz bir yük oluşturmuş oluruz.
+        </p>
+        <p>
+            Bu konuma yeni Attribute'ler eklemek mümkündür fakat silinemezler. <br>
+            Sadece "Disable" edilebilirler.
+        </p>
+
+        <h5>Schema Mastter rolü nasıl devredilir?</h5>
+        <p>
+            Örneğin; Schema Master DC1'di, DC2'ye bu rolü vermek istiyoruz. <br>
+            Önce konsolu Schema Admin yetkisiyle açarız. <br>
+            Rolü atayacağımız DC'ye Active Directory Schema'dan Connect oluruz. <br>
+            Sonra rolü aktarırız.
+        </p>
+        <p class="bg-script">
+            > Active Directory Schema <br>
+            > Right Click <br>
+            > Change AD DC
+        </p> 
+        <p>
+            Ardından; <br>
+            Operations Master <br>
+            Burada Change'in diğer makineye olabileceğini görürüz.
+        </p>
+
+        <p>
+            CMD'den; "NETDOM QUERY FSMO" komutu ile rolün hangi makineye geçtiğini görebiliriz. <br>
+            Yukarıdaki işlemi yaptığımızda sadece Read-only olan Writable'a çevirliyor, eski makinede de Read-only'e çevriliyor.
+        </p>
+
+        <h4>Domain Naming Master</h4>
+        <p>
+            Forest'a yeni bir Domain eklediğimizde ya da çıkardığımızda, bir otorite bunu kontrol etmeli. <br>
+            Forest'taki tüm Domain(isim) hiyerarşisini bilir ve Forest'a yeni Domain ekleyip, çıkartmanın kontrolünü sağlar. <br>
+            Aslında bu bilgi yine Forest'taki tüm DC'lerde vardır. <br>
+            Ancak bir makine otoritedir ve değişiklik ancak onda yapılabilir. <br>
+        </p>
+
+        <h6>Özellikleri</h6>
+        <p>
+            Domain Naming Master, Forest'ta bir tanedir. <br>
+            Default'ta Forest'ta kurulan ilk DC'nin üzerindedir. <br>
+            İstenirse, Forest'taki başka bir DC'ye bu Rol devredilebilir. <br>
+            Müdahale yetkisi; Enterprise Admin'indir.
+        </p>
+        <p>
+            Müdahale arayüzü; <br>
+            Tools <br>
+            Active Directtory Domains and Trusts
+        </p>
+
+        <p class="bg-script">
+            > Active Active Directtory Domains and Trusts <br>
+            > Right Click <br>
+            > Change AD DC
+        </p> 
+
+        <p class="bg-script">
+            > Active Directtory Domains and Trusts <br>
+            > Right Click  <br>
+            > Operations master
+        </p>
+
+        <h4>PDC Emulator Master</h4>
+        <p>
+            Windows 2000 Server'lardan önce NT Server'lar vardı. <br>
+            Sonra teknolojiyi değiştirip, şuanki nesilden Server'lar üretmeye başladılar. <br>
+            Fakat NT Server'larda da aslında Active Directory hizmeti vardı. <br>
+            NT Server İşletim Sistemi üzerine kurulan ilk DC'ye "Primary Domain Controller(PDC)" denir. <br>
+            İş sürekliliği için, ilave kurduğumuz DC'lere Backup Domain Controller adıverilir. <br>
+            Şuanda bunlar Additional Domain Controller diyoruz. <br>
+            O döneme göre düşünecek olursak; güvenlik açıkları çok yüksek durumdaydı. <br>
+            Çünkü kullanıcı azdı ve çokta güvenlik anlamında üzerine düşülecek bir durum yoktu. <br>
+            Diyelim ki Server 2016'ımız var ve bir tane de NT Client'imiz var. <br>
+            Bu durumda Microsoft, DC'ye eski Client'ler için DPC Rolü oynatabiliyor. <br>
+        </p>
+
+        <h6>PDC'nin görevleri</h6>
+        <p>
+            Pre-2000 versiyona sahip olan Client'ların Log-on'undan sorumludur. <br>
+            Domain'deki bütün makinelerin saatleri, PDC Emulator olan Master'ın saatine göre senkronize olurlar. <br>
+            Eğer Domain Controller ile Log-on olmak isteyen Client'in saati +/-5 dakika farklılık gösteriyor ise, Client Log-on olamaz. <br>
+            Log-on olma işleminde saatte kontrol edilir. <br>
+            Domain Controller'ın saati çok kritiktir. <br>
+            User'ların Password'lerinde yapılan değişiklikleri bildirmekten sorumludur. <br>
+            Forest'taki her Domain'de bir tane vardır. <br>
+            Default'ta Domain'de kurulan ilk DC'nin üzerindedir. <br>
+            İstenirse, o Domain'deki başka bir DC'ye bu rol devredilebilir. <br>
+            Minimum müdahale yetkisi; Domain Admin'dedir. <br>
+            Müdahale arayüzü; Active Directory Users and Computers'dır.
+        </p>
+
+        <h6>Rolü devretmek için;</h6>
+        <p class="bg-script">
+            > Active Active Directory Users and Computers <br>
+            > Right Click <br>
+            > Change AD DC
+        </p> 
+
+        <p class="bg-script">
+            > Active Directory Users and Computers <br>
+            > Right Click  <br>
+            > Operations master
+        </p>
+
+        <h4>RID Pool Manager(RID Master)</h4>
+        <p>
+            Örneğin, Users'ın altında bir User'ı seçtik, yani bir Object'i seçtik. <br>
+            Bu User aslında Active Directory'e göre  "x kişisi" yani ismine göre algılanmaz. <br>
+            Bu Object'e ait bir SID numarası vardır. <br><br>
+            
+            Bir Object'in SID'i aşağıdaki şekilde oluşur; <br>
+            [ OBJ.SID(erdem@holding.com)=Domain SID+RID ] <br><br>
+
+            Bu numara RID havuzundan tüm Object'ler için paylaştırılır. <br>
+            Çünkü her Object için bir RID number'a ihtiyaç vardır. <br><br>
+
+            RID Master işte bu havuzu yönetir. <br>
+            Bu RID Number'ları Domain Controller'lar kullanır. <br>
+            Çünkü örneğin; DC'de bir User oluşturacaksak, bir Object oluşturuyoruz demektir ve bu Object'i Unique olarak ifade edebilmesi için RID Number'a ihtiyaç duyulur. <br>
+            Bu bağlamda, SID numarası çakışan Object'ler ifade edilemezler. <br><br>
+
+            RID Master büyük havuzdan 500'er tane RID Number ayırıp, DC'lere dağıtır. <br>
+        </p>
+        <p>
+            RID Master, Forest'taki her Domain'de bir tane bulunur. <br>
+            İstenirse, o Domain'deki başka bir DC'ye bu Rol devredilebilir. <br>
+            Minimum müdahale yetkisi, Domain Admin'dir. <br>
+            Default'ta Domain'de kurulan ilk DC'nin üzerinde bulunur. <br>
+            Müdahale arayüzü; Active Directory User and Computers'tır.  
+        </p>
+
+        <h4>Infrastructure Master</h4>
+        <p>
+            Diyelimki birden çok Domain'imiz var, Child Domain'leri vs de olduğunu varsayalım. <br>
+            50 kişilik bir Group'a, File Server'da Full Control ya da modify yetkisi verildiğini varsayalım. <br>
+            Sonra bu 50 kişiden 1 tanesini bu Group'tan çıkartalım. <br>
+            Beklentimiz o çıkartılan kişinin paylaşıma erişememesidir. <br>
+            Fakat bunu yaptığımızda başka bir Domain'de olan File Server bu bilgiye sahip değildir. <br>
+            Infrastructure Master, bulunduğu Domain'deki Group'ların üyeliklerindeki değişiklikleri, diğer Domain'deki DC'ye yapılan bu Group değişikliğini söyler. <br>
+            Kısaca iki Domain arasında Group'larda olan değişiklikleri bildirir.
+        </p>
+        <p>
+            Her Domain'de bir tane bulunur. <br>
+            Default'ta Domain'de kurulan ilk DC'nin üzerinde bulunur. <br>
+            İstenirse, o Domain'deki herhangi bir DC'ye rolünü devredebilir. <br>
+            Minimum müdahale yetkisi; o Domain'in Domain Admin'inindedir. <br>
+            Müdahale arayüzü; Active Directory Users and Computers'tır.
+        </p>
+
+        <p>
+            Schema ve Domain Naming Master Rolleri Forest bazında, diğerleri ise Domain bazında çalışırlar.
+        </p>
+
+
+        <hr>
+        
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="11-02-2023.html" class="bg-script">11.02.2023</a>
+            <a href="#" class="bg-script ">xxx</a>
+          </div>
+        </div>
+        
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html> 

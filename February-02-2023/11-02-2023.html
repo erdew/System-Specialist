@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>11.02.2023</title>
+    <link rel="icon" type="image/x-icon" href="../eg_favicon.JPG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 14px;
+        color: #e2e3e7;
+        background-color: #232529;
+        /*
+        e2e3e7
+        c4c7cf
+        868d9a
+        696e79
+        41454c
+        35383f
+        292c31
+        232529
+
+        31333a
+        */
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: rgb(139, 233, 253);
+      }
+
+      a{
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #e2e3e7;
+      }
+
+      .container {
+        max-width: 800px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+      }
+
+      .bg-script {
+        color: rgb(139, 233, 253);
+        background-color: #31333a;
+        padding: 20px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+        text-align: start;
+        font-size: 15px;
+        line-height: normal;
+      }
+
+      .navigation\a:hover {
+        color: #31333a;
+        background-color: rgb(139, 233, 253);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container p-4 mt-2 mb-5">
+        <h1><a href="../index.html" class="display-4">11.02.2023</a></h1>
+        <h4>DNS - SRV kayıtları</h4>
+        <p>
+            Bir User Domain'de Log-on olmak istediğinde;
+            Log-on olmak için Enter'a bastıktan sonra alt alanda bildiği DNS'e bir soru sormuş olur.
+            Aşağıdaki SRV kayıtlarının tamamı sorgulanır.
+        </p>
+        <p class="bg-script">
+            > DNS <br>
+            > DC100 <br>
+            > Forward Lookup Zones <br>
+            > UMIT.COM <br>
+            > _tcp
+        </p>
+        <p>
+            Yukarıdaki sorgu bu konumdan yapılır. <br>
+            SRV kayıtları, Forest içindeki gc, kerberos, pw, ldap File'larının hangi makinelerde olduğunu tarif ederler. <br>
+            Client'lar ancak DNS'teki bu kayıtlar marifetiyle doğru DC'ye yönlendirilebilirler. <br>
+            Client'lerdan bir Domain User Log-on olmak istetdiğinde bu dosyalar kontrol edilir.
+        </p>
+        <p class="bg-script">
+            > _gc Properties
+        </p>
+        <p>
+            Priority: DNS'te ilgili SRV kaydına ait birden fazla dosya var ise önce Priority'si düşük olan söylenir. <br><br>
+
+            Weight: Priority'si eşit olanların SRV kayıtlarının içinde Weight'i büyük olan önce söylenir. <br><br>
+
+            Sadece DNS kullanılarak yük dengelemesi yapılabilir. <br>
+            Manuel olarak SRV kayıtlarının hangilerinin önce söyleneceğini bildirebiliyoruz. <br>
+            Buradaki SRV kayıtları silinirse, artık Log-on olunamaz. <br>
+            Domain için kritik dosyalardır.
+        </p>
+        <p>
+            Tek bir Domain ile fiziksel olarak erişebildiğimiz tüm lokasyonları yönetebiliriz. <br>
+            Yani Child Domain'ler kurmadan da bir Domain'in altında çok sayıda lokasyona ait bir şirketi yönetebiliriz. <br>
+            İstersek 20 tane farklı konumda şirketin şubesi olsun, illaki her biri için Child Domain kurulmak zorunda değildir. <br>
+            Hatta Child Domain'le çok sık karşılaşılmaz. <br>
+            Onun yapının aşırı büyük olması gerekir, yoksa pek tercih edilmez ve tek bir Domain üzerinden yönetilir.
+        </p>
+        <p>
+            Bir Domain Controller kurup daha sonra üzerine diğer lokasyonlarda Additional Domain Controller'lar kullanılacak. <br>
+            Kişileri onlara en yakın olan DC'den Log-on etmek gerekir. <br>
+            DNS varsayalında hangisinin hangi konumda olduğunu bilmez, Random olarak gördüğü SRV dosyalarına göre yönlendirir. <br>
+            Yani örneğin Paris'teki bir Client Paris'teki DC'ye gitmek yerine İstanbul'daki DC'ye gidebilir. <br>
+            Gitmeyeceğinin garantisi yoktur. <br>
+            Doğal olarak bunu engellemek gerekir.
+        </p>
+        <p>
+            Bu DC'ler ADC oldukları için veritabanları Replike durumda olmak zorundadır. <br>
+            Bu durum Active Directory'nin veritabanlarını sıkıştırmadan, belli aralıklarda bir Replikasyon trafiği üretmesi anlamına gelir. <br>
+            Replikasyon'larda gecikme diye bir durum söz konusu olamaz, çünkü üzerinde Password'ları, User'ları vs. taşıyor. <br>
+            Gecikme süresi 60 gün civarında olursa Replikasyon ilişkisi tamamen koparılır.
+        </p>
+        
+        <h4>Active Directory Sites</h4>
+        <p>
+            Belli ADC'leri kapsayabilir. <br>
+            Belli Lokasyonlardaki belli ADC'leri kapsayabilir(Örneğin; İki farklı Lokasyon arasındaki bant genişliği çok yüksek ise ikisini kapsamasını sağlayabiliriz). <br>
+            Domain'in tamamını kapsayabilir(Default). <br>
+            Forest'taki Domain'inlerin bir kısmını kapsayabilir.
+        </p>
+        <p>
+            Site'in vereceği imkanlar; <br>
+            Client'lara en yakın(Site içindeki) DC'den Log-on olabilme imkanı verecek. <br>
+            En ideal yöntemiyle DC'ler arasındaki Replikasyon trafiğini optimize edecek.
+        </p>
+
+        <h5>Site Oluşturmak</h5>
+        <p>
+            Önce fiziksel altyapıyı baştan kuruyoruz. <br>
+            İstanbul, Berlin, Paris. <br>
+            Her birinde bir Router(Örneğin Berlin-Router isminde bir PC, PC'yi Router'a çevireceğiz(Daha önceden işlendi).) ve bir DC kur. <br><br>
+            Her bir konumdaki Router'ları birbirlerine bağlayacağız, yani Network'lerin birbirlerine erişmesini sağlayacağız.
+        </p>
+
+        <h5>Router oluştur</h5>
+        <p>
+            Proccessor'u 2'ye çıkar. <br>
+            Router'a bir tane Ext bir tane de Int ekle. <br><br>
+
+            Router'a Log-on ol; <br>
+            IP Configuration yap, önceden hangi konuma ne IP vereceğini belirle. <br>
+            Eklediğimiz Switch'lerden birisi DHCP'den IP alır, bu External olandır. <br>
+            APIPA'ya düşen Private ya da Internal'dır. <br><br>
+
+            İkisinin de IP'sini değiştir.
+        </p>
+        <p class="bg-script">
+            > Ext: <br>
+            IP: 10.3.34.83 <br>
+            G: 10.3.34.1 <br>
+            DNS: 192.168.10.10(DC)
+        </p>
+        <p class="bg-script">
+            > Int: <br>
+            IP: 192.168.20.1 <br>
+            D: 192.168.20.10 <br>
+            DNS: 192.168.10.10
+        </p>
+        <p>
+            Router'da Add Role'den Routing Servisini yüklüyoruz. <br>
+            Route Seçeneğini Check'le ve yükle. <br><br>
+
+            Yüklendikten sonra;
+        </p>
+        <p class="bg-script">
+            > Tools <br>
+            > Routing and Remote Access <br>
+            > Right Click <br>
+            > Configure <br>
+            > Şuanda LAN Routing seçiebilir, <br>
+            (Normalde internete çıkılacaksa VPN ve Dialup seçilmelidir)
+        </p>
+        <p>
+            Şuanda Routing yapmamız gerkeiyor. <br>
+            Yeni Routing olarak RIP'i ekle ve Interface olarak External'i ekle. <br>
+            Daha Static Routes'tan gelenleri kontrol et. <br><br>
+
+            Şuandan itibaren bağlı olduğumuz diğer Network'lere RIP ile erişebiliyor olacağız.
+        </p>
+
+        <h5>ADC olacak makineyi oluştur.</h5>
+        <p>
+            Makineleri oluşturduktan sonra Proccessor'u 2'ye çıkar. <br>
+            ADC'yi sadece P1(Private olan Switch)'e bağlamak yeterli. <br>
+            Önce ilk Domain oluşturulmuş olmalıdır. <br>
+            Çünkü bir Domain'in üzerine birden çok ADC kurup onlara göre konumlandıracağız.
+        </p>
+        <p class="bg-script">
+            IP: 192.168.20.10 <br>
+            G: 192.168.20.1 <br>
+            DNS: 192.168.10.10(İlk kurulan DC(Zaten bir DC olacak çünkü tek bir Domain var))
+        </p>
+        <p>
+            Domain'e katmadan önce ADC'nin ismini değiştir: "DC-Berlin-1". <br><br>
+
+            İlk kurduğumuz DC açıldıktan sonra onun ismine Ping(FQDN) "ping dc-istanbul-1.holding.com" at. <br>
+            Bu Ping çalışırsa, Domain'e üye olabiliriz. <br>
+            Domain'e üye ediyoruz. <br>
+            Eğer direkt Active Directory Servisini kurarsak, yine olur fakat ideali önce Domain'e eklemektir. <br>
+            Ekledikten sonra, Active Directory Domain Service'i kuracağız. <br>
+            Var olan Domain'e DC ekliyoruz. <br><br>
+
+            Kurulumdan sonra hala Default durumda olan Site aktif durumdadır. <br>
+            Yani Domain'in tamamı tek bir Site içindedir. <br>
+            Yani tüm ADC'ler kuruldu ve veritabanları replike oldular fakat aynı Site'talar, konumları hala aynı yerde gibi düşünebiliriz.
+        </p>
+
+        <h5>Active Directory Sites and Services</h5>
+        <p class="bg-script">
+            > Active Directory Sites and Services <br>
+            Site'ları gösteren ekrandır. <br>
+            Varsayılanda; <br>
+            > "Default-First-Site-Name" Site'ı bulunur. <br>
+            > Servers
+        </p>
+        <p>
+            -> Buradaki Server'lar bildiğimiz Server'lar değil sadece bu Site'ta bulunan Domain Controller'lar anlamına gelir. <br>
+            Çünkü Site'lar Active Directory Servisi yani Domain Controller'lar ile ilgili bir servistir. <br>
+            Bu konumda kurduğumuz tüm ADC'leri ve DC'leri görürüz. <br>
+            O makinelerin üzerine tıklarsak sahip oldukları "NTDS Settings" dosyalarını görürüz. <br>
+            Bu dosyanın içinde Replikasyon ilişkisinde olduğu makinelerini görürüz. <br><br>
+
+            Örneğin;
+        </p>
+        <p class="bg-script">
+            > DC-BERLIN-1 <br>
+            > NTDS Settings = DC-ISTANBUL-1, DC-PARIS-1
+        </p>
+
+        <h5>Peki bu Replikasyon yapacağız makineleri nasıl belirliyor?</h5>
+        <p>
+            DC'lerin birbirlerini en hızlı ve ideal yöntemle Replike edilmesi otomatik olarak sağlanıyor. <br>
+            Bunu yapan otomatik sevis KCC(Knowledge Consistancy Checker)
+        </p>
+
+        <h5>KCC nedir?</h5>
+        <p>
+            "Site içindeki" DC'lerin Replication Partner'lığını belirler. <br>
+            KCC'nin hesapladığı Partnership'i aslında istersek Manuel olarak biz de yapabiliriz.
+        </p>
+        <p class="bg-script">
+            > NTDS Settings <br>
+            > Right Click <br>
+            > Add <br>
+            > DC-TOKYO-1 -> Örneğin Berlin'i seçip bunu eklersek, artık TOKYO da bu Replikasyona dahil olur.
+        </p>
+        <p>
+            İstersek Schedule ekleyerek ilgili Server ile içindeki Server'ın Replikasyonu için belli zamanlarda sadece o ikisi arasındaki Replikayonun sıklığını da değiştirebiliriz. <br><br>
+            KCC, Topolojiyi belirler 5 dakika(300 saniye)da bir Replikasyon yaptırabilir. <br>
+            Urgent Replication: Acilen gönderilmesi gereken bazı değişikliler(Password reset, hesabın Disable edilmesi, Grup üyeliğinin değiştirilmesi vs.), hiç bekletilmeden direkt uygulanırlar. <br><br>
+            Site içi Replication'ın diğer adı da Inter site Replication'dır.
+        </p>
+
+        <h6>Bir Domain Controller aynı zamanda nasıl Global Catalog Server yapılabilir?</h6>
+        <p class="bg-script">
+            Yukarıdaki konumdan ilgili DC seçilir. <br>
+            > Properties <br>
+            > General <br>
+            > [+]Global Catalog <br>
+            -> Bu Check'i kaldırırsak, bu Server Global Catalog'u taşımaz.
+        </p>
+        
+        <h6>Yeni Site'lar oluşturmak</h6>
+        <p>
+            > İlk DC'de Active Directory Sites and Services <br>
+            > Sites <br>
+            > Right Click <br>
+            > New Site <br>
+            > Name: Örneğin istanbul <br>
+            > LINK -> Minimum bir Link'ten bağlı olmak zorunda. <br>
+            -> istanbul isminde bir Site oluşturuyorsun fakat bu boş olacak, Site'ın içerisinde en azından bir DC olmalıdır, uyarısı verir.
+        </p>
+        <p>
+            Kaç tane Site olmasını istiyorsak, yukarıdaki işlemi o kadar tekrar ederiz ve hepsi aynı Link ile bağlarız. <br><br>
+
+            Bu noktadan sonra oluşturduğumuz her bir Site için o Site'ta görev yapacak olan DC'yi oluşturduğumuz ilgili Site'a taşımak zorundayız. <br><br>
+
+            İlgili Site'a Right Click -> Move -> İlgili Site'a. <br><br>
+
+            Artık Default Site'ı istersek silebiliriz. <br>
+            [+]Bu ve altındaki her şeyi sil. <br><br>
+
+            Artık Site'lar belirlenmiş ve onların üzerinde görev yapacak olan DC'lerinde Site'ların içerisinde konumlanmış olduğunu görürüz. <br><br>
+
+            Site'ları oluşturduğumuzda DNS'te otomatik olarak Site'ları ayarlar. <br>
+            Şuanda DNS İstanbul Site'ındaki, İstanbul DC'sini artık gösterebilir.
+        </p>
+
+        <h6>Client'lar Log-on olmak için nasıl en yakındaki DC'ye giderler?</h6>
+        <p>
+            Şu durumda bile hala Domain user Log-on olduğunda hala hangi DC'den Log-on olacağı belli değildir yani değişebilir. <br><br>
+
+            Bunun için Active Directory Sites and Services konumundan Subnets ekliyoruz; <br>
+            192.168.10.0/24 -> Örneğin bu Network'teki makinelerin tamamı, ISTANBUL Site'ına aittir. <br><br>
+
+            Aynı şekilde tüm Site'lere ait Subnet'leri belirleriz. <br><br>
+
+            Bunu yaptığımızda Örneğin 192.168.10.0 Network'ünden bir IP'ye sahip olan makine ISTANBUL Site'ındadır anlamına gelir. <br>
+            ISTANBUL Site'ın içinde de ISTANBUL DC bulunur.
+        </p>
+
+        <h5>Site'lar arasındaki Replikasyon</h5>
+        <p>
+            Site oluşturmanın altalanındaki sebep Site içindeki bağlantı hızının yüksek olmasıdır. <br>
+            Bu hız yüksek değil ise Site yapmak mantıklı değildir. <br>
+            Bağlantı hızının yüksek olması bir şarttır. <br>
+            Bir Site yapacaksak o Site içerisindeki DC'lerin bağlantı hızları yüksek olmalıdır. <br>
+            Yüksek hız olduğu için Site İçi Replikasyon Trafiği, sıkıştırılmadan yapılır.<br><br>
+
+            Eğer birden fazla Site yaptıysak, iki lokasyon arasındaki bağlantı hızının yavaş olduğunu kabul etmiş oluruz. <br>
+            Eğer bu Site'lar arasında Replikasyon yapmak istersek, bu Replikasyon sıkıştırılarak yapılır.<br><br>
+
+            Önce Site için Replikasyon KCC marifetiyle Partner'ın belirlenmesi ve bu Partner'lar arasında sıkıştırmadan yapılır. <br>
+            Karşı Site'ta da içeride aynı işlem yapılır. <br>
+            Her Site'tan bir temsilci seçilir, buna "Bridgeheat Server" adıverilir. <br>
+            Site'lar arasındaki Replikasyon bu iki DC arasında yapılır. <br>
+            Güncel bilgiyi alan DC, Site'ın içindeki diğer DC'lere bu güncel bilgiyi gönderir.
+        </p>
+
+        <h5>Bridgeheat Server nasıl belirleniyor?</h5>
+        <p>
+            ISTG(Inter Site Topology Generator) -> Site'taki Bridgeheat Server'ı seçen sevistir. <br>
+            (Konu Site ise Server'dan kastımız her zaman DC'lerdir) <br>
+            En büyük GUID'si olan makineyi Bridgeheat Server olarak seçer. <br>
+            Site'ın içinde birden fazla DC var ise alternatifini de seçer, hata töleransı için.
+            Bridgeheat Server Manuel olarak atanabilir. <br>
+            Eğer Bridgeheat Server'ı Manuel atarsak, artık ISTG devreden çıkar. <br>
+            Yani otomatik olarak Bridgeheat Server'ı seçen servis kapanır. <br>
+            Bu da artık otomatik olarak seçilen bir Bridgeheat Server'ımızın olmayacağı anlamına gelir.
+        </p>
+
+        <h6>Manuel olarak nasıl belirlenir?</h6>
+        <p>
+            İlgili Server, Active Directory'den seçilir(Yukarıdaki Site'ların olduğu konum)
+            Right Click
+            Property
+            General
+            Örneğin IP'yi seçip Add edersek(Yani sağa çekersek) 
+            -> Site'lar arası transferler IP Protokolü(%99 bununla yapılır) ile SMTP(Mail trafiği için, çok yavaştır. Örneğin iki Mail Server birbirine SMTP ile gönderirler.), IP Protokolüyle transfer yaparken Bridgeheat Server oluyorsun, anlamına gelir.
+        </p>
+
+        <hr>
+        
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="05-02-2023.html" class="bg-script">05.02.2023</a>
+            <a href="12-02-2023.html" class="bg-script ">12.02.2023</a>
+          </div>
+        </div>
+        
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
