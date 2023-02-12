@@ -440,6 +440,85 @@
             > quit
             -> Şuandan itibaren Master'ları kurtarmış durumdayız.
         </p>
+        <p>
+            Ancak hala büyük sorunlarımız devam eder. <br>
+            Mesela; <br>
+            Active Directory Site and Services <br>
+            İlk DC silindi fakat diğer DC'lerin bundan haberi yoktur. <br>
+            Dolayısıyla, yukarıdaki konumda bu ölen DC'nin hala yaşadığı varsayılıyor, hatta üzerine Replikasyon yapılmaya da çalışılmaya devam ediyor. <br>
+            Öncelikle Active Directory User and Computers'a gideriz. <br>
+            Bu arada kaybettiğimiz DC illaki Master olmak zorunda değildir. <br>
+            Şuanda anlatılacaklar tüm ölen DC'ler için geçerlidir. <br>
+
+        </p>
+        <p class="bg-script">
+            > Active Directory User and Computers <br>
+            > Domain <br>
+            > Domain Controllers <br>
+            > Ölen DC <br>
+            > Right Click <br>
+            > Delete <br>
+            > Are you sure -yes. <br>
+            > Deleting Domain Controller <br>
+            -> "Eğer DC'yi kaldırmak istiyorsanız, DC'ye gidip Uninstall yöntemi ile kaldırmalısınız." uyarsı veriyor. <br>
+            -> Fakat DC yaşamadığı için bunu yapma şansımız yok. <br>
+            -> "Buna rağmen her durumda bunu kaldıracaksan, DC kesinlikle çalışmıyor olmalı ve artık Remove Wizard ile bunu kaldıramayacaksın" uyarısı verir. <br>
+            [+]Delete <br>
+            > Delete <br>
+            > Üzerinde Global Catalog olduğunu söyler, bunu da silmek istiyor musun diye sorar. <br>
+            > Yes <br>
+            -> Eğer Additional DC'lerden birine GC koymadıysak tamamı silinmiş olacak, bu sebeple yoksa yedeği alınmalıdır.
+        </p>
+
+        <p>
+            Bunu yaptıksan sonra; <br>
+            Active Directory Sites and Services'a gideriz. <br>
+            Ölü DC'yi bulup buradan da sileriz. <br>
+            Çok kritik değildir ama böyle bir DC artık yok, burada durması da gereksizdir.
+        </p>
+
+        <p>
+            Son olarak DNS'i de kontrol etmemiz gerekir. <br>
+            Master'ları Seize'lediğimiz makinede DNS yok ise, DNS'i kendimize kurabiliriz. <br>
+            İstersek kurmadan da devam edebiliriz. <br>
+            Eğer, Domain'de DNS olan başka bir DC var ise Client'ları o DNS'e yönlendiririz. <br>
+            Eğer Domain'de hiç DNS yok ise, bu Master'ları Seize'lediğimiz, yaşayan DC'de DNS kurduğumuzda önceden Master DC olan DNS'teki Zone'lar aynen aktarılmış olur. <br>
+            Çünkü Default'ta zaten DNS'te [+]Store the zone in Active Directory seçilidir. <br>
+            Yani bu veritabanı Active Directory'nin içerisinde yüklüdür. <br>
+            Çünkü önceden zaten alt alanda Replike olmuşlardı. 
+        </p>
+
+        <p>
+            Domain'deki diğer DC'lerde; DNS Manager'da domain'in altındaki _tcp'den ölen DC'nin kayıtlarını sileriz. <br>
+            Aynı şekilde _udp'dende manuel olarak silmek durumundayız. <br>
+            Sonra _sites'larda, ölen DC'nin olduğu _tcp'yte gidip, ona ait tüm kayıtları silmeliyiz. <br>
+            Default Site'ı da direkt silebiliriz. <br>
+            Ölen DC'ye ait _msdcs kaydını da sileriz. <br>
+            Yani özetle DNS'in içinde ölen DC'ye ait ne varsa tüm kayıtları silmek zorundayız.
+        </p>
+
+        <p>
+            Master Role'leri Seize ettiğimiz makineyi önce yaşayan bir DNS'e ekleyebiliriz. <br>
+            DC'ye ait bütün kayıtların öğrendiği DNS'te açılabilmesi için, Services'ten Netlogon Restart'lanır. <br>
+            Ya da direkt makine Restart'lanabilir.
+        </p>
+
+        <p>
+            Yeni DC'de, Active Directory Sites and Services'inde DC'nin NTDS Settings'inin  Property'lerinde General'da [+]Global Catalog işaretleyecek, kendisinde de Global Catalog olmasını sağlıyoruz. <br>
+            Bu bilgi de DNS'e gitsin istiyorsak, yeniden Netlogon servisini Restart ederiz. <br>
+            Tüm bu işlemlerden sonra direkt olarak makine de artık Restart'lanabilir. <br>
+            Bu makineyi önce DNS'inde hiç kayıt olmadığı için yaşayan bir DNS'e bağladık ve Active Directory üzerinden gerekli verileri çekmesini sağladık. <br>
+            Bu noktadan itibaren bu makine kendisini de DNS Server olarak alabilir. <br>
+            Yani 127.0.0.1 IP'sini DNS'e verebiliriz. <br>
+            Hatta istersek diğer DC'leri ya da Client'leri bu makineye yönlendirebiliriz. <br>
+            Şuandan itibaren tercihen ya diğer makinelerin DNS IP'lerini değiştiririz ya da yeni kurduğumuz bu Master DC'nin DNS'îni yaşayan bir DNS'te tutarım. <br>
+            Fark eden bir şey olmaz çünkü aynı bilgi hepsinde var fakat ortak bir DNS kullanmak daha idealdir.
+        </p>
+
+        <p>
+            Yukarıdaki problemleri yaşamamak için iki tane DC kurulur, bu iki DC'nin de Active Directory'lerine DNS kurulur. <br>
+            Sonuç olarak gece rahat rahat uyuruz.
+        </p>
 
 
         <hr>
