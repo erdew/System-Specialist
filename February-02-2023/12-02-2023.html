@@ -383,7 +383,62 @@
         </p>
 
         <p>
-            Schema ve Domain Naming Master Rolleri Forest bazında, diğerleri ise Domain bazında çalışırlar.
+            Schema ve Domain Naming Master Rolleri Forest bazında, diğerleri ise Domain bazında çalışırlar. <br>
+            İlk kurulan DC asla silinmemelidir. <br>
+            Bu DC'nin Backup'ı yoksa, bu durumda Domain'i baştan kursak bile, artık Domain SID'i bile aynı olmayacağı için o Domain artık yeni bir Domain olur. <br>
+            Bir DC'yi silersek, diğer DC'lerin bu slinmeden haberi yoktur. <br>
+            Dolayısıyla replikasyonlar vs. altalanda yapılmaya çalışmaya devam eder. <br>
+        </p>
+
+        <h5>Eğer Master DC'yi geri dönülemeyecek şekilde kaybedersek ne yapacağız?</h5>
+        <p>
+            Geri dönülemezden kastımız, Backup'ının dahi olmayışıdır. <br>
+            Size'a girmeden önce Master Makinenin donanımsal bir probleminin olup, olmadığına bakılır, çözülebilrse o şekilde çözülür. <br>
+            Hiç bir şekilde bu makineyi geri gerimeyeceğimizi anladığımızda Size işlemini uygularız. <br>
+            Tüm Roller'in hangi DC'lerde olduğunu biliyor olmak gerekir. <br>
+            cmd: NETDOM QUERY FSMO <br>
+            Size işlemi aslıda bu 5 Master'ı yeniden atamaktır. <br>
+            Enterprise Admin'i en kapsayıcı yetkiye sahip olduğu için bu işlemi zaten genelde o yapar. <br>
+            Hayatta olan DC'lere Log-on olur. <br>
+            Bu Master'ları daha önceden gösterdiğimiz yöntemler ile aktarmayı denersek, yani arayüzden Master'dan herhangi bir DC'ye transfer yapma işlemi bu noktada işe yaramaz. <br>
+            Çünkü Master şuanda yaşamıyor. <br>
+            Bizim transfer gibi bir şeçeneğimiz zaten kalmadı. <br>
+            Dolayısıyla Size etmek mecburiyetindeyiz. <br>
+        </p>
+        <p class="bg-script">
+            > cmd <br>
+            > ntdsutil <br>
+            > ? <br>
+            > Active Instance ntds <br>
+            -> Geçerli olan ntds oturumuna bağlan anlamına gelir. <br>
+            -> ActiveInstance ntds -> Return eder.
+            > ? <br>
+            > Roles  <br>
+            > fmso maintenance: <br>
+            -> Bakım moduna geçtik. <br>
+            > ? <br>
+            > Connections <br>
+            -> Yaşayan bir DC'ye Connect olmamız gerekiyor. <br>
+            -> Nereye Connect olacağını sorar. <br>
+            > Connect to server dc-istanbul-2.holding.com <br>
+            -> Rolü hangi yaşayan DC'ye atmak istersek ona Connect oluruz. <br>
+            -> Connect olduğumuzu söyler, hangi yetkili hesap ile Log-on olduysak buraya da o yetkide Connect olur. <br>
+            > quit <br>
+            -> Arayüze bir üst Path'ten bakmamızı sağlar. <br>
+            > Seize schema master <br>
+            -> Schema Master'ı seize etmek istiyorum demektir. <br>
+            -> Artık Connect olduğumuz makine Schema Master olur. <br>
+            -> Bunun gibi Master Rol Seize edilirse, ölen DC eski haliyse kesinlikle Domain'e tekrar alınmamalıdır. <br>
+            -> Bu Rolü Connect olduğumuz konuma atacağını söyleyen bir uyarı verir. <br>
+            -> Bu noktadan sonra Schema Master'ı Connect olduğumuz makineye verdiğini söyler. <br>
+            -> Diğer Roller için de aynı işlemleri yapmamız gerekiyor. <br>
+            > Seize naming master
+            > Seize PDC
+            > Seize RID master
+            > Seize infrastructure master
+            > quit
+            > quit
+            -> Şuandan itibaren Master'ları kurtarmış durumdayız.
         </p>
 
 
