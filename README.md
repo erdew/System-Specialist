@@ -1,4 +1,4 @@
-## System-Specialist
+## System Specialist
 
 Bu konu anlatımlarını tamamladıktan sonra şunları bilir ve uygulayabiliriz;
 
