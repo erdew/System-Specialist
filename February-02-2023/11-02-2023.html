@@ -358,6 +358,86 @@
             Örneğin IP'yi seçip Add edersek(Yani sağa çekersek) 
             -> Site'lar arası transferler IP Protokolü(%99 bununla yapılır) ile SMTP(Mail trafiği için, çok yavaştır. Örneğin iki Mail Server birbirine SMTP ile gönderirler.), IP Protokolüyle transfer yaparken Bridgeheat Server oluyorsun, anlamına gelir.
         </p>
+        <p>
+            Eğer herkes örneğin Genel Müdürlüğe bağlı ise yani İstabula bağlı ise o durumda Site Link'leri değiştirmemiz gerekir. <br><br>
+
+            Yeni bir Site Link oluşturmak;
+        </p>
+        <p class="bg-script">
+            > New Site Link <br>
+            > Name: SLink-Istanbul-Berlin <br>
+            > Add: ISTANBUL, BERLIN -> Bu iki Site'ın fiziksel olarak birbirlerine bağlı olduklarını söylüyoruz. <br>
+            > OK
+        </p>
+
+        <p>
+            Aynısını diğer Site'lar içinde yapabiliriz, eğer fiziksel altyapımız öyle ise. <br>
+            Yani;
+        </p>
+        <p class="bg-script">
+            > New Site Link <br>
+            > Name: SLink-Istanbul-Tokyo <br>
+            > Add: ISTANBUL, TOKYO
+        </p>
+
+        <p>
+            Default Link'i de sileriz. <br>
+            Çünkü bırakırsak, hem birbirlerine hem de ortak bir alanda bağlılar gibi algılanır.
+        </p>
+        <p>
+            Bu bağlantıların üzerinden Replikasyonlar gidecek. <br>
+            Yani şuanda örneğin TOKYO veya BERLIN'de seçilen Bridgeheat Server, Replikasyonu ISTANBUL'a gönderecek.
+            ISTANBUL diğerlerine gönderecek. <br>
+            Gönderilenler de kendi içlerinde gelen Replikasyonu alacaklar.  
+        </p>
+        <p>
+            Örneğin herhangi iki Site'ın arasında çok önemli bir veri transferi yapılıyorsa, istersek o Site'lar arasındaki iletişim için alternatif bir alanabilir. <br>
+            Veya, alternatif hat almadan, yani örneğin BERLIN ile TOKYO'yu ayrı bir Site Link ile birbirlerine bağlayabiliriz. <br>
+            Örneğin TOKYO'daki Bridgeheat Server hem ISTANBUL'daki Bridgeheat Server'a hem de BERLIN'deki Bridgeheat Server'a Replikasyonu gönderebilir.
+        </p>
+        <p>
+            Site Link fiziksel bağlantı değildir. <br>
+            Fakat TOKYO burada eşzamanlı olarak BERLIN'i Update eder. <br>
+            Bu link bu Replikasyonun eşzamanlı olabilmesini sağlar. <br>
+            Çünkü fiziksel olarak direkt TOKYO'dan, BERLIN'e bir yol yok. <br>
+            Yol olmadığı için Update'i ISTANBUL üzerinde yapar.
+        </p>
+        <p>
+            Örneğin önce merkezin Update olmasını ve o bittikten sonra diğer Site'ların Update olmasını isteyebiliriz. <br>
+            Yani Replikasyon trafiği eşzamanlı olmasın. <br>
+            Örneğin TOKYO merkezi Update edemezse, buna rağmen merkezin Update edilebilmesini sağlayabiliyoruz.
+        </p>
+        <p class="bg-script">
+            > IP <br>
+            > Slink-Istanbul-Berlin <br>
+            > Properties <br>
+            > General <br>
+            > Cost: 50
+        </p>
+        <p>
+            Bu Cost'u değiştirirsek ve Istanbul ile Berlin arasındaki Replikasyon yapıldı ise ki burada Cost'u değiştirerek önceliklendirdik. <br>
+            Bu durumda eğer, diğer Site'lardan birisi Replike olamadıysa zaten, İstanbul onu Replike eder.
+        </p>
+        <p>
+            İki Link birbirine bağlanabilir. <br>
+            Buna Site Link Bridge adıverilir. <br>
+            Bu Site Link Bridge'ın Cost'u birbirine bağladığı Site Link'lerin Cost'larının toplamıdır. <br>
+            Bu durumda önce daha düşük Cost'lu olanı denenir.
+        </p>
+
+        <h4>Site Link Bridge nasıl yapılır?</h4>
+        <p>
+            Minimum iki tane Site Link olmalıdır.
+        </p>
+        <p class="bg-script">
+            > New Site Link Bridge <br>
+            > Name: SlinkBridge-Tokyo-İstanbul-Berlin
+        </p>
+        <p>
+            Ortadaki Site bypass edilir, iki uçtaki Site'lar replike edilir. <br><br>
+
+            (Site'lara özel de Group Policy yazmak mümkündür)
+        </p>
 
         <hr>
         
