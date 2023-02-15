@@ -5,12 +5,12 @@ Bu konu anlatımlarını tamamladıktan sonra şunları bilir ve uygulayabiliriz
 - Doğru bir IP dağıtımı ile Network tasarlayabiliriz.
 - IP adreslerinin Class'larını, kaç çeşit olduklarını, Private IP'leri, Real IP'lerin ne zaman kullanıldığını biliriz.
 - Subnetting yapabiliriz.
-- Router ve Switch'lerin Temel Konfigürasyonlarını.
+- Router ve Switch'lerin Temel Konfigürasyonlarını yapabiliriz.
 - Router ve Switch'lere Telnet ile bağlanabiliriz.
 - Router ve Switch'lerin IOS'larını yedek alabiliriz.
 - Router ve Switch'lerin NVRAM'lerini yedek alabiliriz.
 - Yedeklerden geri yükleme yapabiliriz.
-- Eğer IOS yüklenemezse, yüklenememe sorunun çözebiliriz.
+- Eğer IOS yüklenememe sorununu çözebiliriz.
 - Serial Port ile Router ya da Switch bağlantısı yapabiliriz.
 - Router'ları DHCP hizmeti verecek şekilde konfigüre edebiliriz.
 - Static IP Routing yapabiliriz.
@@ -22,15 +22,15 @@ Bu konu anlatımlarını tamamladıktan sonra şunları bilir ve uygulayabiliriz
 - sysprep kullanarak şablon bir sanal makine üretebiliriz.
 - Sanal makineler üzerinde Account(hesap)'lar oluşturabiliriz.
 - Bu hesapların temsil ettiği kişileri yani User'ları gruplayacak Group'lar oluşturabiliriz.
-- Domain ortamı oluşturabiliriz.
 - Oluşturduğumuz hesaplar için yetkilendirme yapabiliriz.
+- Domain ortamı oluşturabiliriz.
 - Domain Controller kurabiliriz.
 - Diğer makineleri Domain'e üye yapabiliriz.
 - Yeni bir disk satın alıp, bunu SCSI ya da IDE Controller üzerinden makineye bağlayabiliriz.
 - Hot Swap yapabiliriz.
 - Bu disk üzerinde hangi File System'in çalışacağını belirleyebiliriz.
 - Bu disk üzerinde hangi adres tablolama teknolojisi kullanacağımızı belirleyebiliriz.
-- RAID Tteknolojilerini uygulayabiliriz.
+- RAID Teknolojilerini uygulayabiliriz.
 - NAS ya da SAN üretebiliriz.
 - Makinelerin NAS ya da SAN Client olmalarını sağlayabiliriz.
 - Shadow Copy yapabiliriz.
@@ -49,8 +49,8 @@ Bu konu anlatımlarını tamamladıktan sonra şunları bilir ve uygulayabiliriz
 - Printer Pool'unu kontrol edebiliriz.
 - Network Printer üretip bunu File Server'a bağlayabiliriz.
 - DHCP Server kurabiliriz.
-- DHCP Server'da Scope oluşturup, IP dağıttabiliriz.
-- DHCP veritabanını yedekleyip, restore yapabiliriz.
+- DHCP Server'da Scope oluşturup, IP dağıttırabiliriz.
+- DHCP veritabanını yedekleyip, geri yükleme yapabiliriz.
 - DNS Server kurabiliriz.
 - Forwarders'ları yönetebiliriz.
 - Ortamdaki DNS'in çökmesine karşın Secondary Zone üretebiliriz.
