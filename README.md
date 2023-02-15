@@ -1,8 +1,12 @@
-"# System-Specialist" 
+## System-Specialist
+
 Bu konu anlatımlarını tamamladıktan sonra şunları bilir ve uygulayabiliriz;
 
-Doğru bir IP dağıtımı ile Network tasarlayabiliriz.
-IP adreslerinin Class'larını, kaç çeşit olduklarını, Private IP'leri, Real IP'lerin ne zaman kullanıldığını biliriz.
+- Doğru bir IP dağıtımı ile Network tasarlayabiliriz.
+- IP adreslerinin Class'larını, kaç çeşit olduklarını, Private IP'leri, Real IP'lerin ne zaman kullanıldığını biliriz.
+
+
+
 Subnetting yapabiliriz.
 Router ve Switch'lerin Temel Konfigürasyonlarını.
 Router ve Switch'lere Telnet ile bağlanabiliriz.
@@ -66,5 +70,8 @@ Web Server üzerinden siteyi editletip, yayınlayabiliriz.
 Web Sitesine HTTPS Protokolünü ekleyebiliriz.
 Şirket için Trusted Root Certification firmalarından sertifika alabiliriz.
 WSUS Servisi kurabiliriz.
-
-
+Child Domain'ler kurabiliriz.
+Active Directory Site oluşturabiliriz.
+Site'lar arasında Replikasyon yapabiliriz.
+Manuel olarak Bridgeheat Server belirleyebiliriz.
+FSMO(Master), Master'ları bilir ve silinen bir DC'nin içindeki Master bilgileri kurtarabiliriz. 
