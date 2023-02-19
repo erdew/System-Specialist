@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>19.02.2023</title>
+    <link rel="icon" type="image/x-icon" href="../eg_favicon.JPG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 14px;
+        color: #e2e3e7;
+        background-color: #232529;
+        /*
+        e2e3e7
+        c4c7cf
+        868d9a
+        696e79
+        41454c
+        35383f
+        292c31
+        232529
+
+        31333a
+        */
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: rgb(139, 233, 253);
+      }
+
+      a{
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #e2e3e7;
+      }
+
+      .container {
+        max-width: 800px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+      }
+
+      .bg-script {
+        color: rgb(139, 233, 253);
+        background-color: #31333a;
+        padding: 20px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+        text-align: start;
+        font-size: 15px;
+        line-height: normal;
+      }
+
+      .navigation\a:hover {
+        color: #31333a;
+        background-color: rgb(139, 233, 253);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container p-4 mt-2 mb-5">
+        <h1><a href="../index.html" class="display-4">19.02.2023</a></h1>
+
+        <hr>
+
+        <p>
+            Her bir ayar için yeni bir Group Policy yazılmaz fakat; daha sonradan devre dışı bırakmayı düşündüğümüz ayarları ayrı bir Policy yapmak daha mantıklıdır.
+        </p>
+        
+        <p>
+            Paylaşılmış ya da Network'teki Printer'ı Group Policy'e eklemek.
+        </p>
+
+        <p>
+            Group Policy ile makinelere program kurmak mümkün. <br>
+            Her makinede yüklü olmasını istediğimiz programları Group Policy ile yükleyebiliriz. <br>
+            Her türlü setup.exe'si olan program bu yöntemle yüklenebilir. <br>
+            MSI paketleri; Programların setup wizard'ını da içeren yani setup'ı default şekilde kurabilen bir packet'tir. <br>
+            Herhangi bir programın MSI paketi olabilir.
+        </p>
+
+        <p>
+            Bir program yüklendiğinde kendine ait bir Hash Number tutar. <br>
+            Aynı programı yeniden bir Setup ile yüklemeye çalıştığımızda bu Hash Number'lar karşılaştırılır ve aynı olacağını bu program yüklenemez.
+        </p>
+
+        <p>
+            Kendimiz de MSI Packet'leri hazırlayabiliriz.
+            MSI Packet yüklemeyi yaptığımız ekrandaki ayarları içeren bir pakettir.
+            MSI Packet'i olmayan programlar için kendimiz bunu hazırlarız.
+        </p>
+
+        <h4>Group Policy'de program kurma aşamaları</h4>
+        <p>
+            Chrome'u MSI packet'i ile yüklemek;
+        </p>
+
+        <p class="bg-script">
+            > Google <br>
+            > Chrome MSI Download
+        </p>
+
+        <p>
+            File type: MSI || Bundle
+        </p>
+
+        <p>
+            Bir program üzerine bir değişiklik yaptığımızda tüm makineler için geçerli olması için değiştirdiğimiz değişkenleri içeren ADM dosyasına ihtiyaç vardır. <br>
+            Bundle seçilirse bu program için ADM dosyalarını da indirir. <br>
+            Bundle'ı indir.
+        </p>
+
+        <p class="bg-script">
+            > Installers <br>
+            > Chrome'un Setup dosyası görünür.
+        </p>
+
+        <p>
+            İndirdiğimiz Bundle'ı;
+        </p>
+        
+        <p class="bg-script">
+            > DC <br>
+            > C <br>
+            > New Folder -> Apps(Herhangi bir isim koyabilirsin) <br>
+            -> Bu konuma at. <br>
+            -> Apps'i Share et. <br>
+            -> Permissions: Everyone(Authenticated Users'ta olabilir) -> Sadece READ vermemiz yeterli.
+        </p>
+
+        <p>
+            MSI Packet'leri Network'te herhangi bir makinede tutulabilir. <br>
+            Örneğin File Server'da da tutulabilir. <br>
+            Biz sanalda DC'ye koyduk.
+        </p>
+        
+        <p>
+            Yapmamız gereken Group Policy'de MSI Packet'lerine nerden ulaşılacağını bildirmektir.
+        </p>
+
+        <p class="bg-script">
+          > Group Policy Management Editor <br>
+          > Computer <br>
+          > Policies <br>
+          > Software Settings <br>
+          -> Burada kurarsak, program makine açılırken yüklenir.
+        </p>
+        
+        <p class="bg-script">
+          > User Configuration <br>
+          > Policies <br>
+          > Software Settings <br>
+          > Software installation <br>
+          -> Burada kurarsak, User'lar Log-on olurken yüklenir. <br>
+          -> Bir kere Log-on olduktan sonra yüklenmiş olacağı için, her Log-on'da tekrar tekrar yüklenmez.
+        </p>
+
+        <p class="bg-script">
+          > Right Click <br>
+          > New <br>
+          > Packet <br>
+          > Browse <br>
+          -> Burada Network'ten gidilmesi gerektiğini söylememiz gerekiyor; <br>
+          -> Örneğin: \\dc0.sirket0.com\Apps\GoogleChrome\Installers\GoogleChromeStand... <br>
+          -> Path direkt C'den tarif edilirse, her makine kendi C'sine gidip bakar, göremeyeceği için yükleme yapılamaz. <br>
+          Bu sebeple Network'ten gitmesi gerektiğini söylemeliyiz.
+        </p>
+
+        <p>
+          [+]Assigned -> Program sessizce kurulur. <br>
+          [+]Published -> Programın kurulum dosyalarını Group Policy'de yayınlıyoruz ve kullanıcı  istediğini seçip kurulup yapabiliyor. <br>
+          [+]Advanced -> Publish veya Assign ile kurulmuş paketler var ise onların Upgrade Packet'leri geliyor, o paketleri bu yöntem ile kurabiliyoruz.
+        </p>
+        
+        <p>
+          İlk defa kurduğumuz için Assigned seçip ekleriz.
+        </p>
+
+        <p>
+          Bu noktadan sonra DC'ye erişebilen makineler Restart'landığında Chrome yüklenir.
+        </p>
+
+        <p>
+          Eğer bir programı Publish edeceksek bunu User'lara Publish edebiliriz.
+        </p>
+        
+        <p class="bg-script">
+          > Chrome <br>
+          > Edit <br>
+          > User Conf <br>
+          Network'teki Paylaşım yapılan konum seçilir. <br>
+          Seçtiğimiz dosyayı Publish ederiz. <br>
+          (Bu Policy'leri ilgili Level'a Link'lemeyi unutma)
+        </p>
+
+        <p>
+          Bu noktadan itibaren Kullancını Group Policy'lere erişebilen makinenin;
+        </p>
+
+        <p class="bg">
+          > Control Panel <br>
+          > Programs <br>
+          > Get Programs <br>
+          Konumuna gittiğinde Publish edilen, tüm yüklenebilir programları görür.
+        </p>
+
+        <p>
+          Daha sonradan DC'ye gidip aynı konumdan Policy'e sağ tıklayıp Deployment'ından Published'tan, Assigned'a çekebiliriz. <br>
+          [+]Auto-intall this app -> Default'ta açıktır. <br>
+          Örneğin Publish'te .abc uzantılı bir dosyayı açmamızı sağlayan Setup dosyası olduğunu varsayalım fakat makineye bu henüz yüklenmemiş, fakat kullanıcı o uzantıda bir dosya açmak istediğinde, o dosyayı açabilmek için Publish'ten kullanıcıya sormadan direkt yükler.
+        </p>
+
+        <p>
+          Document Activation: Dosya uzantısına göre ilgili programın çalışması işlemidir.
+          Örneğin; x.xlsl uzantılı dosya Excel'de açılır.
+        </p>
+
+        <p class="bg-script">
+          > Policy <br>
+          > Right Click <br>
+          > Deployment <br>
+          [+]Unistall this application when it falls out of the scope of management
+        </p>
+
+        <p>
+          -> Policy oluşturup makinelere yükledikten sonra, o Policy'i silersek normalde o makinelerde hala o Policy'inin etkisi makineler üzerinde devam eder. <br>
+          Bunu Check'lersek, bu Policy kaldırıldığında makineler üzerindeki etkisi de kaldırılır. <br>
+          [+]Do not display this package in the Add/Remove Programs control panel <br>
+          -> Bu Package Add/Remove Programs'ta görüntülenememesini sağlar.
+        </p>
+
+        <h4>Audit Policy(Denetleme)</h4>
+        <p>
+          Bir File Server'daki paylaşılmış klasöre kimler erişmiş, ne değiştirmişler, ne zaman erişmişler, yetkisi olmadığı halde örneğin silmeye çalıştı ise, yetkisi olduğu halde eğer sildiyse veya edit'lediyse vs. gibi durumları denetler.
+        </p>
+
+        <p>
+          Denetlemenin bir kaç aşaması vardır. <br>
+          Default'ta bu denetleme açık değildir. <br>
+          Klasörü denetlemeye Manuel olarak açmalıyız.
+        </p>
+
+        <p>
+          1.Aşama; Audit Policy nasıl devreye alınır? <br>
+          Denetlemeyi hangi makine ya da User'larda yapmak istediğimize karar veririz. <br>
+          Örneğin sadece Server'larda denetlemeyi açacaksak, o Server'ları bir Organizational Unit'e alırız ve Audit'i o OU için uygularız. <br>
+          Domain'deki tüm makine ve User'larda denetleme açmak istiyorsak bunu; Domain Policy'den yapmalıyız. <br>
+          Eğer File Server ile alakalı bir denetleme ihtiyacımız olsaydı; sadece File Server'ın Local Policy'sine uygulardık.
+        </p>
+
+        <p class="bg-script">
+          > Domains <br>
+          > Group Policy Object <br>
+          > New <br>
+          > Policy <br>
+          -> Denetleme(Örneğin)
+        </p>
+
+        <p class="bg-script">
+          > Policy <br>
+          > Edit <br>
+          > Computer Configuration <br>
+          > Policies <br>
+          > Windows Settings <br>
+          > Security Settings <br>
+          > Local Policies <br>
+          > Audit Policy <br>
+          -> Audit account logon events <br>
+          -> account management -> Hesabı kim sildi, kim ekledi, kim editledi. <br>
+          -> directory service access <br>
+          -> logon events -> Bu Policy'i nereye yazdıysak, o makineye kim Log-on olduysa onu takip ederiz. <br>
+          -> object access -> Bir objeye kim erişti? [+]Success, [+]Failure <br>
+          -> privilege use -> Örneğin Ownership'lik hakkı olan iki kişi var, onlardan hangisi bu hakkını kullandı. <br>
+          -> system events -> Sistemin ürettiği tüm Log'ları takip etmemizi sağlar.
+        </p>
+
+        <p>
+          Başarılı denemeyi de, başarızı da kim yaptıysa gösterir.
+        </p>
+
+        <p>
+          Bu Policy'nin hangi Level'da geçerli olmasını istersek oraya Link'leriz.
+          Bu açtığımız Audit'lerin Log'lamaları her makine için kendi Local'inde tutulur.
+        </p>
+
+        <p>
+          1.aşama Audit Enable et. <br>
+          2.aşama Hangi kaynakta izlemeyi açmak istiyosan aç. <br>
+          3.aşama Log'ları görüntüle.
+        </p>
+
+        <p>
+          Sadece bir klasörü denetlemek istiyorsak(Bu uygulama genellikle File Server'da yapılılr);
+        </p>
+
+        <p class="bg-script">
+          > Folder <br>
+          > Right Click <br>
+          > Properties <br>
+          > Security <br>
+          > Advanced <br>
+          > Auditing <br>
+          > Add <br>
+          > Select a principal -> Bu klasöre ve içindekilere kimlerin eriştiğini denetlemek istiyorsun? <br>
+          [All] <br>
+          [This folder, sulfolders and files] <br>
+          > Show basic permissions -> Denetlemek istediğimiz eylemi seçeriz. Örneğin; [READ] -> Kim gördü? <br>
+          > Add a condition -> User, Group, Member of each, Value, 1item(s) selected -> Burada sadece seçtiğimiz gruba üye olanlar için Log alırız. <br>
+          > OK
+        </p>
+
+        <p>
+          Data Local'te tutulduğu için;
+        </p>
+
+        <p class="bg-script">
+          > Server manager <br>
+          > Event Viewer <br>
+          > Windows Logs <br>
+          > Security <br>
+          -> Aradığımız Log'u bulmak için; Find: xxx.txt <br>
+          -> Security Right Click: Filter Current Log [+]Information, 4663(Silme Log ID'si budur), OK -> Deneme için silme işlemi yaptığımız için bu şekilde arattık. <br>
+          -> Windows Events Log ID's Google'da arat.
+        </p>
+
+        <p>
+          Audit Policy Work Group'ta da çalışır.
+        </p>
+
+        <p>
+          Log'ları silmeden önce Save and Clear ile yedekleyip sileriz. <br>
+          Eğer Admin kendisi bir Log sildiyse, onun da ne zaman ve neyi sildiğini gösteren bir Log oluşur.
+        </p>
+
+        <p>
+          mmc ekranında her makinenin Event Viewer ekranlarını ekleyip, masaüstüne kaydedersek, otomatik olarak tüm Event View'ları tek bir ekranda görebiliriz.
+        </p>
+
+        <p>
+          Group Policy'de Script'ler de çalıştırılabilir. <br>
+          Paylaşımda bir kaç tane .vbs uzantılı Script'ler var.
+        </p>
+
+        <p>
+          Varolan bir Policy'i Edit'leyebiliriz ya da yeni bir Policy ekleyebiliriz.
+        </p>
+
+        <p>
+          Policy'i Edit'lerken Startup ya da Shutdown seçilir.
+        </p>
+
+        <p>
+          Link'ledikten sonra Show Files ile ortak bir konum(SYSVOL'un altında) üretir. <br>
+          O konuma Script'i attıktan sonra, Browse dediğimizde otomatik orayı seçer. <br>
+          Yani Network'ten gidilen yolu girmek yerine direkt bu konumu kendisi görür ve bu tarz paylaşımları bir klasör oluşturup onun üzerinden paylaşmak yerine direkt olarak bu konum üzerinden paylaşmamızı sağlar.
+        </p>
+
+        <p>
+          Şirkette çok sayıda makinede Registiry'de bir ayar değiştirmek gerekebilir. <br>
+          Group Policy'de istediğimiz kadar makinede bu değişikliği yapabiliriz.
+        </p>
+
+        <p>
+          Yine istersek yeni bir Group Policy oluşturabiliriz.
+        </p>
+
+        <p class="bg-script">
+          > Edit <br>
+          > Computer <br>
+          > Preferences <br>
+          > Windows <br>
+          > Registry <br>
+          > Right Click <br>
+          > Registry Item <br>
+          -> Hangi Registry ayarını değiştirmek istediğimizi söylüyoruz. <br>
+          -> Hive: HKEY_LOCAL_MACHINE <br>
+          > Local macgine, system, current, current, terminal server, fdenytsconnections <br>
+          -> Value data: 00000001 -> Sonunu 0 yaparsak, açılır. Tamamını 1 yaparsak kapanır çünkü deny. <br>
+          -> Bu ayar tüm makinelerin Remote Desktop'a iznini Enable etmemizi sağlar.
+        </p>
+
+        <p>
+          Bu yazdığımız Policy'i de hangi Level'a Link'lersek o Group Policy'den ilgili makineler etkilenir.
+        </p>
+
+        <p>
+          Bir App'in Developer'ları Group Policy'de değişkenlerini sunan ADM dosyası üretmişse;
+        </p>
+
+        <p class="bg-script">
+          > Computer <br>
+          > Policies <br>
+          > Administrative Templates <br>
+          > Right Click <br>
+          > Add/Remove Templates <br>
+          -> İndirdiğimiz ADM dosyalarını hangi dilinde istiyorsak o dosyayı ekleriz.
+        </p>
+
+        <p>
+          O ADM bir Folder olarak Administrative Templates'te görüntülenir. <br>
+          O programla ilgili eklenmiş tüm değişkenleri içerir. <br>
+          Google'ı indirip, dene.
+        </p>
+
+        <p class="bg-script">
+          > Computer <br>
+          > Policies <br>
+          > Administrative Templates <br>
+          > All Settings <br>
+          > Right Click <br>
+          > Filter Options <br>
+          -> Herhangi bir anahtar kelimeye göre bir Policy ayarı arayabiliriz. <br>
+          Örneğin "Remove Run" adında bir Policy üretmişsek, içinde Remove run geçen Policy gelir.
+        </p>
+
+        <hr>
+        
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="18-02-2023.html" class="bg-script">18.02.2023</a>
+            <a href="" class="bg-script ">xxx</a>
+          </div>
+        </div>
+        
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
