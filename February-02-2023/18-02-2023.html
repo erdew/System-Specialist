@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>18.02.2023</title>
+    <link rel="icon" type="image/x-icon" href="../eg_favicon.JPG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 14px;
+        color: #e2e3e7;
+        background-color: #232529;
+        /*
+        e2e3e7
+        c4c7cf
+        868d9a
+        696e79
+        41454c
+        35383f
+        292c31
+        232529
+
+        31333a
+        */
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: rgb(139, 233, 253);
+      }
+
+      a{
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #e2e3e7;
+      }
+
+      .container {
+        max-width: 800px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+      }
+
+      .bg-script {
+        color: rgb(139, 233, 253);
+        background-color: #31333a;
+        padding: 20px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+        text-align: start;
+        font-size: 15px;
+        line-height: normal;
+      }
+
+      .navigation\a:hover {
+        color: #31333a;
+        background-color: rgb(139, 233, 253);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container p-4 mt-2 mb-5">
+        <h1><a href="../index.html" class="display-4">18.02.2023</a></h1>
+
+        <hr>
+
+        <p>
+          Bulking Port: Bir Script'le aynı anda birden fazla Object oluşturmanı sağlar.
+        </p>
+
+        <p>
+          PowerShell ya da CMD'de toplamda kaç tane Object oluşturabileceğini söyleyen komut girilir; <br>
+          Dcdiag.exe /test:RidManager /v | find /i "Available RID Pool for the Domain"
+        </p>
+
+        <p>
+          O Domain'de kaç tane Object oluşturulabileceğini söyler(RID havuzu). <br>
+          Eğer o sayıdan daha fazla Object'e ihtiyaç var ise ekstra bir lisans ile 2 milyar civarında üretilebilmesini sağlar.
+        </p>
+
+        <p>
+          PowerShell ya da CMD'de 500 tane Object'i otomatik olarak üreten komut çalıştırılır; <br>
+          FOR /L %i in (1,1,500) do dsadd user "CN=User%i,OU=IT,DC=sirket1,DC=com" -pwd Password1 -mustchpwd yes -fn User%i -email User%i@sirket1.com -upn User%i@sirket1.com
+        </p>
+
+        <p>
+          Yukarıdaki bilgileri kendi Domain'inime göre değiştirmemiz gerekiyor. <br>
+          499 olduğu zaman Domain'deki RID Pool dolduğu için artık 500. Object üretilemez. <br>
+          Fakat bu sadece RID Server'a erişim olmadığında yani RID Master'ın olduğu makineye erişelemediğinde yaşanır.
+        </p>
+
+        <h4>GPO(Group Policy)</h4>
+        <p>
+          Yapımızdaki tüm makinelere, objelere topluca emir vermemizi sağlar. <br>
+          Group Policy uygulayabilmek için ortamın Domain olması gerekir. <br>
+          Bir durum hariç; her makinenin Local'inde Group Policy bulunur. <br>
+          Bu konumdan yazılan Group Policy'ler sadece o makineyi etkiler. <br>
+          Eğer makineyi birden fazla kişi ortak olarak kullanıyorsa, bunun gibi durumlarda yazılabilir.
+        </p>
+
+        <p>
+          GPO nerelerden yazılır yani hangi kapsama emredilebilir? <br>
+          Bir makine, kendisine çakışan bir emir verildiğinde en son gelen emri uygular. <br>
+          Örneğin aynı anda birden fazla emir geldi. <br>
+          En son gelen Policy'i alıp yapar.
+        </p>
+
+        <h5>Policy Levels;</h5>
+        <p>
+          Local Policy		  -                      -
+          Side		        Run(-)			Run(-)
+          Domain      		Help(-) 		Run(+)
+          Organizational Unit x Programı Kurulsun x Programı Kurulsun
+        </p>
+
+        <p>
+          Makine açılırken Local Policy, sonra Side sonra Domain en son Organization Unit Level'larından gelen Policy'ler okunurlar.
+          Bu hiyerarşik sıraya göre en son hangisi emir verdiyse, o Policy uygulanır.
+        </p>
+
+        <p>
+          Bu mantığa göre Run emri, Domain'den geldiği için Domain Level'ı için uygulanır.
+          Bu durum çakışan Policy'ler olduğunda yaşanır, normalde her Level için kendisi okunduğu esnada emirleri uygulanır.
+        </p>
+
+        <p>
+          Run
+          gpedit.msc -> Her bir makinenin Local Policy'si açılabilir.
+        </p>
+
+        <p>
+          Hangi Level'dan Policy yazarsak yazalım hepsinde şu başlıklar görürüz; <br>
+          Computer >
+          Software, Windows, Administrative Templates
+          User >
+          Software, Windows, Administrative Templates
+        </p>
+
+        <p>
+          Side, Domain ve OU Group Policy'leri nereden yazılır?
+        </p>
+
+        <p class="bg-script">
+          > Server Manager <br>
+          > Tools <br>
+          > Group Policy Management
+        </p>
+
+        <p>
+          Yukarıdaki konuma müdahale edebilmek için minimum Domain Admin olunmalıdır.
+          Burada Forest'ın ismi, Domain'leri ve sahip olduğumuz Domain'i onun da içerisinde Domain Controller'ları vs. gösterir.
+        </p>
+        
+        <p>
+          Site'ları görebilmek için;
+        </p>
+
+        <p>
+          > Site <br>
+          > Right Click <br>
+          > Show Sites -> Var ise Site'lar burada görüntülenir.
+        </p>
+        
+        <p>
+          Group Policy Results, bir Policy girildiğinde neler olabilir olacağını gösterdiği konumdur.
+        </p>
+
+        <p>
+          Bize sormadan iki tane Policy yazılır. <br>
+          1.si Default Domian Policy'dir. <br>
+          Özellikle güvenlikle, Password vs. ile ilgili emirler yazılmıştır. <br>
+          Tüm Domain'i etkiler.
+        </p>
+
+        <p>
+          2.si Default Domain Controllers Policy'dir. <br>
+          Bu Policy'i Domain Controllers Organizational Unit Level'ında yazılmıştır.
+        </p>
+
+        <p>
+          > Group Policy Objects <br>
+          -> Burada Policy oluşturabiliriz fakat oluşturduğumuzda devreye alınmaz. <br>
+          Sadece ismen böyle bir Policy oluşturmuş oluruz. <br>
+          Oluşturduğumuz Policy'e; <br>
+          > Right Click <br>
+          > Edit <br>
+          -> Örneğin Remove Run'ı seçerek; <br>
+          []Not Configured -> Ne açıyorum, ne kapatıyorum. Ayara karışmıyorum demektir. <br>
+          [+]Enabled -> Remove Run'ı devreye alır. Yani Start Menu'den Run'ı Remove eder. <br>
+          []Disabled -> Run Menu'su kaldırılmasın, yani başka bir Level'dan Run kaldırılsın dendiyse, konuşmasına sıra eğer burası öncelikliyse kaldırılmaması sağlanabilir.
+        </p>
+        
+        <p>
+          Supported on: Bu yazdığımız Policy hangi işletim sistemlerini etkiliyorsa onları gösterir. <br>
+          Help: Bu Policy'nin ne işe yaradığını anlatır.
+        </p>
+
+        <p>
+          Policy'i oluşturduk fakat henüz Link'lemediğimiz yani ilişkilendirmediğimiz için hiç bir Level'a etki etmez.
+          Side Level'ına Link'leyeceksek;
+        </p>
+
+        <p class="bg-script">
+          > Sites <br>
+          > Site <br>
+          > Right Click <br>
+          > Link an Existing GPO <br>
+          -> Oluşturduğumuz Policy'i seçeriz.
+        </p>
+
+        <p>
+          Eklediğimiz konumdan silersek; sadece o konuma verdiğimiz Link'i silmiş oluruz.
+          Oluşturduğumuz Policy'i sürükle bırak yaparak, etki edebilecek Level'ların üzerine bırakarak da Link'leyebiliriz.
+        </p>
+
+        <h4>Yazılmış Policy'lerden Client'ler ne zaman etkilenirler?</h4>
+        <p>
+          1)Makineler ilk çalıştırılığında, önce DC'ye gidip, Computer Account'larını kontrol eden bir Group Policy var ise onları alır. <br>
+          Örneğin PC1 diye bir Computer Account var, User1 diye de bir User Account var. <br>
+          Şuanda Computer hesabını ilgilendiren Policy'ler gelir. <br>
+          Makineler Policy'leri Pull ederler. <br>
+          DC'ler Makinlere kendilerini ilgilendiren Policy'lere hangi konumdan ulaşacağını bildirir, yönlendirir. <br>
+          Yani makineler Group Policy'lere Network'ten erişirler. <br>
+          Policy'lerin bulunduğu konum, Share edilmiş olmalı ve erişmek isteyen makinenin Permission'ı olmalıdır. <br>
+          Bu klasör SYSVOL'dür. <br>
+          -> Tüm Group Policy'ler ve Script'lerin saklandığı klasördür. <br>
+          Log-on ekranı gelene kadar Computer'ı ilgilendiren Policy'ler bitmiş olur. <br>
+          Authentication, Computer'lar içinde yapılır. <br>
+          Başlangıçta Computer'da Authentication'dan geçer. <br>
+          Makineyi Domain'e kattığımızda altalanda bir Authentication parolası belirlenir. <br>
+          Makine ve DC arasında bu Password doğrulanır. <br>
+          Eğer bu Password doğrulanamazsa;
+        </p>
+
+        <p class="bg-script">
+          > Active Directory <br>
+          > Computers <br>
+          > Computer <br>
+          > Right Click <br>
+          > Reset Account -> Computer ile DC arasındaki doğrulama için oluşturulan Password'un yeniden oluşturulmasını sağlar. <br>
+          Bu yapılmazsa, her şey yolunda gibi görünse bile Log-on olunamaz.
+        </p>
+
+        <p class="bg-script">
+          > SYSVOL <br>
+          > Right Click <br>
+          > Security <br>
+          Authenticated User <br>
+          -> Username, Password'u doğrulanmış olan hesaplar. <br>
+          -> READ, READ&EXECUTE
+        </p>
+
+        <p>
+          Örneğin Muhasabe için ayrı diğer departmanlar için ayrı Organizational Unit'ler oluşturulabilir. <br>
+          Computer'lar için de ayrı ayrı OU'ler oluşturabiliriz. <br>
+          Computer'lar açılırken o OU'lar için yazdığımız Policy'ler geçerli olur.
+        </p>
+
+        <p>
+          Örneğin makineye 9:00'da Log-on olduk. <br>
+          90+30 dakika içinde Policy'ler tekrar alınır. <br>
+          Active Directory, ilk gelen makine grubuna 90+1, ikinci gelen gruba 90+2... şeklinde Group Policy Refresh yapmalarını ister. <br>
+          Makineyi ilgilendiren bir Group Policy güncellemesi yaptırsak, bunun hemen gerçekleştirilmesini istiyorsak;
+        </p>
+
+        <p class="bg-script">
+          > run <br>
+          > gpupdate /force <br>
+          Bu komut ile güncelleme hemen alınır.
+        </p>
+
+        <p class="bg-script">
+          Ya da; <br>
+          Group Policy Management <br>
+          > Organizational Unit'lerden hangisini ilgilendiriyorsa; <br>
+          > Right Click <br>
+          > Group Policy Update... <br>
+          Yukarıdaki şekilde yapılırsa, makineye gidip update komutu yazmak gerekmez.
+        </p>
+
+        <p>
+          Örneğin Domain Level'ından bir Policy yazıp, OU tarafından ezilmesini istemiyorsak; <br>
+          Policy'i Enforced ile Link'leriz. <br>
+          Policy oluşturulur, Link'lenirken, ilgili konuma sağ tık Enforced şeklinde eklenir. <br>
+          Artık bu emir daha kapsayıcı olan Level'lardan ya da en son konuşan emir gelse bile değişmeş. <br>
+          İki farklı Level'dan aynı emri etkileyen başka bir emir Enforeced edilse bile işe yaramaz. <br>
+          Çünkü o emir bir kere o makine için Enforced edilmiş oldu. <br>
+          Group Policy'ler konuşma sırasına göre düşünülmelidir. <br>
+          Domain, Organizational Unit'ten önce konuşur. <br>
+          Domain'de bir emri Enforced ettiysek, aynı emre etki eden Organizational Unit'e emir yazarsak dikkate alınmaz. <br>
+          Bunun dışında herkes kendi üstüne göre emri uygular.
+        </p>
+
+        <p>
+          Peki aynı Organizational Unit'e aynı emrin bir Enable'ını bir de Disable'ını verirsek; <br>
+          Link Order'ına göre hareket eder. <br>
+          Link Order'da son konuşan emir uygulanır. <br>
+          Eğer Link Order'ın en başında daha önceki bir sırada Enforced uygulandıysa direkt o uygulanır.
+        </p>
+
+        <p>
+          Local Policy kullanmak için ortamın Domain olması gerekmez.
+        </p>
+
+        <p>
+          Active Directory User ekranında Organizational Unit vs. ekler, çıkarırsak aynı değişiklik Group Policy ekranına yansır. <br>
+          Senkron çalışırlar.
+        </p>
+
+        <p>
+          İçiçe sub organizational unit'ler var ise inheritance olarak Policy'ler aşağıya miras bırakılır. <br>
+          Eğer herhangi bir Level sağ tık Block Inheritance dersek, artık onu kapsayan yukarıdan miras aldığı Group Policy'leri almaz. <br>
+          Enforced olanlar hariç.
+        </p>
+
+        <p>
+          Group Policy'lerde genelden özele doğru karar oluşturmak, yanlış bir tasarımdır. <br>
+          İdeal olanı Policy'leri olabildiğince genele uygulamaya çalışmaktır.
+        </p>
+
+        <p>
+          Group Policy'de temel seviyede ayarlar;
+        </p>
+
+        <p class="bg-script">
+          > Default Domain Policy <br>
+          > Computer Configuration <br>
+          > Policies <br>
+          > Windows Settings <br>
+          > Securiry Settings <br>
+          > Account Policies <br>
+          > Password Policy <br>
+          > Double Click <br>
+          -> Enforce password history: 0 <br>
+          -> Maximum password age: 0 <br>
+          -> Minimum password age: 1 days <br>
+          -> Minimum password length: 7 characters <br>
+          -> Password must meet complexisty requirements: Enabled <br>
+          -> Store Passwords using reversible encryption: Enabled
+        </p>
+
+        <p>
+          Yukarıdakiler Password Group Policy'ler için önerilen ayarlardır.
+        </p>
+
+        <p class="bg-script">
+          > Security Settings <br>
+          -> Account lockout duration: 30 minutes: Hatalı yazmasından dolayı kitlendikten 30 dakika sonra hesabın kilidi kalkar. <br>
+          0 minutes yaparsak Lock olduysa bir daha hesap açılamaz.
+        </p>
+
+        <p>
+          > Account Lockout Policy <br>
+          -> Account lockout threshold: 5 invalid logon attemps: Maksimum kaç hatalı denemede hesap kitlesin. Hesap kitlendikten sonra artık şifre doğru girilse bile Log-on olunmaz.
+        </p>
+
+        <p class="bg-script">
+          > Reset account lockout counter after <br>
+          -> Yukarıdaki 5 hatalı girişi kaç dakika bir Reset. <br>
+          -> Belirtilen süre içinde 5 kere hatalı giriş yaparsa kitler.
+        </p>
+
+        <p>
+          Lock'lanmış hesabı açmak istersek;
+        </p>
+
+        <p class="bg-script">
+          > Active Directory Users and Com. <br>
+          > domain <br>
+          > IK(OU) <br>
+          > IST(OU) <br>
+          > Maslak(OU) <br>
+          > User <br>
+          > Right Click <br>
+          > Properties <br>
+          > Account <br>
+          > [Unlock] -> Hesabın Lock'unu kaldırır.
+        </p>
+
+        <p>
+          İstersek aynı konumdan Direkt User'a sağ tık; Disable Account tıklayarak Lock'larız.
+        </p>
+
+        <p class="bg-script">
+          > Security Settings <br>
+          > Local Policies <br>
+          > Security Options <br>
+          -> Network security: Force logoff when logon hours expire <br>
+          -> Log-on süresi sonlandığında Log-off'a zorla. <br>
+          Default'ta Active Directory'de bir User sonsuz süre Log-on kalabilir.
+        </p>
+
+        <p>
+          Değiştirmek istersek;
+        </p>
+
+        <p class="bg-script">
+          > Active Directory Users <br>
+          > User <br>
+          > Properties <br>
+          > Account <br>
+          > Logon hours -> Log-on olabileceği günleri ve saatleri seçebiliriz.
+        </p>
+
+        <p class="bg-script">
+          > Account <br>
+          > Logon Workstations <br>
+          [+]The following computers <br>
+          -> Makinenin adı <br>
+          > Add <br>
+          -> O kullanıcının kullanacağı makineyi gireriz.
+        </p>
+
+        <p>
+          Group Policy Management
+        </p>
+
+        <p class="bg-script">
+          > Default Domain Controller Policy <br>
+          > Computer Configuration <br>
+          > Policies <br>
+          > Windows Settings <br>
+          > Securiry Settings <br>
+          > Account Policies <br>
+          > Password Policy <br>
+          > Double Click <br>
+          -> Not Defined: Kendi Level'ında Password'lara Policy olarak müdahale etmiyor.
+        </p>
+
+        <p class="bg-script">
+          > Default Domain Controller Policy <br>
+          > Computer Configuration <br>
+          > Policies <br>
+          > Windows Settings <br>
+          > Securiry Settings <br>
+          > Local Policies <br>
+          > User Rights Assignment <br>
+          -> Add workstations to domain: Authenticated User'ların Domain'e 10 tane makine ekleyebilmesini sağlayan Policy'dir.
+        </p>
+
+        <p>
+          Eğer User'ın Domain'e makine eklemesini istemiyorsak;
+        </p>
+
+        <p class="bg-script">
+          > User Rights Assignment <br>
+          > Right Click <br>
+          > Properties <br>
+          > Add User or Group... <br>
+          -> Buraya sadece Domain'e makine eklemesini istediğimiz Account'u ekleriz ve Authenticated Users'ı Remove ederiz.
+        </p>
+
+        <p class="bg-script">
+          > User Rights Assignment <br>
+          -> Allow log on locally: Bu makineden Log-on olabilecek Account'ların listesini görürüz. <br>
+          Örneğin Domain Controller'lara çok sınırlı sayıda hesaplar Log-on olabilirler. <br>
+          Bu konumdan istediğimizi ekleyebiliriz.
+        </p>
+
+        <p class="bg-script">
+          > User Rights Assignment <br>
+          -> Back up files and directories: Hangi Account'ların Back-up alabileceğini belirler.
+        </p>
+
+        <p class="bg-script">
+          > User Rights Assignment <br>
+          -> Change the system time: Sistem saatini değiştirebilecek Account'ları listeler.
+        </p>
+
+        <p class="bg-script">
+          > User Rights Assignment <br>
+          -> Change the time zone: Time Zone'u değiştirebilecek Account'ları listeler.
+        </p>
+
+        <p class="bg-script">
+          > User Rights Assignment <br>
+          -> Deny log on locally: Buraya eklenen Account log-on olamaz. <br>
+          Örneğin bir Group'un üyesi olduğu için bir Account bu makineye otomatik olarak Log-on olma yetkisine sahipken buraya o Account'a eklersek; artık bu makineye Log-on olamaz.
+        </p>
+
+        <p class="bg-script">
+          > User Rights Assignment <br>
+          -> Deny log on through Remote Desktop Services: Buraya yazılan Account bu makineye uzaktan bağlanamaz.
+        </p>
+
+        <p class="bg-script">
+          > cmd <br>
+          shutdown -i <br>
+          -> Arayüzü açar:
+        </p>
+
+        <p>
+          Burada Add'e tıklayarak: <br>
+          Örneğin PC02 seçip; <br>
+          Annotate Unexpected Shutdown seçilirse, makineyi uyarı vermeden, uygulamaları vs. kapatıp makineyi Shutdown edilir.
+        </p>
+
+        <hr>
+        
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="12-02-2023.html" class="bg-script">12.02.2023</a>
+            <a href="19-02-2023.html" class="bg-script ">19.02.2023</a>
+          </div>
+        </div>
+        
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
