@@ -60,4 +60,8 @@
 - Site'lar arasında Replikasyon yapmak.
 - Manuel olarak Site'lar arasındaki iletişimi sağlayacak olan Bridgeheat Server'ı belirlemek.
 - FSMO(Master)'ları yönetmek.
-- Forest'ı oluşturan Domain Controller'ın silinmesi durumunda onun içinde bulunan Master bilgilerini kurtarmak.
+- Forest'ı oluşturan Domain Controller'ın silinmesi ve yedeğinin bulunmaması durumunda onun içinde bulunan Master bilgilerini kurtarmak.
+- Group Policy ile Forest, Domain, Network ya da Local olarak tüm makine veya User'lara kısıtlamalar getirmek.
+- Group Policy ile ilgili programların MSI Packet'leriyle kurulum aşaması dahil tüm makinelere yüklenmesini sağlamak.
+- Group Policy ile her makine için belli programların yayınlanmasını sağlayıp, kullanıcının istediği durumda kurulum yapmasını sağlamak.
+- Group Policy ile Audit Policy(Denetleme)(Log'lama) yapmak.
