@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>26.02.2023</title>
+    <link rel="icon" type="image/x-icon" href="../eg_favicon.JPG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 14px;
+        color: #e2e3e7;
+        background-color: #232529;
+        /*
+        e2e3e7
+        c4c7cf
+        868d9a
+        696e79
+        41454c
+        35383f
+        292c31
+        232529
+
+        31333a
+        */
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: rgb(139, 233, 253);
+      }
+
+      a{
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #e2e3e7;
+      }
+
+      .container {
+        max-width: 800px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+      }
+
+      .bg-script {
+        color: rgb(139, 233, 253);
+        background-color: #31333a;
+        padding: 20px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+        text-align: start;
+        font-size: 15px;
+        line-height: normal;
+      }
+
+      .navigation\a:hover {
+        color: #31333a;
+        background-color: rgb(139, 233, 253);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container p-4 mt-2 mb-5">
+        <h1><a href="../index.html" class="display-4">26.02.2023</a></h1>
+        
+        <h4>Exchange Server</h4>
+        <p>
+            Teams'ten Server2019Base'i ve Exchange 2019'u indir.
+        </p>
+        <p>
+            Microsoft'un lisanlı Mail Server'ı Exchange'tir. <br>
+            Google'ın, Yandex'in vs de Mail Server'ları vardır. <br>
+            Exchange Server oldukça yaygındır, sektörde kullanılır. <br>
+            Microsoft olmasından, kullanım kolaylığından ve çok gelişmiş olmasından dolayı çok tercih edilir. <br>
+            Erişim ve yönetimi görece diğerlerine göre kolay olduğu için firmalar tercih ederler. <br>
+            Bu Echange Server aslında Microsoft'un Cloud'unda durur. <br>
+            Biz Domain'i oradan kurup, kurulumları vs. Cloud üzerinden yaparız aslında. <br>
+            Exchange ücretlidir, lisans vs. sormadan kurulum yaptırır ve kullanmaya müsade eder fakat bir gün denetleme olursa, sorun yaşanır. <br>
+            Kurumsal şirketler genelde ücretsiz Mail Server'lar kullanmazlar. <br>
+            Şirket KOBİ üstü vs ise Exchange Server alınabilir.
+        </p>
+        <p>
+            Ekstradan Google'ın Mail Server'ını araştır.
+        </p>
+        <p>
+            Exchange Server aslında bir Tool yani rol veya feature değildir, yani Server Manager'dan vs yüklenmez. <br>
+            Exchange Server ayrı olarak bir programdır. <br>
+            Exchange Server'ın Server 2019 üzerine kurulması ideal olandır. <br>
+            Exchange Server Domain ortamına kurulur. <br>
+            Exchange Server, illaki Domain Controller'ın üzerine kurulmak zorunda değildir fakat mutlaka bir Domain'e üye olmalıdır. <br>
+            Yani sanalda Server 2019 taşıyan normal bir Server kur ve onun üzerine Exchange Server kur. <br>
+            Exchange Server çok fazla kaynak tüketir. <br>
+        </p>
+        <p>
+            Domain'e üye iki tane User birbirine Mail atmak istediklerine bir arayüze ihtiyaç duyarlar. <br>
+            Bu arayüz; MS Outlook'dur. <br>
+            Office programın içerisinde bulunan aynı Word veya Excel gibi bir programdır. <br>
+            <b>Outlook</b>'a girip, Authentication yaptığımızda Outlook, Exchange'e bağlanır. <br>
+            Mail yazılıp, gönder'e tıklandığındı anda, Outlook Mail'i Exchange Server'a gönderir, Exchange Server bunu alıcının posta kutusuna bırakır. <br>
+            Mail gönderildi olarak bize dönen mesaj, Exchange'ten, ilgili kişinin posta kutusunu bırakıldığı anlamına gelir.
+        </p>
+        <p>
+            Outlook'un alternatifi; <b>Outlook Express(Mail)</b>'tir. <br>
+            MS Outlook ücretlidir. <br>
+            Outlook Express(Mail) ücretsizdir. <br>
+            Ayrıca bir de <b>OWA(Outlook Web Access)</b> vardır. 
+        </p>
+        <p>
+            MS Outlook; MAPI adıverilen kendine özgü bir iletişim protokol kullanır. <br>
+            Bu protokol Microsoft'a aittir. <br>
+            Microsoft'a ait bir Client MS Outlook'a Connect olduğunda; Exchange Server'a bağlanırken altalanda MAPI protokolünü kullanır. <br>
+            İstenirse, POP3 veya IMAP prokolleri ile de bağlanılabilir fakat bu iki protokol de Legacy'dir, pek tercih edilmez. <br>
+            MAPI hem gönderir hem de alır. <br>
+            POP3 ve IMAP sadece alır yani Download eder. <br>
+            Eğer bu ikisini kullanırsak, gördermek için altalanda smtp kullanılmak durumdan kalınır. <br>
+            Default'ta MS Outlook MAPI'yi kullanır, yani POP3 ve IMAP ile erişim Default'ta kapalıdır.  
+        </p>
+        <p>
+            OWA https kullanır. <br>
+            Modern ve Open Source olan çoğu web uygulaması HTTPS kullanır. <br>
+            OWA Microsoft'un, https protokolüyle direkt web'ten Exchange'e erişmemizi sağlayan arayüzüdür. <br>
+        </p>
+        <p>
+            Client'lerin hiç birinin Domain'e üye olması gerekmez. <br>
+            Bağlantıyı yaptığımız programa göre de altalanda kullanılacak protokoller değişebilir. <br>
+            Örneğin web'ten bağlanırsak, yani Exchange gelen kutumuzu görmek istiyorsak, https ile bağlantı kurulur. <br>
+        </p>
+
+        <h4>İki farklı Domain'deki User'ların birbirlerine Mail atması</h4>
+        <p>
+            İki farklı Domain var ise ve ilk Domain'den ikinsinin içinde bulunan bir User'a mail atılmak istediğindei, atılan Mail önce kendi Domain'deki Exchange Server'a gelir. <br>
+            Exchange Server, kendisine ait bir User'a gönderdildiğini görür ve Mail Server'a yönlendirir. <br>
+            1.Exchange, 2.Exhange'in IP'sini öğrenir. <br>
+            Bunu DNS'ten öğrenir, DNS'e karşı Domain'in Mail Server'ının IP'sini sorar. <br>
+            Yani iletişimi sağlamak için DNS kullanılmak zorunda. <br>
+            Burada minimum Domain adını bilmek gerekiyor. <br>
+            Örneğin biz mail atarsak şu şekilde atarız; erdemguzel34@gmail.com <br>
+            gmail.com bir Domain'dir. <br>
+            Farklı Domain'lerde olan Mail Server'ların birbirlerini bulabilmeleri için; <br>
+            Domain'lerini satın almaları yani Register etmeleri gerekir. <br>
+            Zaten bir Web Server'ımız yani Web Sitemiz var ise aslında zaten Domain'i Register etmişiz demektir, tekrar tekrar almak diye bir şey yok. <br>
+            DNS, eğer bir ISP'ye ya da Google'a vs Forward edilen DNS Mail'in gönderilmek istendiği hedef IP'yi öğrenir. <br>
+            Mail Server'lar birbirlerinden farklı olabilirler, yani birisi Exchange iken diğeri Google'ın Mail Server'ını kullanabilir. <br>
+            Mail Server IP'yi öğrendikten sonra karşı Mail Server'a Mail'i yani paketi SMTP protokolü ile gönderir. <br>
+            SMTP Protokolü dünyadaki tüm Mail Server'ların birbirleriyle iletişimini sağlamak için kullandığı standart bir protokoldür. <br>
+        </p>
+        <p>
+            SMTP'nin Port Number'ı 25'tir. <br>
+            MAPI Port Number <br>
+            POP3 Port Number <br>
+            IMAP Port Number <br>
+            Hepsinin Sercure'ları da vardır.       
+        </p>
+        
+
+        <h4>Mail Server için ortam hazırlığı ve kurulumu</h4>
+        <p>
+            En az bir tane DC ve DNS gerekir. <br>
+            Yani bir Domain'e ihtiyacımız var. <br>
+            Sıfırdan yeni sanal makineler ve yeni Domain kuracağız. <br>
+            Mail Server kurmak içn ayrı bir Server 2019'a ihtiyaç var. <br> 
+            2019 Server'dan bir tane daha üret, çünkü iki tane Exchange'in iletişimini test edeceğiz. <br>
+            Exchange çok kaynak tüketir, makinede 20 GB civarında RAM olması önerilir, CPU'nun da Hyper-V'deki 4 çekirdek kullanılmalı. <br>
+            Exchange Setup'ta bölge ayarlarını, United Stateds and English(United States)'i seçmemizi ister. <br>
+            Sadece klavyeyi değiştirmeliyiz. <br>
+            Bu ayar sadece Exchange kurulacak makine için geçerlidir. <br>
+            DC'nin isminin değiştirip, Static IP atıyoruz. <br>
+            DC'ye Active Directory yükle. <br>
+        </p>
+        <p>
+          Yapıya Exchange Server kurmak için ön şartlar; <br>
+          Legacy sürümlerde Workgorup'ta çalışabilirken, güncel versiyonlarda artık sadece Domain ortamında çalışabilir. <br>
+          Server işletim sistemi gerekir. <br>
+          Ciddi anlamda CPU, RAM ve Disk ihtiyacı vardır. <br>
+          Exchange Server kurmak; Local Admin, Domain Admin, Schema Admin yetkilerine aynı anda sahip olan Account'ın
+
+          KAYITTAN BURADAKİ BOŞLUĞU DOLDUR.
+          MAKİNELERİN KURULMA BÖLÜMÜ.
+          BUNDAN SONRAKİ NOTLARI DÜZENLEMEK İÇİN KAYDI TEKRAR İZLE.
+        </p>
+
+        <p>
+          Teams'ten indirdiğimiz Exchange 2019 dosyasının içinden Unified dosyasını ve vcedist_x64'ü Exchange Server olacak makineye yükle. <br>
+          NDP472 bu aşamada yüklenmez zorunda değil fakat Exchange Server kurulumunda bunu kendisi zaten yüklettirecek. <br>
+        </p>
+        <p>
+          Unified dosyasını Next, Next kuruyoruz. <br>
+          [+]Kutucuğu işaretle. <br>
+          vcedist_x64 yüklenir. <br>
+          Daha sonra Microsoft.Exchange.Server.2019.CU1.x64 dosyasının içinden Setup'a çift tıklayarak kurulum başlatılır. <br>
+          Wizard ekranı gelir, Exchange ile ilgili bu makineyi ilgilen Update'ler var mı diye sorar. <br>
+          Kendisi internete bağlı ise, Connect seçilerek Check etmesi sağlanabilir. <br>
+          Microsoft'ta kurulumu en uzun süren Setup'tır. <br>
+        </p>
+        <p class="bg-script">
+          Minimum Domain ya da Schema Admin olarak Setup'a başlamalıyız.
+          > İlk aşamadan sonra Introduction yapar. <br>
+          Next <br>
+          > Lisans anlaşmasını et <br>
+          Next <br>
+          > [+]Use Recommended Settings - Önerilen ayarları yaparak, kursun. <br>
+          Next <br>
+          > Server Role Selection <br>
+          [+]Mailbox role <br>
+          [+]Automatically install...
+          > Installation Space and Location, seçilir. <br>
+          > Exchange Organization, isim girilir. <br>
+          []Apply Active Directory split permissions security model to the...(İşaretleme)
+          > Malware Protection Settings
+          [+]No - yaparsak performans biraz düşebilir. <br>
+          [+]Yes - yaparsak, Malware hizmeti vermez.(Default'ta açıktır) <br> 
+          Çünkü güvenliği sağlar, istersek başka bir Firewall kurup o makine üzerinden geçirebiliriz. <br>
+          > Bu konumdan sonra, yetki var mı?, Active Directory'e erişebiliyor muyum? vs gibi kontroller yapar. <br>
+        </p>
+        <p>
+          Şuana kadar olanlar kurulum ayarlarıydı, henüz Setup başlamadı. <br>
+          OWA Protokolü https kullanacağı için eğer makinede yok ise bu noktada alt alanda Web Server'ı da kendisi kurar. <br>
+          Bu noktadan sonra Active Directory'de hazırlık yapılması gerektiğini söyler. <br>
+          Bunu kendisi de yapabilir biz de yapabiliriz. <br>
+          Eski versiyonlarında bizim yapmamız gerekirdi. <br>
+        </p>
+        <p class="bg-script">
+          > Install <br>
+          14 aşamalı bir Exchange Setup başlatılır. <br>
+          Kurulum bittikten sonra, Exchange Admin'i olan User Authentication yapılır. <br>
+          Tarayıcıya gidip; exc0.sirket0.com/owa'ya gidersek, https'i gelişmişten geçip siteye giriş yaparız. <br>
+          Mailbox'ı olan bir hesap'la Login olabiliriz. <br>
+          Login olduktan sonra kendi Login olduğumuz hesaba test mail'i atabiliriz. <br>
+          Çalışıyorsa, gelen kutusuna düşmesi gerekir. <br>
+          Şuanda kendi Domain'imizden başka bir Domain'e bu Exchange Server mail atamaz. <br>
+
+          SAAT 12:20'yi KAYITTAN TEKRAR ET.
+
+        </p>
+
+        <p>
+          Exchange'i yönetmek için açacağımız sayfa; <br>
+          https://exc0.sirket0.com/ecp <br>
+          (Exchange Controler Panel) <br>
+          Unutursak IIS'te Default Page'in altında bu sayfa da zaten görünür. <br>
+        </p>
+
+        <h4>Şirketler arası mail atmak</h4>
+        <p>
+          KAYITTAN TEKRARLAR
+
+          Genel olarak mantık, DNS'ten diğer server'ın Host kaydını oluşturmak. <br>
+          Yani bir MX kaydı oluşturup bu Host kaydını işaret etmek. <br>
+          
+        </p>
+
+        <hr>
+        
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="" class="bg-script">xxx</a>
+            <a href="" class="bg-script">xxx</a>
+          </div>
+        </div>
+        
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>

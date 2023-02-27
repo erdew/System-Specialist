@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>25.02.2023</title>
+    <link rel="icon" type="image/x-icon" href="../eg_favicon.JPG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 14px;
+        color: #e2e3e7;
+        background-color: #232529;
+        /*
+        e2e3e7
+        c4c7cf
+        868d9a
+        696e79
+        41454c
+        35383f
+        292c31
+        232529
+
+        31333a
+        */
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: rgb(139, 233, 253);
+      }
+
+      a{
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #e2e3e7;
+      }
+
+      .container {
+        max-width: 800px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+      }
+
+      .bg-script {
+        color: rgb(139, 233, 253);
+        background-color: #31333a;
+        padding: 20px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+        text-align: start;
+        font-size: 15px;
+        line-height: normal;
+      }
+
+      .navigation\a:hover {
+        color: #31333a;
+        background-color: rgb(139, 233, 253);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container p-4 mt-2 mb-5">
+        <h1><a href="../index.html" class="display-4">25.02.2023</a></h1>
+
+        <hr>
+
+        <h4>Active Directy Veritabanı(NTDS.DIT)</h4>
+        <p class="bg-script">
+            > C <br>
+            > Windows <br>
+            > NTDS <br>
+            -> AD'nin veritabanı ve log'larının buluğundu varsayılan konum burasıdır.
+        </p>
+        <p>
+            Active Directory'nin Veritabanı kendi içinde mantıksal bölümlere(Logical Partitions) ayrılmıştır. <br>
+            Toplam 6 tane Logical Partition vardır.
+        </p>
+        <h5>Schema Partion(Forest Wide Replication)</h5>
+        <p>
+            -> Schema'nın veritabanı, NTDS'in Schema Logication Partition'ında tutulur. <br>
+            -> Object'in Attribute'lerini temsil eden değişkenlerini tutan veritabanı Schema Master'dır. <br>
+            -> Schema Master bu veritabanına Writable olarak erişme yetkisine sahip olan Schema Admin'dır ve bu Schema Master sadece bir DOmain Controller üzerinde Writable olabilir. <br>
+            Yani bu Schema Admin, Schema'yı değşitirmek isterse bunu üzerinde barındıran Schema Master olan DC'ye erişmek zorundadır.
+        </p>
+        <p>
+            Schema Veritabanı Forest'taki tüm DC'lere Replike edilir. <br>
+            Buna Forest Wide Replication denir.
+        </p>
+
+        <h5>Configuration(Forest Wide Replication)</h5>
+        <p>
+            Forest bazındaki Domain hiyerarşisi(Root Domain ismi, Child Domain'ler vs.) NTDS'in içindeki Configuration Partition'da tutulur. <br>
+            Domain Naming Master, Configuration Partition'ı yönetir. <br>
+            Bu Partition'a Domain Naming Master Writable olarak erişebilir. <br>
+            Enterprise Admin, Domain Naming Master üzerinden Configuration Master'ına Writable erişebilir. <br>
+            Configuration Partition tüm Forest bazında Replike edilir ama sadece Domain Naming bazında Writable'dır.
+        </p>
+
+        <h5>Domain Partition(Domian Wide Replication)</h5>
+        <p>
+            Bir Active Directory üzerinden oluşturulan tüm objeler(Computer'lar, User'lar vs.) hepsi Domain Partition'da saklanırlar. <br>
+            Eğer eski bir yani NT serisinden bir DC'miz var ise DNS'e ait olan Active Directory Integrated Zone bilgisi Domain'de tutulur.
+        </p>
+        <p>
+            PDC Emulator Master, RID Pool Manager(RID Master), Infrastructure Master'ların üzerindeki bilgiler de Domain Partition'da tutulurlar, yani Domain Partition'ı ortak olarak yönetirler. <br>
+            Domain Partition bilgisi(değişikler) sadece bulunduğu Domain'deki DC'lere gönderilirler. <br>
+            Örneğin bir User oluşturduğumuz zaman bu bilgi sadece o Domain'deki DC'lere gönderilir.
+        </p>
+
+        <h5>Domain DNS Zones, Forest DNS Zones</h5>
+        <p>
+            Active Directory Integrated Zone bilgisini tutar. <br>
+            Active Directory Integrated Zone yapılan Zone'lara ait bilgiler burada tutulur. <br>
+            Eğer bir DNS'te Active Directory Integrated Zone yaparsak, bu Zone'a ait veritabı, Active Directory veritabanı içindeki Domain veya Forest DNS Zone'ları içirisine aktarılır. <br>
+            DNS'te Zone seçerken Domain DNS Zone ya da Forest DNS Zone seçilir.
+        </p>
+
+        <h5>PAS(Partial Attribute Set)-Global Catalog</h5>
+        <p>
+            Global Catalog veritabanı, NTDS'in içindeki bu Partition'da tutulur. <br>
+            İkinci bir DC kurulduğunda ve Replikasyon yapılırken GC seçilirse, bu partition o DC'ye gönderilir. <br>
+            Active Directory'de bir Find yaptığımızda örneğin sirket0.com seçersek sadece o Domain'in DC'sine bakar. <br>
+            Eğer Entire Directory seçilse Global Catalog'a sorar, çünkü GC tüm User'ların vs. bulunduğu DC'lerin adresini tutar. <br>
+            Forest Trust'ımız var ise, bir sorgu yapıldığında önce kendi GC'imze sorar, bulamazsa Trusted olan Forest'ın GC'sine sorar. <br>
+            Fakat kesinlikle birbirlerine Replike olmazlar.
+        </p>
+
+        <h4>Active Directory veya Domain Controller'ın Backup ve Restore'u</h4>
+        <p>
+            1.senaryo; Domain'de tek bir DC'nin olması. <br>
+            Bu DC'nin Backup'ı nasıl alınır ve Restore'u nasıl yapılır? <br>
+            Birden çok Backup Tool vardır. <br>
+            Biz Microsft'un ücretsiz olan, Backup Tool'unu kullancağız. <br>
+            Bu Windows Backup Tool olarak geçer.
+        </p>
+
+        <p class="bg-script">
+            Server Manager <br>
+            Tools <br>
+            Windows Server Backup
+        </p>
+
+        <p>
+            Bu Tool ile herhangi bir şeyin Backup'ı alınır. <br>
+            Herhangi bir dosya ya da makinenin tamamı isternirse Backup alınabilir.
+        </p>
+        <p>
+            DC'nin erişilemeyecek şekilde çöktüğünde ve çözüm için yeni sıfırdan bir makineyi DC yaptığımızda, bunun isimlerini ve Object'leri aynı isimlendirmemize rağmen Domain'in ve Object'lerin SID'leri farklı olacağı için örneğin önceki File Server'daki Permission'lar vs. tamamen diğer tüm hizmetler içinden yeniden yapmak zorunda kalırız.
+        </p>
+        <p>
+            Eğer Backup Tool ile Backup alırsak, Backup'tan yeni makineye Restore ettiğimizde üzerindeki tüm SID'leriyle aynen kurar.
+        </p>
+        <p>
+            Backup Tool'u kullanmak için; <br>
+            Alternatif bir Disk ya da Network'te vs. bir konuma yedeği almamız gerekir.
+        </p>
+
+        <p>            
+            Domain Controller olan makinenin işletim sistemi vs. dahil her şeyi ile yedeğini almak;
+        </p>
+        <p class="bg-script">
+            > DC'yi Shutdown et. <br>
+            > Settings <br>
+            > IDE Controller 0 <br>
+            > Hard Drive <br>
+            > New Disk <br>
+            > VHDx, Dynamic <br>
+            > Backup-1, Location: VHD <br>
+            -> Makineye yeni bir Storage takıyoruz.
+        </p>
+
+        <p class="bg-script">
+            > DC'yi çalıştır. <br>
+            > Disk Management <br>
+            > GPT <br>
+            > New Simple Volume <br>
+            > Volume Name: Backup-1
+        </p>
+
+        <p class="bg-script">
+            > Server Manager <br>
+            > Add Feature <br>
+            > Feature <br>
+            > [+]Windows Server Backup <br>
+            -> Servisi kurmadan da Tools listesinde görünebilir fakat bu kurulumu yapmadan çalışmaz.
+        </p>
+
+        <p class="bg-script">
+            > Tools <br>
+            > Windows Server Backup <br>
+            > Local Backup <br>
+            > Left Click <br>
+            -> Herhangi bir Backup var ise listeler. <br>
+            > Sağdaki listeden: Backup Schedule... <br>
+            -> Belli aralıklarda, hergün şu saatlerde vs. düzenli olarak yedeklemesini sağlar. <br>
+            > Backup Once <br>
+            -> Şuanda bir kereye mahsus yedekleme yapmayı sağlar.
+        </p>
+
+        <p class="bg-script">
+            > [+]Diffrent Options <br>
+            > Full Server(12,69GB) <br>
+            -> Sanalda yaptığımız için tüm disk aşağı yukarı bu kadardır.
+        </p>
+
+        <p>
+            Eğer Custom dersek;
+        </p>
+
+        <p class="bg-script">
+            > [+]Custom <br>
+            > Add Items <br>
+            > [] Local disk(C:) <br>
+            -> Örneğin C'yi işaretlersek, içerisini açar onun içinden de istediğimiz klasörü seçebiliriz. <br>
+            -> Sadece NTDS gibi veritabanlarını yedeklemek işe yaramaz, çünkü makine içe o Registry'lerin organik bir bağı vardır. <br>
+            > []System Reserverd <br>
+            -> Windows'un sadece Boot dosyaları buradan yedeklenebilir. <br>
+            > []System State <br>
+            -> NTDS'i, Log'ları, SYSVOL'ü ve ilgili Register ayarlarını yedekler. <br>
+            > [] Bare metal recovery <br>
+            -> Çöken makinenin yerine yeni aldığımız yeni makinede eski haliyle sistemin çalışmasını sağlayan Recovery işlemini bu seçenek yapar.
+        </p>
+        
+        <p>
+            Sadece System State'ı yedeklersek ve tüm makineyi kaybedersek çalışmaz. <br>
+            Fakat sadece veritabanını kaybettiysek, bu durumda System State işe yarar.
+        </p>
+
+        <p>
+            Bu sebeple aslında Full Backup almak idealdir.
+        </p>
+
+        <p class="bg-script">
+            []Local drives <br>
+            -> Local'deki ikinci bir Disk'e atabiliriz. <br>
+            || <br>
+            []Remote shared folder <br>
+            -> Örneğin Network'te NAS var ise bu seçenek ile o NAS'ın üzerine yedekleyebiliriz.
+        </p>
+
+        <p>
+            Backup alacağımız Disk Backup'a dahil edilemez.
+        </p>
+
+        <p class="bg">
+            > Backup
+            (Backup'ı fiziksel makineye al)
+        </p>
+
+        <p class="bg-script">
+            > Windows Server Backup <br>
+            > Local Backup <br>
+            -> Aldığımız Backup burada listelenir.
+        </p>
+
+        <p class="bg-script">
+            > DC'yi Turn-off et <br>
+            > Sanal makineyi Delete et.
+        </p>
+
+        <p>
+            Alınan yedek, başka bir konuma ve Cloud'a koyulur. <br>
+            Örneğin Microsft Cloud dünyanın bir çok yerinde veriyi Replike eder.
+        </p>
+
+        <p>
+            Restore nasıl yapılır? <br>
+            Veriyi tamemen kaybettik, yani Full Backup yaptığımız makine de Restore'u nasıl yaparız?
+        </p>
+
+        <p class="bg-script">
+            > New VM <br>
+            > DC0 -> Eski ismi vermek idealidir. <br>
+            > Network'teki makinelerle hangi Switch'ten erişiyorsa o Switch'i seç. <br>
+            > Yeni bir Disk üretip, ekle. <br>
+            -> Bu Disk, minimum eski makinenin Disk'i kadar olmalıdır. <br>
+            > [+]Install an operation system later <br>
+            -> Zaten yedekte işletim sistemi olduğu için kurmayız. <br>
+            -> Makineyi ürettikten sonra; <br>
+            > IDE Controller 0(Hangi Controller'ı kullanıyorsak) <br>
+            > Browse <br>
+            -> Backup yaptığımız Disk'i ikinci disk olarak buraya ekliyoruz.
+        </p>
+
+        <p>
+            Şuanda makine Start edilirse, Boot dosyası olmadığı için makine açılmaz. <br>
+            Yani Boot olamaz. <br>
+            Bu yüzden İşletim Sisteminin Setup'ına başlayacağız fakat kurulum yapmayacağız. <br>
+            > DVD'ye iso dosyasını tak. <br>
+            Farklı bir Windows sürümü olsada olur, illaki aynı sürüm olmasına gerek yok. <br>
+            Çünkü amaç Boot olabilmesini sağlamak.
+        </p>
+
+        <p class="bg-script">
+            > Windows Setup <br>
+            > Klavye ve Dili doğru seç. <br>
+            > Next <br>
+            > Repair your computer'ı seç. <br>
+            > Troubleshoot'ı seç. <br>
+            > System Image Recovery'ı seç. <br>
+            -> Fiziksel makineye olan Disk'leri tarar ve aldığımız Backup'ı yakalar. <br>
+            > Next <br>
+            > [+]Format and repartition disks <br>
+            -> Bu işlemi hangi Disk'te yaparsak, o Disk'i aynı Backup'taki gibi Format'lar. <br>
+            > []Install Drivers -> İle eğer Disk'imiz SCSI ise ve SCSI Disk çok eski ise Driver'ı buradan yükleyebiliriz. <br>
+            > Next <br>
+            > Disk'teki bütün verileri sileceğini söyler. <br>
+            > Yes
+        </p>
+
+        <p>
+            Restore tamamlanmış olur. <br>
+            Restore tamamlandıktan sonra Interface'leri Static'ten DHCP'ye çeker.
+        </p>
+
+        <p>
+            Yapıda birden fazla yani Additional Domain Controller'lar var ise;
+        </p>
+
+        <p>
+            Yeni ADC kur. <br>
+            Bunu IFM(Install From Media) yöntemiyle kur. <br>
+            Merkezdeki yani DC'deki veriyi bir Disk'e yazıp, ADC'yi o Disk üzerinden kurmamızı sağlayan yöntem IFM'dir. <br>
+            Bunu merkez ile arasında çok zayıf bir internet bağlantısı olan, makineler arasında uygulayabiliriz. <br>
+            IFM ile kurulumun aşamaları; <br>
+            Merkezdeki verileri paketleyip, almak.
+        </p>
+
+        <p>
+            Active Directory veritabanını yani onun içindeki partition'ları bir paket halinde alıyoruz;
+        </p>
+
+        <p class="bg-script">
+            > DC0 <br>
+            > cmd <br>
+            > Right Click <br>
+            > Rus as administrator <br>
+            > ntdsutil <br>
+            -> ntds moduna geçeriz. <br>
+            > ? <br>
+            -> Yazabileceğin komutlar gelir. <br>
+            > Activate Instance ntds <br>
+            -> ifm <br>
+            -> Install From Media moduna geçeriz. <br>
+            > ? <br>
+            > Create Full C:\ifm <br>
+            -> Bütün veritabanı vs. bir paketin içine koyar ve nereye atacağını gireriz. <br>
+            -> Ayrıca veritabanını Defrag eder. <br>
+            -> Veritabanına bir şeyler yazdıktan sonra aralarından da bir şeyler silersek, o boşlukları düzenler. Bu da okuma hızını arttırır.
+        </p>
+
+        <p class="bg-script">
+            > ADC0 <br>
+            > Yedeklediğimiz ifm klasörünü Network'ten bu makinenin C'sine alıyoruz. <br>
+            > Server Manager <br>
+            > Add Features <br>
+            > Active Directory Domain Services <br>
+            > Servis kurulduktan sonra Promote et. <br>
+            > [+] verify <br>
+            > Next <br>
+            -> Bu yükleme yapılana kadar arada bir fark oluşturacak bilgiler eklendiyse, sadece o bilgiler Master DC'den alınırlar.
+        </p>
+
+        <p>
+            -> Promote edildikten sonra ADC ile DC KCC nedir? <br>
+            "Site içindeki" DC'lerin Replication Partner'lığını belirler.normal olark çalışır.
+        </p>
+        
+        <p>
+            İki DC'den birinde OU'lardan ya da Object'lerden herhangi birisi silindiğinde ve bu durumda Backup'tan geri dönüldüğünde bir süre sonra, o silinen OU'lar Restore edilmesine rağmen yeniden silinirler.
+        </p>
+
+        <p class="bg-script">
+            > OU <br>
+            > Right Click <br>
+            > Properties <br>
+            > Object <br>
+            -> USNs(Update Sequence Numbers)
+        </p>
+
+        <p>
+            İstisnasız Active Directory'deki her objenin USN'i vardır. <br>
+            Eğer bir objede herhangi bir şey değiştirirsek(herhangi bir aksiyonda), bu sayaç birer birer artar.
+        </p>
+
+        <h5>Authorative USN belirlemek?</h5>
+        <p>
+            İlk replikasyondan sonra DC'ler arasında SN'ler karşılaştırılır ve sayısı bir öncekine göre farklı olan objeler update edilirler. <br>
+            DC'lerin hangi objelerin değiştirildiğini tespit ederler. <br>
+            Hangi DC'deki o objeye ait USN büyükse o gönderilir. <br>
+            Çünkü değişim o DC'nin üzerinde yaşanmış demektir.
+        </p>
+
+        <p>
+            USL numarasına göre replikasyon belirlendiği için. <br>
+            Authorative USN belirleyerek, Restore'un USL'ini 100.000 yaparız ve Replikasyonda her zaman öne geçmesini sağlar ve yukarıdaki sorunu çözmüş olur. <br>
+            Normalde bir obje üzerinde bir değişiklik yapıldığında bu sayacı bir artıracağı için ve Backup'taki USN'in sayısı da yapılan bu son değişikliği kapsamadığı yani USN'i daha düşük olduğu için Replikasyon zamanı geldiğinde Restore ve mevcuttaki USN karşılaştırılır ve mevcuttaki yüksek olduğu için Restore'daki değişiklik geçerli olamaz.
+        </p>
+
+        <p>
+            Ya da DC'nin Snapshot'ı alındığında, eski tarihe dönüldüğünde Replikasyon'daki DC Snapshot'a çektiğimiz DC'yi USN sebebiyle en güncel duruma Replike etmeye zorlar.
+        </p>
+
+        <p>
+            Bir veritabanını Restore ederken, o veritabanını kullanan servis durdurulmalıdır. <br>
+            Yani NTDS'i Authorative Restore yapacaksak, o makinede Active Directory Service'ini durdurmamız gerekir. <br>
+            Hem servisi durdumalı hem de açılmış olmalı. <br>
+            Bunun için makine Advanced Boot Options'tan başlatılır. <br>
+            Açılışta F8'e basarız.
+        </p>
+
+        <p>
+            Active Directory Sites and Services'ten herhangi bir DC'den bir OU sildikten sonra Replikasyon yap. <br>
+            Daha sonra Backup'tan geriye dön. <br>
+            Restore'dan sonra Replikayon yaptıktan sonra yeniden dosyaları sildiğimiz haline geri dönecek, USN'den dolayı. <br>
+            Bunu engellemek için makine Restart edilir, Boot olurekn F8'e basılır. <br>
+            (Setup - iso takılı ise DVD'den çıkart)
+        </p>
+
+        <p>
+            F8'den sonra; <br>
+            Directory Services Repair Mode <br>
+            Bu seçeneği işaretleyip, Restart attığımızda Authentication sorduğunda; DSRM Password'unu buraya yazarız. <br>
+            Bu Authentication'ı Active Directory çalışmadığı için yapamaz, bu sebeple kurtarmak için Restore Mode Password'u ile giriyoruz.
+        </p>
+
+        <p>
+            Eğer hatırlayamıyorsak DSRM Password nasıl resetlenir?
+        </p>
+        
+        <p class="bg-script">
+            > cmd <br>
+            > Administrator <br>
+            > ntdutil(Active Directory ile ilgili komutlar genelde bu moddan yazılır) <br>
+            > Active Instance <br>
+            > Set DSRM Password <br>
+            -> Reset DSRM Password menüsüne alır <br>
+            > Reset Password on server dc0.sirket0.com <br>
+            -> Hangi makinenin DSRM'ini Resetlemek istiyorsak onu gireriz. <br>
+            -> Yeni Password girmemizi ister. <br>
+            -> Confirmation ister, tekrar gireriz. <br>
+            -> Şifre güncellenmiş oldu, artık bu DSRM şifresi ile Log-on olunabilir.
+        </p>
+
+        <p>
+            Bu noktadan itibaren Restore işlemine başlayabiliriz;
+        </p>
+
+        <p class="bg-script">
+            > Server Manager <br>
+            > Tools <br>
+            > Windows Server Backup <br>
+            > Recover <br>
+            -> Hangi makinedeki Backup'ı çözeceğini sorar. <br>
+            > Select Recovery Type <br>
+            [+]System State <br>
+            > Select Location for System <br>
+            [+]Origin location <br>
+            -> Backup'ın yolu neresiyle oraya çözer. <br>
+            []Alternate location <br>
+            -> Dersek; bizim istediğimiz konuma çözer.
+        </p>
+
+        <p>
+            Bu aşamada;
+        </p>
+
+        <p class="bg-script">
+            [+]Perform an authoritative restore of Active Directory files. <br>
+            -> ISM numaralarını 100.000 arttırarak Restore yapar. <br>
+            -> tüm replike olan DC'leri ezer ve backup'a döner. <br>
+            > Next <br>
+            > [+]Auto Reboot <br>
+            > Recover <br>
+            > Yes
+        </p>
+
+        <p>
+            -> Bu aşamada Backup'taki ISM'leri 100.000 arttırarak dosyaları geri getiriyor.
+        </p>
+
+        <h4>Recycle Bin</h4>
+        <p>
+            Windows 2012'den öncesine kadar bu şekilde yapmadan kurtarılamazdı fakat daha sonraki sürümlerde Recycle Bin ile geri dönülebilir.
+        </p>
+
+        <p>
+            AD kurulur, kurulmaz açılması idealdir. <br>
+            Default'ta kapalıdır. <br>
+            Bir kere açıldıktan sonra kapatılamıyor.
+        </p>
+
+        <p class="bg-script">
+            > Server Manager <br>
+            > Tools <br>
+            > Active Directory Administrative Center <br>
+            > sirket0(local) <br>
+            > Right Click <br>
+            > Enable Recycle Bin...
+        </p>
+
+        <p>
+            Replike olması gereken DC'ler birbirleri ile iletişime geçemektiklerinde açılmayabilir.
+        </p>
+
+        <p>
+            Açıldığında listede; <br>
+            Deleted Objects görünür.
+        </p>
+
+        <p class="bg-script">
+            > sirket0(local) <br>
+            > Deleted Objects <br>
+            -> Burada silinen dosyaları görürüz.
+        </p>
+
+        <p>
+            Makine fiziksel olarak ya da direkt DC'nin kaybedilmesi durumunda Backup'tan Full Restore yapılır. <br>
+            Makine çalışırken içinden herhangi bir Object kaybedildiğinde Recycle Bin işe yarar.
+        </p>
+
+        <hr>
+        
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="19-02-2023.html" class="bg-script">19.02.2023</a>
+            <a href="26-02-2023.html" class="bg-script ">26.02.2023</a>
+          </div>
+        </div>
+        
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
