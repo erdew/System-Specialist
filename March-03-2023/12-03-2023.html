@@ -413,8 +413,68 @@
         </p>
 
         <p>
-            Kurulumdan sonra Restart yap.
-            MKİNEYE ad KUR
+            Kurulumdan sonra Restart yap. <br>
+            Makineye Domain Controller kur.
+        </p>
+
+        <hr>
+
+        <p>
+            Çok fazla sayıda Sanal Makine üretilecekse, fiziksel donanıma direkt erişen yani arada bir Hypervizor katmanını üzerinde çalıştıran herhangi bir işletim sistemi kullanmadan direkt olarak Fizikselin üzerinde çalışabilen sanallaştırma teknolojileri kullanılmalıdır. <br>
+            VMware için bu VMware ESXi'dır. <br>
+            Eski ismi; ESX'dir. <br>
+            ESXi bir işletim sisteminin üzerine kurulması gerek olmayan bir programdır. <br>
+            Tıpkı işletim sistemi gibi direkt olarak donanımın üzerine kurulur. <br>
+            ESXi kurduğumuz makineye Host denir. <br>
+            Daha doğrusu ESXi'ın kendisine Host diyeceğiz. <br>
+        </p>
+
+        <h6>VMware Workstation'ın Donanım ile ilişkisi;</h6>
+        <p>
+            Sanal Makineler <br>
+            VMware Workstations <br>
+            OS(WS2016 vs.) <br>
+            Hypervizor <br>
+            CPU, RAM
+        </p>
+
+        <h6>ESXi'ın Donanım ile ilişkisi;</h6>
+        <p>
+            Sanal Makineler <br>
+            ESXi <br>
+            Hypervizor <br>
+            CPU, RAM
+        </p>
+
+        <p>
+            ESXi Linux Kernel'iyle çalıştığı için direkt olarak Terminal ekranı üzerinden yönetiliyor. <br>
+            Arayüzü de var fakat gelişmiş bir arayüz değildir. <br>
+            Uygulayabilmek için, sanalda bir VMware üzerinde bir donanım üretiyoruz. <br>
+            Bu işyerinde bu şekilde yapılmayacak tabiki sadece eğitim amaçlı VMware Workstration üzerinden bir sanal makinenin üzerine direkt ESXi kuracağız.
+        </p>
+
+        <p>
+            Virtual machine hardware compatibility'de bu makinenin üzerinde şu işletim sistemine uyumlu bir donanım oluşturacağım demiş oluyoruz. <br>
+            Örneğin Workstation 15.x seçip üzerine 16.x kurmaya çalışırsak hata verir fakat tam tersini yaparsak çalışır. <br>
+            Biz ESXi kuracağımız için ESXi 7.0'ı seçiyoruz. <br>
+            Bu seçimden sonra bize Workstation'ın seçtiğimiz sürüme göre uyumlu olabilecek maksimum donanımları listeler. <br>
+            ESXi seçilip devam edilir. <br>
+            Uygun bir Sanal Makine ismi gireriz. <br>
+            Örneğin ESXi01 -> 0. fiziksel makine, 1.ESXi anlamına gelebilir. <br>
+            Sanal makinenin kurulacağı konum seçilir ve devam edilir. <br>
+            Processor çekirdek sayısı ve RAM girilir. <br>
+            Switch'i Bridge seçiyoruz. <br>
+            Disk Type'ını SCSI seçiyoruz. <br>
+            İhtiyaç kadar kullanacağımız için; Yeni bir Virtual Disk üreterek devam ediyoruz. <br>
+            Single File seçiyoruz. <br>
+            Disk'in ismini Default bırakabiliriz. <br>
+            Oluşturulan donanımın Setting'lerine gidip, ESXi kurmak için; iso dosyalarının içinden VMware-VMvisor-Installer-7.0U2-17630552.x86_64.iso'yu seçiyoruz. <br> 
+        </p>
+
+        <p>
+            Bu aşamadan sonra Power'a basarız. <br>
+            Gelen Setup ekranında en üstteki seçeneği Enter'larız. <br>
+             
         </p>
 
 
