@@ -78,14 +78,21 @@
     <div class="container p-4 mt-2 mb-5">
         <h1><a href="../index.html" class="display-4">04-03-2023</a></h1>
         
-        <hr>
-<div class="m-5">
-  <h4>Exchange kurulum</h4>
-  
-  <span>EXCHANGE KURULUMUNU YOUTUBE'TAN ÖĞRENİP BURAYA YAZ.</span>
-</div>
+        <span>EXCHANGE KURULUMUNU YOUTUBE'TAN ÖĞRENİP BURAYA YAZ.</span>
 
-        <h6>Exchange'in dışarıya mail atmasını sağlamak</h6>
+        <hr>
+
+        <h4>Exchange Server olacak makinede kurulması gerekenler</h4>
+        <p>
+          Minimum 20 GB RAM eklenir. <br>
+          Processor sanalda 4 çekirdeğe çekilir. <br>
+          Exchange olacak makineye Exchange2019.iso takılır(DVD). <br>
+          Microsoft Unified Communications Managed API yüklenir. <br>
+          vcredist_x65 yüklenir. <br>
+          Exchange dosyanın içinde Exchange Setup başlatılır.
+        </p>
+
+        <h4>Exchange'in dışarıya mail atmasını sağlamak</h4>
         <p>
           DNS'in dünyadaki bir DNS'e Forward edilmiş olması gerekir. <br>
           Ancak dünyadan mail alabilmek istiyorsak, Domain'i satın almalı ve içine de MX kaydını girmiş olmalıyız. <br>
@@ -101,19 +108,339 @@
           -> İlk başta hiç Send Connector bulunmaz. <br>
           > Eklemek için +'ya tıkla. <br>
           > Send Connector'e isim vermeni ister. <br>
-          > Internet'i seç.(Dünyanın en büyük Network'üne doğru Mail'leri direkt atabilmesini sağlar). 
-        </p>
-
-        <p>
+          > Internet'i seç.(Dünyanın en büyük Network'üne doğru Mail'leri direkt atabilmesini sağlar). <br> 
           -> Custom(Özel) seçersek; Exchange olmayan başka bir Mail sunucusuna atabilsin demektir. <br>
           -> Bunu seçtikten sonra karşı tarafın Exchange olmaması gerekir. <br>
           -> Internal(İç)'i seçersek; Sadece Internal'a göndermek için seçilir. <br>
           -> İş ortağı; Proxy gibi bir hizmettir, satın alınır. Sizin yerinize o aracı Mail'i gönderir. <br>
           Spam'e düşmeyecek Mail Server'lar vardır. <br>
-          İş Ortağı ile bu Mail Server aracılığıyla Mail'leri gönderirsek, gönderdiğimiz Mail'ler Spam'a düşmez.
+          İş Ortağı ile bu Mail Server aracılığıyla Mail'leri gönderirsek, gönderdiğimiz Mail'ler Spam'a düşmez. <br>
+          > Internet'i seç. <br>
+          > Next <br>
+          > -> MX Kaydı, Mail Server olarak bizim bulanabilmemizi sağlar. <br>
+          > Alıcı etki alanıyla ilişkili MX Kaydı <br>
+          -> Seçilirse, ilgili Mail Server'ı DNS'ten bulur. <br>
+          > Next <br>
+          > -> Dünyadaki hangi Mail Server'lara Mail atılmasını istediğimizi sorar. <br>
+          > + <br>
+          -> Etki alanı ekle; Tam Etki Alan Adı(FQDN): * gireriz. <br>
+          -> Tüm Domain'leri tarif eder. <br>
+          > Next <br>
+          > + <br>
+          > Varolan Exchange Server'ı seçeriz. <br>
+          -> Seçip, Add'e tıklanır. <br>
+          > Okay <br>
+          > Finish
+        </p>
+
+        <p>
+          Yukarıdaki şekilde Send Connector eklemiş oluruz.
+        </p>
+
+        <h4>MS Outlook konfigürasyonu</h4>
+        <p>
+          Yukarıdaki işlemleri OWA üzerinden yaptık. <br>
+          OWA, Exchange Server'ına bağlı bir hizmettir.
+        </p>
+
+        <p>
+          MS Outlook OWA'ya göre daha güvenilir, daha gelişmiştir.
+        </p>
+
+        <p>
+          MS Outlook ilk açıldığında hangi Exchange Server'dan hizmet alacağını bilmez. <br>
+          Bunu ona söylememiz gerekiyor. <br>
+          İsmi autodiscover denilen bir kayıt açtırır. <br>
+          Bildiği DNS'e gidip şunu sorar; <br>
+          autodiscover'ın karşılığı olan Exchange Server'ın adını sorar. <br>
+          Alt alanda Exchange Server'a direkt gider. <br>
+          Log-on olduğu User'ın Username ve Password'u yani yetkisi ile gider.
+        </p>
+
+        <p>
+          autodiscover kaydını hem içeride hem dışarıdaki DNS'te açmalıyız.
+        </p>
+
+        <p>
+          Önce içerideki DNS'e gidilir.
+        </p>
+
+        <p class="bg-script">
+          > DC0 <br>
+          > sirket0.com <br>
+          > Right Click <br>
+          > New Alias(CNAME) <br>
+          -> autodiscover <br>
+          > Browse <br>
+          -> Hangi Exchange'e denk olduğunu gireriz. <br>
+          -> exc0.sirket0.com
+        </p>
+
+        <p>
+          Domain satın aldığımız DNS'de de bu kaydı açarız.
+        </p>
+
+        <p>
+          Bunu sanalda kendi Modemimizin DHCP'den IP alan makineyi internette Domain satan firmanın bize açtığı DNS kaydı olarak düşünebiliriz. <br>
+          Daha doğrusu Domain'i satın aldığımız için biz o sitenin arayüzünden Exchange Server'ı ekleriz. <br>
+          İnternetteki o siteyi temsilen, 192.168.0.x IP'li olan makinenin DNS'inin üzerine Exhange Server'ı işaret eden, autodiscover kaydını oluşturuyoruz.
         </p>
         
+        <p>
+          Outlook Setup
+        </p>
+
+        <p class="bg-script">
+          > Next <br>
+          > Evet, Bir e-posta hesabı eklemek için Outlook kurmak istiyoruz. <br>
+          > [+]E-posta Hesabı -> Bu kısmın Check'li olarak devam edebilmesi için autodiscover kaydı açmış olmamız gerekir. <br>
+          > Yes <br>
+          > Yes <br>
+          > 3 tane yeşil Check almamız gerekir. <br>
+          > Finish
+        </p>
+
+        <p>
+          Bu Mail Server'lardan Gmail'e mail atılabilir fakat Gmail kabul etmez. <br>
+          Kendimiz keyfi olarak bir Domain kurup, onun üzerinden Mail attığımız için, olası bir Attack tehlikesi olarak görüp Mail'leri kabul etmez. <br>
+          Biz de aynı şekilde sadece gerçek Mail Server'larının gönderdiği Mail'leri kabul ederiz. <br>
+          Aynı Gmail'de aynısını yapar. <br>
+          Mail Server'ların gerçek Mail Server olup olmadığını SPF kaydı ile kontrol eder. <br>
+          Kendisine gelen Mail gelen Mail Server, gönderen Mail Server'ın SPF kaydı olup olmadığını kontrol eder.
+        </p>
+
+        <p>
+          Satın aldığımız(dışarıdaki) DNS'e SPF kaydı açarız.
+        </p>
+
+        <p>
+          Arayüzden yapacağımız için direkt SPF'te görebiliriz fakat DNS Manager'da Other New Records...'a tıklarız. <br>
+          Text tip kayıt ile başlamalıyız.
+        </p>
         
+        <p>
+          > DNS <br>
+          > 192.168.x.x <br>
+          > txt <br>
+          > Create Record <br>
+          -> FQDN: sirket0.com <br>
+          -> Text: ip4:192.168.x.x a mx ptr include:sirketx.com -all <br>
+          -> a ve mx kaydı için bu ptr kaydını bu ip adresi ve sirketx.com ile ilişkilendirir. <br>
+          > OK
+        </p>
+
+        <p>
+          Bu şekilde SPF kaydı oluştururuz.
+        </p>
+
+        <p>
+          Dışarıdaki bir User OWA'dan Mail'lere erişmek durumundaysa, bunu https://ex0.sirket0.com/owa şeklinde yazmak yerine örneğin; https://mail.sirket0.com/owa yazarak girmesini sağlamalıyız.
+        </p>
+
+        <p>
+          Satın aldığımız DNS'e gidip, bu şekilde bir kayıt açacağız.
+        </p>
+
+        <p>
+          İçerideki ve dışarıdaki DNS'te bu kaydı açarız;
+        </p>
+
+        <p class="bg-script">
+          > DNS <br>
+          > domain.com <br>
+          > CNAME <br>
+          > Alies name: mail -> İstediğimiz ismi koyarız. <br>
+          > FQDN: mail.sirket0.com. <br>
+          > ex0.sirket0.com -> Denk olduğu Exchange Server seçilir.
+        </p>
+
+        <p>
+          https://mail.sirket0.com/owa girildiğinde arayüz açılır.
+        </p>
+
+        <p>
+          Kullanıcı Exchange Server'ın adını hatırlamak zorunda kalmaz.
+        </p>
+
+        <p class="bg-script">
+          > IIS <br>
+          > Exchange Server kurulurken HTTP Redirection otomatik olarak kurulur.
+        </p>
+
+        <p class="bg-script">
+          > EXC0 <br>
+          > Add Website <br>
+          > site name boş <br>
+          > path boş <br>
+          > mail.sirket0.com <br>
+          > http olarak yazınladık
+        </p>
+
+        <p>
+          Yayınladığımız sayfada;
+        </p>
+
+        <p class="bg-script">
+          > Http Redirect <br>
+          > [+]Redirect request to this destination: <br>
+          > https://exc0.sirket0.com/owa
+        </p>
+
+        <p class="bg-script">
+          > Oluşturduğumuz yeni sayfanın üzerine; <br>
+          > Right Click <br>
+          > Edit Bindings <br>
+          > Add <br>
+          -> İstediğimiz isimde yeni bir binding ekleriz; <br>
+          -> Örneğin; posta.sirket0.com 
+        </p>
+
+        <p>
+          Bu posta kaydını da CNAME olarak iki DNS'e de girmemiz gerekir.
+        </p>
+
+        <p>
+          Bu işlemden sonra kullanıcı posta.sirket0.com ya da mail.sirket0.com yazsa da https://exc0.sirket0.com/owa'ya erişir.
+        </p>
+
+        <p>
+          Kullanıcı "posta.sirket0.com" yazdığında Browser otomatik olarak başına http(80) koyar.
+        </p>
+
+        <p>
+          Exchange Server kurduğumuzda Default'ta CN'i kendisi yani Exchange Server olarak belirler. <br>
+          Sertifikayı satın alırız.
+        </p>
+
+        <p class="bg-script">
+          > IIS <br>
+          > Default Web Site <br>
+          > Right Click <br>
+          > Edit Bindings <br>
+          > Edit Site Binding <br>
+          -> Satın aldığımız SSL'i seçeriz.
+        </p>
+
+        <h5>Exchange Kurulduktan sonra içerideki DNS'te açmamız gereken kayıtlar</h5>
+        <p>
+          1)Kendisine ait Host kaydı(Domain'e kayıtlı olduğu için otomatik gelir zaten). <br>
+          2)autodiscover(CNAME olarak açılır) <br>
+          3)OWA'ya kolay erişim için açılan mail, posta vb. CNAME kayıtları açılmalı.
+        </p>
+
+        <h5>Satın aldığımız DNS içerisinde</h5>
+        <p>
+          1)Exchange Server'ın Host(A) kaydı olmalı. <br>
+          2)MX kaydı olmalı, aynı Exchange'i gösteren. <br>
+          3)autodiscover(CNAME olarak açılır) <br>
+          4)OWA'ya kolay erişim için açılan mail, posta vb. CNAME kayıtları açılmalı. <br>
+          5)SPF kaydı olmalı. <br> <br>
+
+          Son iki madde zorunda değildir. <br>
+          İhtiyaca göre eklenir.
+        </p>
+
+        <p>
+          Exchange Setup'ında; Services'ta Microsoft Exchange Service'leri oluşturulur.
+        </p>
+
+        <p>
+          Microsoft Exchange Informatin Store: Exchange'in Core servisidir. <br>
+          Çalışmayı durdurduğunda Exchange çalışmaz. <br>
+          Donanım kaynağı yetmediğinde Exchange hizmeti birden durabilir. <br>
+          Bu durumda bu servise bakıldığında Stop olduğunu görebiliriz.
+        </p>
+
+        <p>
+          Direkt olarak Active Directory'den oluşturulan yeni User'ların Mail hesapları olmaz. <br>
+          Yani otomatik olarak bir Mail Box'a sahip olmazlar.
+        </p>
+
+        <p class="bg-script">
+          > MS Outlook <br>
+          > Recievers <br>
+          > + <br>
+          > User Mail Box <br>
+          > User Name ne olsun? @'in solundaki kısım <br>
+          -> erdemguzel <br>
+          [+]Select User -> Active Directory'de zaten bulunan ilgili User seçilir. <br>
+          [+]New User <br>
+          -> Exchange Server, Active Directory ile birlikte çalışır. <br>
+          -> New User ile direkt bir User oluşturabiliriz. <br>
+          > Bu noktada aynen Active Directory'deki User'ı oluşturarak aynı zamanda bir Mail Box'a sahip olmasını sağlayabiliriz.
+        </p>
+
+        <p>
+          Yukarıdaki User'ın Logon Name'i: erdem.guzel@sirket.com <br>
+          Mail Name'i: erdemguzel@sirket.com
+        </p>
+        
+        <p>
+          Bu ikisi farklı hesaplardır. <br>
+          İstersek aynı bırakırız, istersek Mail için farklı bir isim belirleyebiliriz. <br>
+          Bunun ideali yoktur, şirket politikalarına göre belirlenir. <br>
+          İkisini aynı bırakırsak, User'a herhangi bir açıklama yapmak zorunda kalmayız, Mail için de Log-on için de aynı Name'leri kullanır.
+        </p>
+
+        <p>
+          Bir User'ı MS Outlook'tan Receivers'tan silersek, Active Directory'den de siler.
+        </p>
+
+        <p>
+          Yeni bağlı posta kutusu <br>
+          Trusted ilişkisi olduğu Forest için buradan Mail Box açabiliriz.
+        </p>
+
+        <p>
+          Forest Trust ilişkisi kuruyoruz <br>
+          Kendi DNS'imize gidiyoruz: <br>
+          exc0.sirket0.com kaydı oluşturuyoruz.
+        </p>
+
+        <p class="bg-script">
+          > Conditional Forwarder <br>
+          -> sirket7.com -> Soru gelirse; <br>
+          -> 10.3.34.107 -> Bu IP'deki DNS'e sor.
+        </p>
+
+        <h5>Trust ilişkisi kurmak</h5>
+        <p class="bg-script">
+          > AD Domains and Trusts <br>
+          > sirket0.com <br>
+          > Right Click <br>
+          > Trust <br>
+          > New <br>
+          > External <br>
+          > Forest <br>
+          > Two way <br>
+          > Both -> Eğer seçersek, karşı taraftaki Enterprise Admin password'ını gireriz. <br>
+          > sirket7.com Enterprise Admin Authentication sorar. <br>
+          > Forest Wide <br>
+          > Karşı yön <br>
+          > Yes, Confirm <br>
+          > 2 way <br>
+          > Finish
+        </p>
+
+        <p>
+          Outlook ecp'ye gidip; <br>
+          Yeni bağlı posta kutusu oluştururuz. <br>
+          Trusted olduğumuz Forest'ta Exchange Server olmasa bile şuanda buradaki Exchange Server o Forest'a hizmet edebilir. <br>
+          Bu aşamada buradan oluşturduğumuz User, Active değil Enable olarak oluşturulur. <br>
+          Enable'a çekeriz. <br>
+          O andan itibaren Log-on olabilir ve Mail Box'ı bulunur.
+        </p>
+
+        <p>
+          Bir User'a ait iki ya da daha fazla Mail Adresi atanabilir. <br>
+          Örneğin; <br>
+          erdem.guzel@sirket.com <br>
+          erdemguzel@sirket.com
+        </p>
+
+        <p>
+          Şeklinde iki kayıt girersek; ikisine de atılan Mail'ler aynı Mailbox'a düşer.
+        </p>
         
         <hr>
         
