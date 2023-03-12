@@ -80,19 +80,391 @@
 
         <hr>
 
+        <p class="bg-script">
+            > Outlook <br>
+            > send to: Gönderilen kişi <br>
+            > cc(bilgi): Mail'i görür. <br>
+            > hidden(b-cc): Mail'i görür fakat Send to ve cc bu kişinin bu Mail'i gördüğünü bilmez.
+        </p>
+
         <p>
-            
+            Reply All yapıldığında Hidden'a gönderilmez.
+        </p>
+
+        <h4>Mailbox Kotaları</h4>
+        <p>
+            Exchange kurulumunda bir Path seçilir. <br>
+            Veritabanı bu konuma yüklenir.
+        </p>
+
+        <p class="bg-script">
+            > ECP <br>
+            > Servers <br>
+            > Kurulumda gelen varsayılan veritabanı burada listelenir. <br>
+            > Double Click <br>
+            > Konumu burada görüntülenir.
         </p>
         
+        <p>          
+          Exchange Default'ta Mail Quota koymuştur, bunu istersek değiştirebiliriz. <br>
+          1.si Mailbox'ları barındıran Database'ten Mailbox Quota atanabilir. <br>
+          Fakat bu, Database'deki tüm Mailbox'ları etkiler.
+        </p>
+
+        <p class="bg-script">
+          > Servers <br>
+          > Limits(Sınırlar) <br>
+          -> Database'in içindeki tüm Mailbox'ları etkileyecek olan kotaların değiştirilebildiği konum. <br>
+          Default: <br>
+          1,9 GB'e ulaşıldığında kullanıcıya Mailbox'ın kotasının dolmak üzerine olduğunu bildiren bir uyarı verilir. <br>
+          Kişi Mail atmaya ve almaya devam edebilir. <br>
+          2 GB'ye ulaştığında Mail gönderemez ama alabilir. <br>
+          2.3 GB'ye ulaşıldığında göndermeyi ve almayı yasaklar. <br>
+          -> Bu ayarlar tüm Recievers'ları etkiler.
+        </p>
+
+        <p>
+          İstersek Mailbox bazında da kota belirleyebiliriz. <br>
+          Örneğin sadece tek bir kişi farklı bir kotaya sahip olsun istiyorsak, Mailbox'ını açarız.
+        </p>
+
+        <p class="bg-script">
+          > Mailbox Usage(Posta Kutusu Kullanımı) <br>
+          > Other Options <br>
+          > Uyarı ayarı: örneğin 5 GB <br>
+          > Göndermeyi Yasakla: örneğin 7 GB <br>
+          > Hem göndermeyi hem almayı yasakla: örneğin 10 GB <br>
+          -> Şeklinde kişiye özel de kota belirleyebiliriz.
+        </p>
+
+        <h4>Silinen Mail'ler nasıl geri getirilir?</h4>
+        <p>
+          User bazında bir Mailbox'tan, bir Mail silindiğinde bu Mail'i nasıl geri getirebiliriz? <br>
+          Database'in üzerinde Limits'in altında; <br>
+          Silinen öğeleri şu kadar süre tut(gün): 14 <br>
+          Silinen posta kutularını şu kadar süre tut(gün): 30 <br>
+          -> Mail'leri 14 gün Rcycle Bin'de tutulur. <br>
+          -> Mailbox'ları 30 gün Rcycle Bin'de tutulur. <br>
+          Bu, User'ın "Silinmiş Öğeler" konumunu kapsamaz, oradan silse de 14 gün boyunca geri getirilebilir. <br>
+          User'lar Mailbox silemezler.
+        </p>
+
+        <p>
+          []Veritabanı yedeklenmeden önce öğeleri kalıcı olarak silme. <br>
+          -> Veritabanı Backup alınana kadar kalıcı olarak kaydeder ve silmez. <br><br>
+
+          Bu ayar yine kişiye özel de yapılabilir; <br>
+        </p>
+
+        <p class="bg-script">
+          > User <br>
+          > Double Click <br>
+          > Posta kutusu kullanımı <br>
+          Aynı ayarlar bu konumdan da kişiye özel olarak atanabilir. <br>
+          Üst seviye User'lar uygulanması idealdir. <br>
+        </p>
+
+        <p>
+          User kendi Mailbox'ının Recycle Bin'inden sildiğinde kotasında yer açılır. <br>
+          Bu konumdan da silindiğinde Default'ta 14 gün boyunca kurtarılabilir.
+        </p>
+
+        <p class="bg-script">
+          > User <br>
+          > Mailbox <br>
+          > Recycle Bin(Silinmiş Öğeler) <br>
+          > Right Click <br>
+          > Silinmiş öğeleri kurtar... <br>
+          -> Arkaplanda Exchange'e bağlanıp, silinmiş öğeleri gösterir, hangisi kurtarmak istersek bunu seçip kurtar'a basarız. <br>
+          Buradan da silinirse, ancak Backup'tan alınabilir.
+        </p>
+
+        <p>
+          Outlook'ta silinmiş öğeler sekmesine gidildiğinde direkt yukarıdaki panelde "Silinmiş öğleri kurtar" Button'u çıkar.
+        </p>
+
+        <p>
+          Şirkette bazı User'ların Mailbox'ları çok kritik olabilir. <br>
+          Default'ta Mailbox Database'i yalnızca bir tane olduğundan ve tüm Mailbox'lar, burada bulunduğundan yani hepsi sadece tek bir Disk'te bulunduğundan bu Disk bozulduğunda tüm Mailbox'ları kaybederiz.
+        </p>
+
+        <p>
+          Bazı Mailbox'ları örneğin RAID 1 yaptığımız başka bir Disk'te tutabiliriz. <br>
+          Bu Database Hata Töleransı olan bir Disk'in üzerinde tutulmalıdır.
+        </p>
+
+        <p>
+          Kritik Mailbox'lar için daha iyi bir Disk kombinasyonu elde ederiz. <br>
+          Örneğin daha hızlı çalışan ve kapasitesi daha yüksek bir disk kombinasyonu oluştururuz ve bu kritik kişilerin Mailbox'ların bulunduğu Database'leri ayrı olarak bu Disk'lerin üzerinde tutabiliriz.
+        </p>
+
+        <p>
+          Exchange Server kurulurken, daha önceden hazırladığımız Disk'e Database'i koyabilirdik. <br>
+          Daha sonradan farklı bir konuma(Disk'e) istediğimiz User'ların Database'lerini kopyalayabiliriz.
+        </p>
+
+        <p>
+          Sanalda Exchange Server'a yeni bir Disk ya da Disk'ler ekleyip uygun bir RAID uygulayabiliriz. <br><br>
+
+          Bu Disk'leri Exchange'in kullanabilmesi için;
+        </p>
+
+        <p class="bg-script">
+          > ECP <br>
+          >Servers <br>
+          +(New Database) <br>
+          Örneğin: High Level User's Database <br>
+          Konum: Yeni oluşturduğumuz Disk ve onun içinde bir klasör seçilir. <br>
+          -> Database'i bu konuma oluştururuz. <br>
+          -> Boş bir Database oluşturacak. <br>
+          > Günlük klasör yolu: Direkt klasörü seçeriz, bu Log'ları bu Klasöre atar.
+        </p>
+
+        <p>
+          İstersek Low Level User için de bir Disk oluşturup aynı şekilde onlar için de bir Databse oluşturabiliriz.
+        </p>
+
+        <p>
+          Veritabanlarını bu şekilde organize ettikten sonra ilgili Mailbox'ları iligi Database'lere dağıtırız.
+        </p>
+
+        <h5>Yeni User oluşturup bunu yeni Database'e eklemek.</h5>
+        <p class="bg-script">
+          > Receiver <br>
+          > New Mailbox <br>
+          > New User <br>
+          > User_3 <br>
+          > user_3 <br>
+          > IK <br>
+          > user3@sirket0.com <br>
+          > Password1 <br>
+          > Diğer Seçenekler <br>
+          > Posta kutusu veritabanı seçin <br>
+          > High Level User's Database <br>
+          -> Örneğin yeni oluşturduğumuz bu Database'i seçebiliriz.
+        </p>
+
+        <h5>Varolan User(Mailbox) yeni Database'e nasıl taşınır?</h5>
+        <p>
+          > ECP <br>
+          > Recievers <br>
+          > Magraition(Geçiş) <br>
+          + -> Farklı bir Database'e taşı || Trusted ilişkisi kurulan öteki Forest'taki Exchange'e taşı. <br>
+          > Farklı bir Database'e taşıyı şeçeriz. <br>
+          [+] Taşımak istediğiniz User'ları seçin. <br>
+          -> Taşımak istediklerimizi tek tek seçeriz. <br>
+          > Next <br>
+          > Yeni geçiş toplu işlemi adı gireriz: Örneğin; HL Geçişi <br>
+          [+] Birincil posta kutusu ve arşiv posta kutularını taşı <br>
+          > Nereye taşıyacağımızı gireriz: High Level User's Database <br>
+          > Arşivi nereye taşıyacağımızı gireriz: High Level User's Database <br>
+          > Hatalı öğre sınırı: 10 <br>
+          -> Öğeler bu taşıma sürecinde tek tek taşınırlar. <br>
+          10 tane öğeye kadar bu taşıma işleminde hatalı öğe taşıma yapılırsa, o Mailbox'ın taşıma işlemi duruyor. <br>
+          Başka bir Mailbox'ta yani User da eklediysek, diğerleri için devam eder. <br>
+          [+] Bu taşıma işlemini hemen mi yoksa daha sonra Manuel olarak mı başlatılacağını seçeriz. <br>
+          -> Çünkü gün çok yoğun bir saatinde bu işlemi yapmak doğru olmaz.
+        </p>
+
+        <p>
+          Şuanda elimizde bir tane Exchange Server var. <br>
+          Bu Exchange Server kapatılırsa, bakım yapmak için vs. bu durumda servis duracak. <br>
+          Mailbox'ların tamamı özünde bir dosyanın içerisinde o da bir Disk'in içinde tutuluyor. <br>
+          Disk'lerin tamamının bozulması durumunda bu Database'lere erişilemez.
+        </p>
+
+        <p>
+          Buna soruna Exchange, DAG adıverilen bir çözüm getirmiştir.
+        </p>
+
+        <h4>Exchange DAG(Database Avaibility Group)</h4>
+        <p>
+          Başka bir makineye daha Exchange Server kurarız. <br>
+          DAG, bir sanal makine üretecek. <br>
+          İnternetteki herkes, kurtuğumuz bu DAG'a yönledirilecek. <br>
+          Yani onları DAG karşılayacak ve ilgili Exchange'e DAG yönlendirecek. <br>
+          Sonra bu iki Exchange arasında Replikasyon yapılacak. <br>
+          Bu şekilde iki Exchange'ten birisi çökse bile diğerinden servis çalışır.
+        </p>
+
+        <p>
+          DAG olacak olan makine, Exchange'e erişimi olan sanaldaki herhangi bir makine olabilir.
+        </p>
+
+        <p>
+          Her iki Exchange Server'da da "Failover Clustering" servisi kurulur. <br>
+          Failover Clustering kurulduktan sonra mutlaka Restart edilmelidir.
+        </p>
+
+        <p>
+          DC'de Exchange Trusted Subsystem grubuna, DAG'ı dahil edeceğimiz makineyi ve kişiyi bu gruba dahil ederiz;
+        </p>
         
+        <p class="bg-script">
+          > DC <br>
+          > DOMAIN <br>
+          > Microsft Exchange Security Groups <br>
+          > Exchange Trusted Subsystem <br>
+          > Double Click <br>
+          > Object Types <br>
+          -> [+]Computers
+        </p>
+
+        <p>
+          Exchange Trusted Subsystem grubunu da Administrators grubuna üye yaparız.
+        </p>
+
+        <p>
+          İzinleri bu şekilde ayarladıktan sonra DAG konfigürasyonuna geçebiliriz. <br>
+          Herhangi bir Exchange Server'a gidilir. <br>
+          Exchange Yönetim Konsolu açılır;
+        </p>
+
+        <p class="bg-script">
+          > ECP <br>
+          > Servers <br>
+          > Database Avaibility Groups(DAG) <br>
+          > Witness Server <br>
+          -> Yönetecek olan makine burada listenecek. <br>
+          > + <br>
+          > Name: DAG-01 <br>
+          -> Mantıklı bir isim verilir, bu aslında bir NetBIOS Name'dir, yani makine adıdır. <br>
+          > Witness Server <br>
+          -> DAG yapacağımız makinenin Full Adı girilir. <br>
+          > Witness Directory <br>
+          -> Bir şey girmezsek; Witness olan Server'da kendisi C'nin altında bir klasör açar. <br>
+          > Database availability group IP addresses: <br>
+          -> DAG-01 isimli sanal makinenin IP'si(192.168.1.10) girilir. <br>
+          -> Failover Servisinin yönettiği sanal bir makine varmış gibi davranmasını sağlayan IP'dir. <br>
+          > Manage DAG membership <br>
+          -> Ürettiğimiz Witness Server'ın üzerine tıklayıp, Manage DAG membership'e tıkladığımızda, AG'ın hangi Server'ları yöneteceğini seçeriz. <br>
+          -> Shift ile beraber iki Server'da seçilebilir.
+        </p>
+
+        <p>
+          Şuandan itibaren iki Server'lık bir Cluster yapmış olduk. <br>
+          Bu noktada eğer yetkileri düzenlememiş olsaydık, bu aşamada sorun çıkacaktı.
+        </p>
+
+        <p>
+          Süreklilik sağlamak istediğimiz ikinci veritabanını da ilkine bağlamak, replike etmek istediğimizde;
+        </p>
+
+        <p>
+          Exchange'lerden herhangi birinden;
+        </p>
+
+        <p class="bg-script">
+          > ECP <br>
+          > Servers <br>
+          -> İki Exchange Server'ın da tüm Database'leri görünür. <br>
+          -> Hangi Database'in kopyasının diğerinde de tutulmasını istiyorsak onu seçeriz. <br>
+          -> Copy tıklanır, hangi Exchange Server'da tutulmasını istiyorsak, onu seçeriz. <br>
+          > Activation preference number <br>
+          -> Öncelik numarası. <br>
+          -> İkinci Exchange'te ilkindekinin Disk'inin Drive Letter'ı aynı değilse hata verir. <br>
+          Örneğin E Drive Letter'ında bir Database tutuyorsak, diğer Exchange Server'da da E Driver'ı olmak zorunda. <br>
+          Bu sebepten bu noktada hata verebilir.
+        </p>
+
+        <p>
+          Şuanda hala ISP DNS Exchange 1'i gösteriyor. <br>
+          Yani internetten gelenler direkt Exchange 1'e erişiyorlar. <br>
+          Onu DAG'ı gösterecek şekilde ayarlamamız gerekir.
+        </p>
+
+        <p class="bg-script">
+          > DC <br>
+          > DNS <br>
+          > Domain'i barındıran External DNS <br>
+          > sirket0.com <br>
+          > Right Click <br>
+          > New Host <br>
+          > DAG-01, 192.168.1.10 <br><br>
+          
+          > MX kaydını, autodiscover'ı mail'i ve TXT'yi Double Click ile DAG'ı gösterecek şekilde değiştiriz. <br><br>
+
+          > Internal DNS <br>
+          > sirket0.com <br>
+          -> DAG-01'i burada kayıtlı olduğunu görürüz, otomatik olarak yapılmıştır. <br>
+        </p>
         
+        <p>
+          Fakat yine  MX kaydını, autodiscover'ı mail'i ve TXT'yi Double Click ile DAG'ı gösterecek şekilde değiştirmeliyiz. <br>
+          İlk Exchange Server'da Sertifa oluşturmuştuk. <br>
+          Bu Sertifikanın aynısını ikinciye kopyalamalıyız;
+        </p>
+
+        <p class="bg-script">
+          > 1.Exchange <br>
+          > ECP <br>
+          > Servers <br>
+          > Certificates <br>
+          > Select Server <br>
+          -> 1.Exchange seçilir. <br>
+          -> Kullanılan Sertifika burada listelenir. <br>
+          > *.sirket0.com -> Sertifika. <br>
+          > Right Click <br>
+          > Export <br>
+          -> Bu sertifikayı Export ederiz. <br><br>
+
+          > File to export to: <br>
+          -> Network yolunu sorar.
+        </p>
+
+        <p>
+          2.Exchange'te C'nin altında örneğin Sertifika isimli bir Dosya oluşturup, Share edilir.
+        </p>
+
+        <p class="bg-script">
+          > Yukarıdaki konumda \\exc-02.sirket2.com\Sertifika\sertifika.pfx yazılır. <br>
+          -> Oluşturulacak dosyanın ismini de gireriz. <br>
+          > Password; Bu klasöre Password atarız.
+        </p>
+
+        <p>
+          2.Exchange Server'a gidilir.
+        </p>
+
+        <p class="bg-script">
+          > ECP <br>
+          > Servers <br>
+          > Certificates <br>
+          > Select Server <br>
+          -> 2.Exchange seçilir. <br>
+          > Import yapılır. <br>
+          > Path ve Password girilir.
+        </p>
+
+        <p class="bg-script">
+          > 2.Exchange Server'da <br>
+          > IIS'e gideriz. <br>
+          -> Exchange yönetim sayfasının kullanması için; <br>
+          -> Sertifikayı Default sayfa için de HTTPS'ine tanımlıyoruz.
+        </p>
+
+        <p>
+          Her Exchange Server kurulduğunda otomatik olarak o makinenin üzerine IIS de kurulur.
+        </p>
+
+        <p>
+          Test etmek için 1.Exchange'i erişime kapatabiliriz. <br>
+          Örneğin makine direkt Shutdown edilebilir.
+        </p>
         
+        <p>
+          Başlangıçta İşletim Sistemi RAID 5'e kurulursa hata töleransı olur. <br>
+          Exchange Server'ı C'ye kurmayıp yeni bir Drive Letter'a koyup, o Letter'ı RAID 5 yapmak idealdir. <br>
+          Database'ler için ayrı Drive Letter'lar oluşturulabilir. <br>
+          Örneğin High Level User'lar için ayrı, Low Level User'lar için olabilir.
+        </p>
+
         <hr>
         
         <div class="text-center container p-3 bg-script">
           <div class="d-flex justify-content-evenly navigation">
-            <a href="" class="bg-script">xxx</a>
-            <a href="" class="bg-script ">xxx</a>
+            <a href="05-03-2023.html" class="bg-script">05.03.2023</a>
+            <a href="12-03-2023.html" class="bg-script ">12.03.2023</a>
           </div>
         </div>
         
