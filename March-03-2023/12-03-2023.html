@@ -217,18 +217,213 @@
             Bu ürün; genelde küçük ölçekli firmaların sanallaştırmasını sağlamak hedefiyle üretilmiş yani o amacı sağlayan bir üründür. <br>
             Daha büyük firmalar için, en küçüğünden en büyük ve karmaşık olanına kadar gösterilecek. <br>
             Bazı şirketlerde sadece VMware üzerine bir departman bile bulunur. <br>
-            Çok önemli bir sanallaştırma teknolojisidir. <br>
+            Çok önemli bir sanallaştırma teknolojisidir, uzun zamandır VMware sektörde hakimiyet kurmuştur. Fakat bu Hyper-V'nin de sektörde yeri olmadığı anlamına gelmiyor. <br>
             Bu noktadan itibaren artık sadece VMware kullanacağız. <br>
             Bu sebeple Hyper-V'yi kaldırıyoruz. <br>
-            
+            Fiziksel makineden direkt olarak Hyper-V Feature'ını Remove ediyoruz. <br>
+            Hypervizor'u kapatmak ile uğraşmak istemiyorsak, sanalda olduğumuz için direkt silebiliriz.
+        </p>
+
+        <p>
+            VMware ürünlerinden ilkini; VMware Workstation'ı kurup, kulanacağız. <br>
+            Teams'teki iso dosyalarından; VMware-workstation-full-16.2.4.exe'yi yükle. <br>
+            Bu uygulamalar professiyonel amaçlarla kullanılmadığı durumda ücretsiz olarak kullanılabilir. <br>
+            ISO Folder'ın da istersenirse girilebilecek bir Key de bulunur. <br>
+            exe'yi çalıştırıyoruz.
+        </p>
+
+        <hr>
+
+        <p>
+            Azure Microsft'un Cloud platformudur.
+            Boş bir makine ya da üzerinde işletim sisteminin olduğu ve onun üzerinde belli bir servisin olduğu, hiç bir donanım yatırımı yapmadan Cloud olarak hizmet almamızı sağlayan platformdur.
         </p>
         
+
+        <hr>
+
+        <p class="bg-script">
+            VMware Workstation Install Setup devam. <br>
+            > [] Check'leri kaldır. <br>
+            > Next <br>
+            > Next <br>
+            > Finish
+        </p>
         
+        <p>
+            Desktop'a bir kısayol geldi, anahtar sorar klasördekini gireriz. <br>
+            Ya da 30 gün deneme sürümünü kullanabiliriz. <br>
+        </p>
+        
+        <p>
+            VMware Workstation ekranında; <br>
+            Sol tarafta oluşturduğumuz makineleri görürüz. <br>
+        </p>
+
+        <p class="bg-script">
+            > Edit <br>
+            > Virtual Network Editor <br>
+        </p>
+
+        <p>
+            -> Hyper-V'deki Switch'leri oluşturduğumuz konum. <br>
+            -> Default'ta üç tane hazır Switch getiriyor. <br>
+            -> Switch'lerin ismi de VMnet olarak geçer. <br>
+            VMnet'lerin Type'ları vardır; <br>
+            <u><b>Bridge Type:</b></u> Workstation'ı kurduğumuz makinenin fiziksel ethernetine direkt bağlı olduğu anlamına gelir. <br>
+            -> External'a tekabül eder. <br>
+            <u><b>Host-only Type:</b></u> Eğer sanal makineleri bu Switch'e bağlarsak kapalı devre bir Network yaparız. <br>
+            Bu Switch aynı zamanda bir DHCP Servisine de sahiptir. <br>
+            Dolayısıyla bu Switch'e bağlı Sanal makineler ekranın aşağısında gösterilen Scope'tan otomatik olarak IP alırlar. <br>
+            -> Internal'a tekabül eder. <br>
+            <u><b>NAT Type:</b></u> Eğer sanal makineleri bu Switch'e bağlarsak, bu makineler birbirlerine erişirler. <br>
+            Bu Switch'te de DHCP çalışır ve ekranın altındaki Scope'tan IP alırlar. <br>
+            Bu Switch'in üzerinde bir de NAT Servisi vardır. <br>
+            DHCP'ten ya da herhangi bir Private Scope'tan IP alan makineleri Bridge Type interface'e NAT'lar. <br>
+            Yani fiziksel Interface'e NAT'layarak internete çıkartır. 
+        </p>
+
+        <p>
+            VMnet0, VMnet1, VMnet8 Switch'lerinin Default ayarları vardır. <br>
+            Fakat kaldırıp daha sonradan herhangi birini eklersek, Default ayar geçerli olmaz direkt Host-only olarak üretir. <br>
+            İstediğimiz bir Switch'i ekler, istediğimiz Config'i de üzerine uygulayabiliriz. <br>
+            Başlangıçta, Type'lara örnek olması açısından bu Switch'leri Default olarak bu şekilde ayarlamışlar.
+        </p>
+
+        <p class="bg-script">
+            > Edit <br>
+            > Preferences <br>
+            > Workspace <br>
+            > Browse <br>
+            -> Sanal makinelerin Default'ta kaydedileceği Path'i buradan değiştirebiliriz. <br>
+            [+]Keep VMs Runing After Workstation Closes.
+            -> İhtiyaç var ise kapatılsa bile sanal makinelerin çalışmasını sağlar. <br>
+            Seconds between powering on multiple VMs: 10
+            -> Sanal makinelerin hepsini aynı anda açmak yerine 10'ar saniye arayla başlatır. <br>
+            > USB
+            -> İstersek fizikselde taktığımız Flash Disk'leri sanalda da görebilmemizi sağlar. <br>
+            > Memory
+            -> Sistemin üzerindeki RAM'in ne kadarını kullanmasını istiyorsak buradan belirleyebiliriz. <br>
+            Ancak Fiziksel makinenin RAM'ini de üstlenebilir, dengeli vermek gerekir.
+        </p>
+
+        <h5>Sanal makine oluşturmak</h5>
+        <p>
+            Create New Virtual Machine
+            > [+]Typical
+            > Installer disc image file(iso):
+            -> VMware Workstation kurduğumuz makineye Host denir. <br>
+            Hizmeti veren; Host. <br>
+            Bu hizmeti çalıştıran fiziksel makineye Host denir. <br>
+            O Fiziksel makinenin üzerine kurulan her bir VMware sanal makinesine de Guest adıverilir. <br>
+            > iso'yu buradan Browse edip kurulumu başlatırsak, Server OS için Key sorar, sonradan eklemeyi seçip o şekilde Wizard'a devam ederiz.
+        </p>
+
+        <p class="bg-script">
+            > Select a Guest Operating System <br>
+            [+]Microsoft Windows <br>
+            -> Tüm versiyonlarını gösterir. <br>
+            [+]Linux <br>
+            [+]VMware ESX <br>
+            [+]Other
+        </p>
+
+        <p>
+            Yukarıda bir Sanal Kasa ayarlıyoruz ve üzerindeki işletim sistemi şu olsunu seçiyoruz. <br>
+        </p>
+
+        <p class="bg-script">
+            > Next <br>
+            > Virtual Machine Name: DC0 <br>
+            > Location: Seçtiğimiz Default konuma atar. <br>
+            > Maximum Disk Size(GB): 60 <br>
+            > Single, Multiple <br>
+            -> Dosyanın boyutu çok büyürse, o dosyanın içinde işlem yapmak zorlaşır. <br>
+            -> Bu sebeple Sanal Disk'i Multiple ile parçalara bölüp kullandırabilir. <br>
+            Fakat biz Single seçebiliriz.  <br>
+            > RAM seçilir. <br>
+            > Finish
+        </p>
+
+        <p>
+            İşletim sistemine uygun donanımları üzerine takarak bir sanal kasa oluşturmuş olduk.
+        </p>
+
+        <p class="bg-script">
+            Makineni üzerinde; <br>
+            > Edit Virtual Machine Settings <br>
+            -> RAM, CPU, Hard Disk vs. buradan değiştirilebilir.
+        </p>
+
+        <p>
+            Üretilen Sanal Disk'lerin uzantısı; .vmdk'dır.
+        </p>
+
+        <p class="bg-script">
+            Makineni üzerinde; <br>
+            > Edit Virtual Machine Settings <br>
+            > Options <br>
+            > VMware Tools <br>
+            -> Fizikselde donanımlarının uygun olarak çalışmasını sağlamak için, buradan Driver'ları yükleyebiliriz. <br>
+            [+]Update Automaticly <br>
+            -> VMware Tools'un güncel halini yükler. <br>
+            -> Sonra kullanmak için bizim Manul olarak buradan tekrar yükleme yapmamız gerekir. <br>
+            > Firmware Type; <br>
+            -> İstersek BIOS, istersek UEFI seçebiliriz. <br> 
+        </p>
+
+        <p>
+            Şuandan itibaren Power'a basarak sanal makineyi başlatabiliriz. <br>
+            iso'yu taktığımız için Setup başlar. <br>
+            Eğer DVD'yi takmayı unuttuysak VM Settings'ten takabiliriz. <br>
+        </p>
+
+        <p class="bg-script">
+            > Menu Bar'dan; <br>
+            > VM <br>
+            > Removable Devices <br>
+            > CD/DVD <br>
+            > Settings <br>
+            > Browse <br>
+            > iso'yu seçeriz.            
+        </p>
+
+        <p>
+            Sanalda Mouse'u kaybedersek, CTRL+ALT'a tıklanır.
+        </p>
+        
+        <p>
+            Hesapların şifresini Password1! olarak koyuyoruz. <br>
+            Daha kompleks olması gerekiyor. <br>
+            CTRL+alt+inster ya da direkt Menu Bar'dan onun Button'u ile Log-on olabiliriz. <br>
+        </p>
+
+        <p>
+            İşletim Sistemi kurulduktan hemen sonra donanıma uygun optimum şekilde yani daha hızlı çalışması için VMware Tools kurulmalıdır;
+        </p>
+
+        <p class="bg-script">
+            > Menu Bar <br>
+            > VM <br>
+            > Install VMware Tools <br>
+            -> Tıkladıktan sonra uyarı gösterir. <br>
+            -> Eğer göstermezse; <br>
+            -> DVD'ye VMware Tools'u takmış olur. <br>
+            -> Disk'e çift tıklayarak Wizard'ı başlat ve kurulumu yap.
+        </p>
+
+        <p>
+            Kurulumdan sonra Restart yap.
+            MKİNEYE ad KUR
+        </p>
+
+
+
         <hr>
         
         <div class="text-center container p-3 bg-script">
           <div class="d-flex justify-content-evenly navigation">
-            <a href="#" class="bg-script">12.03.2023</a>
+            <a href="11-03-2023.html" class="bg-script">11.03.2023</a>
             <a href="#" class="bg-script ">######</a>
           </div>
         </div>
