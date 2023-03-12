@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>05.03.2023</title>
+    <link rel="icon" type="image/x-icon" href="../eg_favicon.JPG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 14px;
+        color: #e2e3e7;
+        background-color: #232529;
+        /*
+        e2e3e7
+        c4c7cf
+        868d9a
+        696e79
+        41454c
+        35383f
+        292c31
+        232529
+
+        31333a
+        */
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: rgb(139, 233, 253);
+      }
+
+      a{
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #e2e3e7;
+      }
+
+      .container {
+        max-width: 800px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+      }
+
+      .bg-script {
+        color: rgb(139, 233, 253);
+        background-color: #31333a;
+        padding: 20px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+        text-align: start;
+        font-size: 15px;
+        line-height: normal;
+      }
+
+      .navigation\a:hover {
+        color: #31333a;
+        background-color: rgb(139, 233, 253);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container p-4 mt-2 mb-5">
+        <h1><a href="../index.html" class="display-4">05.03.2023</a></h1>
+
+        <hr>
+
+        <p>
+            Masaüstündeki dosyaların erişim izinleri spesifik olarak C'denin içerisinde oluşturulmuş dosyalardan farklı olabilir. <br>
+            Bu sebeple Exchange'te yönlendirme yaptığımız sayfayı direkt masaüstüne çekmemeliyiz. <br>
+            Önce C'de oluşturup oradan yönlendirmek daha uygundur.
+        </p>
+        
+        <p>
+            Exchange üzerinde karşılaşabileceğimiz örnek bir talep; <br>
+            Kime Mail Box açarsak açalım uzantısı yani Domain Suffix'i aynı olur. <br>
+            Örneğin bize farklı bir Domain Suffix'li Mail Box açma talebi geldiyse bunu yapmak da mümkündür. <br>
+            Yani bulunduğumuz Domain'in dışındaki bir Domain Suffix'te Mail Box açabiliriz. <br>
+            Bunu yapabilmek için; <br>
+        </p>
+
+        <p class="bg-script">
+            > Receivers <br>
+            > Erdem <br>
+            > Properties <br>
+            > E-posta adresi <br>
+            > Ekle <br>
+            > SMTP <br>
+            > erdem.guzel@erdem.com
+        </p>
+
+        <p>
+            Erdem'in bu Mail adresini kullanabilmesi için; <br>
+            DNS'te kaydının oluşturulması gerekiyor, çünkü başka türlü dünyadan herhangi bir Mail bu Mail Box'a düşmez. <br>
+            Dolayısıysla MX kaydı açmalıyız. <br>
+            Sırf bu kişinin Mail adresinde bu Domain Suffix'i kullandığımız için bile o Domain Name'i satın almak zorundayız. <br>
+            Çünkü talep bu Domain Suffix'e ait bir Mail Box oluşturulması. <br>
+        </p>
+
+        <p>
+            Domain satın almayı, sanalda bizim internete çıkabilen bir IP'mizle yeni bir DNS, Domain oluşturarak çözdük. <br>
+            Bu kaydın içerisine bir Host(A) Kaydı oluşturuyoruz; <br>
+            exc0 <br>
+            erdem.com <br>
+            192.168.x.x <br>
+            
+            Yukarıdaki kaydı da MX ile gösteriyoruz. <br>
+            Ayrıca bir de SPF kaydı açarız.
+        </p>
+
+        <p>
+            Anlık olarak bizim Mail Server'ımız sadece üye olduğu Domain'e gelen Mail'leri kabul ederiz. <br>
+            Bu durum Mail Server'ların Default'udur. <br>
+            Ekstradan yapmamız gereken şey; <br>
+            Artık erdem.com'a gelen Mail'leri de kabul et demektir. <br><br>
+
+            Bunu yapabilmek için;
+        </p>
+
+        <p class="bg-script">
+            > Mail Flow, Kabul edilen etki alanları <br>
+            > Ekle <br>
+            > erdem.com <br>
+            > erdem.com <br>
+            > [+]yetkili <br>
+            > kaydet
+        </p>
+        
+        <span>SAAT 9:30 CİVARINA TEKRAR BAK.</span>
+        <span>EXCHANGE YOUTUBE TUTORIAL'LARA BAK.</span>
+
+        <p class="bg-script">
+            > Outlook <br>
+            > Seçenekler <br>
+            > Kimden -> Bu kısımdan oluşturuğumuz diğer Mail Adresleri ile Mail gönderebiliriz.
+        </p>
+
+        <hr>
+
+        <h4>Exchange Groups</h4>
+        <p>
+            https://exc0.sirket0.com/ecp/ <br>
+            Yukarıdaki URL tarayıcıdan Exchange yönetim panelini açar. <br>
+            Örneğin tüm İnsan Kaynakları departmanına bir Mail atma ihtiyacı var ise Exchange'te o departmana ait bir grup oluşturup, direkt o gruba mail atabiliriz. <br><br>
+
+            Grup oluşturmak için;
+        </p>
+
+        <p class="bg-script">
+            > ecp
+            > Receivers
+            > Groups
+            > +
+            > Distribution Group || Security Group ||
+        </p>
+
+        <h6>Distribution Group</h6>
+        <p>
+            Bu grubun üyelerine sadece Mail atılabilir. <br>
+            Buradan bu grubu açtığımız gibi Active Directory'de de Distribution Group olarak grup oluşturulur.  
+        </p>
+        
+        
+        <h6>Security Group</h6>
+        <p>
+            Bu grubun Distribution Group'tan farkı istersek NTFS izinleri de atayabilmemizdir. <br>
+            Yine aynı şekilde üyelerine Mail atılabilir.
+        </p>
+        <p class="bg-script">
+            > +
+            > Görünen ad: Tüm_IK <br>
+            > Diğer ad: tumik (tumik@sirket0.com) <br>
+            > Notlar: IK'daki tüm User'lar. <br>
+            > Kuruluş birimi: sirket0.com/IK (Browse) <br>
+            > Sahipler: (Grup üzerinde Full Control yetkisi olan kişi) <br>
+            > [+]Grup sahiplerini üye olarak otomatik ekler. <br>
+            > Üyeler <br>
+            > + <br>
+            > IK'da kaç kişi var ise ekleriz.
+        </p>
+        <p>
+            Yukarıda Tüm_IK adında bir User Group oluşturduk. <br>
+            tumik@sirket0.com mail adresini aldı. <br>
+            Universal ve Security Group ayarlarıyla oluşturuldu. <br>
+            Üyeleri de aynı ekranda üzerine atanmış oldu.
+        </p>
+
+        <h6>Dynamic Security Group</h6>
+        <p>
+            Sektörde genelde Distribution Group olarak adlandırılır. <br>
+            Diğerlerinden farklı Grup üyeliklerinin otomatik olarak sağlanmasıdır. <br>
+            Bir Active Directory'de bir Organizational Unit üretiyoruz, onun tüm üyeleri otomatik olarak alınıyor. <br>
+            Yeni bir üyesi olduğunda o da otomatik olarak eklenebiliyor.
+        </p>
+        <p class="bg-script">
+            > +
+            > Görünen ad: Tüm_IT <br>
+            > Diğer ad: tumit <br>
+            > Notlar: Tüm IT <br>
+            > Browse: sirket0.com/IT <br>
+            > Sahip: Administrator <br>
+            > Üyeler: <br>
+            > [+]Tüm alıcı üyeleri || [+]Exchange posta kutularına sahip kullancılar. <br>
+            > Kurak: [||]Alıcı kapsayıcı = sirket0.com/IT (Alıcı Kapsayıcı: Organizational Unit) <br>
+            > Kaydet
+        </p>
+
+        <span>ARADAN SONRAKİ KAYDI TEKRARLA!</span>
+        <span>EXCEL YOUTUBE.</span>
+
+        <h5>ECP, Contact(Kişiler)</h5>
+        <p class="bg-script">
+            > ecp <br>
+            > Receivers <br>
+            > Contacts <br>
+            > + <br>
+            > Mail Contact(Posta Kişisi) || Mail User(Posta Kullanıcı)
+        </p>
+
+        <p>
+            Diyelimki şirketimiz, bir hukuk bürosu ile çalışmaya karar verdi ve hukuk bürosundaki bir kişiye devamlı Mail atılması gerekiyor. <br>
+            Ayrıca bu büro yurt dışında olsun ve bürodakilerin isimleri de biraz karmaşık isimler olsun. <br>
+            Şirketimizdeki bir çok kişi bu kişiye Mail atmak istediğinde ismini bilmesi gerekir ve o kişinin isminin çok karmaşık ya da uzun olduğunu düşünelim.
+        </p>
+
+        <span>İKİNCİ MOLADAN SONRAKİ BÖLÜM</span>
+
+        <p>
+            Yeni Mail Box oluşturuyoruz. <br>
+            sekreter adında bir User oluşturduk. <br>
+            sekreter@sirket.com -> mail adresi.
+        </p>
+
+        <p>
+            Şirketteki genel müdür var ve bu ürettiğimiz sekreterde onun sekreteri olsun. <br>
+            Müdürün talebi şu; sekreter benim adıma mail atabilsin ya da benim Mail Box'ımı okuyabilsin vs. <br>
+        </p>
+
+        <p class="bg-script">
+            > ECP <br>
+            > Genel Müdürün hesabına gideriz <br>
+            > Properties <br>
+            > Posta Kutusu Temsilcisi <br>
+            > Send as(Farklı gönder) <br>
+            > + <br>
+            -> Sekreter'i ekleriz. <br>
+            > Kaydet
+        </p>
+
+        <p>
+            Bu noktadan itibaren Sekreter, Genel Müdür adına ve onun adıyla direkt Mail atabilir. <br>
+            Gelen Mail'leri göremez, yanıtlar vs. dahil. <br>
+            Yani sadece Genel Müdür adına Mail gönderebiliri. <br>
+            Genel Müdürün bunu yazılı vs. IT'ye bildirmesi gerekir. <br>
+            Arada ciddi bir güven ilişkisi olmalıdır.
+        </p>
+
+        <p>
+            Eğer aynı sekmede Tam Erişim'e de Sekreter'i eklersek; o noktadan sonra Mail Box'a da erişebilir. <br>
+            Yani hem Mail atabilir hem de gelen tüm Mail'leri görebiliriz. <br>
+            Direkt Mail Box'ın ikinci sahibi olur.
+        </p>
+
+        <p>
+
+        </p>
+
+        <hr>
+        
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="" class="bg-script">04.05.2023</a>
+            <a href="" class="bg-script ">xxx</a>
+          </div>
+        </div>
+        
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
