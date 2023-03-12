@@ -469,14 +469,19 @@
           > SERVER2016-20 <br>
           > Server Certificates <br>
           > Create Domain Certificate  <br>
-          -> Bunun çalışmşası için CA Server ile Web Server'ın aynı Domain'de olması gerekir. <br>
+          -> Bunun çalışması için CA Server ile Web Server'ın aynı Domain'de olması gerekir. <br>
           > Common name: -> Örneğin; www.sirket0.com -> Bu Single Domain, sadece www anlamına gelir. <br>
-          host name değişirse bile kullanmak istersek; *.sirket0.com şeklinde kullanılır. <br>
-          Geriye kalanları Random gir. <br> <br>
+          Host name değişirse bile kullanmak istersek; *.sirket0.com şeklinde kullanılır. <br>
+          Geriye kalanları Random gir. <br>
           > Online Certification Authority <br>
           > Select <br>
           > Domain'de kurduğumuz CA Server'ı seçeriz. <br>
           > Friendly Name: *.sirket0.com  <br>
+        </p>
+
+        <p>
+          Hızlı yüklendiği için burada Select gelmeyebilir. <br>
+          Gelmezse o Server Restart edilmelidir.
         </p>
 
         <p>
@@ -502,7 +507,7 @@
         <p class="bg-script">
           > CA Server'ına Browser üzerinden bağlanırız; <br>
           https://dc0.sirket0.com -> CA Server kuduğumuz makinenin Host Name'i ve FQDN'i. <br>
-          https://dc0.sirket0.com/certsrc -> yazılır. <br> <br>
+          https://dc0.sirket0.com/certsrv -> yazılır. <br> <br>
           Ekran geldiğinde; <br>
           > Continue <br>
           > Login olmamızı ister, yetkiyi onaylamak için. <br> <br>
