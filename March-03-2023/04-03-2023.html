@@ -77,20 +77,8 @@
   <body>
     <div class="container p-4 mt-2 mb-5">
         <h1><a href="../index.html" class="display-4">04.03.2023</a></h1>
-        
-        <span>EXCHANGE KURULUMUNU YOUTUBE'TAN ÖĞRENİP BURAYA YAZ.</span>
 
         <hr>
-
-        <h4>Exchange Server olacak makinede kurulması gerekenler</h4>
-        <p>
-          Minimum 20 GB RAM eklenir. <br>
-          Processor sanalda 4 çekirdeğe çekilir. <br>
-          Exchange olacak makineye Exchange2019.iso takılır(DVD). <br>
-          Microsoft Unified Communications Managed API yüklenir. <br>
-          vcredist_x65 yüklenir. <br>
-          Exchange dosyanın içinde Exchange Setup başlatılır.
-        </p>
 
         <h4>Exchange'in dışarıya mail atmasını sağlamak</h4>
         <p>
@@ -218,7 +206,7 @@
           Text tip kayıt ile başlamalıyız.
         </p>
         
-        <p>
+        <p class="bg-script">
           > DNS <br>
           > 192.168.x.x <br>
           > txt <br>
@@ -321,21 +309,23 @@
           -> Satın aldığımız SSL'i seçeriz.
         </p>
 
-        <h5>Exchange Kurulduktan sonra içerideki DNS'te açmamız gereken kayıtlar</h5>
-        <p>
-          1)Kendisine ait Host kaydı(Domain'e kayıtlı olduğu için otomatik gelir zaten). <br>
-          2)autodiscover(CNAME olarak açılır) <br>
-          3)OWA'ya kolay erişim için açılan mail, posta vb. CNAME kayıtları açılmalı.
-        </p>
+        <h5>Exchange kurulduktan sonra içerideki DNS'te açmamız gereken kayıtlar</h5>
+        <ol>
+          <li>Kendisine ait Host kaydı(Domain'e kayıtlı olduğu için otomatik gelir zaten).</li>
+          <li>autodiscover(CNAME olarak açılır)</li>
+          <li>OWA'ya kolay erişim için açılan mail, posta vb. CNAME kayıtları açılmalı.</li>
+        </ol>
 
         <h5>Satın aldığımız DNS içerisinde</h5>
-        <p>
-          1)Exchange Server'ın Host(A) kaydı olmalı. <br>
-          2)MX kaydı olmalı, aynı Exchange'i gösteren. <br>
-          3)autodiscover(CNAME olarak açılır) <br>
-          4)OWA'ya kolay erişim için açılan mail, posta vb. CNAME kayıtları açılmalı. <br>
-          5)SPF kaydı olmalı. <br> <br>
+        <ol>
+          <li>Exchange Server'ın Host(A) kaydı olmalı. </li>
+          <li>MX kaydı olmalı, aynı Exchange'i gösteren.</li>
+          <li>autodiscover(CNAME olarak açılır)</li>
+          <li>OWA'ya kolay erişim için açılan mail, posta vb. CNAME kayıtları açılmalı.</li>
+          <li>SPF kaydı olmalı.</li>
+        </ol>
 
+        <p>
           Son iki madde zorunda değildir. <br>
           İhtiyaca göre eklenir.
         </p>
@@ -345,7 +335,7 @@
         </p>
 
         <p>
-          Microsoft Exchange Informatin Store: Exchange'in Core servisidir. <br>
+          <b><u>Microsoft Exchange Informatin Store</u></b>: Exchange'in Core servisidir. <br>
           Çalışmayı durdurduğunda Exchange çalışmaz. <br>
           Donanım kaynağı yetmediğinde Exchange hizmeti birden durabilir. <br>
           Bu durumda bu servise bakıldığında Stop olduğunu görebiliriz.

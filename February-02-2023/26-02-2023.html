@@ -78,10 +78,13 @@
     <div class="container p-4 mt-2 mb-5">
         <h1><a href="../index.html" class="display-4">26.02.2023</a></h1>
         
+        <hr>
+
         <h4>Exchange Server</h4>
         <p>
             Teams'ten Server2019Base ve Exchange 2019'u indir.
         </p>
+
         <p>
             Microsoft'un lisanlı Mail Server'ı Exchange'tir. <br>
             Google'ın, Yandex'in vs de Mail Server'ları vardır. <br>
@@ -97,6 +100,7 @@
         <p>
             Ekstradan Google'ın Mail Server'ını araştır.
         </p>
+
         <p>
             Exchange Server aslında bir Tool yani rol veya feature değildir, yani Server Manager'dan vs yüklenmez. <br>
             Exchange Server ayrı olarak bir programdır. <br>
@@ -106,6 +110,7 @@
             Yani sanalda Server 2019 taşıyan normal bir Server kur ve onun üzerine Exchange Server kur. <br>
             Exchange Server çok fazla kaynak tüketir. <br>
         </p>
+
         <p>
             Domain'e üye iki tane User birbirine Mail atmak istediklerine bir arayüze ihtiyaç duyarlar. <br>
             Bu arayüz; MS Outlook'dur. <br>
@@ -114,12 +119,14 @@
             Mail yazılıp, gönder'e tıklandığındı anda, Outlook Mail'i Exchange Server'a gönderir, Exchange Server bunu alıcının posta kutusuna bırakır. <br>
             Mail gönderildi olarak bize dönen mesaj, Exchange'ten, ilgili kişinin posta kutusunu bırakıldığı anlamına gelir.
         </p>
+
         <p>
             Outlook'un alternatifi; <b>Outlook Express(Mail)</b>'tir. <br>
             MS Outlook ücretlidir. <br>
             Outlook Express(Mail) ücretsizdir. <br>
             Ayrıca bir de <b>OWA(Outlook Web Access)</b> vardır. 
         </p>
+
         <p>
             MS Outlook; MAPI adıverilen kendine özgü bir iletişim protokol kullanır. <br>
             Bu protokol Microsoft'a aittir. <br>
@@ -130,17 +137,19 @@
             Eğer bu ikisini kullanırsak, gördermek için altalanda smtp kullanılmak durumdan kalınır. <br>
             Default'ta MS Outlook MAPI'yi kullanır, yani POP3 ve IMAP ile erişim Default'ta kapalıdır.  
         </p>
+
         <p>
             OWA https kullanır. <br>
             Modern ve Open Source olan çoğu web uygulaması HTTPS kullanır. <br>
             OWA Microsoft'un, https protokolüyle direkt web'ten Exchange'e erişmemizi sağlayan arayüzüdür. <br>
         </p>
+
         <p>
             Client'lerin hiç birinin Domain'e üye olması gerekmez. <br>
             Bağlantıyı yaptığımız programa göre de altalanda kullanılacak protokoller değişebilir. <br>
             Örneğin web'ten bağlanırsak, yani Exchange gelen kutumuzu görmek istiyorsak, https ile bağlantı kurulur. <br>
         </p>
-
+        
         <h4>İki farklı Domain'deki User'ların birbirlerine Mail atması</h4>
         <p>
             İki farklı Domain var ise ve ilk Domain'den ikinsinin içinde bulunan bir User'a mail atılmak istediğindei, atılan Mail önce kendi Domain'deki Exchange Server'a gelir. <br>
@@ -159,6 +168,7 @@
             Mail Server IP'yi öğrendikten sonra karşı Mail Server'a Mail'i yani paketi SMTP protokolü ile gönderir. <br>
             SMTP Protokolü dünyadaki tüm Mail Server'ların birbirleriyle iletişimini sağlamak için kullandığı standart bir protokoldür. <br>
         </p>
+
         <p>
             SMTP'nin Port Number'ı 25'tir. <br>
             MAPI Port Number <br>
@@ -182,22 +192,28 @@
             DC'nin isminin değiştirip, Static IP atıyoruz. <br>
             DC'ye Active Directory yükle. <br>
         </p>
+
+        <h5>Exchange Server olacak makinede kurulması gerekenler</h5>
         <p>
-          Yapıya Exchange Server kurmak için ön şartlar; <br>
+          Minimum 20 GB RAM eklenir. <br>
+          Processor sanalda 4 çekirdeğe çekilir. <br>
+          Exchange olacak makineye Exchange2019.iso takılır(DVD). <br>
+          Microsoft Unified Communications Managed API yüklenir. <br>
+          vcredist_x65 yüklenir. <br>
+          Exchange dosyanın içinde Exchange Setup başlatılır.
+        </p>
+
+        <p>
+          <b><u>Yapıya Exchange Server kurmak için ön şartlar</u></b>; <br>
           Legacy sürümlerde Workgorup'ta çalışabilirken, güncel versiyonlarda artık sadece Domain ortamında çalışabilir. <br>
           Server işletim sistemi gerekir. <br>
-          Ciddi anlamda CPU, RAM ve Disk ihtiyacı vardır. <br>
-          Exchange Server kurmak; Local Admin, Domain Admin, Schema Admin yetkilerine aynı anda sahip olan Account'ın
-
-          KAYITTAN BURADAKİ BOŞLUĞU DOLDUR.
-          MAKİNELERİN KURULMA BÖLÜMÜ.
-          BUNDAN SONRAKİ NOTLARI DÜZENLEMEK İÇİN KAYDI TEKRAR İZLE.
+          Exchange Server kurmak; Local Admin, Domain Admin, Schema Admin yetkilerine aynı anda sahip olan Account ile Log-on olmak gerekir.
         </p>
 
         <p>
-          Teams'ten indirdiğimiz Exchange 2019 dosyasının içinden Unified dosyasını ve vcedist_x64'ü Exchange Server olacak makineye yükle. <br>
-          NDP472 bu aşamada yüklenmez zorunda değil fakat Exchange Server kurulumunda bunu kendisi zaten yüklettirecek. <br>
+          NDP472 bu aşamada yüklenmek zorunda değil fakat Exchange Server kurulumunda bunu kendisi zaten yüklememizi sağlayacak. <br>
         </p>
+
         <p>
           Unified dosyasını Next, Next kuruyoruz. <br>
           [+]Kutucuğu işaretle. <br>
@@ -207,6 +223,7 @@
           Kendisi internete bağlı ise, Connect seçilerek Check etmesi sağlanabilir. <br>
           Microsoft'ta kurulumu en uzun süren Setup'tır. <br>
         </p>
+
         <p class="bg-script">
           Minimum Domain ya da Schema Admin olarak Setup'a başlamalıyız.
           > İlk aşamadan sonra Introduction yapar. <br>
@@ -227,6 +244,7 @@
           Çünkü güvenliği sağlar, istersek başka bir Firewall kurup o makine üzerinden geçirebiliriz. <br>
           > Bu konumdan sonra, yetki var mı?, Active Directory'e erişebiliyor muyum? vs gibi kontroller yapar. <br>
         </p>
+
         <p>
           Şuana kadar olanlar kurulum ayarlarıydı, henüz Setup başlamadı. <br>
           OWA Protokolü https kullanacağı için eğer makinede yok ise bu noktada alt alanda Web Server'ı da kendisi kurar. <br>
@@ -234,6 +252,7 @@
           Bunu kendisi de yapabilir biz de yapabiliriz. <br>
           Eski versiyonlarında bizim yapmamız gerekirdi. <br>
         </p>
+
         <p class="bg-script">
           > Install <br>
           14 aşamalı bir Exchange Setup başlatılır. <br>
@@ -257,7 +276,7 @@
 
         <h4>Şirketler arası mail atmak</h4>
         <p>
-          KAYITTAN TEKRARLAR
+          KAYITTAN TEKRARLA
 
           Genel olarak mantık, DNS'ten diğer server'ın Host kaydını oluşturmak. <br>
           Yani bir MX kaydı oluşturup bu Host kaydını işaret etmek. <br>
@@ -269,7 +288,7 @@
         <div class="text-center container p-3 bg-script">
           <div class="d-flex justify-content-evenly navigation">
             <a href="25-02-2023.html" class="bg-script">25.02.2023</a>
-            <a href="" class="bg-script">xxx</a>
+            <a href="../March-03-2023/04-03-2023.html" class="bg-script">04.03.2023</a>
           </div>
         </div>
         
