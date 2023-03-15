@@ -176,10 +176,6 @@
             Bunun yapmasnın sebebi Database'i daha hızlı kullanmaktır.
         </p>
 
-        <p class="h1">
-            Backup Tool'una tekrar bak.
-        </p>
-
         <p class="bg-script">
             > Recovery Wizard <br>
             -> Recover edebileceğimiz item'ların listesini görürüz. <br>
@@ -207,6 +203,7 @@
 
         <hr>
 
+        <h4>VMware ile sanallaştırma</h4>
         <p>
             Şuanda gireceğimiz konu, 100% olarak bir firmadan bulunacak bu sebeple kurs için en önemli konulardan birisidir. <br>
             Sanallaştırmadan Microsoft'un sanallaştırma teknolojisi olan Hyper-V'yi kullandık. <br>
@@ -232,16 +229,19 @@
 
         <hr>
 
-        <p>
-            Azure Microsft'un Cloud platformudur.
+        <p class="bg-script">
+            <span class="h6" style="border-bottom: 1px solid rgb(139, 233, 253);">Ekstra not</span> <br><br>
+
+            Azure Microsft'un Cloud platformudur. <br>
             Boş bir makine ya da üzerinde işletim sisteminin olduğu ve onun üzerinde belli bir servisin olduğu, hiç bir donanım yatırımı yapmadan Cloud olarak hizmet almamızı sağlayan platformdur.
         </p>
         
 
         <hr>
 
+        <h5>VMware Workstation Install</h5>
         <p class="bg-script">
-            VMware Workstation Install Setup devam. <br>
+            > Setup <br>
             > [] Check'leri kaldır. <br>
             > Next <br>
             > Next <br>
@@ -253,8 +253,8 @@
             Ya da 30 gün deneme sürümünü kullanabiliriz. <br>
         </p>
         
+        <h5>VMware Workstation ekranı</h5>
         <p>
-            VMware Workstation ekranında; <br>
             Sol tarafta oluşturduğumuz makineleri görürüz. <br>
         </p>
 
@@ -306,15 +306,16 @@
         </p>
 
         <h5>Sanal makine oluşturmak</h5>
-        <p>
-            Create New Virtual Machine
-            > [+]Typical
+        <p class="bg-script">
+            > Create New Virtual Machine <br>
+            > [+]Typical <br>
             > Installer disc image file(iso):
-            -> VMware Workstation kurduğumuz makineye Host denir. <br>
-            Hizmeti veren; Host. <br>
-            Bu hizmeti çalıştıran fiziksel makineye Host denir. <br>
-            O Fiziksel makinenin üzerine kurulan her bir VMware sanal makinesine de Guest adıverilir. <br>
-            > iso'yu buradan Browse edip kurulumu başlatırsak, Server OS için Key sorar, sonradan eklemeyi seçip o şekilde Wizard'a devam ederiz.
+        </p>
+
+        <p>
+            -> VMware Workstation kurduğumuz makineye yani bu hizmeti çalıştıran fiziksel makineye <b>Host</b> denir. <br>
+            Bu fiziksel makinenin üzerine kurulan her bir VMware sanal makinesine ise <b>Guest</b> adıverilir. <br>
+            > iso'yu buradan "Browse" edip kurulumu başlatırsak, Server OS için Key sorar, sonradan ekleyi seçip o şekilde Wizard'a devam ederiz.
         </p>
 
         <p class="bg-script">
@@ -322,12 +323,14 @@
             [+]Microsoft Windows <br>
             -> Tüm versiyonlarını gösterir. <br>
             [+]Linux <br>
+            -> Tüm versiyonlarını gösterir. <br>
             [+]VMware ESX <br>
+            -> Tüm versiyonlarını gösterir. <br>
             [+]Other
         </p>
 
         <p>
-            Yukarıda bir Sanal Kasa ayarlıyoruz ve üzerindeki işletim sistemi şu olsunu seçiyoruz. <br>
+            Yukarıda bir Sanal Kasa ayarlayıp üzerindeki işletim sistemi şu olacak diyoruz. <br>
         </p>
 
         <p class="bg-script">
@@ -417,6 +420,7 @@
 
         <hr>
 
+        <h4>VMware ESXi(Elastic Sky X Integrated)</h4>
         <p>
             Çok fazla sayıda Sanal Makine üretilecekse, fiziksel donanıma direkt erişen yani arada bir Hypervizor katmanını üzerinde çalıştıran herhangi bir işletim sistemi kullanmadan direkt olarak Fizikselin üzerinde çalışabilen sanallaştırma teknolojileri kullanılmalıdır. <br>
             VMware için bu VMware ESXi'dır. <br>
@@ -425,6 +429,10 @@
             Tıpkı işletim sistemi gibi direkt olarak donanımın üzerine kurulur. <br>
             ESXi kurduğumuz makineye Host denir. <br>
             Daha doğrusu ESXi'ın kendisine Host diyeceğiz. <br>
+            ESX Bare Metal yani çıplak metal olarak isimlendirilen, herhangi bir işletim sisteminin üzerinde çalışmayan tipte bir programdı. <br>
+            Ancak Linux Kernel ile bir sanal makine üretilip onun üzerinden hizmet verirdi. <br>
+            Daha sonradan VMware'in mühendisleri Linux Kernel üzerinden, VMkernel adıverilen bir microkernel geliştirdiler. <br>
+            ESXi, VMkernel'in üzerinde çalışır.
         </p>
 
         <h6>VMware Workstation'ın Donanım ile ilişkisi;</h6>
@@ -451,6 +459,7 @@
             Bu işyerinde bu şekilde yapılmayacak tabiki sadece eğitim amaçlı VMware Workstration üzerinden bir sanal makinenin üzerine direkt ESXi kuracağız.
         </p>
 
+        <h5>ESXi Install</h5>
         <p>
             Virtual machine hardware compatibility'de bu makinenin üzerinde şu işletim sistemine uyumlu bir donanım oluşturacağım demiş oluyoruz. <br>
             Örneğin Workstation 15.x seçip üzerine 16.x kurmaya çalışırsak hata verir fakat tam tersini yaparsak çalışır. <br>
@@ -469,6 +478,7 @@
             Oluşturulan donanımın Setting'lerine gidip, ESXi kurmak için; iso dosyalarının içinden VMware-VMvisor-Installer-7.0U2-17630552.x86_64.iso'yu seçiyoruz. <br> 
         </p>
 
+        <h5>ESXi Configuration</h5>
         <p>
             Bu aşamadan sonra Power'a basarız. <br>
             Gelen Setup ekranında en üstteki seçeneği Enter'larız. <br>
@@ -488,7 +498,7 @@
             Enter diyerek sistemin Reboot olmasını sağlarız. <br>
         </p>
 
-        <h4>ESXi kurulumundan sonra yapılacaklar</h4>
+        <h5>ESXi kurulumundan sonra yapılacaklar</h5>
         <p>
             Makinenin DHCP'den IP aldığını görüyoruz. <br>
             Bu şu anlama gelir, bu makineye erişimi olan herhangi bir makineye gidip, orada verdiği IP'nin adresi ile bağlandığımızda snallaştırma yapabileceğimiz arayüzü açar. <br>
@@ -496,8 +506,6 @@
             System Customization ekranı açılır. <br>
             Bu makine bir hizmet vereceği için mutlaka Static IP'si olmalıdır. <br>
         </p>
-
-        <span>BU KISIMLARI KAYITAN TEKRARLA</span>
 
         <p class="bg-script">
             > Configure <br>
@@ -519,8 +527,6 @@
             Ayarlar tamamlandı, bu ekrandan çıkabilmek için ESC'ye basarız. 
         </p>
 
-        <span>BU KISIMLARI KAYITAN TEKRARLA</span>
-
         <p>
             Sistemi Reboot ederiz ve ilk ekranda istersek herhangi bir Client'imizden NetBIOS Name ile de yani https://esx01/ ile giderek erişebileceğimizi görüyoruz.
         </p>
@@ -539,9 +545,8 @@
         </p>
 
         <p>
-            Sanalda ESXi'ın donanımını Client'lerden biraz daha yüksek yap.
+            Sanalda uygulama yaparken ESXi'ın donanımını Client'lerden biraz daha yüksek yap.
         </p>
-
 
         <hr>
         
