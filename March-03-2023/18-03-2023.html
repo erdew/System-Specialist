@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>18.03.2023</title>
+    <link rel="icon" type="image/x-icon" href="../eg_favicon.JPG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 14px;
+        color: #e2e3e7;
+        background-color: #232529;
+        /*
+        e2e3e7
+        c4c7cf
+        868d9a
+        696e79
+        41454c
+        35383f
+        292c31
+        232529
+
+        31333a
+        */
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: rgb(139, 233, 253);
+      }
+
+      a{
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #e2e3e7;
+      }
+
+      .container {
+        max-width: 800px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+      }
+
+      .bg-script {
+        color: rgb(139, 233, 253);
+        background-color: #31333a;
+        padding: 20px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+        text-align: start;
+        font-size: 15px;
+        line-height: normal;
+      }
+
+      .navigation\a:hover {
+        color: #31333a;
+        background-color: rgb(139, 233, 253);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container p-4 mt-2 mb-5">
+        <h1><a href="../index.html" class="display-4">18.03.2023</a></h1>
+        
+        <hr>
+        
+        <h4>ESXi Web Arayüzü</h4>
+        <p>
+            VMware Workstation üzerine bir DC bir de ESXi kur. <br>
+            DC 2 GB RAM. DC IP 10.3.34.103 <br>
+            ESXi 10 GM RAM olsun. <br> <br>
+
+            ESXi Browser'da; <br>
+            > Navigator <br>
+            > Host: ESXi'ı kurduğumuz makine. <br>
+            Yani üzerinde sanallaştırma yapacağımız makinenin donanım bilgileri, işletim sistem versiyonu vs. gibi detay bilgileri görürüz.
+        </p>
+
+        <p class="bg-script">
+            > ESXi Browser <br>
+            > Navigator <br>
+            > Manage <br>
+            > Advanced Settings <br>
+            > Time & Dat
+        </p>
+
+        <h4>ESXi'ı Domain'e nasıl katarız?</h4>
+        <p class="bg-script">
+            > ESXi Browser <br>
+            > Navigator <br>
+            > Manage <br>
+            > Security Users <br>
+            > Authentication <br>
+            > Join Domain <br>
+            -> ESXi'ya IP verirken DNS girip IP vermiş olmalıyız. <br>
+            > Domain name: sirket.com <br>
+            > Authentication yapılır. <br>
+            > Join Domain <br>
+            -> Herhangi bir sorun yoksa bu konumda Domain'e girdiğimizi görürüz.
+        </p>
+
+        <p class="bg-script">
+            > ESXi Browser <br>
+            > Navigator <br>
+            > Monitor <br>
+            -> Bu Host'un kullandığı Donanımı görüntüleyebiliriz.
+        </p>
+        
+        <p>
+            Donanım olarak bir Storage taktığımızda Host onu sabitler. <br>
+            Guest'lerde onu kullanamayız. <br>
+            Bu sebeple yeni bir Disk takmalıyız. <br>
+            VMware Work Station'da ESXi'a yeni bir Disk üretip, takarız.
+        </p>
+
+        <p class="bg-script">
+            > VM Settings <br>
+            > Add... <br>
+            > Disk <br>
+            > SCSI <br>
+            > 100 GB <br>
+            > Disk Name: Datastore1-Esxi1.vmdk
+        </p>
+
+        
+        <span>Host'u isimle de çözebilmek için;</span>
+        <p class="bg-script">
+            > DC <br>
+            > DNS <br>
+            > Forward Lookup Zones <br>
+            > sirket.com <br>
+            > New Host <br>
+            > esxi01 <br>
+            > 10.3.34.123
+        </p>
+
+        <p>
+            Windows makineler otomatik olarak DNS'e eklenirken, ESXi'lar katılmazlar, yukarıdaki şekilde Manuel olarak Host kaydı ekleriz. <br><br>
+
+            Bu noktadan sonra https://esxi01.sirket.com şeklinde erişebiliriz.
+        </p>
+
+        <h4>Bağladığımız Disk'i ESXi'ya tanıtmak</h4>
+        <p class="bg-script">
+            > Storage <br>
+            > Datastores <br>
+            > New Data Store <br>
+            > Create new VMFS store <br>
+            > Ürettiğimiz bu Disk burada görünür. <br>
+            > Esxi1 -> isim gireriz. <br>
+            > Select partitionnig options <br>
+            -> Use full disk <br>
+            -> VMFS 6 -> VMware'in kendi dosya sistemidir. <br>
+            > Next <br>
+            > Özet geçer. <br>
+            -> Disk'i formatlayacağını söyler. <br>
+            > Yes
+        </p>
+
+        <p>
+            Bu noktada ESXi direkt Attach edilmiş bir Disk'e sahip olduk. <br>
+            İstersek, NAS gibi Storage'lar da eklenebilir.
+        </p>
+
+        <p class="bg-script">
+            > Datastore Browser <br>
+            -> Disk'in içeriğini görüntüleyebiliriz.
+        </p>
+
+        <h4>ESXi üzerinden bir sanal makine oluşturmak</h4>
+        <p class="bg-script">
+            > Create Virtual Machine <br>
+            -> Deploy a vm from an OVF -> Zaten kurulu olan, portal'da duran vs. VM var ise buradan direkt olarak bu makinenin üzerine kurulabilirler. <br>
+            -> Yani daha önceden kurduğumuz makineyi buraya register edip kullanabiliriz. <br>
+            > Create New <br>
+            > Name: Server <br>
+            > ESXi 7 -> Donanımına uyumlu olsun. <br>
+            > Windows -> Uyumlu olsun. <br>
+            > Windows Server 2016 -> Hedef OS <br>
+            > Disk -> Ürettiğimiz Disk'i burada seçeriz. <br>
+            > Virtual Hardware gireriz. <br>
+            -> CPU -> 2 <br>
+            -> Memory -> 2048 MB <br>
+            > Hard Disk <br>
+            -> Disk Provisioning; 
+        </p>
+
+        <p>
+            Thin -> Verdiğimiz Disk'in tamamını kullanmaz, ihtiyacı kadarını OS'ye yükler. <br>
+            Thick provi.. lazily zeroed -> Verdiğimiz kadarını ayırır ve üzerine OS'yi yükler. <br>
+            thick eagerly -> Verdiğimiz kadarını ayırır ve üzerine OS'yi yükler.
+        </p>
+
+        <p class="bg-script">
+            > VM Options <br>
+            > Boot Options <br>
+            > Firmware -> BIOS <br>
+            > Özet geçer. <br>
+            > Finish
+        </p>
+
+        <p>
+            Ürettiğimiz makine Virtual Machines'te listelenir. <br>
+            Bu makineyi OS'in Setup'ını yapabilmek için Boot edebilmak için CD/DVD takılır.
+        </p>
+
+        <p class="bg-script">
+            > VM <br>
+            > Right Click <br>
+            > Edit Settings <br>
+            > CD/DVD Drive 1 <br>
+            [+] Connect
+        </p>
+
+        <p>
+            -> Host device -> Bu durumda ESXi'ın fiziksel CD'sine Connect olur. <br>
+            Bu sebeple Host'un yani ESXi'ın DVD sürücüsüne yüklemek istediğimiz iso'yu takarız. <br><br>
+
+            Makine çift tıklayıp başlatabiliriz.
+        </p>
+        
+        <h4>ESXi üzerindeki bir sanal makineyi daha iyi bir arayüzden yönetmek</h4>
+        <p>
+            iso dosyaları arasından VMRC C12 alınır. <br>
+            DC'ye yapışıtırırız ki DC üzerinden yönetebilelim. <br>
+            Çift tıklayarak Setup'ı başlatırız.
+        </p>
+
+        <p class="bg-script">
+            > ESXi'a gideriz <br>
+            > Ürettiğimiz VM'in üzerine gidip <br>
+            > Console'a tıklarız. <br>
+            > Remote Console'a tıklayıp Allow deriz. <br>
+            > [+]Allow <br>
+            > Connect deriz. <br>
+            -> Yukarıda yüklediğimiz program aracılığla sanal makinenin Full ekran olmasını sağlar.
+        </p>
+
+        <h4>ESXi Guest'lerine VMware Tools yüklemek</h4>
+        <p>
+            > VM <br>
+            > Actions <br>
+            > Guest OS <br>
+            > Install VMware Tools
+        </p>
+
+        <p>
+            Yeni kurduğumuz bu makineye; <br>
+            10.3.34.83 -> IP(Aynı Network'ten IP ver)
+        </p>
+
+        <p>
+            Birden çok sanal makinemiz var ise, herhangi bir makineye gidip VMware Workstation kurarız. <br>
+            Kurduğumuz bu makinenin Vmware Workstation'ununda;
+        </p>
+
+        <p class="bg-script">
+            > File <br>
+            > Connect to Server <br>
+            -> Connect olabileceğimiz Server'lar; yalnızca ESXi ya da VCenter Server'larına Connect olunabilir. <br>
+            > Server name: 10.3.34.123 <br>
+            > user name: root <br>
+            > password: Password1! <br>
+            > OK <br>
+            > Remember <br>
+            -> Berlittiğimiz ESXi'ya Workstation arayüzünden Connect olur.
+        </p>
+
+        <p>
+            Virtual Machines listesinden istediğimiz makineyi açabiliriz. <br><br>
+
+            Bu yöntemle ESXi üzerinde çalışan Guest'i VMware Workstation aracılığıyla çalıştırırız. <br>
+            Burada Workstation sadece bir Monitör görevi görür. <br><br>
+
+            Bu aynı zamanda ESXi'a uzaktan bağlanmanın başka bir yöntemidir. <br><br>
+
+            VMware Workstation'da eklediğimiz Server listelenir.
+        </p>
+
+        <h4>ESXi Host'una Network Storage(NAS, SAN) bağlamak</h4>
+        <p>
+            DC'ye yeni bir Disk üretip, takıyoruz ve bunu SAN'a çevireceğiz. <br>
+            Sonuçta Network'te bulunan bir Storage olacak. <br>
+            Daha sonra ESXi'a gidip, bu Network Storage'a Connect olacağını söyleyeceğiz. <br><br>
+            
+            DC'nin üzerinde NAS oluturuyoruz. <br><br>
+            
+            ESXi'ye NAS'ı Hostbas adaptör ile bağlayabiliriz.
+        </p>
+
+        <p class="bg-script">
+            > ESXi <br>
+            > Navigator <br>
+            > Storage <br>
+            > Software iSCSI <br>
+            -> Adaptörü üretebileceğimiz konum. <br>
+            > [+]Enable <br>
+            > Add dynamic target <br>
+            -> Address(IP) -> 10.3.34.103 <br>
+            > Save Configuration <br>
+            -> Refresh'ledikten sonra vmhba65'ın geldiğini görürüz. <br>
+            > Devices <br>
+            -> Bağlanılmış olan Device'ları gösterir. <br>
+            -> ! işaretli Warning veren yeni Disk'i görürüz.
+        </p>
+
+        <p>
+            Bu Disk adına yeni Datastore üretmemiz yani Formatlamamız gerekiyoruz.
+        </p>
+
+        <p class="bg-script">
+            > Datastore <br>
+            > New <br>
+            > NAS03 <br>
+            -> O Disk'i bu konumda görür.
+        </p>
+
+        <p>
+            Yeni bir Sanal Makine oluşturduğumuzda, Select Storage kısmında, bu Strorage görünür.
+        </p>
+
+        <p>
+            ESXi'ların iş sürekliliği için birbirleri arasında, birinin diğerinin donanımını kullanmasını sağlayan bir özellik vardır.
+        </p>
+
+        <h4>Bir ESXi Host'un Local Datastore'unda duran Sanal Makineyi, NAS'a atmasını sağlamak</h4>
+        <p>
+            Bunun için bir Local Storage bir de NAS gerekir. <br><br>
+
+            Sanal makineler çalışırken, yani Data'lar RAM'deyken, bir Datastore'dan diğerine atabilmek mümkündür. <br>
+            Bu arayüzden bu transfer işlemi yapılamaz. <br>
+            Burası Web Arayüzü olduğu için Host'un Guest'lerini yönetmek üzerine kurgulanmıştır. <br>
+            Bunun gibi Storage transfer işlemlerini yapabilmek için VSphare Client yazılımını kullanmalıyız. <br>
+            Ya da Sanal Makine'lerin kullandığı Host'u değiştirmek için de yine aynı yazılım kullanılır.
+        </p>
+
+        <p>
+            Bu işlemi sanalda yapacağımız için iki tane ESXi'a ihtiyaç var, o sebeple donanımları düşürülebilir. <br>
+            5'er GB ve 2 Process ile iki makineyi de konfigüre edip, ikinci makinenin Esxi'ını kuruyoruz.
+        </p>
+
+        <p class="bg-script">
+            2.ESXi'ın kurulumundan sonra; <br>
+            IPv4 10.3.34.143 <br>
+            DNS: 10.3.34.103 <br>
+            Hostname: esxi3-1 <br>
+            Suffix: sirket3.com
+        </p>
+
+        <p>
+            DC'de DNS'e bu ESXi için de Host kaydı eklenir. <br><br>
+
+            Bu noktada tüm makineleri Snapshot alıyoruz. <br>
+            +Saat işaretine basarak alıyoruz.
+        </p>
+
+        <hr>
+
+        <h5>Ekstra not</h5>
+        <p>
+            Çok fazla Backup alacağımız durumlarda; <br>
+            Backup Tool'u alıp bunu bir İşletim Sistemine kurarız. <br>
+            Bunun ayrı bir VLAN oluşturulup tek yönlü iletişim sağlanır. <br>
+            Bu VLAN bir Server'a erişir. <br>
+            NAS o Server üzerinden çalıştırılır. <br>
+            Bu senaryo direkt olarak işin fizikselden yürümesi durumunda idealdir. <br>
+            Sanal bir makine kurulsa bile yine aynı işlem uygulanabilir.
+        </p>
+
+        <hr>
+        
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="12-03-2023.html" class="bg-script">12.03.2023</a>
+            <a href="#" class="bg-script ">xxx</a>
+          </div>
+        </div>
+        
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
