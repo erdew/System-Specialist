@@ -332,21 +332,21 @@
 
             Önce Site için Replikasyon KCC marifetiyle Partner'ın belirlenmesi ve bu Partner'lar arasında sıkıştırmadan yapılır. <br>
             Karşı Site'ta da içeride aynı işlem yapılır. <br>
-            Her Site'tan bir temsilci seçilir, buna "Bridgeheat Server" adıverilir. <br>
+            Her Site'tan bir temsilci seçilir, buna "Bridgehead Server" adıverilir. <br>
             Site'lar arasındaki Replikasyon bu iki DC arasında yapılır. <br>
             Güncel bilgiyi alan DC, Site'ın içindeki diğer DC'lere bu güncel bilgiyi gönderir.
         </p>
 
-        <h5>Bridgeheat Server nasıl belirleniyor?</h5>
+        <h5>Bridgehead Server nasıl belirleniyor?</h5>
         <p>
-            ISTG(Inter Site Topology Generator) -> Site'taki Bridgeheat Server'ı seçen sevistir. <br>
+            ISTG(Inter Site Topology Generator) -> Site'taki Bridgehead Server'ı seçen sevistir. <br>
             (Konu Site ise Server'dan kastımız her zaman DC'lerdir) <br>
-            En büyük GUID'si olan makineyi Bridgeheat Server olarak seçer. <br>
+            En büyük GUID'si olan makineyi Bridgehead Server olarak seçer. <br>
             Site'ın içinde birden fazla DC var ise alternatifini de seçer, hata töleransı için.
-            Bridgeheat Server Manuel olarak atanabilir. <br>
-            Eğer Bridgeheat Server'ı Manuel atarsak, artık ISTG devreden çıkar. <br>
-            Yani otomatik olarak Bridgeheat Server'ı seçen servis kapanır. <br>
-            Bu da artık otomatik olarak seçilen bir Bridgeheat Server'ımızın olmayacağı anlamına gelir.
+            Bridgehead Server Manuel olarak atanabilir. <br>
+            Eğer Bridgehead Server'ı Manuel atarsak, artık ISTG devreden çıkar. <br>
+            Yani otomatik olarak Bridgehead Server'ı seçen servis kapanır. <br>
+            Bu da artık otomatik olarak seçilen bir Bridgehead Server'ımızın olmayacağı anlamına gelir.
         </p>
 
         <h6>Manuel olarak nasıl belirlenir?</h6>
@@ -356,7 +356,7 @@
             Property
             General
             Örneğin IP'yi seçip Add edersek(Yani sağa çekersek) 
-            -> Site'lar arası transferler IP Protokolü(%99 bununla yapılır) ile SMTP(Mail trafiği için, çok yavaştır. Örneğin iki Mail Server birbirine SMTP ile gönderirler.), IP Protokolüyle transfer yaparken Bridgeheat Server oluyorsun, anlamına gelir.
+            -> Site'lar arası transferler IP Protokolü(%99 bununla yapılır) ile SMTP(Mail trafiği için, çok yavaştır. Örneğin iki Mail Server birbirine SMTP ile gönderirler.), IP Protokolüyle transfer yaparken Bridgehead Server oluyorsun, anlamına gelir.
         </p>
         <p>
             Eğer herkes örneğin Genel Müdürlüğe bağlı ise yani İstabula bağlı ise o durumda Site Link'leri değiştirmemiz gerekir. <br><br>
@@ -386,14 +386,14 @@
         </p>
         <p>
             Bu bağlantıların üzerinden Replikasyonlar gidecek. <br>
-            Yani şuanda örneğin TOKYO veya BERLIN'de seçilen Bridgeheat Server, Replikasyonu ISTANBUL'a gönderecek.
+            Yani şuanda örneğin TOKYO veya BERLIN'de seçilen Bridgehead Server, Replikasyonu ISTANBUL'a gönderecek.
             ISTANBUL diğerlerine gönderecek. <br>
             Gönderilenler de kendi içlerinde gelen Replikasyonu alacaklar.  
         </p>
         <p>
             Örneğin herhangi iki Site'ın arasında çok önemli bir veri transferi yapılıyorsa, istersek o Site'lar arasındaki iletişim için alternatif bir alanabilir. <br>
             Veya, alternatif hat almadan, yani örneğin BERLIN ile TOKYO'yu ayrı bir Site Link ile birbirlerine bağlayabiliriz. <br>
-            Örneğin TOKYO'daki Bridgeheat Server hem ISTANBUL'daki Bridgeheat Server'a hem de BERLIN'deki Bridgeheat Server'a Replikasyonu gönderebilir.
+            Örneğin TOKYO'daki Bridgehead Server hem ISTANBUL'daki Bridgehead Server'a hem de BERLIN'deki Bridgehead Server'a Replikasyonu gönderebilir.
         </p>
         <p>
             Site Link fiziksel bağlantı değildir. <br>

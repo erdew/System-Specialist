@@ -55,4 +55,38 @@ Windows Server üzerinde yapılacaklar;
 ☐ WINS Server oluştur.
 ☐ WINS Server'ın sürekliliğini sağla.
 ☐ Remote bağlantı kur.
-☐ Hedefin Remote bağlantısi Deny iken yine Remote olarak Allow olmasını sağla.
+☐ Hedefin Remote bağlantısı Deny iken yine Remote olarak Allow olmasını sağla.
+☐ RRAS Servisini kur.
+☐ RRAS'ta Static Routing yap.
+☐ RRAS'ta RIP yap.
+☐ RRAS'ta diğer Dynamic Routing Protocol'lerini nasıl uygulandığını araştır.
+☐ NAT Configuration yap.
+☐ VPN bağlantısı oluştur ve bağlan.
+☐ NPS kur.
+☐ NPS'i VPN Server'a tanıt.
+☐ NPS ile koşul oluştur.
+☐ Side to Side VPN yap.
+☐ Web Server kur.
+☐ HTTPS bağlantısı kurabilmek için sertifika üret.
+☐ Sertifikayı Web Page'e Binding'le.
+☐ WSUS kur.
+☐ Domain'deki Client'leri WSUS'a yönlendir.
+☐ Child Domain kur.
+☐ Yeni bir Forest oluştur.
+☐ Child/Paret Trust ilişkisi kur.
+☐ İki Forest arasında Trust ilişkisi kur.
+☐ Organizational Unit(Group Type vs tekrarla) oluştur ve düzenle.
+☐ Active Directory Site oluştur.
+☐ KCC ile Manuel Partnership'lik belirle.
+☐ Manuel olarak Bridgehead Server belirle.
+☐ Geri dönülemeyecek şekilde çöken DC'nin FSMO rollerini devret.
+☐ Group Policy'ler oluştur.
+☐ Group Policy ile Client'lere program kur.
+☐ Audit Policy oluştur.
+☐ Active Directory veya DC'nin Backup'ını alıp Restore'la.
+☐ Authoritative USN belirle.
+☐ Exchange Server'ı tekrarla.
+☐ VMware Workstation ile sanallaştırma yap.
+☐ VMware ESXi ile sanallaştırma yap.
+☐ Sanal makineler arasında NAS kurup, paylaştır.
+☐ vCenter kur ve konfigürasyonunu yap.

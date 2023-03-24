@@ -399,7 +399,7 @@
             Eğer bir objede herhangi bir şey değiştirirsek(herhangi bir aksiyonda), bu sayaç birer birer artar.
         </p>
 
-        <h5>Authorative USN belirlemek?</h5>
+        <h5>Authoritative USN belirlemek?</h5>
         <p>
             İlk replikasyondan sonra DC'ler arasında SN'ler karşılaştırılır ve sayısı bir öncekine göre farklı olan objeler update edilirler. <br>
             DC'lerin hangi objelerin değiştirildiğini tespit ederler. <br>
@@ -409,7 +409,7 @@
 
         <p>
             USL numarasına göre replikasyon belirlendiği için. <br>
-            Authorative USN belirleyerek, Restore'un USL'ini 100.000 yaparız ve Replikasyonda her zaman öne geçmesini sağlar ve yukarıdaki sorunu çözmüş olur. <br>
+            Authoritative USN belirleyerek, Restore'un USL'ini 100.000 yaparız ve Replikasyonda her zaman öne geçmesini sağlar ve yukarıdaki sorunu çözmüş olur. <br>
             Normalde bir obje üzerinde bir değişiklik yapıldığında bu sayacı bir artıracağı için ve Backup'taki USN'in sayısı da yapılan bu son değişikliği kapsamadığı yani USN'i daha düşük olduğu için Replikasyon zamanı geldiğinde Restore ve mevcuttaki USN karşılaştırılır ve mevcuttaki yüksek olduğu için Restore'daki değişiklik geçerli olamaz.
         </p>
 
@@ -419,7 +419,7 @@
 
         <p>
             Bir veritabanını Restore ederken, o veritabanını kullanan servis durdurulmalıdır. <br>
-            Yani NTDS'i Authorative Restore yapacaksak, o makinede Active Directory Service'ini durdurmamız gerekir. <br>
+            Yani NTDS'i Authoritative Restore yapacaksak, o makinede Active Directory Service'ini durdurmamız gerekir. <br>
             Hem servisi durdumalı hem de açılmış olmalı. <br>
             Bunun için makine Advanced Boot Options'tan başlatılır. <br>
             Açılışta F8'e basarız.
