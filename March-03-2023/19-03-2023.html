@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>19.03.2023</title>
+    <link rel="icon" type="image/x-icon" href="../eg_favicon.JPG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 14px;
+        color: #e2e3e7;
+        background-color: #232529;
+        /*
+        e2e3e7
+        c4c7cf
+        868d9a
+        696e79
+        41454c
+        35383f
+        292c31
+        232529
+
+        31333a
+        */
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: rgb(139, 233, 253);
+      }
+
+      a{
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #e2e3e7;
+      }
+
+      .container {
+        max-width: 800px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+      }
+
+      .bg-script {
+        color: rgb(139, 233, 253);
+        background-color: #31333a;
+        padding: 20px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+        text-align: start;
+        font-size: 15px;
+        line-height: normal;
+      }
+
+      .navigation\a:hover {
+        color: #31333a;
+        background-color: rgb(139, 233, 253);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container p-4 mt-2 mb-5">
+        <h1><a href="../index.html" class="display-4">19.03.2023</a></h1>
+        
+        <hr>
+
+        <h4>NAS ve ESXi ilişkisi</h4>
+        <p>
+          DC'den iSCSI Target'lara ikinci ESXi'da ekleriz.
+        </p>
+        <p class="bg-script">
+          > iSCSI Targets <br>
+          > Varolana Right Click <br>
+          > Properties <br>
+          > Initiators <br>
+          > Add <br>
+          > IP address(2.ESXi)
+        </p>
+
+        <p>
+          NAS'ın bozulması ya da kapanması veya onun bağlı olduğu HBA'nın bozulması durumuna karşın hizmetin devam edebilmesi için en az bir tane daha NAS kurulur.
+        </p>
+
+        <p>
+          Bu NAS'ta direkt olarak iki ESXi'a da bağlanır.
+        </p>
+
+        <p>
+          2.NAS'ı temsilen sanalda DC'ye ikinci Disk'i takıyoruz. <br><br>
+
+          Bağlanıdıktan sonra;
+        </p>
+
+        <p class="bg-script">          
+          > DC <br>
+          > iSCSI <br>
+          > TASKS <br>
+          > New <br>
+          -> Eklediğimizi seçeriz.
+        </p>
+
+        <p>
+          Bağlantıyı yaptıktan sonra; <br>
+          Connect olmadığını görürüz. <br>
+          Ekranı Refresh et.
+        </p>
+
+        <p>
+          ESXi'a gidip, Storage Devices ve Adapter ekranını Rescan et ve Reflesh'le. <br>
+          Bu noktadan sonra Device olarak NAS'ların ikisi de görünür. <br>
+          Bu Disk için yeni Datastore oluşturuyoruz.
+        </p>
+
+        <p>
+          Host 1'e geçip aynı işlemi burada da yaparız. <br>
+          Fakat yeni üretmeyiz, varolanı kullanırız. <br>
+          Disk'leri görebilmek için yine Rescan ve Refresh hatta Browser Refresh yapmak bile gerekebilir.
+        </p>
+
+        <h4>vCenter</h4>
+        <p>
+          Çalışır durumda olan ESXi'ların farklı donanım kullanmalarını sağlayabiyoruz. <br>
+          Otomatik olarak belli bir donanım limitine geldikten sonra daha rahat olan donanıma taşınır. <br>
+          Ya da aynı şekilde kullanılan NAS'a çok fazla veri yazılıyorsa, hem çok yüksek miktarda hem de boyutta veriler yazılıyorsa, bu durumda da sanal makineyi mevcuttaki diğer NAS'a taşır. <br>
+          Örnek verilecek olursa üzerinde Web Server bulunduran bir ESXi Guest'i aşırı derecede trafik alırsa ve mevcut olandan daha fazla kaynak kullanmak zorundaysa gerçekleşilir.
+        </p>
+
+        <p>
+          Hem makineyi hem de onun Data'sını aynı anda diğer NAS'a atar. <br>
+          -> Bunu yapabilen yazılım; vCenter'dır.
+        </p>
+
+        <p>
+          Fakat çalışan bir makinenin Data'ları kullanıldığı için RAM'de bulunurlar. <br>
+          VMware Whispare -> Bu tarz bir donanım transferini yapabilen yazılımdır.
+        </p>
+
+        <p>
+          Yukarıdaki işlemler VMware sayesinde yapılır fakat onun üzerinden yani ESXi'ların üzerinden çalıştırılacak bir yazılım ile bu işlemler yapılır.
+        </p>
+
+        <p>
+          Cloud'ta bu tarz bir donanım ihtiyacında donanım otomatik olarak arttırılabilir. <br>
+          Hizmeti durdurmadan Cloud gerekli donanımı Client'e sağlar.
+        </p>
+
+        <p>
+          HBA sadece Client ile Storage arasında Client'e Storage sağlamak için kullanılır. <br>
+          Aralarında olacak kaynak kullanmak gibi acil bir değişim için yapılacak olan Data transferinde başka bir hat kullanılır. <br>
+          Bunun için Ethernet kullanırken aynı zamanda daha professiyon olan bir çözüm de bu iki makine arasına özel bir hat çekilmesidir.
+        </p>
+
+        <p>
+          vCenter uygulaması bu hattın gerektiği durumda kullanılmasını sağlar.
+        </p>
+        
+        <p>
+          vCenter'ın amacı birden çok Host'un aynı anda kullanılmasını sağlar. <br>
+          Tek bir Storage ve Host'umuz var ise kullanımı gerekmez zaten. <br>
+          İki Storage ya da aynı NAS'a bağlı en az iki Host olduğu durumlarda kullanılır.
+        </p>
+
+        <p>
+          İkinci NAS bağlamak ciddi bir maliyet olduğu için, genelde bir tane olur. <br>
+          Fakat banka gibi çok önemli veri taşıyan şirketler kesinlikle birden çok Storage kullanırlar.
+        </p>
+
+        <p>
+          vCenter minumum 16 GB RAM kullanır. <br>
+          Setup için minimum 12 GB RAM kullanılabilir.
+        </p>
+
+        <h4>vCenter nereye kurulur?</h4>
+        <p>
+          Bir Host'un yani ESXi'ın içine kurulur. <br>
+          VMware için ESXi aslında bir İşletim Sistemidir. <br>
+          Bu programı bu İşletim Sisteminin içine yüklemek durumundayız.
+        </p>
+
+        <p>
+          Sanalda istersek varolan bir Host'un içine kurabiliriz. <br>
+          Fakat vCenter kurulacak makinenin sadece onu çalıştırması daha idealdir. <br>
+          İlk Host'un üzerindeki diğer Sanal Makineler yüzünden yapılacak bakımlar yüzünden bu servis de kapanmak zorunda kalır vs. <br>
+          O sebeple yeni bir makineye yeniden bir ESXi kurarız.
+        </p>
+
+        <p>
+          Yeni oluşturduğumuz makineye;
+        </p>
+
+        <p class="bg-script">
+          > IPv4: 10.3.34.163 <br>
+          > DNS: 10.3.34.103 <br>
+          > Dns Suffix: esxi33-vCenter3 <br>
+          > Hostname: sirket3.com
+        </p>
+
+        <p>
+          Daha sonra DNS'te kayıt açıyoruz.
+        </p>
+
+        <p>
+          Storage'ta ya da Local'de Disk kurarız. <br>
+          Fakat ideali, yani uygulanan NAS'a yani Storage'lara kurulmasıdır.
+        </p>
+
+        <h4>vCenter Setup</h4>
+        <p>
+          İstersek, uzaktan kurulum yapabiliriz. <br>
+          İstersek ağdaki herhangi bir maknieye takabiliriz veya direkt o makineye de takabiliriz. <br><br>
+
+          Kurulum iso'su;
+        </p>
+
+        <p class="bg-script">
+          > VMware-VCSA-all-7.0.2-176...iso <br>
+          > Right Click <br>
+          > Mount <br>
+          > DVD <br>
+          > Doule Click <br>
+          > vcsa-ui-installer <br>
+          > win32 <br>
+          > installer.exe <br>
+          -> vCenter'ı kuracağımız Setup dosyası başlatılır.
+        </p>
+
+        <h4>vCenter Setup Wizard</h4>
+        <p class="bg-script">
+          > Install(Sıfırdan install) <br>
+          > Upgrade(Yükseltmek) <br>
+          > Migrate(Kurulu vCenter'ı başka bir makineye göç etmesini sağlamak) <br>
+          > Restore(Backup'tan geri yüklemek)
+        </p>
+
+        <p class="bg-script">
+          > Install <br>
+          > vCenter Server deployment target(vCenter'ı kurmak istediğimiz konumu ve Authentication'ı yapılır) <br>
+          -> Server name: FQDN ya da IP Address girilir. <br>
+          -> 10.3.34.163 <br>
+          -> HTTP port: 443 <br>
+          -> user name: root <br>
+          -> password: Password1!
+        </p>
+
+        <p class="bg-script">
+          > Next <br>
+          -> Hedef makineye güvendiğimizi sorar. <br>
+          > Yes
+        </p>
+
+        <p class="bg-script">
+          > Set up vCenter Server VM <br>
+          -> VM Name: vCenter3 <br>
+          -> set root password: Password1! <br>
+          -> Confirmation: Pasword1!
+        </p>
+
+        <p class="bg-script">
+          > Select deployment size <br>
+          -> Yöneteceği ESXi'ların(Host'ların) kaç tanesini yöneteceğimizi belirtiriz. <br>
+          -> Tiny, Small, Medium, Large, X-Large <br>
+          -> Bu kategorilerden birisini seçeriz, oluşturulacak Sanal Makinelerin ne kadar donanım kaynağına sahip olacağını belirtmiş oluyoruz. <br>
+          -> Default
+        </p>
+
+        <p class="bg-script">
+          > Select datastore <br>
+          -> Local'deki ilk Disk'e de kurmamızı sağlıyor. <br>
+          -> Yeni ürettiğimize değil de direkt kendi üzerindeki Disk'e kurarız. <br>
+          -> [+]Enable Thin Disk Mode <br>
+          -> İhtiyaç kadar Disk alanı almasını sağlar. <br>
+          -> ideali Disk'in tamamına oturmasını sağlamaktır.
+        </p>
+
+        <p class="bg-script">
+          > Configure network settings  <br>
+          -> vCenter olacak makinenin IP ayarlarını buradan belirleriz.
+        </p>
+
+        <p class="bg-script">
+          -> Network:	VM Network <br>
+          -> IP version:	IPv4 <br>
+          -> IP assignment:	static <br>
+          -> FQDN:	vCenter3.sirket3.com <br>
+          -> IP adress:	10.3.34.203 <br>
+          -> Subnet mask or prefix length: 	24 <br>
+          -> Default gateway:	10.3.34.1 <br>
+          -> DNS servers:	10.3.34.103
+        </p>
+
+        <p>
+          Bu noktada Setup'ın yarım kalmaması için DNS'e gidip bu makinenin Host kaydını oluştururuz.
+        </p>
+
+        <p class="bg-script">
+          > Summary <br>
+          > Finish
+        </p>
+
+        <h4>Setup bittikten sonra;</h4>
+        <p class="bg-script">
+          vCenter olacak ESXi makinenin(Host'un) üzerine vCenter'ı kurdum fakat vCenter Server Configuration ekranına bağlanmak istiyorsak; <br>
+          https://10.3.34.203:5480/ adresinden bağlanabiliriz.
+        </p>
+
+        <h4>vCenter Configuration Wizard</h4>
+        <p class="bg-script">
+          > Next <br>
+          -> Configuration ekranını başlatır.
+        </p>
+
+        <p class="bg-script">
+          > vCenter Server Configuration <br>
+          -> Time synchronization mode: sync time with the ESXi host <br>
+          -> ESXi Host'ları ile saatleri kesinlikle aynı olmalıdır. <br>
+          -> SSH access: Enable <br>
+          -> Komutlarla çalışmak için Enable edilmeli.
+        </p>
+
+        <p class="bg-script">
+          > SSO Configuration <br>
+          [+]Create new <br>
+          -> Single Sign-On domain name: sirket3.com <br>
+          -> vCenter'ı Domain'e eklemiştik, dolayısıyla bu vCenter'ı Active Directory ile entegre edebiliriz. Bu sayede bu makineye Domain Admin hesabından Full yetki ile Log-on olabiliriz.  <br>
+          -> username: administrator -> Bu hesap için bunu uyguluyoruz. <br>
+          -> password: Password1! -> Domain Admin Password'unu gireriz. <br>
+          -> Bu aşamadaki Password daha kompleks olmalı Admin'in şifresi bu şekilde değilse değiştir. <br>
+          -> Değiştirmek için; DC: ctrl+alt+insert, Change Password.
+        </p>
+
+        <p class="bg-script">
+          > Next <br>
+          > Summary <br>
+          > Finish <br>
+          > OK <br>
+          -> Kurulumu yapmaya başlar.
+        </p>
+
+        <hr>
+        
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="18-03-2023.html" class="bg-script">18.03.2023</a>
+            <a href="" class="bg-script">xxx</a>
+          </div>
+        </div>
+        
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
