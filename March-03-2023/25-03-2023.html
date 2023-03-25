@@ -171,8 +171,37 @@
 
         <h5>vCenter Restore</h5>
         <p>
-            
+
         </p>
+
+        <span>SAAT 11:08'dan itibaren tekrarla. 2. Kadın 20.dk'sı.</span>
+
+        <p>
+            vCenter donanımı yetmediği için vCenter'ı fiziksel olarak başka bir makineye taşıyoruz. <br>
+            Bunun için iSCS initiator'a o yeni fiziksel makineyi ekleriz. <br>
+            vCenter'ın kurulu olduğu Local Disk'ten alıp bunu NAS'a bağlayacağız. <br>
+            Bunun için onu taşıyan Host'un arayüzüne gidilir, Host Bus Adapter eklebir. <br>
+            Dynamic Targets'a 2.NAS'ı üzerinde taşıyan makinenin IP'si girilir. <br>
+            Zaten iki Host'umuz vardı. <br>
+            Üçüncü Host'u ekleyip, ona da bu ikinci Storage'a erişim hakkı veriyoruz.
+        </p>
+
+        <p>
+            Yeni makineyi oluşturup, üzerine ESXi yüklüyoruz. <br>
+            DC'de DNS Host kaydını oluşturuyoruz. <br>
+        </p>
+
+        <p>
+            vCenter'ın arayüzüne DC'den bağlanmak istiyoruz fakat sanalda DC'nin RAM'ini çok düşürdüğümüz için bu bağlantı yapılamaz. <br>
+            Zaten vCenter'ı fiziksel olarak başka bir makineye taşıdığımız için artık donanımı daha rahat kullanabiliriz. <br>
+            O sebeple DC'nin RAM'ini arttırıp, o şekilde bağlanmayı deneyebiliriz. <br>
+            Ayrıca Explorer'da bağlanmada sıkıntı yaratabilir. <br>
+            Chrome üzerinden denendiğinde bağlantı kurulabilir.
+        </p>
+
+        <span>vSphere - Whisper'ları değiştir. (Önceki sayfa)</span>
+
+
 
         <hr>
         
