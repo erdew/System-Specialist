@@ -199,9 +199,85 @@
             Chrome üzerinden denendiğinde bağlantı kurulabilir.
         </p>
 
+        <p>
+            Bu son yapılanlar tamamen donanım yetmediği için yaşanan sıkıntıdan kaynaklı. <br>
+            Gerçek hayatta bir şirkette bu tarz bir donanım yetersizliği sorunu zaten yaşanmamalı.
+        </p>
+
         <span>vSphere - Whisper'ları değiştir. (Önceki sayfa)</span>
 
+        <span>3.KAYDI TEKRARLA.</span>
 
+        <h4>vCenter'ın kendisi nasıl kullanılır</h4>
+        <p>
+            Bunun için önce vcenter3.sirket3.com şeklinde direkt kendisine erişiyoruz. <br>
+            İsim çözümlemesi yapılamazsa direkt olarak IP'den erişebiliriz. <br>
+            Karşımıza çıkacak olan ekran vSphere'a bağlanma ekranıdır. <br>
+            VMware 6.5 ve daha eski verisiyonları Flash'ı destekler. <br>
+            Eskiden bu arayüz Flash dili ile sağlanıyordu. <br>
+            Yeni nesil VMware'lerde bu şekilde değildir.
+        </p>
+
+        <p>
+            vCenter'ın amacı birden fazla Host'u bir arada yönetmektir. <br>
+            Yönetmesi için henüz bir Host eklemediğimiz için kaynak kullanımı full 0 görünür.
+        </p>
+
+        <p>
+            Bağlantıyı yaptıksan sonra; <br>
+            vCenter ya da vSphere Client ekranını görürüz. <br>
+            Sol tarafta gördüğümüz IP'ler Dashboard'tır. <br>
+            Burada vCenter'ın IP'sini yani bu makinenin kendi IP'sini de görürüz. <br>
+            Bu IP'ye sağ tıklarız. <br>
+        </p>
+
+        <p class="bg-script">
+            > vCenter IP Right Click <br>
+            > Add Data Center <br>
+            -> Name: DatacenterKadikoy <br>
+            -> Hiç Host olmadığı için doğal olarak burada da hiç Data yok.
+        </p>
+
+        <p class="bg-script">
+            > Add Host <br>
+            > 10.3.34.127(Örneğin) <br>
+            -> Host'unu(ESXi'ı) ekliyoruz.
+            > Lockdown mode <br>
+            -> Host'ların Configuration'larını direktt vCenter'dan da yapabiliriz. <br>
+            -> Bunu Diabled(Default'ta seçilidir) seçersek, Host'u F2 ile de ya da uzaktan vCenter'dan da konfigüre edebiliriz. <br>
+            -> Normal'i seçersek; <br>
+            (BURADAN SONRASINI TEKRARLA)
+        </p>
+
+        <h4>Host'ları vCenter'a ekledikten sonra neler yapılabilir?</h4>
+        <p>
+            Bir Host'un kaynağını değiştirebiliriz. <br>
+            Host kapalı ya da açıkken bu göç işlemleri yapılabilir.
+        </p>
+
+        <h5>Host kapalıyken Migration nasıl yapılır?</h5>
+        <p>
+            Guest'lerden herhangibirini Host'lardan herhangi birine taşıyacağız. <br>
+        </p>
+
+        <p class="bg-script">
+            > Host'a Right Click <br>
+            > Migrate <br>
+            -> [+] Change compute resource only(Sadece Host'unu değiştirmek istiyorum.) <br>
+            -> [+] Change storage only <br>
+            -> [+] Change both <br>
+            -> [+] Cross vCenter Server export(Bir vCenter'dan diğer bir vCenter'a göndermek istiyorum.)
+        </p>
+
+        <p>
+            Guest'in birini Storage olarak Local Storage'a yüklediysek, ikinci Host NAS'a bağlı olduğu için, ikinci Host birincinin Local diskine erişemez, erişemediği için yönetemez. <br>
+            Özetle iki Host'un arasında bir göç olacaksa bu ikisi de aynı Storage'ı görmek zorundadır. <br>
+            İkisinin birden gördüğü Storage daha önceden oluşturduğumuz NAS1 ya da NAS2'dir. <br>
+            Önce Guest'in Storage'ını değiştiriyoruz. <br>
+            Yine Migrate ediyoruz. <br>
+            Storage only'i seçiyoruz ve atmak istediğimiz NAS'ı seçiyoruz. <br>
+            Host1'in üzerindeki Guest'i alıp NAS'a göç ettiriyoruz.
+        </p>
 
         <hr>
         
