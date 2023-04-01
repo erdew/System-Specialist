@@ -67,7 +67,7 @@
         line-height: normal;
       }
 
-      .navigation\a:hover {
+      .navigation > a:hover {
         color: #31333a;
         background-color: rgb(139, 233, 253);
       }
@@ -87,8 +87,12 @@
         <h6>vCenter uygulaması için sanalda ideal donanım dağıtımı</h6>
         <p class="bg-script">
             DC -> 4GB RAM, Process 1'e 2. <br>
-            Host'lar -> 5 GB RAM Process 1'e 2. <br>
-            vCenter -> 20 GB RAM Process 4'e 1.
+            Host'lar -> 10 GB RAM Process 1'e 2. <br>
+            vCenter -> 20 GB RAM Process 4'e 1. <br>
+            Önce DC'yi kuruyoruz. <br>
+            DC'yi NAS'a çeviriyoruz. <br>
+            Üzerine iki tane Disk kurup NAS1, NAS2 yapıyoruz. <br>
+            Host'ları bu NAS'lara bağlıyoruz.
         </p>
 
         <p>
@@ -129,6 +133,10 @@
             > Finish
         </p>
 
+        <p class="bg-script">
+            > CONFIGURE <br>
+        </p>
+
         <h5>Configure Cluster</h5>
         <p class="bg-script">
             > Distributed Switches <br>
@@ -139,18 +147,28 @@
             > Finish
         </p>
 
-        <p class="bg-script">
-            > CONFIGURE <br>
-            -> Ekranın alt kısmında bulunur.
+        <p>
+            Direkt Cluster'ın kendisine gidiyoruz. <br>
+            Cluster 2 Host'u da yönetiyor. <br>
+            Cluster'ın üzerinde "New Virtual Machine" üretiyoruz.
         </p>
 
-        <span>BU NOKTADAN SONRASINI BUGÜN TEKRAR ET!!</span>
+        <h5>Cluster üzerine VM kurmak</h5>
+        <p>
+            Oluştururken, bu Datacenter'a ve seçenecek olarak bu Cluster'ın üzerine kurabileceğimizi bize sunar. <br>
+            Bu konumda iki Host'ta görünür. <br>
+            İlk bakışta bunun normal bir şekilde direkt Host'un üzerine VM kurmaktan bir farkı yokmuş gibi algınabilir. <br>
+            Bu aşamada DRS seçili olmadığı için kendisi hangi Host'u seçeceğine karar veremez. <br>
+            Dolayısıyla bu iki Host'tan birisini bizim seçmemizi ister. <br>
+            DRS'in buradaki seçimi yapması için yaptığı kontrol aslında şudur; Hangi Host'un kullandığı kaynak daha müsait? <br>
+            Bu bağlamda Cluster'a kurmak diye bir şey yok, Cluster aracılığı ile bu kararın verilmesini sağlamak için DRS'i açıyoruz. <br>
+            Yani bu aşamada işlemi otomatize eden teknoloji DRS'tir.
+        </p>
 
-
-        <h5>DRS(Distributed Restore Storage - Açılımına tekrar bak.)</h5>
+        <h5>DRS(Distributed Resource Scheduler) açmak</h5>
         <p>
             DRS Cluster bazında açılır. <br>
-            DRS açtığımız anda Cluster'a yöenttiğimiz Host'ların donanım kaynaklarını kontrol etmesini sağlarız. <br>
+            DRS açtığımız anda Cluster'a yönettiğimiz Host'ların donanım kaynaklarını kontrol etmesini söylemiş oluruz. <br>
             Eğer bir darboğaz oluşursa, bunu bize söyler ve bir Guest'i darboğaz yaşayan Host'u Migration yaptırmayı önerir. <br>
             Bu öneriyi onaylarsak, bu işlemi yapar. <br>
             Ya da darboğazı yakaladığı gibi aksiyona geçebilir. <br>
@@ -210,7 +228,7 @@
         </p>
 
         <p>
-            Şuanda oluşturduğumuz bu makine bir darboğaz yaşandığında diğer Host'a taşınabilir durumda.
+            Şuanda oluşturduğumuz bu sanal makine bir darboğaz yaşandığı durumda diğer Host'a göç edilebilir durumda.
         </p>
 
         <h4>Storage Cluster</h4>
@@ -233,6 +251,7 @@
             -> NAS01 ve NAS02 burada görüntülenir.
         </p>
         
+        <h5>SDRS açıyoruz</h5>
         <p class="bg-script">
             > Datacenter0 <br>
             > Right Click <br>
@@ -274,7 +293,6 @@
             > Next <br>
             > Finish
         </p>
-
 
         <hr>
         
