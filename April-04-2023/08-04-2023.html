@@ -117,11 +117,10 @@
         <hr>
 
         <p>
-            DC'de DNS'in eski verilerini ve Computers'tan diğer makineleri sileriz. <br>
-            Yeni ürettiğimiz makineyi Domain'e ekleriz. <br>
+            DC'de DNS'in eski verilerini ve Computers'tan diğer makineleri silip, yeni ürettiğimiz makineyi Domain'e ekliyoruz. <br>
         </p>
 
-        <h4>Net Teams **</h4>
+        <h4>NIC Teaming<h4>
         <p>
             Diyelimki bir Server kurduk ve IIS Servisi ile Web Server hizmeti veriyoruz. <br>
             Single Point Failed Problem yaşadığımızı varsayalım. <br>
@@ -132,11 +131,87 @@
             Microsoft bunun gibi durumlar için bize bir çözüm üretmiştir. <br>
             Birden fazla Ethernet'i Teaming yaparak, birlikte kullanılmasını sağlıyor. <br>
             Bu uygulandığı durumda herhangi bir Ethernet kartı Down olursa diğerinden devam eder.
-            Aynı zamanda elimizde ne kadar Ethernet kartı var ise o kadar bant genişliğine sahip olacağımız anlamına geliyor. <br>
+            Aynı zamanda elimizde ne kadar Ethernet kartı var ise o kadar bant genişliğine sahip olacağımız anlamına geliyor.
+        </p>
+
+        <p>
+            Bunu uygulayabilmek için yeni oluşturduğumuz Guest'e bir Ethernet Kartı daha ekliyoruz. <br>
+            Bir makinenin herhangi bir interface'ine bir Gatteway girmek yetterlidir, hepsine yazmak zorunlu değildir. <br>
+            NIC Teaming'i henüz uygulamadığımız için bant genişlikleri aynıdır. <br>
 
         </p>
 
+        <p class="bg-script">
+            > NIC Teaming <br>
+            > Shift + Interface'ler seçilir. <br>
+            > Add to New Team <br>
+            > Name: Team-Ext <br>
+            > Teaming mode: Switch Independent; Bunu seçersek interface'lerin bağlı olduğu Switch'te herhangi bir ayar yapmamıza gerek kalmaz. <br>
+            Static teaming seçersek, Swith'te Routing yapmak zorunda kalırız. <br>
+            LACP'yi seçersek, bunu bir protokol üzerinden yapmak zorunda kalırız. <br>
+            Switch Independent ideal seçimdir. <br>
 
+            > Load balancing mode: Dynamic; Veri transferini dengeli bir şekilde dağıtarak yapar. <br>
+            Hyper-V Port; Anlık yoğunluğa göre paketleri gönderir. <br>
+            Address Hash; İşletim sistemi hedef adresine göre bir numara çıkartır ve Interface'ler farklı Switch'lere bağlı olsalar bile, paketleri yine de gönderebiliyorlar. <br>
+            Paketler dengesiz gidebilir fakat en kullanışlısı budur. <br>
+
+            > Standby adapter: Hazırda bekletir. <br>
+            Bu mod'lu olan adapter örneğin Ethernet1 ise, Team yapılır fakat bant genişliği aynı kalır ve bu Ethernet üzerinden çalışır fakat bu kart Down olursa Ethernet2'yi kullanmayı sağlar. <br>
+            Yani sadece hatra töleransı sağlar. <br>
+            Bunu none seçersek bant genişliğimiz artar. <br>
+
+            > Primary Team: VLAN'ı belirleriz, Default'ta hepsi VLAN1 olacağı için hepsi aynı tünelden çalışırlar dolayısıyla şuanki senaryo için Default'ta bırakabiliriz.
+        </p>
+        
+        <p>
+            Bu aşamadan sonra TASKS'ten ekranı Refresh edersek ya da bir süre beklersek Status'lerin Active olduğunu görürüz. <br>
+            Artık yeni bir sanal interface üretir, bunun adı bizim verdiğimiz Team-Ext olur, ve diğer interface'lerden IPv4'ü kapatır. <br>
+            Bu interface'e de DHCP bir IP atar, biz buna istersek yine Static IP atayarak kullanabiliriz. <br>
+            Bu noktadan sonra DNS'te makinenin IP'si olarak direkt bu Teams'in IP'si verilir. <br>
+            Ayrıca eski interface'lerin IP'si DNS'te daha önceden kayıtlı ise bunlar da otomatik olarak silinir, yani aslında makinin IP'si DNS'te otomatik olarak güncellenmiş olur. <br>
+            Yani HOST31 makinesinin IP'si Team-Ext interface'inin IP'sine eşitlenir.  
+        </p>
+
+        <p>
+            Bunu istediğimiz kadar Interface ile yapabiliriz. <br>
+            Bu NIC Teaming 2012'lerden itibaren başlamıştır. <br>
+            Fakat daha önceki Server işletim sistemlerinde bunu uygulamak için 3.parti uygulamalar kullanırdı. <br>
+            Bunu kullanmanın asıl amacı Load Balance'tır. <br>
+            Tabiki ayrıca hata töleransı da sağlar. <br>
+        </p>
+
+
+        <h4>Network Load Balancing(NLB)</h4>
+        <p>
+            IIS Servisi vereceğimiz ideal bir makine kurduk ve NIC Teaming de yaptığımızı düşünelim. <br>
+            İş yükü bu makinin fiziksel olarak üzerinde ise, bu makinenin işini başka bir makineye yönetmeye çalışırız. <br>
+            Fakat dışarıdan bakan yani hizmet alan kişi için bakıldığında tek bir makine görünür. <br>
+            Aynı içeriği Host eden birden fazla makineyi senkron çalıştıracağız. <br>
+            Aynı içeriği Host eden çok sayıda makinenin Load Balanced şekilde çalıştığı ortama çiftlik adı verilir.(** Saat 12:02PM tekrarla.)
+            Özetle bu makineler aralarında yükü paylaşırlar.
+        </p>
+
+        <p>
+            Uygulama için, HOST1'den NIC Teaming'i Remove ediyoruz. <br>
+            İkinci Interface'i makineden çıkartıyoruz. <br>
+            Tek bir interface kalmasını sağlıyoruz ve IIS Servisini kurup bir siteyi yayına alıyoruz. <br>
+            DNS'te bu sitenin CNAME kaydını oluşturuyoruz. <br>
+            Daha sonra Base'i kullanarak yeni bir Clone oluşturup, o makinenin üzerine de IIS kuruyoruz. <br>
+            Birebir aynı şekilde yine aynı siteyi yayınlıyoruz.
+        </p>
+
+        <p>
+            DNS'te her bir yayın yapan IIS için Host kaydı oluşturabiliriz. <br>
+            www isimli host'u bu iki IP'ye de yönlendiririz. <br>
+            DNS Round Robin devreye girip bunlara sırayla oluşturmaya başlar. <br>
+            Yani CName kaydı oluşturmak yerine direkt aynı isimde farklı IP'lere sahip Host kayıtları oluşturabiliriz. <br>
+            Fakat bu amatör bir yöntemdir. <br>
+            Yani bu aslında bir Load Balancing işlemini professiyonel olarak sağlamaz. <br>
+            Yani Round Robin açık ise DNS'in marifeti kadar yük dağıtılabilir. <br>
+            Özetle istersek DNS ile de bunu bu şekilde amatörce Load Balancing yapabiliriz. <br>
+            Fakat biz bu işlemi Storage üzerinden yapacağız. 
+        </p>
 
 
 
