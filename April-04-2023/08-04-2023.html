@@ -188,7 +188,7 @@
             İş yükü bu makinin fiziksel olarak üzerinde ise, bu makinenin işini başka bir makineye yönetmeye çalışırız. <br>
             Fakat dışarıdan bakan yani hizmet alan kişi için bakıldığında tek bir makine görünür. <br>
             Aynı içeriği Host eden birden fazla makineyi senkron çalıştıracağız. <br>
-            Aynı içeriği Host eden çok sayıda makinenin Load Balanced şekilde çalıştığı ortama çiftlik adı verilir.(** Saat 12:02PM tekrarla.)
+            Aynı içeriği Host eden çok sayıda makinenin Load Balanced şekilde çalıştığı ortama Web Server Farm adı verilir. <br>
             Özetle bu makineler aralarında yükü paylaşırlar.
         </p>
 
@@ -213,7 +213,57 @@
             Fakat biz bu işlemi Storage üzerinden yapacağız. 
         </p>
 
+        <p>
+            Bunun için Web Server'lara NLB Servisini kuruyoruz. <br>
+            Servisi herhangi birinden açıp, New Cluster yaparız. <br>
+            Tüm talepleri karşılayacak bir sanal makine belirliyoruz. <br>
+            Host'lardan ilkine Connectt olammaısızı  ister.
+            FQDN'inini gireriz, karşılık IP'sini verir. <br>
+            Sonraki ekranda Priority değeri en yüksek olan öncelikli olacaktır. <br>
+            Bir sonraki  ekranda Add'e tıklayarak tüm talepleri karşılamasını istediğimiz makinenin IP'sini gireriz. <br>
+            Yani 3. bir sanal makine. <br>
+            Burada verdiğimiz IP'yi iki makine için de ikincil IP olarak vermiş olacak. <br>
+            Next diyerek devam ederiz ve Full Internet Name girmemizi ister. <br>
+            Buraya www.sirket03.com diyerek ve DNS'te bu isimde bu IP'ye karşılık bir Host Name kaydı açarsak, herkes bu makineye erişir. <br>
+            Ya da bu makinenin FQDN'inini yazabiliriz. <br>
+            Örneğin makinenin FQDN'i; nlb01.sirket03.com <br>
+            Aynı şekilde DNS'te bu isme karşılık bir Host Name oluşturabilriiz. <br>
+            Host'ların birbirlerine nasıl erişeceğini belirleyen Multicast'i seçeriz. <br>
+            Sonraki ekranda Port Rules'e geçeriz. <br>
+            Port Range; Acttive edeceğimiz şey Network Load Balancing, biz bunu IIS Servisi için açmış olacağız, bu senaryoda. <br>   
+            Aslında bir bu makinelerin üzerine istediğimiz kadar Servis kurabiliriz. <br>
+            Bu Port Range ile hangi Port'ları dinleyeceğine karar veriyoruz. <br>
+            Bizim senaryomuz için, from: 80, to 80 yazmak mantıklıdır. <br>
+            Protcol'ları Both bırakabiliriz. <br>
+            Filtering mode; Örneğin Remote Desktop ile bu Host'lardan birine bağlanmak istiyorsak, ve NLB yaptıysak, 163 olan IP'ye yani her şeyi karşılayacak olan makineye bağlanacağız. <br>
+            Bu Load Balance Server'dır. <br>
+            Buna da RDP Protokolü ile erişmiş olacğaız. <br>
+            Bunun da port numarası 3389'dur. <br>
+            NLB'yi bu Port aralığını dinleyecek şekilde ayarladıysak, Host01'e bağlanmamızı sağlar. <br>
+            Ve bu Host01'in içersinde bir şeyler yapıyoruz ve bir RDP'yi çarpıya basıp kapattığımızı varsayalım. <br>
+            Aslında Host01'in üzerinde RDP yaptığımızda uzaktan bir Session açmış oluyoruz. <br>
+            Biz eğer bu şekilde kapatırsak, bağlantı kopsa bile arkaplanda bu Session açık kalır. <br>
+            Yani RDP bağlantısını biz kapatıp çıktığımızda arkaplanda bağlantı devam eder, tekrar bağlandığımızda aynı yerden devam ederiz. <br>
+            Bu noktada oturum kapanmazsa makinenin kaynaklarını kullanmıyorken de meşgul etmiş oluruz. <br>
+            Bunun için kapatmadan önce Sign Out yapmalıyız. <br><br>
 
+            Filtering Mode'u Multiple Host ve Affinity'isini Single seçersek, daha önceden Log-out yaptığı Host'a gönderilir. <br>
+            Yani bu kişi daha önceden bir oturum açtıysa ve bu oturum örneğin Host01'de ise bir sonraki Log-on olmak istediğinde yine Host01'e gönderilir. <br>
+            Bunu tabi sadece bir RDP olarak değil Web Server olarak da düşünebiliriz. <br>
+            User bazında bir ayardır. <br>
+            Network'ü seçersek Random gönderir.
+       </p>
+
+       <p>
+        DNS'te nlb03 Host kaydını açarız. <br>
+        Ardında  nlb03'ün CName kaydını da açarız. <br>
+        Şuandan itibaren dengeli bir şekilde Load Balancing yapılır ve kullanıcılar aynı adrese gitmiş gibi görmelerine rağmen Cluster yapılan Host'lara giderler. <br>
+        Bu noktada bu Web sayfalarını ortak bir Storage'a taşırız bu sayede içeriklerin 100% aynı olmasını sağlarız. <br>
+        iSCSI ile Storage oluşturup Host'lara Initiazlize ederiz. <br>
+        Bağlantı kurulduktan sonra sitenin dosyalarını eski konumundan kesip, NAS'a kopyalarız. <br>
+        Ardından IIS'e gidip, sitenin üzerine sağ tık, Manage Web Site, Advance Settings'ten Path'ini yeni konuma ayarlarız. <br>
+        Bu ayarları iki Host'ta da yapmamız gerekir.
+       </p>
 
         
         
