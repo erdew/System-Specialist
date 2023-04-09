@@ -114,13 +114,11 @@
             Bu aşamadan sonra Clone oluşturulur ve kısa bir kurulum ile yeni bir makine üretmiş oluruz.
         </p>
 
-        <hr>
-
         <p>
             DC'de DNS'in eski verilerini ve Computers'tan diğer makineleri silip, yeni ürettiğimiz makineyi Domain'e ekliyoruz. <br>
         </p>
 
-        <h4>NIC Teaming<h4>
+        <h4>NIC Teaming</h4>
         <p>
             Diyelimki bir Server kurduk ve IIS Servisi ile Web Server hizmeti veriyoruz. <br>
             Single Point Failed Problem yaşadığımızı varsayalım. <br>
@@ -255,24 +253,23 @@
        </p>
 
        <p>
-        DNS'te nlb03 Host kaydını açarız. <br>
-        Ardında  nlb03'ün CName kaydını da açarız. <br>
-        Şuandan itibaren dengeli bir şekilde Load Balancing yapılır ve kullanıcılar aynı adrese gitmiş gibi görmelerine rağmen Cluster yapılan Host'lara giderler. <br>
-        Bu noktada bu Web sayfalarını ortak bir Storage'a taşırız bu sayede içeriklerin 100% aynı olmasını sağlarız. <br>
-        iSCSI ile Storage oluşturup Host'lara Initiazlize ederiz. <br>
-        Bağlantı kurulduktan sonra sitenin dosyalarını eski konumundan kesip, NAS'a kopyalarız. <br>
-        Ardından IIS'e gidip, sitenin üzerine sağ tık, Manage Web Site, Advance Settings'ten Path'ini yeni konuma ayarlarız. <br>
-        Bu ayarları iki Host'ta da yapmamız gerekir.
+            DNS'te nlb03 Host kaydını açarız. <br>
+            Ardında  nlb03'ün CName kaydını da açarız. <br>
+            Şuandan itibaren dengeli bir şekilde Load Balancing yapılır ve kullanıcılar aynı adrese gitmiş gibi görmelerine rağmen Cluster yapılan Host'lara giderler. <br>
+            Bu noktada bu Web sayfalarını ortak bir Storage'a taşırız bu sayede içeriklerin 100% aynı olmasını sağlarız. <br>
+            iSCSI ile Storage oluşturup Host'lara Initiazlize ederiz. <br>
+            Bağlantı kurulduktan sonra sitenin dosyalarını eski konumundan kesip, NAS'a kopyalarız. <br>
+            Ardından IIS'e gidip, sitenin üzerine sağ tık, Manage Web Site, Advance Settings'ten Path'ini yeni konuma ayarlarız. <br>
+            Bu ayarları iki Host'ta da yapmamız gerekir. <br>
+            NAS'ın aktif olması biraz zaman alabiliriz. <br>
        </p>
-
-        
         
         <hr>
         
         <div class="text-center container p-3 bg-script">
           <div class="d-flex justify-content-evenly navigation">
-            <a href="#" class="bg-script">08.04.2023</a>
             <a href="02-04-2023.html" class="bg-script">02.04.2023</a>
+            <a href="#" class="bg-script">09.04.2023</a>
           </div>
         </div>
         
