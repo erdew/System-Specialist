@@ -51,7 +51,7 @@
       }
 
       .container {
-        max-width: 800px;
+        max-width: 900px;
         border: 1px solid rgb(139, 233, 253);
         border-radius: 10px;
       }
@@ -83,13 +83,128 @@
         <span>Video'yu tekrar izleyerek tüm yaptıklarını yazıya dök.</span>
         <span>Baştan sona bir vcenter, cluster senaryosunu uyguladık.</span>
         <span>Bu bölüm aynı zamanda önceki ayın 26'sında yapılanların da tekrarıdır.</span>
-        
+
+        <h4>ESXi, vCenter, Vmotion, Migration konuları genel tekrarı</h4>
+
+        <p>
+          Sanalda sistem donanımı yetmediği için iki tane fiziksel makine kullanıyoruz. <br>
+        </p>
+
+        <h5>Makinelerin Donanımları</h5>
+
+        <hr>
+
+        <table class="table table-dark">
+          <thead>
+            <tr class="text-center">
+              <th scope="col">Name</th>
+              <th scope="col">RAM</th>
+              <th scope="col">CPU</th>
+              <th scope="col">DISK1</th>
+              <th scope="col">DISK2(NAS1)</th>
+              <th scope="col">DISK3(NAS2)</th>
+              <th scope="col">BIOS</th>
+              <th scope="col">IP(Bridge)</th>
+              <th scope="col">Gateway</th>
+              <th scope="col">DNS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">DC1(1.Fiziksel Makine)</th>
+              <td>4</td>
+              <td>1:2</td>
+              <td>100</td>
+              <td>200</td>
+              <td>200</td>
+              <td>BIOS</td>
+              <td>10.3.34.100/24</td>
+              <td>10.3.34.1</td>
+              <td>127.0.0.1</td>
+            </tr>
+            <tr>
+              <th scope="row">ESXi1(1.Fiziksel Makine)</th>
+              <td>8</td>
+              <td>1:2</td>
+              <td>100</td>
+              <td>200</td>
+              <td>200</td>
+              <td>BIOS</td>
+              <td>10.3.34.120/24</td>
+              <td>10.3.34.1</td>
+              <td>10.3.34.100</td>
+            </tr>
+            <tr>
+              <th scope="row">ESXi2(1.Fiziksel Makine)</th>
+              <td>8</td>
+              <td>1:2</td>
+              <td>100</td>
+              <td>200</td>
+              <td>200</td>
+              <td>BIOS</td>
+              <td>10.3.34.140/24</td>
+              <td>10.3.34.1</td>
+              <td>10.3.34.100</td>
+            </tr>
+            <tr>
+              <th scope="row">ESXi3(2.Fiziksel Makine)</th>
+              <td>20</td>
+              <td>1:3</td>
+              <td>100</td>
+              <td>x</td>
+              <td>x</td>
+              <td>BIOS</td>
+              <td>10.3.34.160/24</td>
+              <td>10.3.34.1</td>
+              <td>10.3.34.100</td>
+            </tr>
+            <tr>
+              <th scope="row">ESXi1-Guest(Server1-NAS1)</th>
+              <td>2</td>
+              <td>1:1</td>
+              <td>100</td>
+              <td>x</td>
+              <td>x</td>
+              <td>BIOS</td>
+              <td>10.3.34.200/24</td>
+              <td>10.3.34.1</td>
+              <td>10.3.34.100</td>
+            </tr>
+            <tr>
+              <th scope="row">ESXi1-Guest(Server2-NAS2)</th>
+              <td>2</td>
+              <td>1:1</td>
+              <td>100</td>
+              <td>x</td>
+              <td>x</td>
+              <td>BIOS</td>
+              <td>10.3.34.220/24</td>
+              <td>10.3.34.1</td>
+              <td>10.3.34.100</td>
+            </tr>
+            <tr>
+              <th scope="row">ESXi3-Guest(vCenter)</th>
+              <td>x</td>
+              <td>x</td>
+              <td>x</td>
+              <td>x</td>
+              <td>x</td>
+              <td>x</td>
+              <td>10.3.34.180/24</td>
+              <td>10.3.34.1</td>
+              <td>10.3.34.100</td>
+            </tr>
+
+          </tbody>
+        </table>
+
+
         <hr>
         
         <div class="text-center container p-3 bg-script">
           <div class="d-flex justify-content-evenly navigation">
-            <a href="" class="bg-script">xxx</a>
-            <a href="" class="bg-script">xxx</a>
+            <a href="01-04-2023.html" class="bg-script">01.04.2023</a>
+            <a href="08-04-2023.html" class="bg-script">08.04.2023</a>
           </div>
         </div>
         
