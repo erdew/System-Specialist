@@ -51,7 +51,7 @@
       }
 
       .container {
-        max-width: 900px;
+        max-width: 1000px;
         border: 1px solid rgb(139, 233, 253);
         border-radius: 10px;
       }
@@ -76,21 +76,17 @@
   </head>
   <body>
     <div class="container p-4 mt-2 mb-5">
-        <h1><a href="../index.html" class="display-4"></a></h1>
+        <h1><a href="../index.html" class="display-4">02.04.2023</a></h1>
         
         <hr>
         
-        <span>Video'yu tekrar izleyerek tüm yaptıklarını yazıya dök.</span>
-        <span>Baştan sona bir vcenter, cluster senaryosunu uyguladık.</span>
-        <span>Bu bölüm aynı zamanda önceki ayın 26'sında yapılanların da tekrarıdır.</span>
-
         <h4>ESXi, vCenter, Vmotion, Migration konuları genel tekrarı</h4>
 
         <p>
           Sanalda sistem donanımı yetmediği için iki tane fiziksel makine kullanıyoruz. <br>
         </p>
 
-        <h5>Makinelerin Donanımları</h5>
+        <h5>Sanal Makinelerin Donanım Ayarları</h5>
 
         <hr>
 
@@ -194,10 +190,47 @@
               <td>10.3.34.1</td>
               <td>10.3.34.100</td>
             </tr>
-
           </tbody>
         </table>
 
+        <p>
+          VMware'de daha önceden kurmuş olduğumuz tüm makineleri silip, tüm sistemi yukarıdaki tabloya göre yeniden oluşturacağız. <br>
+          Makinelerin VMware üzerinden kurulumunu ve konfigürasyonlarını detaylı bir şekilde burada anlatmıyorum çünkü standart kurulum ve ayarları uyguluyoruz. <br>
+          Özetle tablodaki şekilde kasaları oluşturup, üzerlerine işletim sistemlerini kuruyoruz. <br>
+          Daha sonra Active Directory servisini kurup, tüm makineleri Domain üyesi yapıyoruz. <br>
+          Ardından ESXi Host'larının DNS'te kayıtları otomatik olarak oluşturulmadığı için bunu Manuel olarak yapıyoruz. <br>
+          Host'lara NAS1 ve NAS2'yi bağlıyoruz. <br>
+          Her ikisine de her iki Storage'ı da bağlıyoruz. <br>
+          Daha sonra 2.Fiziksel makineye vCenter'ı kuruyoruz. <br>
+          Bu kurulumu yapabilmek için fiziksel makinenin diskinde VMware-VCSA-all-7.0.2-17694817.iso dosyasını mounth ediyoruz. <br>
+          Dosyanın içinde vcsa-ui-installer klasörönün altındaki win32 klasörünün içindeki installer.exe Setup dosyasını çalıştırız. <br>
+          Bu noktada devam etmeden önce 2.Fiziksel makinenin DNS'ini DC'ye ayarlamalıyız. <br>
+        </p>
+
+        <p class="bg-script">
+          > Install <br>
+          > Next <br>
+          > vCenttter Server deployment target <br>
+          > Host'un FQDN'i:  esxi03.sirket0.com <br>
+          > HTTPS port: 443 <br>
+          > User Name: root <br>
+          > Password: Password1! <br>
+          > Next <br>
+          > Yes
+        </p>
+
+        <p class="bg-script">
+          > Set up vCenter Server VM <br>
+          > VM name: vcenter0 <br>
+          > Set root pw: Password1!
+        </p>
+
+        <p class="bg-script">
+          > Select deployment size <br>
+          >
+        </p>
+
+        <span>C:\Users\Erdem\Videos\04-02-2023 // 2.kayıt vCenter kurulumundan devam et.</span>
 
         <hr>
         
