@@ -79,9 +79,230 @@
         <h1><a href="../index.html" class="display-4">15.04.2023</a></h1>
         
         <hr>
+
+        <h4>Hyper-Host V Cluster</h4>
+        <p>
+            Cluster yapınca şunu yapmış olacağız; <br>
+            Daha önceden ürettiğimiz iki Host'un kaynaklarının toplamı Cluster'ın kaynağı olacak. <br>
+            Cluster yaptığımız anda sanal bir makine oluşturulacak. <br>
+            Dışarıdan gelen her ne talep var ise bu sanal makineye yönlendirilecek. <br>
+            Bu makine ise arkaplanda kaç tane makine olduğuna göre, yani kaynaklara göre talebi yönlendirecek. <br>
+            Bu sayede toplam CPU, RAM gibi bir yapımız oluşmuş olacak. <br>
+            Buna Farmer ya da Türkçe olarak Çiftlik 
+        </p>
+
+        <h5>Hyper-V Cluster yapabilmek için gerekenler</h5>
+        <p>
+            Cluster için de bir Disk'e ihtiyacımız vardır. <br>
+            Cluster görevini üstlenecek sanal makine de bir Disk'e bağlı olmalıdır. <br>
+            Bu Disk'e Withness adı verilir. <br>
+            Bu Disk NAS'ta olmadır ve hem Host'lara hem Cluster görevini yapacak olan makineye bağlı olmalıdır. <br>
+            Aslında Cluster'ın kendisi için 1 GB yeterlidir. <br>
+            Temelde Cluster'ın mantığında Host'lardan birisi Offline olursa, diğeri üzerinden çalışmasını sağlamaktır. <br>
+            Bu sebepten bu makineler kendi aralarından kesintisiz ve sürekli olarak birbirlerine Ping atarlar. <br>
+            Ping kesildiği zaman cevap vermeyen tarafın Offline olduğu anlaşılır. <br>
+            Bu işlem için ayrı bir Network hattı çekilir. <br>
+            Bu hattın ismi "Hearbeat'tir." <br>
+            Interface'ine ise Heartbeat Interface adı verilir. <br>
+            Bu şekilde ayrı bir Interface yapmazsak eğer, bu ideal bir çözüm olmaz. <br>
+            Çünkü Network'te sürekli olarak trafik olacağı anlamına gelir ve bunu ayrıştırmak ideal olandır. <br>
+            İki Host'umuz olduğu durumda iki makineyi birbirine Cross bağlarız. <br>
+            Eğer daha fazla ise araya bir Switch koyarız. <br>
+            Doğal olarak her bir Host'un üzerinde bunun için yeni bir Interface takılmış olmalıdır. <br>
+            Bu donanım ihtiyaçlarını karşıladıktan sonra Failover Cluster Service'ini Host'lara yüklememiz gerekir. <br>
+            Yükleme tamamlandıktan sonra mutlaka Restart edilmelidir. <br>
+            Cluster Configuration'ı ise bu Restart işleminden sonra yapmalıyız. <br>
+            Cluster Configuration bittikten sonra ise Cluster'ın yöneteceği servisleri belirlemeliyiz. <br>
+        </p>
+
+        <h5>Özetle</h5>
+        <p>
+            Withness Disk'i kaç tane Host'umuz var ise ona bağlarız. <br>
+            Sanalda NAS'ları paylaştığımız makine hangisi ise onun üzerinde üretip yine aynı şekilde paylaşabiliriz. <br>
+            Yani yeni Disk takıp, iSCSI ile o Disk'in üzerinde yeni bir Sanal Disk oluşturuyoruz. <br>
+            Host'ları Target olarak gösterip, Host'lar da bu Disk'i Initialize ederiz. <br>
+            Bu bağlantıyı yaptıktan sonra, Host'lara Hearbeat Interface bağlantısı yaparız. <br><br>
+
+            Eklediğimiz Hearbeat Interface'lere şu IP Configuration'ı uygulayabiliriz; <br>
+        </p>
+
+        <p class="bg-script">
+            > IPv4: 172.16.0.1 <br>
+            > Subnet: 255.255.0.0 <br>
+            > Gateway: 172.16.0.1 <br>
+            > DNS: -
+        </p>
+
+        <span>İKİNCİ HOST'UN GATEWAY'İNE KAYITTAN BAK.</span>
+
+        <p>
+            Failover Cluster'ını her iki Host'a da yükleriz. <br>
+        </p>
+
+        <p class="bg-script">
+            > Add Roles <br>
+            > Features <br>
+            > [+]Failover Cluster <br>
+            > Install
+        </p>
         
+        <p>
+            Failover Cluster'ı herhangi bir Windows Client'ten de yapabiliriz. <br>
+            Yani Windows 10'dan da yapabiliriz. <br>
+            İstersek Host'ların üzerinden direkt arayüzden de elbette yapılabilir. <br> 
+            Client'e Failover arayüzünü makineye yüklememiz gerekiyor.
+        </p>
+
+        <p class="bg-script">
+            > Manage <br>
+            > Add Role <br>
+            > Features <br>
+            > Remote Server Administration Tools <br>
+            > [>]Feature <br>
+            > [>]Failover Cluster Tools <br>
+            > [+]Failover Cluster Management Tools <br>
+            > [+]Failover Cluster Module <br>
+            > Install
+        </p>
+
+        <p>
+            Failover Cluster Manager üzerinde Validate Configuration'ı başlatarak bu süreci uygulayabileceğimizi teyit ettiriyoruz. <br>
+            Yukarıdaki aşamalardan birisini atlarsak, bu testi geçemeyiz ve kurulumu nasıl doğru yapacağımızı yani neyin eksik olduğunu vs. bize raporlar.
+        </p>
+
+        <p class="bg-script">
+            > Validate COonfiguration <br>
+            > Select Servers or a Cluster <br>
+            -> Host'ları seçeriz. <br>
+            > Testing Options <br>
+            -> Run all(Bu sistemde ilk defa yaptığımız için) <br>
+            > Confirm
+            -> Her yeşil, onaylandı ve her kırmızı bir hata anlamına gelir.
+        </p>
+
+        <p>
+            Herhangi bir kırmızı uyarı ile karşılaşmadığımız durumda Cluster oluşturabiliriz.
+        </p>
+
+        <p class="bg-script">
+            > Create Cluster <br>
+            > Select Servers <br>
+            -> Host'ları seçeriz. <br>
+            > Cluster Name: Cluster1 <br>
+            -> Cluster olacak olan sanal makineye bir isim vermemizi ister. <br>
+            > Bu ekranda hem 10.3.34'lü hem de 172.16.0'lı IP'li Interface'leri görebilmesi gerekiyor. <br>
+            > Cluster IP: 10.3.34.185 <br>
+            > []172.16.0.0(Uncheck yap) <br>
+            > Cluster'lara Storage'ları da ekleriz. <br>
+            > Create
+        </p>
+
+        <p>
+            Ekrana ürettiğimiz makine; cluster1.sirket1.com gibi FQDN olarak görüntülenir. <br>
+            Nodes sekmesinin altında Cluster yapacağımız makineleri görüntüleriz. <br>
+            Storage'ın altında Cluster'a ve Host'lara bağlı olan Disk'leri görüntüleriz. <br>
+            Withness olanını üzerine gelip Properties'den ismini değiştirebiliriz. <br>
+            Hatta diğer Disk'ler için de hangisinin hangi NAS olduğunu belirletecek şekilde yeniden isimlendirebiliriz. <br>
+            Networks sekmesinin altında iki tane Interface görürüz. <br>
+            Birisi Heartbeat hattı diğeri ise internete çıkan External yani 10.3.34.0 IP'li hat. <br>
+            Interface'lerin üzerine tıkladığımızda hangisi Interface'in nereye bağlı olduğunu IP'sini vs arkadaki ekranda yazar. <br>
+            Host'ların Remote Desktop'ları Enable olmalıdır.
+        </p>
+
+        <p class="bg-script">
+            > Nodes <br>
+            > Pause <br>
+            > Drain Roles <br>
+            -> Host'un Cluster üyeliği askıya alınır.
+        </p>
+
+        <p class="bg-script">
+            > Roles <br>
+            > Virtual Machines <br>
+            > New Virtual Machine <br>
+            -> Cluster'ın üzerinde Sanal Makine oluşturabiliriz. <br>
+            > Host seçmemizi ister. <br>
+            -> Cluster'daki Host'ları listeler. <br>
+            > VM Name: Host53 <br>
+            > Gen: 1, RAM: 2, Network: EXT1, Virtual HD: Create New Disk, OS: Later. <br>
+            > Finish
+        </p>
+
+        <p>
+            Yukarıdaki işlemi yapmak istediğimiz makinede Hyper-V arayüzü yüklü olmalıdır.
+        </p>
+
+        <p>
+            Bu noktadan itibaren Roles ekranında gördüğümüz Host'ların üzerinde Migration yapabiliriz. <br>
+            Biz VMware'in içerisinde sanal makineler oluşturup onların içerisine Hyper-V Servisini kurduk ve o servisler ile sanal makinelerin içerisine bu Host'ları oluşturduk. <br>
+            Finalde de bu Host'ların içerisine Cluster'ı kurduk. <br>
+            Cluster aracılığı ile Host'lardan birine sanal makine kurmuş olduk.
+        </p>
+
+        <p>
+            Bu ürettiğimiz sanal makineye Storage bağlayabiliriz. <br>
+        </p>
+
+        <span>NASIL BAĞLANDIĞINI TEKRARLA(Saat: 11:30)</span>
+        <span>BU KISIMDAN İTİBAREN TEKRARLA.</span>
         
-        
+        <p>
+            Hyper-V'de hangi makineden yönetmek istiyorsak, Add Server diyerek tüm sanal makineleri aynı ekrandan yönetebiliriz. <br>
+
+        </p>
+
+        <span>11:50'den itibaren tekrarla.
+
+        </span>
+        <p>
+            Sanal Makineyi Cluster'a bir rol olarak ekliyoruz. <br>
+            
+        </p>
+
+        <p class="bg-script">
+            > Roles <br>
+            > Configure Role <br>
+            > Next <br>
+            > Virtual Machine <br>
+            > Cluster'a üye olan Host'lardan birinin üzerinde hangi VM'ler var ise listeler. <br>
+            > Birisini seçip, Host1'in yönetimine alırız. <br>
+        </p>
+
+        <span>Bu konu 12:30'dan başlıyor</span>
+        <p>
+            RAID 5 yapısında bir Storage kuracağız. <br>
+            3 ayrı Storage'ı Host'lara bağlayacağız. <br>
+            Sonra Cluster'ın içinden bunları RAID 5 yapacağız. <br>
+        </p>
+
+        <p class="bg-script">
+            > Storage <br>
+            > Pools <br>
+            -> Takılı Disk'lere RAID uygulamızı sağlayan ekran.
+        </p>
+
+        <p>
+            Sanalda DC'ye Disk'leri ekliyoruz. <br>
+            Örneğin; RAID5-1, RAID5-2, RAID-3 isminde bir Disk oluşturmuş olduk. <br>
+        </p>
+
+        <span>SON KAYDI KOMPLE TEKRARLA</span>
+
+        <h4>Hyper-V Replica Broker</h4>
+        <p>
+            Cluster dışındaki bir Host'ta duran sanal makinenin, Cluster'a üye Host'lara replikasyonunu kabul eden ve yöneten servistir. <br>
+            Üçüncü bir Host'a ihtiyacımız var. <br>
+            Daha önceden ürettiğimiz Base'den Full Clone alıyoruz. <br>
+            Bunun adına da Host03 diyoruz. <br>
+            
+        </p>
+
+        <p>
+            cluster0.sirket0.com
+            Roles
+            Hyper-V Replica Broker             
+        </p>
+
         <hr>
         
         <div class="text-center container p-3 bg-script">
