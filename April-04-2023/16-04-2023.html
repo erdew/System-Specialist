@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="icon" type="image/x-icon" href="../eg_favicon.JPG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 14px;
+        color: #e2e3e7;
+        background-color: #232529;
+        /*
+        e2e3e7
+        c4c7cf
+        868d9a
+        696e79
+        41454c
+        35383f
+        292c31
+        232529
+
+        31333a
+        */
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      h1 > a {
+        color: rgb(139, 233, 253);
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: rgb(139, 233, 253);
+      }
+
+      a{
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #e2e3e7;
+      }
+
+      .container {
+        max-width: 800px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+      }
+
+      .bg-script {
+        color: rgb(139, 233, 253);
+        background-color: #31333a;
+        padding: 20px;
+        border: 1px solid rgb(139, 233, 253);
+        border-radius: 10px;
+        text-align: start;
+        font-size: 15px;
+        line-height: normal;
+      }
+
+      .navigation > a:hover {
+        color: #31333a;
+        background-color: rgb(139, 233, 253);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container p-4 mt-2 mb-5">
+        <h1><a href="../index.html" class="display-4">16.04.2023</a></h1>
+        
+        <hr>
+
+        <h4>Firewall</h4>
+        <p>
+          Sanalda sadece DC'yi bıraktık. <br>
+          DC'nin üzerindeki tüm SCSII Disk'lerini kaldırdık. <br>
+          Sadece NVMe'yi(Local disk) bırakıyoruz.
+        </p>
+        
+        <p>
+          iSCSI'dan Sanal Disk'leri kaldır.
+        </p>
+
+        <p>
+          Firewall aslında bir işletim sistemi gibi kurulabilen uygulamadır. <br>
+          Hazır olarak Firewall cihazlar da satılır. <br>
+          Sanal veya fiziksel de olsa birbirleri ile tamamen aynı şekilde çalışırlar. <br>
+          Çeşitli marka ve şekillerde Firewall'lar bulunur. <br>
+          Biz Türkiye pazarına girmiş ve yaygın kullanılan Astaro Security Group şirketinin ürettiği Sophos Uygulamasını yükleyip, konfigürasyonunu yapacağız. <br>
+          Firewall bir hizmet olarak da satın alınabilir.
+        </p>
+
+        <p>
+          Firewall'un temel görevi Private IP'leri tek bir gerçek IP ile internete eriştirmek ve bu erişimi kontrol etmektir. <br>
+          Firewall istersek aynı zamanda DHCP, DNS, VPN, Side to Side VPN hizmetlerini de verebilir.
+        </p>
+
+        <p>
+          Firewall sanal makinelere de kurulabildiği için, sanal makinelerden herhangi birinin üzerine yüklenebilir. <br>
+          Bu makine 192.168.0.0/24'lü bir IP alabilir.
+        </p>
+
+        <p>
+          Firewall 7 katmanlı Levelity'lerine göre bir kontrol yapar. <br>
+          Örneğin; Ethernet kartından yani MAC adresinden, İşletim Sistemine ve Uygulamaya kadar her bir katman için bir kontrol yapılır. <br>
+          Firewall bu kontrolü yapar.
+        </p>
+
+        <p class="bg-script">
+          DC IPv4 <br>
+          IPv4: 192.168.3.100 <br>
+          G: 192.1683.1 <br>
+          DNS: 127.0.0.1
+        </p>
+
+        <p>
+          DNS'i 8.8.8.8' Forward ediyoruz.
+        </p>
+        
+        <p>
+          Firewall olacak makineyi Herhangi bir Windows sürümü ya da Linux kurabiliriz. <br>
+          Client olması yeterlidir.
+        </p>
+
+        <p class="bg-script">
+          Firewall olacak makinenin EXT IP Konfigürasyonu <br>
+          IPv4: 10.3.34.103/24 <br>
+          G: 10.3.34.1 <br>
+          DNS: 192.168.0.100
+        </p>
+
+        <p>
+          Firewall olacak makinenin INT IP Konfigürasyonu <br>
+          IPv4:  <br>
+          G: <br>
+          DNS:
+        </p>
+
+        <p>
+          Bir Switch üretiyoruz daha doğrusu sanalda örneğin vmnet5 switch'ini kullanacağız. <br>
+          Bunu Internal için kullanacağız, External için Bridged kullanacağız. <br>
+          Bu Switch'i ekliyoruz ve DHCP servisini kapatıyoruz.
+        </p>
+
+        <p>
+          DC'nin internal bacağını vmnet5'e bağlıyoruz.
+        </p>
+
+        <p>
+          Firewall'ın iç bacağını vmnet5'e bağlıyoruz. <br>
+          Dış bacağını Bridged yapıyoruz.
+        </p>
+
+        <p>
+          Firewall Select Admin Interface ekranı. <br>
+          İçerideki Switch'e bağlı Interface hangisi diye soruyor. <br>
+          İçeri bakan bacağı seçmeliyiz. <br>
+          İki tane gösterdiğinde Bridged olanın Connect'ini kaldırıp tekrar bu ekrana geldiğimizde, Link olanı seçeriz. <br>
+          İç Network'ün Gateway'ini bu makinenin IP'si olarak ayarlayacağız. <br>
+          Gateway'ini boş bırakıyoruz.
+        </p>
+
+        <p>
+          Kurulumdan sonra Disk'i çıkartıp Reboot ediyoruz.
+        </p>
+
+        <p>
+          DC'ye ya da Network'teki herhangi bir makinenin tarayıcısından aşağıdaki adrese gidiyoruz; <br>
+          https://192.168.3.1/4444 
+        </p>
+
+        <p>
+          Bu adres Firewall'ın yönetim ekranına erişmemizi sağlıyor.
+        </p>
+        
+        <p>
+          Sophos eşzamanlı 50 Connection'a kadar lisans istemiyor.
+        </p>
+
+        <p>
+          Açılış ekranında; <br>
+          Hostname: firewall03 <br>
+          Company name: sirket03 <br>
+          city: istanbul <br>
+          country: turkey <br>
+          Admin Password: Password1 <br>
+          Admin email: administrator@sirket03.com
+        </p>
+
+        <p>
+          Login için; <br>
+          admin <br>
+          Password1
+        </p>
+
+        <p>
+          İlk açılışta Continue ve Backup seçenekleri olur. <br>
+          Sonraki ekranda Lisansımız var ise girmizi ister. <br>
+          LAN Internal Interface'in IP'sini gösterir. <br>
+          İstersek bu interface için DHCP çalıştırabiliriz. <br>
+          Biz Disable ediyoruz.
+        </p>
+
+        <p>
+          Sonraki ekran WAN'dır. <br>
+          DSL - PPP over Ethernet(PPPoE) <br>
+          -> Bu interface internete hangi protokol ile çıktığını söyler. <br>
+          DSL - PPP over ATM/PPTP(PPPoA) <br>
+          -> Genelde over gelir. <br>
+          Modeme göre bunlardan birisini seçeriz. <br>
+          Eğer arada modem yok ise Standard Ethernet interface'i seçeriz. <br>
+          Bu seçeneği seçip, Static IP atarız. <br>
+          Dış bacağı temsil eden 10.3.34.103'ü yazıyoruz. <br>
+          DNS olarakta içerideki 192.168.3.100'ü veriyoruz.
+        </p>
+
+        <p>
+          Allowed Services <br>
+          Firewall tüm iletişimi kapatır. <br>
+          Biz açmak istediğimiz servisleri Allow ederiz. <br>
+          Bu ekranda çok sık kullanılanları açmak isteyip, istemediğini sorar. <br>
+          Açmak istediklerimizi seçeriz.
+        </p>
+
+        <p>
+          Örneğin; <br>
+          [+]Web(HTTP, HTTPS) <br>
+          [+]DNS(outgoing) <br>
+          [+]UTM responds to Pings <br>
+          [+]UTM forward Pings <br>
+          -> Ping paketlerini üzerinden geçirir.
+        </p>
+
+        <p>
+          Firewall'un üzerinden geçmesi demek internete çıkması anlamına geliyor. <br>
+          Yani bu kurallar sadece Firewall'un üzerinden geçen paketler için geçerlidir.
+        </p>
+
+        <p>
+          İçeriden bir talep var ise, yani örneğin web'ten google'a erişmek istediğinde, içeriden bir talep olduğu için dışarıdan cevap alır yani Outcoming'e izin verir.
+        </p>
+
+        <h5>Advanced Threat Protection</h5>
+        <p>
+          Firewall'ın üzerinden geçen paketleri anlık olarak tarar. <br>
+          Antivirüs gibi çalışır. <br>
+          CPU, RAM kaynağını bir miktar tüketir.
+        </p>
+
+        <h5>Web Protection Settings</h5>
+        <p>
+          Normalde HTTP ile istediğimiz Web Siteye gidebilirken, örneğin istemediğimiz bir zararlı site kategorisi seçip ona erişm olmamasını sağlar. <br>
+          Örneğin [+]Drugs sitelerine giriş olmaz. <br>
+          Google tüm siteleri index'lediği için bu tarz siteler zaten meta olarak ortaya çıkıyorlar. <br>
+          Bu şekilde kontrol sağlanıp siteye girmek engelleniyor.
+        </p>
+
+        <p>
+          Konfigürasyon tamamlandıktan sonra, yönetim ekranına erişiriz. <br>
+          En üstte firewall03 başlığının altında Subscriptions sekmesinde bu Firewall'da şuanda verilebilecek hizmetleri görürüz.
+        </p>
+
+        <h5>Current System Configuration</h5>
+        <p>
+          Şuanda sistemde açık olan tüm hizmetleri gösterir. <br>
+          Anlık olarak yukarıda [+]Web(HTTP, HTTPS) Enable ettiğimiz için artık bu Network'te internete çıkılabilir.
+        </p>
+
+        <p>
+          Bunlar temel Firewall ayarlarıdır.
+        </p>
+
+        <h5>NTP(Network Time Protocol)</h5>
+        <p>
+          Dünya çapında saat senkronizasyonu yapılır. <br>
+          Dünyada atomik saatler vardır. <br>
+          Bunlar NTP Server'ların üzerinde çalışırlar.
+        </p>
+
+        <p class="bg-script">
+          > Management <br>
+          > Time and date <br>
+          > NTP Servers <br>
+          -> Burada Firewall'ın NTP Server'ını görürüz. <br>
+          Yani Firewall saatini bu NTP Server'a göre senkronize eder. <br>
+          > Management <br>
+          > SSH(Shell access) <br>
+          -> Komut satırında iş yapabilmemizi sağlar.
+        </p>
+
+        <p>
+          Bu tarz bir servis açmak istediğimizde en üstte açma kapama butonu bulunur. <br>
+          Açıldığı zaman yeşile döner, konfigürasyon gerekiyorsa sarı yanar.
+        </p>
+
+        <p>
+          Password1 şeklinde PW girip Set Specified Passwords'a tıklarız.
+        </p>
+
+        <p>
+          Aşağıda Allowed Networks'te Browse'a tıklayarak olabilecek tüm Network'leri karşımıza getirir. <br>
+          Örneğin SSH ile gelinsin ve ancak Internal'dan bu bağlantı yapılabilsin istiyorsak, bu konumda sadece Internal(Network)'ı Allowerd Network'e sürükleyip bırakırız. <br>
+          Ardından Any'i kaldırır ve Apply'a tıklarız.
+        </p>
+
+        <p>
+          > Scan Settings <br>
+          Sophos ya da Avira kütüphanelerine göre Scan yapar. <br>
+          İkisinden birini seçebiliiriz. <br>
+          Seçtiğimiz protokollere göre tarama yapar. <br>
+          Örneğin sadece Mail taraması yaptırabiliriz.
+        </p>
+
+        <p>
+          Aynı hizmeti Proxy olarakta alabiliriz. <br>
+          Bu hizmeti verecek proxy'nin host'unu port numarasını ve authentication'ını yaparak bağlantıyı kurabiliriz.
+        </p>
+
+        <p>
+          Reset Config <br>
+          Reset UTM ID now <br>
+          -> Windows'ta Sysprep'in karşlığıdır. <br>
+          Benzer bir durum ile karşılaşlığında buradan çözülebilir.
+        </p>
+
+        <p>
+          WebAdmin Settings <br>
+          Allowed Administrators <br>
+          -> Bu ekrana kimlerin erişebileceğini buradan belirliyoruz.
+        </p>
+
+        <p>
+          HTTPs Certification <br>
+          CA Sertifikasını buradan ekleyebiliriz.
+        </p>
+
+        <p>
+          > Up2Date <br>
+          SOPHOS, Firewall kullanabilmemiz için çalıştırdığımız bir App'tir. <br>
+          Bu App'i güncellemek bu ekrandan mümkündür. <br>
+          Hizmetlerin en az kullanıldığı saatlerde yapılmalıdır.
+        </p>
+
+        <p>
+          > Backup/Restore <br>
+          Ayarları geri getirebilmek için yedek alınmalıdır. <br>
+          Bu ekranda varsayalanda otomatik olarak haftalık bir Backup aldığını görürüz. <br>
+          Firewall'da çok fazla kural değişikliği yapılmadığı için haftalık süre idealdir.
+        </p>
+
+        <p>
+          Manuel Backup almak için; <br>
+          > Create Backup <br>
+          Create Backup Now
+        </p>
+
+        <p>
+          Aynı ekrandaki listede bu ve otomatik olarak yapılan tüm Backup'lar listelenir. <br>
+          Bu listeden istediğimiz Backup'ı indirip, istediğimiz makineye yedeğini taşıyabiliriz.
+        </p>
+
+        <p>
+          Import Backup bölümünden ise aldığımız Backup'tan Restore yapabiliriz.
+        </p>
+
+        <p>
+          > User Portal <br>
+          Firewall Default'ta kapalıdır. <br>
+          Açtığımız zaman sarı yanar, ayar yapılmasını ister. <br>
+          User Portal tüm User'ların erişebildiği Firewall ile ilgili uygulamaların sunulduğu ve Password'ların vs. değiştirilebildiği bir arayüzdür. <br>
+          Kimlerin erişebileceğine bu ekrandan karar verebiliriz.
+        </p>
+
+        <p>
+          User Portal'a erişmek istediğinde sadece Firewall2'ın IP'sini ya da ismini Browser'a yazarak erişir.
+        </p>
+
+        <p>
+          Bu ekranda kullanıcının https ile RDP yapmasını sağlayabiliriz.
+        </p>
+
+        <p>
+          Notifications <br>
+          SNMP(Network Management Protokol) <br>
+          -> Log'lamak için kullanılan bir protokoldür. <br>
+          Firewall her şeyi Log'lar ve bunları istersek Email olarak alabiliriz.
+          İstersek SNMP ile gönderebiliriz. <br>
+          -> Bunu kullanabilmek için bir SNMP Server kurulması gerekir. <br>
+          Bunun için; <br>
+          SNMP ekranına gidip, bu Server'ı buradan tanıtmış olmamız gerekiyor.
+        </p>
+
+        <p>
+          SNMP Log'ları otomatize edilebilir, yani belli bir Log ile karşılaşıldığında gidip şu Script'i çalıştır gibi bir işlem otomatik olarak yaptırılabiliyor.
+        </p>
+
+        <p>
+          Sadace üretilen Log'ları göndermek gibi bir derdimiz var ise SNMP ya da Email ile bu işlemi yapabiliriz.
+        </p>
+
+        <p class="bg-script">
+          > Customization <br>
+          Şirketimizin Logo'sunu buraya ekleyebiliyoruz. <br>
+          > Web Messages <br>
+          -> Ne durumda tetikleneceğini ve çıkabilecek mesajları buradan editleyebiliyoruz.
+        </p>
+
+        <p>
+          Yani kullanıcı Network'te herhangi bir makineyi kullanarak örneğin bir Websitesine bağlantı kurmak istedi ve biz o siteye bu makinelerden gidilmesini istemiyoruz. <br>
+          Bunu bu noktada engelleyip bir mesaj verebiliriz.
+        </p>
+
+        <p>
+          Firewall'ı Domain'e eklemek <br>
+          Bunu yaptığımızda Signle Sign On yapabiliriz.
+        </p>
+
+        <p class="bg-script">
+          > Auchentication Services <br>
+          Direkt Sign on yapmak istersek olmaz. <br>
+          Çünkü erişeceği DC'yi henüz bilmiyor. <br>
+          Bu DC'yi bildirmek için; <br>
+          > Definitions & Users <br>
+          > Authentication Services <br>
+          > Servers <br>
+          > New Authentication Server... <br>
+          > Backend: Active Directory'i seçeriz. <br>
+          -> Doğrulama Server'ını seçeriz. <br>
+          > Poisiton: Top <br>
+          > Server: +'ya tıklayıp ekleyeceğimiz şeyi tarif ediyoruz. <br>
+          -> DC'nin Adını ve IP'sini gireriz. <br>
+          > Port: 389 <br>
+          -> Active Directory eirişim Port'u 389'dur. <br>
+          > Test <br>
+          -> User'ın ya da Admin'in hesabına Erişim sağlama testi yapar. <br>
+          -> User hesapları tarif edilirken başına cn=administrator,cn=users,dc=sirket3,dc=com <br>
+          -> Tam yolu bu şekilde tarif ederiz. <br>
+          cn: Container <br>
+          > Password: Password1 <br>
+          -> Bu aşamada testi geçerse, bağlantı ve hesap bilgileri tamamen doğrudur. <br>
+          > Base DN: cn=users,dc=sirket3,dc=com <br>
+          > Username: Ali <br>
+          > Password: Password1 <br>
+          -> Server'ı eklemiş olduk.
+        </p>
+
+        <p class="bg-script">
+          > Active Directory Single Sign On <br>
+          Domain: sirket03.com <br>
+          Admin Username: administrator <br>
+          Password: Password1 <br>
+          -> WebAdmin ekranına Domain Admin id pw ile de Login olabilmemizi sağlar.
+        </p>
+
+        <p>
+          > Global Settings <br>
+          [+]Create users automatically <br>
+          Bu Firewall'dan sonraki ekrandan seçeceğimiz tüm hizmetleri alan ve doğrulamadan geçen tüm hesaplar Users/Groups ekranında listelenirler.
+        </p>
+
+        <p>
+          > Flush Authentication Cache <br>
+          -> Tüm Authentication'ları Cache'inde tutar, User'ların PW'leri falan değiştirildiğinde bu noktadan anlık olarak temizleyebiliriz. <br>
+          Ayrıca bu her Log-on olunmak istendiğinde  her defasında DC'ye gidilmesinin de önüne geçer.
+        </p>
+
+        <hr>
+        
+        <div class="text-center container p-3 bg-script">
+          <div class="d-flex justify-content-evenly navigation">
+            <a href="" class="bg-script">15.04.2023</a>
+            <a href="" class="bg-script">29.04.2023</a>
+          </div>
+        </div>
+        
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
