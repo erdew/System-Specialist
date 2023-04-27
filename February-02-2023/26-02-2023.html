@@ -256,15 +256,11 @@
         <p class="bg-script">
           > Install <br>
           14 aşamalı bir Exchange Setup başlatılır. <br>
+        </p>
+
+        <p>
           Kurulum bittikten sonra, Exchange Admin'i olan User Authentication yapılır. <br>
           Tarayıcıya gidip; exc0.sirket0.com/owa'ya gidersek, https'i gelişmişten geçip siteye giriş yaparız. <br>
-          Mailbox'ı olan bir hesap'la Login olabiliriz. <br>
-          Login olduktan sonra kendi Login olduğumuz hesaba test mail'i atabiliriz. <br>
-          Çalışıyorsa, gelen kutusuna düşmesi gerekir. <br>
-          Şuanda kendi Domain'imizden başka bir Domain'e bu Exchange Server mail atamaz. <br>
-
-          SAAT 12:20'yi KAYITTAN TEKRAR ET.
-
         </p>
 
         <p>
@@ -274,13 +270,71 @@
           Unutursak IIS'te Default Page'in altında bu sayfa da zaten görünür. <br>
         </p>
 
-        <h4>Şirketler arası mail atmak</h4>
         <p>
-          KAYITTAN TEKRARLA
+          Mailbox'ı olan bir hesap'la Login olabiliriz. <br>
+          Login olduktan sonra kendi Login olduğumuz hesaba yani kendimize test mail'i atabiliriz. <br>
+          Çalışıyorsa, gelen kutusuna düşmesi gerekir. <br>
+          Mail, Mailbox'a düşüyorsa bunun anlamı şudur; Gönderdiğimiz Mail Exchange Server'a ulaştı ve Exchange Server'dan da Mailbox'ımıza gönderildi. <br>
+        </p>
 
-          Genel olarak mantık, DNS'ten diğer server'ın Host kaydını oluşturmak. <br>
-          Yani bir MX kaydı oluşturup bu Host kaydını işaret etmek. <br>
-          
+        <p>
+          Exchange Server'ın kurulumu ile bereber Domain Controller ve Exchange Server arasında oluşturulan organik bağ aracılığıyla Active Directory üzerinde oluşturulan Organizational Unit ve Group'lar şunlardır;
+        </p>
+
+        <p class="bg-script">
+          > DC <br>
+          > Active Directory Users and Computers <br>
+          -> Burada Exchange Setup'ı ile birlikte yeni Organizational Unit'ler oluşturulur. <br>
+          -> Onların içerisinde ise yeni Gruplar oluşturulduğunu görebiliriz. <br>
+          -> Örneğin; <br>
+          > Exchange Servers <br>
+          -> Domain'deki Exchange Server'ların bu gruba üye olduğunu görürüz. <br>
+          > Recipient Management <br>
+          -> Alıcıları yöneten kişiler. <br>
+          > Organition Management <br>
+          -> Bu gruba Domain Admin'inin üye olduğunu görürüz. <br>
+          -> Zaten Domain Admin'i bu gruba üye olması sayesinde Exchange'i yönetebiliyor.
+        </p>
+
+        <p>
+          Ayrıca Exchange Server yaptığımız makinede IIS Servisini kurduğunu görürüz. <br>
+          Çünkü Exchange Server bir Mail Server ve Mail Server'lar birbirleri arasında iletişim sağlayabilmek için mutlaka bulundukları Domain'i satın almış olmalıdır. <br>
+          Ayrıca bu Mail Server'a erişebilmek için OWA tercih edilebilir, işte bu OWA'nın yayınlandığı Web Server'da Exchange Server'ın bizzat kendisi oluyor. <br>
+          Zaten IIS Servisine gidilirse eğer, OWA sayfasının otomatik olarak oluşturulduğunu görebiliriz. <br>
+          Örneğin, bu sayfaya şu adresten erişiriz; https://exc0.sirket0.com/owa <br>
+          Eğer bu OWA sayfasını durdurursak artık OWA açılmaz. <br>
+          Eğer Exchange Server'ın Control Panel'ine Browser üzerinden gitmek istiyorsak, yine IIS'te otomatik olarak oluşturulan ecp isimli sayfaya gitmek durumundayız. <br>
+          Eğer bu sayfayı da Pause edersek, bu Panel'e de erişmeyeceğimiz anlamına gelir. <br>
+          Exchange'i yönetmek için bu sayfaya gideriz. <br>
+          Örneğin, bu sayfaya şu adresten erişiriz; https://exc0.sirket0.com/ecp
+        </p>
+
+        <h4>Mail Server'lar arası mail trafiği</h4>
+        <p>
+          Şuanda kendi Domain'imizdeki Exchange Server başka bir Mail Server'a mail atamaz. <br>
+          Çünkü henüz Domain satın alıp, DNS'te MX kaydı oluşturmadık. <br>
+          Sanalda bir DNS'i internet ya da ISP'nin DNS'i olarak kabul ederek, durumu simüle ediyoruz. <br>
+          Bunun için o DNS'te yeni bir Zone kaydı oluşturuyoruz. <br>
+          Onun içine Exchange Server'a ait Host kaydını açıyoruz. <br>
+          Örneğin; Exc0 - 10.3.34.100 <br>
+          Ardından MX kaydı oluşturuyoruz; <br>
+          > sirket0.com <br>
+          > Browse <br>
+          Exchange Server'ı denkliyoruz. <br>
+          (same as parent folder) Mail Exchanger(MX) - IP: exc0.sirket0.com <br>
+          -> Bu şekilde bir kayıt oluşturulur. <br>
+          Bu Domain satın almaya alternatif olarak sadece göstermek, temsil etmek için uygulanan bir simülasyon yöntemidir. <br>
+          Deneme yapmak için diğer Network'lerdeki Mail Server'lar için de bu DNS'te bir Zone oluşturup, aynı işlemleri yaparız ki tıpkı Domain satın almış ve ISP'nin DNS'i ya da Root DNS'ten isim çözümlemesi yapılıyormuş gibi davranılmasını sağlıyoruz. <br>
+          Bunu yaptıktan sonra tüm Network'lerde yani şirket içindeki DNS'leri dünyaya(internete) yani temsilen bu Zone'ları oluşturduğumuz DNS'e Forward etmeliyiz ki istediğimiz sonucu elde edebilelim. <br>
+          Bu makineler arasında Ping trafiği yaparak, bağlantıyı kontrol ederiz. <br>
+          Zaten birbirlerine Ping atabilir durumlar ise Exchange Server'lar da DNS'ten isim çözümlemesi yapılarak birbirlerine erişebilecek ve Mail'leri teslim edebilecekler. <br>
+          Aradaki bu iletişim de SMTP protokolü ile sağlanacak. <br>
+          Arkaplanda interneti kullanacak olan makine DNS'tir.
+        </p>
+
+        <p>
+          Bundan sonraki notlarda şirketler arasındaki Mail alışverişi için gerekecek olan konfigürasyonları yapacağız. <br>
+          Altyapı bu işlemi sağlamak için şuanda hazırlanmış durumda.
         </p>
 
         <hr>
