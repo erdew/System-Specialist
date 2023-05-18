@@ -80,57 +80,89 @@
 
         <hr>
 
-        <p>
-            Örnek bir tipoloji oluşturacak olursak; <br>
-            x: Bina Numarası <br>
-            y: kat no <br>
-            10.0.0.0/8 <br>
-            10.x.0.0/16 <br>
-            10.x.y.0/24 <br>
-            Şeklinde bir IP dağıtımı yapılması mantıklıdır. 
-        </p>
-        <p>
-            Bir Network tasarlarken basit düşünmek vee ihtiyaca göre derin bilgilerimizi kullanmalıyız. WAN bacaklarını, şubelerden birini ISP'ye bağlamak istediğimizde Real IP kullanmak gereklidir. Şirketin dışarıya bağlanan bacağına gerçek IP atanır. Bu IP'de /30 gibi bir Prefix'e sahip olması mantıklıdır.
-        </p>
-
         <h4>Dynamic Routing</h4>
         <p>
-            Static ve Dynamic Routing nedir? <br>
-            Static Routing manuel olarak tek tek ellerimizle Router'a konfigürasyon yapma gereksinimi doğrurur. Çok kalabalık bir Tipolojide bu çok büyük bir zaman kaybına sebep olur. Router'ların hedef yolları otomatik olarak bulmasına "Dynamic Routing" denir. Her Router'ın işletim sisteminde Routing Table'ı otomatik öğretecek Protokol yüklüdür. Router'lar yollardan biri Down olduğunda alternatif yolları hesaplarlar. Buradaki tercihi zaman kazandırarak ya da hattın yoğunluğuna göre tercih yaparlar.
+          Static ve Dynamic Routing nedir? <br>
+          Static Routing manuel olarak tek tek ellerimizle Router'a konfigürasyon yapma gereksinimi doğurur. <br>
+          Çok kalabalık bir Tipolojide bu çok büyük bir zaman kaybına sebep olur. <br>
+          Router'ların hedef yolları otomatik olarak bulmasına "Dynamic Routing" denir.  <br>
+          Her Router'ın işletim sisteminde Routing Table'ı otomatik öğretecek Protokol yüklüdür.  <br>
+          Router'lar yollardan biri Down olduğunda alternatif yolları hesaplarlar. <br>
+          Buradaki tercihi zaman kazandırarak ya da hattın yoğunluğuna göre tercih yaparlar.
         </p>
         <h6>RIP</h6>
         <p>
-            En eski Dynamic Routing Protokolüdür. <br>
-            v1 > Broadcast -> Classfull Network'leri içerir; /8, /16, /24 <br>
-            v2 > Multicast -> Classless Network'lerde dahildir. /26, /30 vs. <br>
+          En eski Dynamic Routing Protokolüdür. <br>
+          v1 > Broadcast -> Classfull Network'leri içerir; /8, /16, /24 <br>
+          v2 > Multicast -> Classless Network'lerde dahildir. /26, /30 vs. <br>
         </p>
         <p>
-            Auto Summary'i kapatmak; <br>
-            RIP auto-summary yapar. Kapatmak no-autosummary yapmak gerekir. Bu özellik default'ta açık olur. Duruma göre kapatmak gerekir.
+          Auto Summary'i kapatmak; <br>
+          RIP auto-summary yapar. Kapatmak no-autosummary yapmak gerekir. <br>
+          Bu özellik default'ta açık olur. Duruma göre kapatmak gerekir.
         </p>
         <p>
-            Router'lar birbirleriyle iletişime geçerek hangi Routing youlna gideceğini söylerler. RIP maksimum 15 HOP yapabilir. En kısa yoldan gitmesini istersek(En kısa yol her zaman en ideali değildir) en az HOP sayısı hangi yolda ile o yol izlenir. Buna Distance Vector Protokolü adıverilmiştir. RIP için hep en az HOP'lu yol seçilir. Eğer bu yol down olursa geriye kalan yollardan yine en az HOP'lu olanı seçerek trafiği yönlendirir.
+          Router'lar birbirleriyle iletişime geçerek hangi Routing yoluna gideceğini söylerler. <br>
+          RIP maksimum 15 HOP yapabilir. <br>
+          En kısa yoldan gitmesini istersek(En kısa yol her zaman en ideali değildir) en az HOP sayısı hangi yolda ile o yol izlenir. <br>
+          Buna Distance Vector Protokolü adıverilmiştir. <br>
+          RIP için hep en az HOP'lu yol seçilir. <br>
+          Eğer bu yol down olursa geriye kalan yollardan yine en az HOP'lu olanı seçerek trafiği yönlendirir.
         </p>
+
         <h6>RIP Konfigürasyonu</h6>
-        <p>
-            config > router rip <br>
-            version 2 <br>
-            no auto-summary <br>
-            network 192.168.3.0 -> Router, diğer Router'lara bu Network'ün kendi üzerindeki bacaklardan birine bağlı olduğunu bildirir. <br>
-            Eğer no-autosumamry yapmazsak bütün hedefleri bana Multicast olarak at demiş oluruz, yaparsak her bir Network'ü tek tek söylememiz gerekir ve ona göre hedeflenir.
+        <p class="bg-script">
+            > config 
+            > router rip <br>
+            > version 2 <br>
+            > no auto-summary <br>
+            > network 192.168.3.0 <br>
+            -> Router, diğer Router'lara bu Network'ün kendi üzerindeki bacaklardan birine bağlı olduğunu bildirir. <br>
         </p>
+
         <p>
-            Bütün Router'larda RIP konfigürasyonu yapmak gerekir. Her Router'ın direkt bağlı oldukları Network'leri söylemesi gerekir. İş kompleks olduğunda yani alternatif yol sayısı fazla ise "Dynamic Routing" yapmak gerekir. Aynı zamanda Dynamic Routing trafiğin hızını da arttırır. Hızı arttırmasını şu şekilde ifade edebiliriz; Örneğin iki tane alternatif yol bulundu ve ikisi de eşit durumdalar ise paketler ikisinden de gönderilmeye başlar. Fakat en avantajlı yolu seçme konusunda RIP oldukça yeteneksizdir, sadece HOP sayısına bakar. Daha gelişmiş ve çok sayıda parametre kontrolü yapabilecen Dynamic Routing Protokoller de vardır.
+          Eğer no-autosumamry yapmazsak bütün hedefleri bana Multicast olarak at demiş oluruz, yaparsak her bir Network'ü tek tek söylememiz gerekir ve ona göre hedeflenir.
         </p>
+
+        <p>
+          Bütün Router'larda RIP konfigürasyonu yapmak gerekir. <br>
+          Her Router'ın direkt bağlı oldukları Network'leri söylemesi gerekir. <br>
+          İş kompleks olduğunda yani alternatif yol sayısı fazla ise "Dynamic Routing" yapmak gerekir. <br>
+          Aynı zamanda Dynamic Routing trafiğin hızını da arttırır. <br>
+          Hızı arttırmasını şu şekilde ifade edebiliriz; <br>
+          Örneğin iki tane alternatif yol bulundu ve ikisi de eşit durumdalar ise paketler ikisinden de gönderilmeye başlar. <br>
+          Fakat en avantajlı yolu seçme konusunda RIP oldukça yeteneksizdir, sadece HOP sayısına bakar. <br>
+          Daha gelişmiş ve çok sayıda parametre kontrolü yapabilecen Dynamic Routing Protokoller de vardır.
+        </p>
+
         <p>
           Interface'in Bandwith'ini değiştirmek; <br>
-          int f 2/0 <br>
-          bandwithh 10000 -> 10 Mbit -> Bu komut ile maksimum hızını belirlemiş olduk.
         </p>
+
+        <p class="bg-script">
+          > int f 2/0 <br>
+          > bandwith 10000 -> 10 Mbit -> Bu komut ile maksimum hızını belirlemiş olduk.
+        </p>
+
         <p>
-          Dynamic Routing Protokollerinin alternatif yolları hesaplarken Administrative Distance adı verilen bir değişken üretirler. Bu değişken protokoller arasında standart değerlere sahiptir. Örneğin RIP'in AD'si [120]'dir. Bu değişkenin değeri düştükçe daha gelişmiş Dynamic Routing Protokollerini ifade ettiğini anlarız. Router her zaman üzerinde en küçük değerde olan protokolü seçer. Bu protokolleri duruma göre biz tanımlarız. En mastrafsız ve en kolayını seçmek gerekir. Örneğin el arabası ile taşınacak kadar kumu taşımak için kamyon kiralanmaz. RIP daha az parametreyi değerlendirdiği için daha Light'tır. CPU, RAM ihtiyacı daha azdır. Administrative Distance değiştirilemez. Static Routing'in AD'si 1'dir. Directly Connected'ın AD'si 0'dır. Burada önceliğin hiyararşik olarak hangilerinde olduğunu görebiliriz. <br>
-          [120/1], [120/2] şeklinde /'dan sonra görülen rakam "Cost" yani maliyeti ifade eder. RIP için maliyet HOP sayısıydı. Diğer protokoller için diğer parametrelere göre bu sayı değişir. <br>
-          Router, Routing hesaplaması yaparken, önce AD'si en düşük olanı daha sonra Cost'u en düşük olanı tercih eder. Dynamci Routing yaptılan Router'a yeni bir Network eklendiğinde otomatik olarak tüm Router'lar bu Network'e nasıl gidileceğini öğrenirler. 
+          Dynamic Routing Protokollerinin alternatif yolları hesaplarken Administrative Distance adı verilen bir değişken üretirler. <br>
+          Bu değişken protokoller arasında standart değerlere sahiptir. <br>
+          Örneğin RIP'in AD'si [120]'dir. <br>
+          Bu değişkenin değeri düştükçe daha gelişmiş Dynamic Routing Protokollerini ifade ettiğini anlarız. <br>
+          Router her zaman üzerinde en küçük değerde olan protokolü seçer. <br>
+          Bu protokolleri duruma göre biz tanımlarız. <br>
+          En mastrafsız ve en kolayını seçmek gerekir. <br>
+          Örneğin el arabası ile taşınacak kadar kumu taşımak için kamyon kiralanmaz. <br>
+          RIP daha az parametreyi değerlendirdiği için daha Light'tır. <br>
+          CPU, RAM ihtiyacı daha azdır. <br>
+          Administrative Distance değiştirilemez. <br>
+          Static Routing'in AD'si 1'dir. Directly Connected'ın AD'si 0'dır. <br>
+          Burada önceliğin hiyararşik olarak hangilerinde olduğunu görebiliriz. <br>
+          [120/1], [120/2] şeklinde /'dan sonra görülen rakam "Cost" yani maliyeti ifade eder. <br>
+          RIP için maliyet HOP sayısıydı. <br>
+          Diğer protokoller için diğer parametrelere göre bu sayı değişir. <br>
+          Router, Routing hesaplaması yaparken, önce AD'si en düşük olanı daha sonra Cost'u en düşük olanı tercih eder. <br>
+          Dynamci Routing yaptılan Router'a yeni bir Network eklendiğinde otomatik olarak tüm Router'lar bu Network'e nasıl gidileceğini öğrenirler. 
         </p>
 
         <h4>OSPF(Open Shortest Pathh First)Dynamic Routing Protokolü</h4>
@@ -144,25 +176,45 @@
           Area -> Çok sayıda Router'ı parçalara bölmek. <br>
           Bu Area'daki komple tippolojiye hakim Router'lar olur. Bu Router'lara Designated Router(DR) denir. <br>
           DR'ler kendi aralarında kendi Area'larındaki en iyi yollarını birbirlerine söylerler. <br>
+        </p>
+
+        <p>
           Örnek bir OSPF Tipolojisi; <br>
-          OSPF 1 > AREA 0 > DR 1 | DR2 | DR3 || AREA 1 > DR 1 | DR2 | DR3 || AREA 2 > DR 1 | DR2 | DR3 <br>
-          Area'lar kendi içlerinde en iyi yolları biliyorlar. DR'da aynı şeyi biliyor ve diğer DR'lara bunu öğretiyor(Transfer için kullanılan Router). DR'ların Backup'ları vardır(Aynı bilgiye sahip olan) Backup Designated Router adıverilir, kısaca BDR denir. <br>
+        </p>
+
+        <p class="bg-script">
+          OSPF 1 > <br>
+          AREA 0 > DR 1 | DR2 | DR3 || <br>
+          AREA 1 > DR 1 | DR2 | DR3 ||  <br>
+          AREA 2 > DR 1 | DR2 | DR3
+        </p>
+
+        <p>
+          Area'lar kendi içlerinde en iyi yolları biliyorlar. <br>
+          DR'da aynı şeyi biliyor ve diğer DR'lara bunu öğretiyor(Transfer için kullanılan Router). <br>
+          DR'ların Backup'ları vardır(Aynı bilgiye sahip olan) Backup Designated Router adıverilir, kısaca BDR denir. <br>
           Eğer Designated Router down olursa BDR devreye girer ve Area'dan başka bir Router BDR seçilir.
         </p>
+
         <p>
           DR belirlemenin ilk yöntemi; <br>
-          DR'ı belirlemek için OSPF için Router ID tanımlanabilir. Bu bir IP adresi gibi tnaımlanır. Bu durumda hepsine(her Router'a) Router ID tanımlanır. En yüksek ID'ye sahip olan DR, 1 düşüğüne sahip olan BDR olur. <br>
+          DR'ı belirlemek için OSPF için Router ID tanımlanabilir. <br>
+          Bu bir IP adresi gibi tnaımlanır. <br>
+          Bu durumda hepsine(her Router'a) Router ID tanımlanır. <br>
+          En yüksek ID'ye sahip olan DR, 1 düşüğüne sahip olan BDR olur. <br>
           İkinci yöntem; <br>
-          Loop Back Yöntemi adıverilir. Loop Back, Router'ın kendisine ulaşmak için tarif edilir. Olamayan ama tarif edilebilen Interface'e(Loopback interface) IP atanarak Router ID'si tanımlanır. Loopback IP'si en yüksek olan DR olur. <br>
-          İkisi birden yapıldıysa Router, Router ID'si oları kabul eder. İkisini de yapmadıysak eğer en büyük IP adresi hangi Router'da ise o DR seçilir. Bir küçüğü ise BDR seçilir.
+          Loop Back Yöntemi adıverilir. <br>
+          Loop Back, Router'ın kendisine ulaşmak için tarif edilir. <br>
+          Olamayan ama tarif edilebilen Interface'e(Loopback interface) IP atanarak Router ID'si tanımlanır. <br>
+          Loopback IP'si en yüksek olan DR olur. <br>
+          İkisi birden yapıldıysa Router, Router ID'si oları kabul eder. <br>
+          İkisini de yapmadıysak eğer en büyük IP adresi hangi Router'da ise o DR seçilir. <br>
+          Bir küçüğü ise BDR seçilir.
         </p>
+
         <p>
           Bütün OSPF Area'ları Area 0'a toplanmalıdır. <br>
           Area'ların kapsayıcısına Process ID denir. Bu da OSPF 1, OSPF 2 tarzında isimlendirilir.
-        </p>
-        <p>
-          DYNAMIC ROUTING DEVAM EDECEK.
-          AYRICA BU KONUYU GORSELLERLE VS CISCO PACKET TRACER UYGULAMASINDA YAPARAK ANLATABILIRSIN. OZELLILE PDF FORMATI ICIN.
         </p>
 
         <hr>

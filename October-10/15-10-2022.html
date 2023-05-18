@@ -341,6 +341,24 @@
           Aksi durumda Network’ler arasında iletişim sağlanamazdı.
         </p>
 
+        <p class="bg-script text-start">
+          > do show ip router -> IP Routing'leri gösterir.
+        </p>
+        <p>
+          Router'ın her Interface'i farklı birer Network'ü ifade eder. <br>
+          Gateway sadece bir çıkış kapısıdır.  Farklı bir Network'e çıkmak için gereklir.<br>
+          Aynı Network'teki makineler sadece IP'ye sahip olarak birbirlerine erişebilirler. <br>
+          Router'lar çıkış yollarını yani bütün Network'lere hangi Interface'inden çıkacağını öğretmek gerekir. <br>
+          Router'lara Default Gateway atılabilir. Her zaman Client'in çıkması gereken Interface aynı olacağı için hep geçerli olmasını sağlar. <br>
+        </p>
+        <p class="bg-script text-start">
+          IP Route 0.0.0.0 0.0.0.0 -> Hedef fark etmez. <br>
+          192.168.5.2 -> Router'ın diğer Network'lere çıkan Interface'in IP'si.
+        </p>
+        <p>
+          Yukarıdaki durum tek bir çıkışı olan Network'ler için geçerlidir. 
+        </p>
+
         <hr>
         
         <div class="text-center container p-3 bg-script">

@@ -80,29 +80,44 @@
 
         <hr>
 
+        <h5>OSPF Routing</h5>
         <p>
-          OSPF'teki tüm areların Area 0'a bağlanması gerekiyor. <br>
+          OSPF'teki tüm areaların Area 0'a bağlanması gerekiyor. <br>
           OSPF Rouring yapmak için; <br>
-          router ospf 1 <br>
-          network 1.1.1.0 0.0.0.3 area 0 -> Reverse Wildcard Mask adı verilir. Subnet Mask'ın tersi şeklinde  yazılır. <br>
         </p>
+
+        <p class="bg-script">
+          > router ospf 1 <br> 
+          > network 1.1.1.0 0.0.0.3 area 0 <br>
+          -> Reverse Wildcard Mask adı verilir. <br>
+          Subnet Mask'ın tersi şeklinde  yazılır. 
+        </p>
+
         <h4>Area Border Router(ABR)</h4>
         <p>
-          Diğer Area'ları Area 0'a bağlarken kullanılır. ABR'nin Interface'lerinden birisi Area 0'a bağlanmak zorundadır. Bir Area içerisinde 50 Router olması ideal olanıdır. Yani Area'lar da aslında ciddi anlamda büyük yapılardır. ABR olması "Designated Router" olmasına engel değildir. ABR Network'ün yapısından doğal olarak kendi kendine tesadüfen belirlenir. Fakat Designated Router ya otomatik olarak ya da Manuel olark seçilir. Bir Router aynı anda hem DR hem BDR olamaz.
+          Diğer Area'ları Area 0'a bağlarken kullanılır. <br>
+          ABR'nin Interface'lerinden birisi Area 0'a bağlanmak zorundadır. <br>
+          Bir Area içerisinde 50 Router olması ideal olanıdır. <br>
+          Yani Area'lar da aslında ciddi anlamda büyük yapılardır. <br>
+          ABR olması "Designated Router" olmasına engel değildir. <br>
+          ABR Network'ün yapısından doğal olarak kendi kendine tesadüfen belirlenir. <br>
+          Fakat Designated Router ya otomatik olarak ya da Manuel olark seçilir. <br>
+          Bir Router aynı anda hem DR hem BDR olamaz.
         </p>
+
         <p>
           DR ve BDR'ları görmek için; <br>
           show ip ospf interface <br>
           Otomatikten DR seçiminden çıkartıp, Router ID tanımlamak; <br>
           router ospf 1 <br>
-          router id 1.1.1.1 -> DR olarak bu Router seçilir.<br>
+          router id 1.1.1.1 -> DR olarak bu Router seçilir. <br>
           clear ip ospf process <br>
         </p>
+
         <p>
-          HAZIR DERS NOTLARINDAN KONFIGURASYONLARI NOT EDEBILIRSIN.
-        </p>
-        <p>
-          OSPF'te mantık olarak DR'lar BDR'lar belirlenir. Bu Router'lar Area'lardaki en iyi alternatif yolları bilirler. Birden fazla Area bir OSPF Process ID'sinde bulunur ve birden fazla Process ID'de Area 0 üzerinden birbirleri ile iletişime geçirilirler.
+          OSPF'te mantık olarak DR'lar BDR'lar belirlenir. <br>
+          Bu Router'lar Area'lardaki en iyi alternatif yolları bilirler. <br>
+          Birden fazla Area bir OSPF Process ID'sinde bulunur ve birden fazla Process ID'de Area 0 üzerinden birbirleri ile iletişime geçirilirler.
         </p>
 
         <h4>EIGRP</h4>
@@ -112,16 +127,16 @@
           Classless IP'leri destekler. <br>
           Auto summary varsayılanda açıktır.
         </p>
+
         <p>
           Cisco cihazlar için en güncel kullanılan, en gelişmiş ve basit konfigürasyonu olan Dynamic Routing Protocol'dür.
         </p>
-        <p>
-          HAZIR DERS NOTLARINDAN KONFIGURASYONLARI NOT EDEBILIRSIN.
-        </p>
-
+      
         <h4>Redistribution</h4>
         <p>
-          ABR, iki farklı protokolün arasında kaldıysa, OSPF tarafına EIGRP tarafından öğrendiklerini OSPF'çe söyle, OSPF'ten öğrendiklerini de EIGRP tarafına EIGRP'ce söyle. Yani sınırdaki Router'a çevirmenlik yaptırılıyor. Buna "Redistribution" denir. <br>
+          ABR, iki farklı protokolün arasında kaldıysa, OSPF tarafına EIGRP tarafından öğrendiklerini OSPF'çe söyle, OSPF'ten öğrendiklerini de EIGRP tarafına EIGRP'ce söyle. <br>
+          Yani sınırdaki Router'a çevirmenlik yaptırılıyor. <br>
+          Buna "Redistribution" denir. <br>
           Sıfırdan hesap yapmadan bildikleri hangi AREA biliniyorsa ona o AREA'nın analdığı dilden öğretir.
         </p>
         
