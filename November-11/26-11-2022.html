@@ -80,54 +80,86 @@
 
         <hr>
 
-        <h4 id="hyper-v">Hyper-V</h4>
-        <h5>Sanallaştırma</h5>
+        <h4>Sanallaştırma</h4>
+
+        <h5>Hyper-V</h5>
         <p>
-          Bir fiziksel makinenin üzerinde Hyperevizor, onun üzerinde ise Hyper V kullanan sanal makineler bulunur. Bunları bir bütün olarak düşünmek gerekir. Fiziksel makinenin üzerinde Hyper V sanal makinelerinin çalıştırıldığı katman Hypervizor katmanı adıverilir. Donanımın yeterliliğine göre fiziksel makinenin üzerinde istediğimiz kadar sanal makine üretebiliriz. Bu makineler üzerinde kullanılacak RAM dinamik olarak ihtiyaca yönelik paylaştırılabilir.
+          Bir fiziksel makinenin üzerinde Hyperevizor, onun üzerinde ise Hyper V kullanan sanal makineler bulunur. <br>
+          Bunları bir bütün olarak düşünmek gerekir. <br>
+          Fiziksel makinenin üzerinde Hyper V sanal makinelerinin çalıştırıldığı katman Hypervizor katmanı adıverilir. <br> 
+          Donanımın yeterliliğine göre fiziksel makinenin üzerinde istediğimiz kadar sanal makine üretebiliriz. <br>
+          Bu makineler üzerinde kullanılacak RAM dinamik olarak ihtiyaca yönelik paylaştırılabilir.
         </p>
 
         <h5>Dual Boot</h5>        
         <p>
-          Bir fiziksel makinenin üzerinde birden çok işletim sistemi çalıştırmak anlamına gelir.
-        </p>
-        <p>
+          Bir fiziksel makinenin üzerinde birden çok işletim sistemi çalıştırmak anlamına gelir. <br>
           Eğitimde Hyper-V kullanılacak. VMware ile devam edecek fakat büyük oranda Hyper-V'ye odaklanılacak.
         </p>
 
         <h4>Hyper-V(Microsft Sanallaştırma Teknolojisi)</h4>
         <p>
-          Client işletim sistemleri; Windows 10, 8, 7 vs. || Server işletim sistemleri; Hizmet vermek için kullanılar. Windows Server 2000, 2012, 2016 vs.
+          Client işletim sistemleri; Windows 10, 8, 7 vs. <br>
+          Server işletim sistemleri; Windows Server 2000, 2012, 2016 vs.
         </p>
+
         <p>
-          Yukarıdaki iki tip işletim sisteminde de Hyper-V açılabilir fakar bir tek normal şartlarda "Home" Client Windows'ta açılmaz. Ancak bunu da ekstra yüklenmesi gereken programlarla çözebiliriz. Client'lere Windows Server kurularak sanallaştırma yapılabilir.
+          Yukarıdaki iki tip işletim sisteminde de Hyper-V açılabilir fakar bir tek normal şartlarda "Home" Client Windows'ta açılmaz. <br>
+          Ancak bunu da ekstra yüklenmesi gereken programlarla çözebiliriz. <br>
+          Client'lere Windows Server kurularak sanallaştırma yapılabilir.
         </p>
         
         <h4>Server OS'de Hyper-V açmak</h4>
         <p>
-          Varsayılanda Hyper-V yüklü değildir. Hangi IP Adresine yükleneceğini sorar. Rol ve Feature'lar bulunur. Roller için Core servisler yani çok önemli ve ağır hizmetler, Feature'lar için ise ekstra roller yani daha nadir kullanılan özellikler diyebiliriz. <br>
-          Oluşturulaca sanal makineler için; Sanal Ethernet kartları oluşturulur. Hangi Fiziksel Port'a erişeceğini Server Size sorar. Sanal Port'ların da hangi fiziksel port'un çıkacağını bilmesi gerekiyor. Sanal makinelerin donanımı da sanal olarak dosyalanır yani kaydedilir. Seçtiğimiz bir konuma kaydedilirler. Hyper-V'nin sanal makineleri SSD'de çalıştırılmalıdır. Fiziksel makinenin performanslı olması önemlidir.
+          Varsayılanda Hyper-V yüklü değildir. <br>
+          Hangi IP Adresine yükleneceğini sorar. <br>
+          Rol ve Feature'lar bulunur. <br>
+          Roller için Core servisler yani çok önemli ve ağır hizmetler, Feature'lar için ise ekstra roller yani daha nadir kullanılan özellikler diyebiliriz. <br>
+          Oluşturulaca sanal makineler için; Sanal Ethernet kartları oluşturulur. <br>
+          Hangi Fiziksel Port'a erişeceğini Server Size sorar. <br>
+          Sanal Port'ların da hangi fiziksel port'un çıkacağını bilmesi gerekiyor. <br>
+          Sanal makinelerin donanımı da sanal olarak dosyalanır yani kaydedilir. <br>
+          Seçtiğimiz bir konuma kaydedilirler. <br>
+          Hyper-V'nin sanal makineleri SSD'de çalıştırılmalıdır. <br>
+          Fiziksel makinenin performanslı olması önemlidir.
         </p>
+
         <p>
-          Hypervizor katmanı bir sanal makine oluşturulması için CPU'ya erişmek ister. Varsayılanda bu erişim kapalı durumda olabilir. BIOS'ta Sanallaştırma ya da Hypervizor'u Enable edip Restart etmek gerekir. Bu genellikle Client OS'larda olur.
+          Hypervizor katmanı bir sanal makine oluşturulması için CPU'ya erişmek ister. <br>
+          Varsayılanda bu erişim kapalı durumda olabilir. <br>
+          BIOS'ta Sanallaştırma ya da Hypervizor'u Enable edip Restart etmek gerekir. <br>
+          Bu genellikle Client OS'larda olur.
         </p>
 
         <h5>Hyper-V Manager Yönetim Paneli</h5>
         <p>
           Başka bir yerde oluşturulup Export edilmiş bir sanal makine buradan Import edilip kullanılabilir. <br>
-          Sanal makineler için Ethernet Port'ları üretilirken Internal, External ve Private Switch'ler seçilir. Internal olan internete çıkamayan iç Network'e erişebilen Ethernet'tir. External fiziksel Switch'ten geçip internete çıkabilen sanal Ethernet'tir. Private ise full izole bir karttır. 
+          Sanal makineler için Ethernet Port'ları üretilirken Internal, External ve Private Switch'ler seçilir. <br>
+          Internal olan internete çıkamayan iç Network'e erişebilen Ethernet'tir. <br>
+          External fiziksel Switch'ten geçip internete çıkabilen sanal Ethernet'tir. <br>
+          Private ise full izole bir karttır. 
         </p>
 
-        <h6>Sanal Makine Oluşturmak</h6>
-        <p>
-          Server Manaher > Hyper-V > New Virtual machine > <br>
-          name(server2016Base) <br>
-          location(Default Location - daha önceden ayarladığımız) <br>
-          specify generation(Generation 1 -> 32 veya 64 bit destekleyen anakart, Generation 2 -> Sadece 64 bit ayrıca yeni nesil bir BIOS verir) <br>
-          assign memory -> 32 - 12582912(Fiziksel makinenin RAM'i maksimum ne kadarsa) <br>
-          network -> bu nasıl makineyi hangi Switch'e bağlayacağımızı sorar. Örneğin ürettiğimiz ext1 Switch'i. <br>
-          connect vhd -> Maksimum fiziksel olarak sahip olduğumuz kadar kapasite yazabiliriz. Daha fazla girersek hata olma fakat doğal olarak kullanılamaz da. <br>
-          installation options -> İşletim sistemini fiziksel olarak, Network üzerinde veya istersek dahah sonradan kurabiliriz. <br>
-          sumamry -> Tüm seçimlerimizi gösterir.
+        <h5>Sanal Makine Oluşturmak</h5>
+        <p class="bg-script">
+          > Server Manager <br>
+          > Hyper-V <br>
+          > New Virtual Machine <br>
+          > Name(server2016Base) <br>
+          > Location(Default Location - daha önceden ayarladığımız) <br>
+          > Specify Generation <br>
+          -> Generation 1; 32 veya 64 bit destekleyen anakart. <br>
+          -> Generation 2; Sadece 64 bit ayrıca yeni nesil bir BIOS verir. <br>
+          > Assign Memory <br>
+          -> 32 - 12582912(Fiziksel makinenin RAM'i maksimum ne kadarsa) <br>
+          > Network <br>
+          -> Bu nasıl makineyi hangi Switch'e bağlayacağımızı sorar, örneğin ürettiğimiz ext1 Switch'i. <br>
+          > Connect vhd <br> 
+          -> Maksimum fiziksel olarak sahip olduğumuz kadar kapasite yazabiliriz. Daha fazla girersek hata olma fakat doğal olarak kullanılamaz da. <br>
+          > Installation Options <br>
+          -> İşletim sistemini fiziksel olarak, Network üzerinde veya istersek dahah sonradan kurabiliriz. <br>
+          > Summary <br>
+          -> Tüm seçimlerimizi gösterir.
         </p>
 
         <h6>Memory Weight</h6>
@@ -144,12 +176,18 @@
         
         <h6>IDE Controller</h6>
         <p>
-          Hard Drive'dır. Anakarttaki en eski port'lardan birisidir. Bu IDE Port'ları sayesinde başka bir cihazı bu makineye bağlayabiliriz. IDE Controller kullanarak 4 adet farklı ya da aynı cihaz(Hard Disk vs.) bağlayabiliriz.
+          Hard Drive'dır. <br>
+          Anakartlardaki en eski port'lardan birisidir. <br>
+          Bu IDE Port'ları sayesinde başka bir cihazı bu makineye bağlayabiliriz. <br>
+          IDE Controller kullanarak 4 adet farklı ya da aynı cihaz(Hard Disk vs.) bağlayabiliriz.
         </p>
 
         <h6>Checkpoints(Eski ismi Snapshot)</h6>
         <p>
-          İşletim sistemindeki her şeyi RAM vs. dahil, hafızaya kaydeder. Daha sonra bir sorun yaşandığında bu Checkpoint'e geri dönülebilir. Makine hazır durumdadır ve üzerine çift tıklayarak Sanal Makine başlatılabilir. makineyee işletimini kurarız. <br>
+          İşletim sistemindeki her şeyi RAM vs. dahil, hafızaya kaydeder. <br>
+          Daha sonra bir sorun yaşandığında bu Checkpoint'e geri dönülebilir. <br>
+          Makine hazır durumdadır ve üzerine çift tıklayarak Sanal Makine başlatılabilir. <br>
+          Makineye işletim sistemini kurarız. <br>
           IOS'ta bir sorun yaşanıyorsa "Repear Your Computer" yapabiliriz.
         </p>
 
@@ -159,48 +197,85 @@
           Standart, Desktop Exp - Data Center, Desktop Exp <br>
           Standart: GUI, Desktop Exp: Arayüz. <br>
           Data centere: GUI, Desktop Exp: Arayüz. <br>
-          Data Center daha pahalıdır fakat bizim yüklememiz gereken Data Center, Desktop Exp'dir.
+          Data Center daha pahalıdır fakat bizim yüklememiz gereken Data Center, Desktop Exp'dir. <br>
           Server ilk açıldığında Sanal Makine olduğu için "ctrl + alt + end" ile oturum açma konumuna gidilebilir.
         </p>
 
         <p>
-          Fiziksel makine ya da diğer sanal makineler ile sanal makineler arasında dosya aktarımı yapılabilir. Hyper-V -> Enhanced Session Mode Policy -> Allow. <br>
-          Bu modu Enable yaptığımızda dışarıdan Copy, Paste yapılabilir. Makine eğer Network'e bağlı ise direkt Network'ten de veri paylaşabiliriz. <br>
-          Server Manager > Computer Name -> Sanal makinenin ismi, IPv4 Address -> Sanal makinenin IP adresi. <br>
-          İlk kurulum yapıldıktan sonra fiziksel makinenin Interface'i DHCP hizmeti veren bir Server'a bağlı ise direkt olarak otomatik IP atanır ve fiziksel makine ile sanal makine aynı Network'te bulunurlar.
+          Fiziksel makine ya da diğer sanal makineler ile sanal makineler arasında dosya aktarımı yapılabilir. 
+          Hyper-V -> Enhanced Session Mode Policy -> Allow. <br>
+          Bu modu Enable yaptığımızda dışarıdan Copy, Paste yapılabilir.
+          Makine eğer Network'e bağlı ise direkt Network'ten de veri paylaşabiliriz. <br>
         </p>
 
+        <p class="bg-script">
+          > Server Manager <br> 
+          > Computer Name <br>
+          -> Sanal makinenin ismi <br>
+          -> IPv4 Address; Sanal makinenin IP adresi.
+        </p>
+
+        <p>
+          İlk kurulum yapıldıktan sonra fiziksel makinenin Interface'i DHCP hizmeti veren bir Server'a bağlı ise direkt olarak otomatik IP atanır ve fiziksel makine ile sanal makine aynı Network'te bulunurlar.
+        </p>
+          
         <h4>Şablon Oluşturmak(sysprep)</h4>
         <p>
-          Oluşturduğumuz makinelerin dosyalarını kopyalayıp yeni makineler oluşturabiliriz. Sıfırdan konfigürasyon yapmaya gerek kalmaz fakat bir makineyi kurduğumuz zaman işletim sistemi donanımlara erişir(özellikle anakarta), anakartın GUID numarasını alır. <br>
-          Kopyaladığımız için bu Unique numaralar da direkt kopyalanır. Kopyalanan makine çalışır doğal olarak farklı bir makine üretememiş oluruz. Fakat bu Unique numaraları sıfırlayan bir program vardır. Bu program sysprep'tir. <br>
-          Sıfırlanmış halini kopyalayıp makineyi açtığımızda, makine sıfırdan çalışıp donanıma erişip benzersiz GUID alır. Tam olarak farklı bir makine oluşturmuş oluruz. Yeni bir makine üretirken, sıfırdan Setup yapmamız gerekmez. Yukarıda sysprep yaptığımız makinede her kopyada olmasını istediğimiz programlar yüklü olursa, kopyaladığımız her makinede bu programlar yüklü gelirler. <br>
-          sysprep -> Sadece şablon olarak kullanacağımız sanal makinede yapılmalıdır. <br>
-          Enter System Out-ofBox Expreience(oobe) <br>
-          |+|Generalize <br>
-          shutdown
+          Oluşturduğumuz makinelerin dosyalarını kopyalayıp yeni makineler oluşturabiliriz. <br>
+          Sıfırdan konfigürasyon yapmaya gerek kalmaz fakat bir makineyi kurduğumuz zaman işletim sistemi donanımlara erişir(özellikle anakarta), anakartın GUID numarasını alır. <br>
+          Kopyaladığımız için bu Unique numaralar da direkt kopyalanır. <br>
+          Kopyalanan makine çalışır doğal olarak farklı bir makine üretememiş oluruz fakat bu Unique numaraları sıfırlayan bir program vardır. Bu program sysprep'tir. <br>
+          Sıfırlanmış halini kopyalayıp makineyi açtığımızda, makine sıfırdan çalışıp donanıma erişip benzersiz GUID alır. <br>
+          Tam olarak farklı bir makine oluşturmuş oluruz. <br>
+          Yeni bir makine üretirken, sıfırdan Setup yapmamız gerekmez. <br>
+          Yukarıda sysprep yaptığımız makinede her kopyada olmasını istediğimiz programlar yüklü olursa, kopyaladığımız her makinede bu programlar yüklü gelirler. <br>
         </p>
+
+        <p class="bg-script">
+          > sysprep -> Sadece şablon olarak kullanacağımız sanal makinede yapılmalıdır. <br>
+          > Enter System Out-of Box Expreience(oobe) <br>
+          > |+|Generalize <br>
+          > Shutdown
+        </p>
+
         <p>
-          VHD'nin kopyasını alıp, gerekli konuma(sanal makineleri yüklediğimiz klasöre) yapıştırdığımızda, ismini değiştirip yeni bir sanal makine oluşturabiliriz. Hyper-V Manager'da Virtual Machines'ten şablon olanı siliyoruz. Sadece Sanal Makineyi siler VHD'yi silmez. Onu silmek için klasöre gidip mannuel olarak silmeliyiz. <br>
+          VHD'nin kopyasını alıp, gerekli konuma(sanal makineleri yüklediğimiz klasöre) yapıştırdığımızda, ismini değiştirip yeni bir sanal makine oluşturabiliriz. <br>
+          Hyper-V Manager'da Virtual Machines'ten şablon olanı siliyoruz. <br>
+          Sadece Sanal Makineyi siler VHD'yi silmez. <br>
+          Onu silmek için klasöre gidip mannuel olarak silmeliyiz. <br>
           Yeni makine oluşturduğumuzda -> Connect Virtual Hard Dist'teyken -> Use an exist VHD'yi seçeriz. (Şablondan kopyalayıp adını değiştiriğimiz VHD)
         </p>
+
         <p>
           Bir makineye birden fazla kişi eşzamanlı veya değil Login olabilir. <br>
-          Auttantication -> Kimlik doğrulama, Autherization -> Yetkilendirme(klasörlere) <br>
-          Bir sanal makinede her kullancıya bir kimlik oluşturup, yetki verilebilir. <br>
+          Authentication -> Kimlik doğrulama. <br>
+          Autherization -> Yetkilendirme. <br>
+          Bir sanal ve fizikksel makinede her kullancıya bir kimlik oluşturup, yetki verilebilir. <br>
           Administrative -> En yetkili User'dır. <br>
-          Çoğunlukla Administrative hesabı, giriş yapma riskii kaldırmak için Disable edilir.
+          Çoğunlukla, Administrative hesabı giriş yapma riskini kaldırmak için Disable edilir.
         </p>
 
         <h4>Local User oluşturmak</h4>
-        <p>
-          Start > Right Click > Computere Managements > Local Users and Groups <br>
-          Administrative önce dosyalara ait şifreleri kriptoladıysa, daha sonradan yukarıdaki Path'ten Set Password dersek artık o kriptolanmış dosyaları bir daha açmak. Sonuç olarak Reset'lemek tehlikelidir.
+        <p class="bg-script">
+          > Start <br>
+          > Right Click <br>
+          > Computere Managements <br>
+          > Local Users and Groups
         </p>
+
         <p>
-          Guest hesabı hiç bir klasöre erişemez sadece internete çıkabilir. Logoff olduğunda indirdiği klasörler silinir. Yeni User oluşturduğumuzda User her Logon olduğunda yeni Password girmeye zorlayabiliriz. Hesabı Disable etmek -> Örneğin işten ayrıldıktan sonra bir kişinin hesabını olduğu gibi tutup silmek istemezsek kullanıma kapatmak istersek Disable ederiz. <br>
+          Administrative önce dosyalara ait şifreleri kriptoladıysa, daha sonradan yukarıdaki Path'ten Set Password dersek artık o kriptolanmış dosyaları bir daha açmak. <br>
+          Sonuç olarak Reset'lemek tehlikelidir.
+        </p>
+
+        <p>
+          Guest hesabı hiç bir klasöre erişemez sadece internete çıkabilir. <br>
+          Logoff olduğunda indirdiği klasörler silinir. <br>
+          Yeni User oluşturduğumuzda User her Logon olduğunda yeni Password girmeye zorlayabiliriz. <br>
+          Hesabı Disable etmek -> Örneğin işten ayrıldıktan sonra bir kişinin hesabını olduğu gibi tutup silmek istemezsek kullanıma kapatmak istersek Disable ederiz. <br>
           Veya işe yeni bir eleman alındığında ve iş başını örneğin 10 gün sonra yapacak ise önceden User'ı oluşturup Disable eder ve 10 gün sonra Active edebiliriz. <br>
-          Bir User(Account) oluşturulduğunda Unique ID üretilir. Buna Security ID adı verilir. Bir Account silinip tekrardan aynı isme Account üretilince farklı bir Security ID üretilir.
+          Bir User(Account) oluşturulduğunda Unique ID üretilir. <br>
+          Buna Security ID adı verilir. Bir Account silinip tekrardan aynı isme Account üretilince farklı bir Security ID üretilir.
         </p>
 
         <hr>
