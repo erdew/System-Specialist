@@ -87,6 +87,7 @@
            > Right Click <br>
            > Disk Management <br>
         </p>
+
         <p>
             Diskler Basic ya da Dynamic olurlar. İkisi de bir diğerinin alternatifidir. <br>
             Boot dosyaları Primary Partion'da olmak durumunda. Boot dosyaları olmazsa işletim sistemi yüklü olmasına rağmen Power tuşuna basıldığında işletim sistemi başlatılamaz.
@@ -119,32 +120,47 @@
          
          <h4>MBR(Master Boot Record)</h4>
          <p>
-            Disk'lerin içinde bir uzay boşluğu olduğunu hayal edip, bu boşluktaki verilerin her birine belli bir adres atamak MBR gibi adresleme yapan Disk teknolojileri sayesinde gerçekleşir. Teknik olarak bir diskin içerisindeki bu boşluğa istediğimiz kadar veri yükleyebiliriz fakat bu veriler o uzaya atıldıkları andan itibaren eğer adreslenemezlerse artık erişilebilir durumda olmazlar. Bu bağlamda kullandığımız makinede herhangi bir dosya sildiğimizde aslında o dosyanın diskte tutulduğu adresi silmiş oluruz. Bu şekilde artık işletim sistemi adresi bilemediği için veriye ulaşamaz dolayısıyla diskte o kadar yer açılmış olur. O veriler hala disktelerdir fakat artık onlara adres atayan kalıp o verilerin üzerinden kaldırılmış olur. Doğal olarak o kalıbın içerisine başka, yeni bir veri yazılabilir olur.
-            Herhangi bir dosyanın(verilerin) diskte tutulduğu adreslerin olduğu listedir. Sonuç olarak diskerin boyutlarını adresleme kapasiteleri belirler. <br>
+            Disk'lerin içinde bir uzay boşluğu olduğunu hayal edip, bu boşluktaki verilerin her birine belli bir adres atamak MBR gibi adresleme yapan Disk teknolojileri sayesinde gerçekleşir. <br>
+            Teknik olarak bir diskin içerisindeki bu boşluğa istediğimiz kadar veri yükleyebiliriz fakat bu veriler o uzaya atıldıkları andan itibaren eğer adreslenemezlerse artık erişilebilir durumda olmazlar. <br>
+            Bu bağlamda kullandığımız makinede herhangi bir dosya sildiğimizde aslında o dosyanın diskte tutulduğu adresi silmiş oluruz. <br>
+            Bu şekilde artık işletim sistemi adresi bilemediği için veriye ulaşamaz dolayısıyla diskte o kadar yer açılmış olur. <br>
+            O veriler hala disktelerdir fakat artık onlara adres atayan kalıp o verilerin üzerinden kaldırılmış olur. <br>
+            Doğal olarak o kalıbın içerisine başka, yeni bir veri yazılabilir olur. <br>
+            Herhangi bir dosyanın(verilerin) diskte tutulduğu adreslerin olduğu listedir. <br> 
+            Sonuç olarak diskerin boyutlarını adresleme kapasiteleri belirler. <br>
             Quick Format, MBR'ı siler.(İşletim Sisteminin dosyaları görememesine sebep olur) <br>
             Allocation Unit Size; Unit'in olabilecek en küçük boyutunu belirler. <br>
             Unit'lerin büyük olması daha yavaş çalışması anlamına gelir fakat video vs. gibi büyük veriler tutacaksak daha yüksek seçilmelidir. <br>
             Bir Basic Disk'te maksimum 3 Primary yapmanıza izin verir. 3'ten daha fazla Partition açtığımızda Logical Driver olarak ayrılırlar. Fakat Logical Driver'a işletim sisteminin Boot dosyalarını koymanıza izin vermez. <br>
             Extended Partition <br>
             Logical Drive, Free Space <br>
-            NTFS File System'indeki dosyalar başka bir Driver Letter'dan Mount edilebilirler. Sadece NTFS File System'indeki Driver'lar Extend edilebilir. Fakat Free Space ile Extend edilmesi istenen Driver yanyana olmalıdır. Yanyana olmasa da yapılmasını sağlayan yazılımlar vardır fakat mutlaka yedek alınmalıdır, veri kaybı olabilir.
+            NTFS File System'indeki dosyalar başka bir Driver Letter'dan Mount edilebilirler. <br>
+            Sadece NTFS File System'indeki Driver'lar Extend edilebilir fakat Free Space ile Extend edilmesi istenen Driver yanyana olmalıdır. <br> 
+            Yanyana olmasa da yapılmasını sağlayan yazılımlar vardır fakat mutlaka yedek alınmalıdır, veri kaybı olabilir.
          </p>
          
          <h4>Yeni bir Disk takmak</h4>
          <p>
             İşletim sistemine yeni bir disk takıp nasıl kullanıma açılır? <br>
-            Bu yeni diskin Controller'ı önemlidir. Örneğin IDE Legacy bir Controller'dır ve yeni bir disk eklemek için makine Shutdown edilmelidir. Fakat Controller SCSI ise Shutdown edilmesine gerek yoktur. <br>
+            Bu yeni diskin Controller'ı önemlidir. <br>
+             Örneğin IDE Legacy bir Controller'dır ve yeni bir disk eklemek için makine Shutdown edilmelidir fakat Controller SCSI ise Shutdown edilmesine gerek yoktur. <br>
          </p>
+
          <p class="bg-script">
             > Sanal Makine <br>
             > Right Click <br>
             > IDE Controller 0 <br>
-            > New Hard Disk
-            > VHDX
+            > New Hard Disk <br>
+            > VHDX <br>
             > Fixed -> Disk performansı çok önemli ise.
          </p>
+
          <p>
-            Fizikselden hafızayı azaltır. Dynamically Expanding'te bir makineye hafıza ayrılamayabilir. Bu riski almak istemezsek Fixed yapılır. Differancing, Parent-Child ilişkisi vardır. İşletim Sistemi dosyaları Parent'ta tutulur, bu sayede Child'lar daha az alan işgal ederler.
+            Fizikselden hafızayı azaltır. <br>
+            Dynamically Expanding'te bir makineye hafıza ayrılamayabilir. <br>
+            Bu riski almak istemezsek Fixed yapılır. <br>
+            Differancing, Parent-Child ilişkisi vardır. <br>
+            İşletim Sistemi dosyaları Parent'ta tutulur, bu sayede Child'lar daha az alan işgal ederler.
          </p>
 
          <h4>Diski İşletim Sistemine Tanıtmak</h4>
@@ -153,9 +169,12 @@
             > MBR <br>
             > GPT(GUID Partition Table) -> Modern olan adresleme tablosudur.
          </p>
+
          <p>
-            Önce Online yapılır. Bazen Offline gelebilir. Offline olması Disk'in bozuk olabileceği anlamına da gelebilir. <br>
+            Disk önce Online yapılır, genillikle Offline gelir. <br>
+            Offline olması bazen Disk'in bozuk olduğu anlamına da gelebilir.
          </p>
+
          <p class="bg-script">
             > Dynamic Disk <br>
             > New Simple Volume <br>
@@ -208,31 +227,33 @@
             3) Hata töleransı. <br>
          </p>
          <p>
-            Spanned Volume'de, Volume'ü oluşturan disklerden sadece bir tanesi bile bozulsa bütün Volume'ü kaybederiz. Yani bütün veriler silinir.
+            Spanned Volume'de, Volume'ü oluşturan disklerden sadece bir tanesi bile bozulsa bütün Volume'ü kaybederiz. Yani bütün veriler silinir. <br>
             Hata töleransı en yüksek RAID'i kullansak bile kesinlikle Backup almak durumundayız.
          </p>
 
          <h5>Striped Volume - RAID 0</h5>
          <p>
-            Minimum 2 tane diske ihtiyaç vardır. Software'de 32'ye kadar yapılabilir. RAID 0'da RAID 0 Volume'e yazılacak veri, RAID 0'da kullanılacak disk sayısı kadar parçaya bölünüp disklere bu parçalar eş zamanlı yazılır. <br>
+            Minimum 2 tane diske ihtiyaç vardır. Software'de 32'ye kadar yapılabilir. RAID 0'da RAID 0 Volume'e yazılacak veri, RAID 0'da kullanılacak disk sayısı kadar parçaya bölünüp disklere bu parçalar eş zamanlı yazılır. <br><br>
+
             A B C D <br>
             / \ <br>
             A B <br>
-            C D <br>
+            C D <br><br>
+
             Veriler yukarıdaki gibi aynı anda iki diske de yazılır. <br>
             Kaç tane disk kullanılırsa veriler o kadar parçaya bölünür. <br>
-            Disklerden alınan Volume'lerin boyutu eşit olmak zorundadır. <br>
+            Disklerden alınan Volume'lerin boyutu eşit olmak zorundadır. <br><br>
+
             4 tane 100'er GB'lık diske RAID 0 uyguladığımızı düşünelim; <br>
-            100 GB <br>
-            100 GB <br>
-            100 GB <br>
-            100 GB <br>
-            = RAID 0 -> Toplam disk alanı 400 GB olur. <br>
-            RAID kullanmanın 3 hedefini kontrol edecek olursak; <br>
-            1) Büyük hacim kazandık. <br>
-            2) Okuma/Yazma süreleri kısaldı. <br>
-            3) Hata töleransı elde edemedik, disklerden 1 tanesi bile bozulsa verilere artık erişemeyiz.
+            100 GB 100 GB 100 GB 100 GB = RAID 0 -> Toplam disk alanı 400 GB olur.
          </p>
+         
+         <ol>
+            <span class="fw-bold">RAID kullanmanın 3 amacı vardır;</span>
+            <li>Büyük hacim kazandık.</li>
+            <li>Okuma/Yazma süreleri kısaldı.</li>
+            <li>Hata töleransı elde edemedik, disklerden 1 tanesi bile bozulsa verilere artık erişemeyiz.</li>
+         </ol>
 
          <hr>
         
