@@ -82,64 +82,166 @@
 
         <h4>SOPHOS Firewall Arayüz</h4>
         <p class="bg-script">
-            > SOPHOS Arayüz(htttps://192.168.0.1:4444) <br>
-            > Network Definitions
+          > SOPHOS Arayüz; https://192.168.0.1:4444 <br>
         </p>
 
+        <h5>Definations & Users</h5>
         <p>
-            Firewall'a erişimi olan tüm Interface'lerin bu noktada tarif edildiğini görürüz. <br>
-            Oluşturduğumuz User'ları vs'de bu noktada tarif ettiğini görürüz. <br>
-            VPN vs. de aynı şekilde bu noktada bulunur. <br>
+          Firewall'a erişimi olan tüm Interface'lerin ve Domain'de oluşturduğumuz User'ların vs. bu noktada tarif edildiğini görüyoruz. <br>
+          VPN vs. de aynı şekilde bu noktada bulunur. <br>
+          Yani Sophos otomatik olarak Default'ta bazı kural kurallar tanımlamıştır. <br>
+          Örneğin;
         </p>
 
         <p class="bg-script">
-            > Service Definitions
+          > Network Definations
+          > Firewall
+          > DNS Rule -> Internal to Any
+        </p>
+        
+        <p>
+          Yukarıdaki kuralda Internal'dan gelen paketleri Any'e göndermeye Allow verilmiş. <br>
+          Yani Internal Network'ten DNS kontrolü ile herhangi bir hedefe gidiliyorsa bu trafiğe izin veren kural yazılmıştır. <br>
+          Bunu Edit'leyerek Action'dan Allow'u Drop ile değiştirerek bu kuralı kapatabiliriz. <br>
+          Ya da direkt olarak aktif butonunu deaktif ederek de kuralı durdurabiliriz. <br>
+          Fakat bunu yaptığımızda DNS sorguları artık dışarıya doğru çıkamazlar, DNS'in çalışmaması demek dünyadaki diğer DNS'leri bulamamak demek olduğu için aslında internet kullanımı tamamen kısıtlayacağımız anlamına gelir.
         </p>
 
         <p>
-            Service'in altında ise Protokolleriin  tariflerini yaptığını görürüz. <br>
-            Fakat burada bu tarifleri görmemiz kullanıdğımız anlamına gelmiyor. <br>
-            Örneğin Network Protection'dan kural ekleyerek tarif edilen User'ları ve ya hangi makineler için geçerli olacağını ve bu Port'ları kullanabileceğiz.
+          Özelle Defination sekmesinden önce neyi kullancağımızı tarif ediyoruz, sonra kurallarda bunları kullanıyoruz.
         </p>
 
         <p>
-            Ayrıca New Service Defination butonu ile burada tarif edilmemiş yeni bir Port da ekleyebiliriz. <br>
+          Bu şekilde, bu tarifleri görmemiz bu kuralların tamamını şuanda kullanıdğımız anlamına gelmiyor. <br>
+          Örneğin Network Protection'dan kural ekleyerek tarif edilen User'ları ve ya hangi makineler için geçerli olacağını ve bu Port'ları kural yazarak kullanabileceğiz.
+        </p>
+
+        <p>
+          Ayrıca New Service Defination butonu ile burada tarif edilmemiş yeni bir Port da ekleyebiliriz. <br>
         </p>
 
         <p class="bg-script">
-            > Time Period Definitions
+          > Time Period Definitions
+        </p>
+        <p>
+          İstersek zamana bağlı olarak yazdığımız kuralları çalıştırabiliriz. <br>
+          Yani yazdığımız kuralların belli bir zaman aralığında devreye alınmasını sağlayabiliriz. <br>
+          Örneğin Internal'dan Any'e DNS ile gitmek Allow fakat from 13:00 until 17:00 on Munday, Tuesday. <br>
+          Yani Pazartesi ve Salı günleri saat 13 ile 17 arasında yukarıdaki kural geçerli olacak. 
         </p>
 
         <p>
             Örnek olarak buradan yeni bir zaman tarifi uygulayarak sadece yemek saatlerini girebiliriz. <br>
             Ya da şirketin mesai saatlerini özel bir aralık olarak buradan girebiliriz. <br>
-            Günleri ve saat aralığı seçip, kaydedebiliriz ve bu sekmede listelenir. <br>
-            Bu şekilde bir tarif yaptık, ancak üzerine henüz bir kkural uygulamadık. <br>
-            Örneğin daha sonradan bu saat aralığında bu şirkete bir kural uygulayabileceğiz.
+            Günleri ve saat aralığını seçip, kaydedebiliriz ve bu sekmede listelenir. <br>
+            Bu şekilde bir tarif yani bir tanımlama(Defination) yapmış olduk ancak bu tanımlamayı hayata geçirecek olan kuralı henüz yazmadık. <br>
+            Bu tanımlamayı çalıştıracak olan kuralı daha sonradan yazıp devreye alacağız.
         </p>
+
 
         <p class="bg-script">
             > Users & Groups
         </p>
-
         <p>
-            Active Directory'den User ya da Group oluşturduğumuz gibi aynı şekilde bu sekmenden de User oluşturabiliriz ya da ait olacağı grupları belirleyebiliriz. <br>
-            Örneğin bizim Firewall'a Log-on olduğumuz Admin hesabını kullanarak bu sekmede Super Admins Grubuna gidip oraya Domain Admin'ini eklersek, artık Domain Admin'i de en Firewall'da en yetkili hesap olur.
+          Domain'de varolan tüm User'ları ve Grup'ları burada listelenmiş olarak görürüz.
+          Active Directory'den User ya da Group oluşturduğumuz gibi aynı şekilde bu sekmenden de User oluşturabiliriz ya da ait olacağı grupları belirleyebiliriz. <br>
+          Örneğin bizim Firewall'a Log-on olduğumuz Admin hesabını kullanarak bu sekmeden "Super Admins" Grubuna gidip oraya Domain Admin'ini yani Administrators'ı eklersek, artık Domain Admin'i de Firewall'da en yetkili hesaplardan birisi olur.
         </p>
 
         <h4>User Portal</h4>
-        <p class="bg-script">
+        <p>
             https://userportal.sirket0.com
-            -> Bu şekilde DNS'te kayıt oluşturup, User'ın erişmesini sağlayabiliriz.
+            -> Kullanıcının Firewall'a erişmek için IP girmeden doğrudan isimle girmesini sağlamak için yukarıdaki şekilde DNS'te CNAME kaydını oluşturuyoruz. <br>
+            -> Bu CNAME kaydı direkt olarak Firewall olan makinin IP'sini gösterecek.
         </p>
 
-        <h5>Client Authentication Program</h5>
-        <span>SAAT: 10 TEKRARLA</span>        
+        <p class="bg-script">
+          > Client Authentication Program
+        </p>
+        <p>
+          Bu sekmede Allowed Networks ve Allowed Users and Groups belirlenir. <br>
+          Burada belirtilenler şu Allowed Network'lerden gelinebilsin, şu kullanıcılar gelebilsin vs. anlamına gelir. <br>
+          Örneğin Allowed Networks'e hem Internal hem External'ı eklersek ikisinden de Firewall'a erişim mümkün olur. <br>
+          Apply'a tıkladığımızda, User Portal'da EXE, MSI, DMG ve CA dosyalarına erişimlerini açar. 
+        </p>    
         
+        <h5>User Portal'ın ne işe yaradığına bir örnek</h5>
+        <p>
+          Domain'deki bir User sabah gelip, bilgisayarını açtı ve internete doğru gitmek istiyor. <br>
+          Fakat Firewall bir kaç sebepten dolayı çıkmasını engelliyor. <br>
+          1.Sebep; Firewall bu talebi yapana "Sen kimsin?" diye sorar. <br>
+          Talebi yapan doğru kişi ise yani kurallardan geçebiliyor ise internete çıkabilir. <br>
+          Yani önce doğru kişi yani yetkisi olan bir hesap olduğunu ispatlayacak sonra talebini iletecek. <br>
+          Firewall da üzerindeki kurallara göre örneğin https ile mi geldiğini, internal'dan mı gittiğini dışarıdaki bir Network'e mi gittiğini vs. sorgular. <br>
+          Peki Client'lar doğru kişi olarak talep yaptığını nasıl kanıtlayacak? <br>
+          Ve hangi Firewall'dan çıkacaklarını nasıl anlayacaklar? <br>
+        </p>
+
+        <h5>Client'ları doğru Firewall'a yöndermenin yolları</h5>
+        <p>
+          Client'lara Gateway yazabiliriz, bütün soruları oraya sorar. <br>
+          Ya da Client'lara bir Agent yüklenir. <br>
+          Agent küçük bir program parçasıdır. <br>
+          Bunu makineye yükleriz ve o program kendisine ne emredilirse sürekli aynı işi otomatik olarak yapar. <br>
+          Yukarıda bahsettiğimiz EXE dosyası aslında Authentication için kullanılan bir programdır, Agent'tır. <br>
+          Bu programı eğer Client'e yüklersek; Firewall'ı Client'e söyler, doğrulama için giderken şu Username ve Password ile gönder şeklinde komut girildiğinde bir daha artık hiç bir şekilde bu işlem için uğraşmıyoruz. <br>
+          Fakat bu Client Domain'de değil ise daha çok işe yarayan bir yöntemdir, yani aslında makine Domain'de ise buna ihtiyaç zaten duyulmaz. <br>
+        </p>
+
+        <h5>User bu programları nasıl yükleyecek?</h5>
+        <p>
+          Bunu yapmanın da bir kaç yöntemi vardır. <br>
+          En kolayı Download MSI'ı seçerek indirmektir. <br>
+          Bu Group Policy ile Domain'deki tüm makineler MSI Programı üzerinden programı yükleyerek halledilebilir. <br>
+          Ya da sadece ihtiyacı olan bir kaç makineye kurmak istiyorsak; o zaman Portal üzerinden bu hizmeti verebiliriz.
+        </p>
+
+        <p>
+          Bu programa ihtiyacı olan User Portal'a gidip, doğrulama uygulamasını zaten Portala eriştiğinde İstemci Doğrulama sekmesinden EXE dosyasını indirebilir. <br>
+          Biz burada Firewall olarak bir markayı, Sophos'u kullandığımız için onun kendine özel bu durumlar için ürettiği bir doğrulama ajanı var ve kullanıcı bunu kendi makinesine indirebiliyor. <br>
+          Başka bir Firewall kullansaydık o da kendine özel bir doğrulama ajanı indirilmesine imkan verecekti.
+        </p>
+
+        <p>
+          Client'te bu program yüklenip, çalıştırıldığında bir kereye mahsus kullanıcıdan Authentication yapmasını ister. <br>
+          Şimdi bu makinenin Domain'e üye olmadığını düşünürsek, User makineye her Log-on olduğunda ve aynı taleple Firewall'a gittiğinde her defasında tekrar Log-on olmak zorunda kalır. <br>
+          Fakat şuanda bu programı kurup bir kere Authentication yapılacağını için artık bu işlem arkaplanda otomatik olarak yapılır. <br>
+          Yani altalanda bu işlem yine yapılır ama kullanıcı yerine Agent bu işi otomatik olarak yapar. <br>
+          Firewall her talep geldiğinde kimliğini sorgulamaya devam eder. <br>
+           Kullanıcı hesabına giriş yaparken şifresini save'ler ve makinenin başlangıçta otomatik olarak çalışmasını sağlayan tick'i seçerse, her makineyi başlattığında otomatik olarak tüm bu işlemler yapılır.
+        </p>
+
+        <p>
+          Yukarıda Portal'ın kullanım amaçlarından bir tanesine örnek vermiş olduk.
+        </p>
+
+        
+        <p class="bg-script">
+          > AWS Profiles
+        </p>
+
+        <p>
+          Amazon Web Service anlamına gelir. <br>
+          Amazon çok büyük bir servis sağlayıcıdır. <br>
+          Amazon servisleri Windows'un Azure servisinden bile daha çok hizmet veriyor. <br>
+          Kiralık makineden, hazır kurulmuş Web Service'lerine kadar her türlü hizmeti veriyorlar. <br>
+          Aylık fatura şeklinde karşılığını ödeyerek servis hizmeti alınabiliyor.
+        </p>
+
+        <p>
+          Amazon ile bereber çalışacağımız bir senaryomuz var ise ondan aldığımız servisin erişim anahtarını bu sekmeden Sophos'a girerek, birbirlerine erişmelerini sağlayabiliriz. <br>
+          Amazon kendi Domain'ine girmemizi sağlayan anahtarı bize veriyor, biz de Sophos'a giriyoruz. <br>
+
+        </p>
+
+
+
         <p>
           Firewall'lar Default'ta tüm erişimleri kapatırlar. <br>
           Biz nasıl ve ne durumda veya ne zaman bir iletişim gerçekleştirilmesini istiyorsak, o aksiyonu özellikle belirterek engellenmesini kaldırmalıyız.
         </p>
+
+
         
         <h4>Firewall NAT</h4>
         <p>
@@ -150,7 +252,6 @@
           Internal'dan gelen paket'leri Uplink Interface'ten NAT'lamayı sağlar. <br>
           Firewall diğer servislerin yaptığı hemen hemen her şeyi yapabilir. <br>
           Dışarıdan gelen bir talebi herhangi bir sunucuya yönledirmek için;
-
         </p>
 
         
@@ -159,7 +260,7 @@
         <div class="text-center container p-3 bg-script">
           <div class="d-flex justify-content-evenly navigation">
             <a href="16-04-2023.html" class="bg-script">16.04.2023</a>
-            <a href="" class="bg-script">xxx</a>
+            <a href="../May-05-2023/05-06-2023.html" class="bg-script">05.05.2023</a>
           </div>
         </div>
         
