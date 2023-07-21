@@ -219,7 +219,6 @@
         <p class="bg-script">
           > AWS Profiles
         </p>
-
         <p>
           Amazon Web Service anlamına gelir. <br>
           Amazon çok büyük bir servis sağlayıcıdır. <br>
@@ -231,28 +230,53 @@
         <p>
           Amazon ile bereber çalışacağımız bir senaryomuz var ise ondan aldığımız servisin erişim anahtarını bu sekmeden Sophos'a girerek, birbirlerine erişmelerini sağlayabiliriz. <br>
           Amazon kendi Domain'ine girmemizi sağlayan anahtarı bize veriyor, biz de Sophos'a giriyoruz. <br>
-
+          Özetle AWS ile anlaşarak kullandığımız bu Sophos'un konuşmasını sağlayabiliyoruz. 
         </p>
 
-
-
+        <p class="bg-script">
+          > Authentication Services <br>
+          > Flush Authentication Cache
+        </p>
         <p>
-          Firewall'lar Default'ta tüm erişimleri kapatırlar. <br>
-          Biz nasıl ve ne durumda veya ne zaman bir iletişim gerçekleştirilmesini istiyorsak, o aksiyonu özellikle belirterek engellenmesini kaldırmalıyız.
+          Yukarıdaki buton ile Authentication Cache'ini temizleyebiliriz. <br>
+          Örneğin; User'ın Password'unu Manuel olarak değiştirmiş olalım ve User yeni Password ile Log-on olsa bile Firewall hala cache'teki bilgi ile o User'ı Log-on etmeye çalışabilir. <br>
+          Dolayısıyla Authentication hatası alınabilir. <br>
+          Bu durumda Cache'i temizlersek bu problem çözülür.
         </p>
 
-
+        <h5>Interfaces & Routing</h5>
+        <p>
+          Genelde Default olarak External(WAN) ve Internal(LAN) yani dış ve iç bacaklar olarak isimlendirebileceğimiz fiziksel Ethernet kartımız bulunur. 
+        </p>
         
-        <h4>Firewall NAT</h4>
         <p>
-          İçeride Private IP kullanıyorsak ve dış bacağımızdan internete çıkıyorsak zaten NAT'lama yapılıyor demektir. <br>
-          Bu NAT'lamayı Firewall'ın yapmasını sağlayabiliriz. <br>
-          Setup'ta açmasını söyleriz ve başlangıçta NAT'lamanın açık olduğunu görürüz. <br>
-          SOPHOS Firewall özelinde NAT'ın karşılığı Masquerading'dir. <br>
-          Internal'dan gelen paket'leri Uplink Interface'ten NAT'lamayı sağlar. <br>
-          Firewall diğer servislerin yaptığı hemen hemen her şeyi yapabilir. <br>
-          Dışarıdan gelen bir talebi herhangi bir sunucuya yönledirmek için;
+          Interface'lerimizden birisi bozulursa, normalde buna önlem olarak TIM uygularız, bir tanesi bozulduğunda trafik öbür hattan yürür. <br>
+          Firewall üzerinde de buna benzer bir işlem yaptırabiliriz. <br>
         </p>
+
+        <p>
+          Örnek olarak External bacağın bozulduğunu düşünelim. <br>
+          Bunun sonucu olarak Network'ten dışarıya doğru çıkılamaz yani doğal olarak internet bağlantımız olmaz. <br>
+          Ya da Interface'imiz sağlam olsa bile ISP'ye giden dış hatta kablolar kopmuş ya da bozulmuş vs olabilir. <br>
+          Buna karşın önlem olarak, başka bir ISP'den vDSL hat alabiliriz. <br>
+          Dolayısla kullandığımız ana hat üzerinde bir problem olduğunda en azından trafik bu şekilde devam eder. <br>
+          Hatta iki hattın da çalışmadığı durumda daha önceden bağladığımız GSM hattın üzerinden de trafik sağlanabilir fakat bu vDSL ya da GSM'i Stand By durumda bekletiriz.
+        </p>
+
+        <p>
+          Ayrıca istersek, iki farklı lokasyondan gelen iki farklı fiber hattı paralel olarak, iki kat fazla bant genişliğine sahip olacak şekilde konfigüre ederek sanki tek bir hatmış gibi de kullanabiliriz.
+        </p>
+
+        <p>
+          Peki bütün bu hatları bağladık fakat getirip bunu Firewall'da nasıl çalıştıracağız?
+        </p>
+
+        <p class="bg-script">
+          > Interfaces & 
+        </p>
+
+
+   
 
         
         <hr>
