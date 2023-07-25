@@ -134,16 +134,16 @@
 
         <p class="bg-script">
           Firewall olacak makinenin EXT IP Konfigürasyonu <br>
-          IPv4: 10.3.34.103/24 <br>
-          G: 10.3.34.1 <br>
-          DNS: 192.168.0.100
+          IPv4: 10.0.0.2/24 <br>
+          G: 10.0.0.1 <br>
+          DNS: 192.168.1.5
         </p>
 
-        <p>
+        <p class="bg-script">
           Firewall olacak makinenin INT IP Konfigürasyonu <br>
-          IPv4:  <br>
-          G: <br>
-          DNS:
+          IPv4: 192.168.1.2 <br>
+          G: 192.168.1.1 <br>
+          DNS: 192.168.1.5
         </p>
 
         <p>
@@ -176,7 +176,10 @@
 
         <p>
           DC'ye ya da Network'teki herhangi bir makinenin tarayıcısından aşağıdaki adrese gidiyoruz; <br>
-          https://192.168.3.1/4444 
+        </p>
+        
+        <p class="bg-script">
+          https://192.168.1.2/4444 
         </p>
 
         <p>
@@ -187,8 +190,8 @@
           Sophos eşzamanlı 50 Connection'a kadar lisans istemiyor.
         </p>
 
-        <p>
-          Açılış ekranında; <br>
+        <h6>Açılış Ekranı</h6>
+        <p class="bg-script">
           Hostname: firewall03 <br>
           Company name: sirket03 <br>
           city: istanbul <br>
@@ -197,8 +200,8 @@
           Admin email: administrator@sirket03.com
         </p>
 
-        <p>
-          Login için; <br>
+        <h6>Login için</h6>
+        <p class="bg-script">
           admin <br>
           Password1
         </p>
@@ -218,21 +221,24 @@
           DSL - PPP over ATM/PPTP(PPPoA) <br>
           -> Genelde over gelir. <br>
           Modeme göre bunlardan birisini seçeriz. <br>
+        </p>
+
+        <p>
           Eğer arada modem yok ise Standard Ethernet interface'i seçeriz. <br>
           Bu seçeneği seçip, Static IP atarız. <br>
           Dış bacağı temsil eden 10.3.34.103'ü yazıyoruz. <br>
           DNS olarakta içerideki 192.168.3.100'ü veriyoruz.
         </p>
 
+        <h5>Allowed Services</h5>
         <p>
-          Allowed Services <br>
           Firewall tüm iletişimi kapatır. <br>
           Biz açmak istediğimiz servisleri Allow ederiz. <br>
           Bu ekranda çok sık kullanılanları açmak isteyip, istemediğini sorar. <br>
           Açmak istediklerimizi seçeriz.
         </p>
 
-        <p>
+        <p class="bg-script">
           Örneğin; <br>
           [+]Web(HTTP, HTTPS) <br>
           [+]DNS(outgoing) <br>
@@ -259,8 +265,15 @@
 
         <h5>Web Protection Settings</h5>
         <p>
-          Normalde HTTP ile istediğimiz Web Siteye gidebilirken, örneğin istemediğimiz bir zararlı site kategorisi seçip ona erişm olmamasını sağlar. <br>
-          Örneğin [+]Drugs sitelerine giriş olmaz. <br>
+          Normalde HTTP ile istediğimiz Web Siteye gidebilirken, örneğin istemediğimiz bir zararlı site kategorisi seçip ona erişim olmamasını sağlar.
+        </p>
+
+        <p class="bg-script">
+          Örneğin; <br>
+          [+]Drugs sitelerine giriş olmaz. <br>
+        </p>
+
+        <p>
           Google tüm siteleri index'lediği için bu tarz siteler zaten meta olarak ortaya çıkıyorlar. <br>
           Bu şekilde kontrol sağlanıp siteye girmek engelleniyor.
         </p>
@@ -313,8 +326,11 @@
           Ardından Any'i kaldırır ve Apply'a tıklarız.
         </p>
 
+        <p class="bg-script">
+          > Scan Settings
+        </p>
+
         <p>
-          > Scan Settings <br>
           Sophos ya da Avira kütüphanelerine göre Scan yapar. <br>
           İkisinden birini seçebiliiriz. <br>
           Seçtiğimiz protokollere göre tarama yapar. <br>
@@ -323,43 +339,58 @@
 
         <p>
           Aynı hizmeti Proxy olarakta alabiliriz. <br>
-          Bu hizmeti verecek proxy'nin host'unu port numarasını ve authentication'ını yaparak bağlantıyı kurabiliriz.
+          Bu hizmeti verecek Proxy'nin Host'unu Port numarasını ve Authentication'ını yaparak bağlantıyı kurabiliriz.
+        </p>
+
+        <p class="bg-script">
+          Reset Config
         </p>
 
         <p>
-          Reset Config <br>
           Reset UTM ID now <br>
           -> Windows'ta Sysprep'in karşlığıdır. <br>
           Benzer bir durum ile karşılaşlığında buradan çözülebilir.
         </p>
 
+        <p class="bg-script">
+          WebAdmin Settings
+        </p>
+
         <p>
-          WebAdmin Settings <br>
           Allowed Administrators <br>
           -> Bu ekrana kimlerin erişebileceğini buradan belirliyoruz.
         </p>
 
-        <p>
-          HTTPs Certification <br>
-          CA Sertifikasını buradan ekleyebiliriz.
+        <p class="bg-script">
+          HTTPs Certification
         </p>
 
         <p>
-          > Up2Date <br>
+          CA Sertifikasını buradan ekleyebiliriz.
+        </p>
+
+        <p class="bg-script">
+          > Up2Date
+        </p>
+
+        <p>
           SOPHOS, Firewall kullanabilmemiz için çalıştırdığımız bir App'tir. <br>
           Bu App'i güncellemek bu ekrandan mümkündür. <br>
           Hizmetlerin en az kullanıldığı saatlerde yapılmalıdır.
         </p>
 
+        <p class="bg-script">
+          > Backup/Restore
+        </p>
+
         <p>
-          > Backup/Restore <br>
           Ayarları geri getirebilmek için yedek alınmalıdır. <br>
           Bu ekranda varsayalanda otomatik olarak haftalık bir Backup aldığını görürüz. <br>
           Firewall'da çok fazla kural değişikliği yapılmadığı için haftalık süre idealdir.
         </p>
 
-        <p>
-          Manuel Backup almak için; <br>
+        <h6>Manuel Backup almak için;</h6>
+        <p class="bg-script">
           > Create Backup <br>
           Create Backup Now
         </p>
@@ -373,8 +404,11 @@
           Import Backup bölümünden ise aldığımız Backup'tan Restore yapabiliriz.
         </p>
 
+        <p class="bg-script">
+          > User Portal
+        </p>
+
         <p>
-          > User Portal <br>
           Firewall Default'ta kapalıdır. <br>
           Açtığımız zaman sarı yanar, ayar yapılmasını ister. <br>
           User Portal tüm User'ların erişebildiği Firewall ile ilgili uygulamaların sunulduğu ve Password'ların vs. değiştirilebildiği bir arayüzdür. <br>
@@ -389,13 +423,19 @@
           Bu ekranda kullanıcının https ile RDP yapmasını sağlayabiliriz.
         </p>
 
+        <h6>Notifications</h6>
         <p>
-          Notifications <br>
           SNMP(Network Management Protokol) <br>
           -> Log'lamak için kullanılan bir protokoldür. <br>
+        </p>
+        
+        <p>
           Firewall her şeyi Log'lar ve bunları istersek Email olarak alabiliriz.
           İstersek SNMP ile gönderebiliriz. <br>
           -> Bunu kullanabilmek için bir SNMP Server kurulması gerekir. <br>
+        </p>
+
+        <p>
           Bunun için; <br>
           SNMP ekranına gidip, bu Server'ı buradan tanıtmış olmamız gerekiyor.
         </p>
@@ -478,8 +518,8 @@
         
         <div class="text-center container p-3 bg-script">
           <div class="d-flex justify-content-evenly navigation">
-            <a href="" class="bg-script">15.04.2023</a>
-            <a href="" class="bg-script">29.04.2023</a>
+            <a href="15-04-2023.html" class="bg-script">15.04.2023</a>
+            <a href="29-04-2023.html" class="bg-script">29.04.2023</a>
           </div>
         </div>
         
