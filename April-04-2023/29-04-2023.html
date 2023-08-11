@@ -80,25 +80,128 @@
         
         <hr>
 
-        <h4>SOPHOS Firewall Arayüz</h4>
+        <h2>SOPHOS Firewall Arayüzü</h2>
         <p class="bg-script">
           > SOPHOS Arayüz; https://192.168.1.2:4444 <br>
         </p>
 
-        <h5>Definations & Users</h5>
+        <h4>Definations & Users</h4>
         <p>
-          Firewall'a erişimi olan tüm Interface'lerin ve Domain'de oluşturduğumuz User'ların vs. bu noktada tarif edildiğini görüyoruz. <br>
-          VPN vs. de aynı şekilde bu noktada bulunur. <br>
-          Yani Sophos otomatik olarak Default'ta bazı kural kurallar tanımlamıştır. <br>
-          Örneğin;
+          Bu başlık kendi içinde 7 başlığa daha kırılıyor.
         </p>
 
-        <p class="bg-script">
-          > Network Definations <br>
-          > Firewall <br>
-          > DNS Rule -> Internal to Any
+        <h6>Network Definations</h6>
+        <p>
+          Defination and Users önceden tarif edilmiş olan her şeyin bulunduğu konumdur. <br>
+          Herhangi bir kural yazmadan önce ya da kural uygulanmadan önce mutlaka burada onun nereye uygulanacağı ve ne olduğu tarif edilmiş olmalıdır. <br>
+          Örneğin; <br>
+          Any -> IP'si ne olursa olsun demektir, iç Network dış Network fark etmez. <br>
+          Built in olarak bu konumda Any'nin tarif edilmiş olduğunu zaten görüyoruz. <br>
+          Buna benzer şekilde farklı farklı Built-in Defination'lar olduğunu da bu konumda görebiliriz. <br>
+          Bazı durumlarda, mesela DNS'i Forward ettiğimizde otomatik olarak burada bazı tariflerin açıldığını da görürüz. <br>
+          Örneğin Domain Controller makinemizin üzerindeki DNS'i bu Firewall'dan Forward ettiysek otomatik olarak Domain Controller'in bu konumda tarif edildiğini görebiliriz. <br>
+          Yani örneğin; Domain Controller'ımızın adı DC01 ve IP'si 192.168.1.2 ise bunun aynen bu şekilde bu konumda tarif edildiğini görürüz. <br>
+          Buna benzer şekilde External Network'ü ve Direkt Interface'ini, aynı şekilde Internal Network'ü ve Interface'ini de otoamtik olarak tarif eder. <br>
+          Çünkü Firewall yaptığımız bu makinenin de üzerinde Interface'ler bulunuyor, bu bilgiyi direkt olarak kendi üzerinden okuyup, burada tarif edebiliyor. <br>
+          Tabiki bulunduğu Network'lerin Broadcast ve Network ID'lerini de tarif eder.
+        </p>
+       
+        <h6>Service Definations</h6>
+        <p>
+          Bu konumda da DNS, FTP, DHCP, Email Messaging vs. gibi servislerin tanımının yapıldığını görüyoruz. <br>
+          Daha sonradan bir hizmet tanımlamak istediğimiz durumda bu konuma gelerek ekle butonu ile direkt olarak tanımlama yapabiliriz. <br>
+          Built-in olarak standart verilen hizmetlerin zaten tanımlandığını görüyoruz. <br><br>
+
+          Fakat bir "Service Defination'ın" nasıl olduğuna örnek verecek olursak, şunlardan bahsedebiliriz; <br>
+        </p>
+
+        <ol>
+          <li>Her Service'in bir ismi vardır.</li>
+          <span>Örneğin; DNS. </span>
+          <li>Her Service'in tanımlama tipi vardır.</li>
+          <span>DNS için; TCP/UDP, yani DNS'in TCP/UDP protokolleriyle çalıştığını tanımlayan madde.</span>
+          <li>Her Service'in tanımlama Port'u vardır.</li>
+          <span>DNS için; 53</span>
+          <li>Her Service'in kaynak Port'u vardır.</li>
+          <span>DNS için; 1:65535</span>
+        </ol>
+
+        <p>
+          Özetle DNS TCP/UDP protokolleriyle 53 numaralı Port'tan dinleme yapabilme marifetine sahip olan bir Service olduğu için tanımlaması tam olarak bu şekilde yapılmıştır. <br>
+          Diğer Service'leri tanımlarken onların kullanabildiği Protokol ve Port'lara göre bu maddeler tanımlanır. <br>
+          Yani bir Service tanımlamak demek aslında o Service'in Protokollerini ve Port'ları tanımlamak demektir.
         </p>
         
+
+        <h6>Time Period Definitions</h6>
+        <p>
+          Kuralların hangi saat aralıklarında block'lanacaklarının ya da uygulanacaklarının belirlendiği konumdur. <br>
+          Built-in olarak Lunch, Time to install updates, weekend gibi zaman aralıklarının tarif edildiğini görüyoruz. <br>
+          Örneğiz biz bu konumdan şirketimizin mesai saatlerini tarif eden bir tanımlama yapabiliriz. <br>
+          Fakat tabiki bu konumda sadece tanımlama yapıyoruz, yani tarif ediyoruz. <br>
+          Herhangi bir kural yazılmış durumda değil, daha sonradan bu tarifleri kullanarak kurallar tanımlayabileceğiz.
+        </p>
+
+        <h6>Users and Groups</h6>
+        <p>
+          Bu konumda varolan User'larımızın tarifi yapılır. <br>
+          Kural yazmak istediğimiz User ve Group'ları bu konumdan tanımlıyoruz. <br>
+          Burada Built-in olarak Admin hesabını görürüz. <br>
+          Bu hesap Firewall üzerindeki en yetkili hesaptır. <br>
+          SuperAdmins grubuna üyedir. <br>
+          Bu gruba hangi User'ı üye edersek artık o User da Firewall üzerinde tam yetkiye sahip olur. <br>
+          Ayrıca bu konumda Active Directory üzerinden Authentication'ı yapılan User'lar da listelenirler.
+        </p>
+
+        <h6>Client Authentication</h6>
+        <p>
+          User Portal'ımıza hangi Client'ler ve hangi User ya da Group'lar erişebilsin bunun tanımlamasını yaptığımız konumdur. <br>
+          Bu konumda Allowed Networks bölümüne örneğin Internal'ı verdiğimizde Network'ümüzden IP alan tüm cihazlar User Portal'a erişebilir anlamına gelir. <br>
+          Aynı şekilde Allowed Users and Groups'a eklediğimiz her bir User ya da Group da User Portal'a erişebilir. <br>
+          Bu konumda Network'ü ya da direkt olarak cihazları ve User ya da Group'ları tanımladan atlarsak User Portal'a erişimi açsak bile Client Authentication programı erişebilir durumda olmaz. <br>
+          Bu sebepte önce burada tanımlama yapılmalı daha sonra Portal aktif hale getirilmeli, aksi durumda zaten Portal'a erişenler bomboş bir sayfa ile karşılaşırlar. <br>
+          Client Authentication Program kullanıcıların her defasında giriş yapmasını engelleyen bir Script'tir. <br>
+          Program arkaplanda otomatik olarak id şifreyi girer ve Authentication'ı sağlar. <br>
+          Global sekmesinde Authentication yapılan hesapların listelendiğini yani yapılan etkileşimi görebiliriz.
+        </p>
+
+        <h6>AWS Profiles</h6>
+        <p>
+          Amazon Web Service, Windows Azure Service'in rakibidir ve dünya genelinde daha fazla kullanılır. <br>
+          Sanallaştırma ya da herhangi bir Network Service hizmetini veren bir hizmettir. <br>
+          Eğer AWS'den bir hizmet alıyorsak ve Amazon ile birlikte çalışacağımız bir senaryomuz var ise Sophos'a bu ilişkimizi bildirmemiz gerekiyor. <br>
+          Bunun içinde AWS Profiles kısmından Add Profile diyerek, Erişim Anahtarımızı giriyoruz. <br>
+          Özetle bu tanımlama; AWS üzerinde çalışan bir Network'ümüz yani oradan hizmet veren cihazlarımız var ise o cihazların yani Network'ün üzerinde bu Firewall çalıştırılacak anlamına geliyor.
+        </p>
+
+        <h6>Authentication Services</h6>
+        <p>
+          Bu konumda Domain Controller'ımızı tanımlayıp, bu Firewall'u Domain'e ekleyebiliyoruz. <br>
+          Ayrıca Single Sign-On yapabiliyoruz. <br>
+          Single Sign-On, Firewall'a Active Directory üzerinden Authentication yapan hesapların Log-on olmasını sağlar. <br>
+          Yani sadece admin hesabının değil Domain Admin'in ve Domain'deki diğer hesapların da Log-on olabilmesi sağlanır. <br>
+          Ancak admin yetkisi sadece SuperAdmins grubuna üye olan hesaplarda bulunur.
+        </p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <p>
           Yukarıdaki kuralda Internal'dan gelen paketleri Any'e göndermeye Allow verilmiş. <br>
           Yani Internal Network'ten DNS kontrolü ile herhangi bir hedefe gidiliyorsa bu trafiğe izin veren kural yazılmıştır. <br>
@@ -224,13 +327,13 @@
         <p>
           Amazon Web Service anlamına gelir. <br>
           Amazon çok büyük bir servis sağlayıcıdır. <br>
-          Amazon servisleri Windows'un Azure servisinden bile daha çok hizmet veriyor. <br>
+          Amazon servisleri Windows'un Azure Service'inden bile daha çok hizmet veriyor. <br>
           Kiralık makineden, hazır kurulmuş Web Service'lerine kadar her türlü hizmeti veriyorlar. <br>
           Aylık fatura şeklinde karşılığını ödeyerek servis hizmeti alınabiliyor.
         </p>
 
         <p>
-          Amazon ile bereber çalışacağımız bir senaryomuz var ise ondan aldığımız servisin erişim anahtarını bu sekmeden Sophos'a girerek, birbirlerine erişmelerini sağlayabiliriz. <br>
+          Amazon ile bereber çalışacağımız bir senaryomuz var ise ondan aldığımız Service'in erişim anahtarını bu sekmeden Sophos'a girerek, birbirlerine erişmelerini sağlayabiliriz. <br>
           Amazon kendi Domain'ine girmemizi sağlayan anahtarı bize veriyor, biz de Sophos'a giriyoruz. <br>
           Özetle AWS ile anlaşarak kullandığımız bu Sophos'un konuşmasını sağlayabiliyoruz. 
         </p>
