@@ -369,9 +369,112 @@
 
         <h6>DynDNS</h6>
         <p>
-          dk 34
+          Dynamic DNS anlamına gelir. <br>
+          Örneğin evlerimizde internete çıkmazı sağlayan bir modemimiz vardır. <br>
+          Eğer dış bacak için bir Static IP almadıysak, dinamik olarak devamlı olarak IP'miz aslında değişir. <br>
+          Örnek olarak bir PC aldık ve Web Hoting yapıyoruz ya da FTP Server kurduk dosya paylaşıyoruz. <br>
+          İçime gerekli dosyaları koyduk ve istiyorki dünyanın her yerinden bu Server'a bağlanıp dosyalarımızı görüntüleyebilelim. <br>
+          Böyle bir durumda sıkıntımız şudur; Server'a bağlanmak için VPN kullanabiliriz. <br>
+          Bu bir seçenektir, yani ayrı bir çözümdür. <br>
+          Fakat bunu yapmadık, gittik direkt Web Tarayıcıya Domain'in ismini yazdık vs. isim çözümlemesi gerekiyor. <br>
+          Yani bunu yaptığımızda gerçekleşecek olan şey isim çözümlemesi. <br>
+          Girdiğimiz bu isme karşılık gelen IP bizim modemmizimin dış bacağının IP'si olmalıdır. <br>
+          Fakat Domain aldıysak bu sorun değil çünkü o IP artık değişmez fakat bu bahsettiğimiz senaryoda dış bacağın IP'sinin değişmeyeceğinin garantisi yok. <br>
+          Çünkü modem bize IP'yi 24 saatliğine kiralar. <br>
+          Bu durumda içerideki makineye bir uygulamaya kuruyoruz. <br>
+          O uygulama modemin IP'si değiştiğinde, Dynamic DNS hizmeti veren firmaya gidiyor ve altalanda alınan yeni IP'yi yazıyor. <br>
+          Yani aslında DynDNS bir hizmettir ve bu hizmeti veren firmalar vardır. <br>
+          Özetle Dynamic DNS; IP'si sürekli değişen Server'ların Host kayıtlarını otomatik olarak Update edebilen bir hizmettir.
+        </p>
+        <p>
+          Uygulamak için New DynDNS'e tıklarız. <br>
+          Type'a tıklarsak Sophos'un bize önerdiği bu hizmeti veren firmaları gösterir. <br>
+          Buradan bu şekilde seçer seçmez bağlanamayız. <br>
+          Buradan seçtiğimiz firmaya gidip, o firmadan önce hizmeti satın almalıyız. <br>
+          O, hizmete nasıl bağlanacağımızı bildiren bilgileri verir. <br>
+          Username, Password gibi bilgileri o hizmeti veren siteden alırız.
+        </p>
+        <p>
+          Dynamic DNS genelde küçük işletme ya da evlerde kullanmayı tercih edeceğimiz bir uygulamadır. <br>
+          Çünkü zaten IP'nin otomatik olarak değişiyor olması professiyonel bir ortamdan uzaklaşmak anlamına gelir.
         </p>
 
+        <h5>DHCP</h5>
+        <p>
+          Firewall'lar DHCP Server'lar gibi davranabilirler. <br>
+          Çünkü sonuç olarak bu Firewall artık zaten bir Router gibi yani Internal'daki tüm cihazların zaten bu makineye erişimi var o sebeple bu hizmeti de verebilmesi de gayet normal bir durum. <br>
+        </p>
+
+        <h6>Servers</h6>
+        <p>
+          Static IP'ler için belli sayıda ayırdığımız IP'nin üstüne bir değer girerek IP dağıtmasını sağlayabiliriz. <br>
+          Çünkü örnek verecek olursak 1-10 arasındaki IP'leri Static olarak bazı Server'lara atamış olabiliriz. <br>
+          Fakat bu konumda 192.168.0.1 şeklinde başlatırsak bu IP'leri yeniden dağıtır.
+        </p>
+        <p class="bg-script">
+          New DHCP Server <br>
+          Interface: Internal
+          Range Start: 192.168.0.50
+          Range End: 192.168.0.254
+        </p>
+        <p>
+          Yukarıdaki şekilde tanımlayıp Save edersek, içeriye bir makine kurduğumuz durumda 50'den itibaren otomatik olarak Firewall'dan IP aldığını görebiliriz. <br>
+        </p>
+
+        <p>
+          Hatırlatma; <br>
+          DHCP Broadcast'leri Router'lardan geçmezler. <br>
+          Doğal olarak Firewall'lar da DHCP Boradcast'leri geçizmeler.
+        </p>
+
+        <p>
+          İki farklı Network'ün ve aralarında bir Firewall'un bulunduğunu düşünelim. <br>
+          Bir Network'te DHCP Server bulunsun ve kendi Network'ündekiler o DHCP'den IP alsınlar. <br>
+          Fakat bu DHCP'nin ikinci Network'te de IP dağıtmasını isteyelim. <br>
+          Bu durumda Router'lardan DHCP Broadcast'ler geçmeyeceği için Client'ler bu DHCP'den IP alamazlar. <br>
+        </p>
+
+        <p>
+          Buradaki sorunu çözmenin 3 farklı yöntemi vardır; <br>
+          1- İkinci Network'e de bir tane DHCP Server kurulabilir fakat bu merkezi bir DHCP Server çözümü olmaz. <br>
+          2- Firewall'a gideriz, DHCP hizmetini açarız ve External'a IP dağıtmasını sağlarız. Bunu yaptığımızda artık diğer DHCP'ye de ihtiyaç kalmaz direkt olarak sadece Firewall üzerinden IP dağıtabiliriz. <br>
+          3- Hem Firewall IP dağıtmasın hem de her Network'te bir tane DHCP Server olmasın diyorsak, "DHCP Relay Agent" adıverilen Service kullanılır.
+        </p>
+
+        <h6>Relay</h6>
+        <p>
+          Eğer Network'lerin merkezinde bir yere, örneğin Firewall'a DHCP Relay Agent kurarsak ve belirtilen Interface'lerden gelen DHCP Broadcast'lerini dinle ve reddetme, Unicast'e çevir ki üzerinden geçebilsin, ardından şu DHCP'ye gönder şeklinde bir konfigürasyon yapmamız gerekiyor. <br>
+          Bu ayarı yaptığımız durumda bu Service her bir Client'in DHCP Broadcast'ini alır Unicast'e çevirir ve belirtilen DHCP'ye gönderir. <br>
+          DHCP'de de buna göre Scope oluşturulur ve o makineler IP'lerini alırlar. <br>
+          Böylede DHCP Server eğer bir Router'ın arkasında ise yine de IP dağıtmaya başlar.
+        </p>
+        <p>
+          Relay sekmesinden ilgili butona basarak bu hizmeti direkt devreye alabiliriz. <br>
+          Fakat DHCP hizmetini verecek olan Server belirtilmelidir. <br>
+          Interfaces kısmında ise hangi Interface'ten gelen talepleri yönelteceğini belirtiriz. <br>
+          Örneğin External Network'ü eklersek, External'dan gelen DHCP Broadcast'leri Unicast'e çevirip yukarıda belirttiğimiz DHCP Server'a gönderirir.
+        </p>
+
+        <h6>Static Mappings</h6>
+        <p>
+          İstediğimiz bir makineye sürekli olarak aynı IP'nin atılmasını bu noktadan sağlayabiliriz. <br>
+          DHCP Server'ların üzerindeki IP Reservation'a denk gelir.
+        </p>
+        <p class="bg-script">
+          > Static Mappings
+          > New Network Definations
+          > Name: PC10(Örneğin)
+          > Type: Host
+          > IPv4 Address: 192.168.0.24
+        </p>
+        <p>
+          Eğer yukarıdaki şekilde bir kural girersek ilgili makineye sürekli olarak girdiğimiz IP'yi atar.
+        </p>
+
+        <h6>IPv4 Lease Table</h6>
+        <p>
+          Eğer DHCP hizmetini Firewall üzerinden verdiysek, verilen IP'leri hangi makinelere verdiğini ne zaman verdiğini vs bu sekmede listeler.
+        </p>
 
         
         
