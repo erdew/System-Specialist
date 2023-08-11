@@ -85,12 +85,14 @@
           > SOPHOS Arayüz; https://192.168.1.2:4444 <br>
         </p>
 
+        <hr>
+
         <h4>Definations & Users</h4>
         <p>
           Bu başlık kendi içinde 7 başlığa daha kırılıyor.
         </p>
 
-        <h6>Network Definations</h6>
+        <h5>Network Definations</h5>
         <p>
           Defination and Users önceden tarif edilmiş olan her şeyin bulunduğu konumdur. <br>
           Herhangi bir kural yazmadan önce ya da kural uygulanmadan önce mutlaka burada onun nereye uygulanacağı ve ne olduğu tarif edilmiş olmalıdır. <br>
@@ -106,7 +108,7 @@
           Tabiki bulunduğu Network'lerin Broadcast ve Network ID'lerini de tarif eder.
         </p>
        
-        <h6>Service Definations</h6>
+        <h5>Service Definations</h5>
         <p>
           Bu konumda da DNS, FTP, DHCP, Email Messaging vs. gibi servislerin tanımının yapıldığını görüyoruz. <br>
           Daha sonradan bir hizmet tanımlamak istediğimiz durumda bu konuma gelerek ekle butonu ile direkt olarak tanımlama yapabiliriz. <br>
@@ -116,13 +118,13 @@
         </p>
 
         <ol>
-          <li>Her Service'in bir ismi vardır.</li>
+          <li>Her Service'in bir ismi vardır;</li>
           <span>Örneğin; DNS. </span>
-          <li>Her Service'in tanımlama tipi vardır.</li>
+          <li>Her Service'in tanımlama tipi vardır;</li>
           <span>DNS için; TCP/UDP, yani DNS'in TCP/UDP protokolleriyle çalıştığını tanımlayan madde.</span>
-          <li>Her Service'in tanımlama Port'u vardır.</li>
+          <li>Her Service'in tanımlama Port'u vardır;</li>
           <span>DNS için; 53</span>
-          <li>Her Service'in kaynak Port'u vardır.</li>
+          <li>Her Service'in kaynak Port'u vardır;</li>
           <span>DNS için; 1:65535</span>
         </ol>
 
@@ -133,7 +135,7 @@
         </p>
         
 
-        <h6>Time Period Definitions</h6>
+        <h5>Time Period Definitions</h5>
         <p>
           Kuralların hangi saat aralıklarında block'lanacaklarının ya da uygulanacaklarının belirlendiği konumdur. <br>
           Built-in olarak Lunch, Time to install updates, weekend gibi zaman aralıklarının tarif edildiğini görüyoruz. <br>
@@ -142,7 +144,7 @@
           Herhangi bir kural yazılmış durumda değil, daha sonradan bu tarifleri kullanarak kurallar tanımlayabileceğiz.
         </p>
 
-        <h6>Users and Groups</h6>
+        <h5>Users and Groups</h5>
         <p>
           Bu konumda varolan User'larımızın tarifi yapılır. <br>
           Kural yazmak istediğimiz User ve Group'ları bu konumdan tanımlıyoruz. <br>
@@ -153,7 +155,7 @@
           Ayrıca bu konumda Active Directory üzerinden Authentication'ı yapılan User'lar da listelenirler.
         </p>
 
-        <h6>Client Authentication</h6>
+        <h5>Client Authentication</h5>
         <p>
           User Portal'ımıza hangi Client'ler ve hangi User ya da Group'lar erişebilsin bunun tanımlamasını yaptığımız konumdur. <br>
           Bu konumda Allowed Networks bölümüne örneğin Internal'ı verdiğimizde Network'ümüzden IP alan tüm cihazlar User Portal'a erişebilir anlamına gelir. <br>
@@ -165,7 +167,7 @@
           Global sekmesinde Authentication yapılan hesapların listelendiğini yani yapılan etkileşimi görebiliriz.
         </p>
 
-        <h6>AWS Profiles</h6>
+        <h5>AWS Profiles</h5>
         <p>
           Amazon Web Service, Windows Azure Service'in rakibidir ve dünya genelinde daha fazla kullanılır. <br>
           Sanallaştırma ya da herhangi bir Network Service hizmetini veren bir hizmettir. <br>
@@ -174,7 +176,7 @@
           Özetle bu tanımlama; AWS üzerinde çalışan bir Network'ümüz yani oradan hizmet veren cihazlarımız var ise o cihazların yani Network'ün üzerinde bu Firewall çalıştırılacak anlamına geliyor.
         </p>
 
-        <h6>Authentication Services</h6>
+        <h5>Authentication Services</h5>
         <p>
           Bu konumda Domain Controller'ımızı tanımlayıp, bu Firewall'u Domain'e ekleyebiliyoruz. <br>
           Ayrıca Single Sign-On yapabiliyoruz. <br>
@@ -182,206 +184,76 @@
           Yani sadece admin hesabının değil Domain Admin'in ve Domain'deki diğer hesapların da Log-on olabilmesi sağlanır. <br>
           Ancak admin yetkisi sadece SuperAdmins grubuna üye olan hesaplarda bulunur.
         </p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <p>
-          Yukarıdaki kuralda Internal'dan gelen paketleri Any'e göndermeye Allow verilmiş. <br>
-          Yani Internal Network'ten DNS kontrolü ile herhangi bir hedefe gidiliyorsa bu trafiğe izin veren kural yazılmıştır. <br>
-          Bunu Edit'leyerek Action'dan Allow'u Drop ile değiştirerek bu kuralı kapatabiliriz. <br>
-          Ya da direkt olarak aktif butonunu deaktif ederek de kuralı durdurabiliriz. <br>
-          Fakat bunu yaptığımızda DNS sorguları artık dışarıya doğru çıkamazlar, DNS'in çalışmaması demek dünyadaki diğer DNS'leri bulamamak demek olduğu için aslında internet kullanımı tamamen kısıtlayacağımız anlamına gelir.
+          Bu ekranda Authentication Cache adında bir bölüm vardır. <br>
+          Bu bölümden direkt olarak Authentication Cache silinebilir. <br>
+          Hangi durumda bunu kullanmaya ihtiyaç duyabiliriz? <br>
+          Örneğin bir User'ın Password'unu değiştirdik, User Log-on olmak istediğinde Firewall o User'ın eski Password'una sahip olabilir. <br>
+          Çünkü bu alan bir Cache yani önbellek, dinamik olarak anında değişebilen bir hafıza bölgesi değil. <br>
+          O anda bilgi henüz güncellenmemiş olabilir ve bu durumda Authentication sağlanamaz ve kullanıcı Log-on olamaz. <br>
+          Bu noktada Cache'i temizleyerek yeni bilginin alınmasını sağlayabiliriz. <br>
+          Authentication problemlerinde önce tarih ve saat ayarları kontrol edilmelidir. <br>
+          Giriş yapılan cihaz ile Authentication'ı yapacak olan cihaz arasında zaman farkı olmamalıdır. <br>
+          Bu tüm Authentication yapılan alanlarda geçerli olan bir durumdur.
         </p>
 
+        <hr>
+
+        <h4>Interfaces and Routing</h4>
+
+        <h5>Interfaces</h5>
         <p>
-          Özelle Defination sekmesinden önce neyi kullancağımızı tarif ediyoruz, sonra kurallarda bunları kullanıyoruz.
+          Firewall'ın üzerindeki Interface'leri yani Ethernet Port'larını görürüz. <br>
+          Bu konumda bir Interface'in devre dışı kalması durumunda diğer bir Interface'ten çalışmaya devam etmesini sağlayacak ayarlar yapılabilir. <br>
+          Server üzerinde NIC Teaming adıverilen bir teknolojinin benzeri direkt Firewall üzerinden de uygulanabilir. <br>
+          Firewall'lar üzerinde çalıştıkları Network'ler için Gateway olduklarından dolayı o Network'ten yapılan tüm çıkışlar ve girişler Firewall'ın External Interface'inden olacağı anlamına gelir. <br>
+          Bu durumda eğer External Interface kaybedilirse, o Network'ün dış dünya ile iletişimi yani internete olan bağlantısı kaybedilir. <br>
+          Bunun gibi durumlar için önlem amaçlı olarak ISP'lerden bir hat daha alınabilir. <br>
+          Farklı bir ISP'den yine fiber(fakat aynı kabloları kullanmayan) ya da aynı ISP'den farklı bir teknoloji(örneğin vDSL veya GSM) şeklinde yeni bir yedek hat alınabilir. <br>
+          Yedek olarak alınan bu hattı Stand-by durumda bekletebiliriz ve ana hattımızda bir kesinti olması durumunda anında devreye girerek durumu anlık olarak kurtarmasını sağlayabiliriz. <br>
         </p>
 
+        <h6>Yukarıdaki senaryonun uygulanması</h6>
         <p>
-          Bu şekilde, bu tarifleri görmemiz bu kuralların tamamını şuanda kullanıdğımız anlamına gelmiyor. <br>
-          Örneğin Network Protection'dan kural ekleyerek tarif edilen User'ları ve ya hangi makineler için geçerli olacağını ve bu Port'ları kural yazarak kullanabileceğiz.
+          Interface sekmesinde Hardware bölümünde makinenin üzerinde Interface'ler görüntülenir. <br>
+          Yeni bir External Interface ekliyoruz. <br>
+          Kartı taktıktan sonra bu ekranda görüntüleyemiyorsak, makineyi Restart'larız. <br>
+          Restart'ladıktan sonra listeleniyor olması gerekiyor. <br>
+          Bu noktada Interfaces sekmesinde yeni eklediğimiz Interface'i göremeyiz. <br>
+          Çünkü henüz bu Interface'i henüz tanımlamadık. <br>
+          Bunun için New Interface'e tıklıyoruz. <br>
+          Hardware seçeneğinden eklediğimiz Interface'i seçeriz. <br>
+          Type kısmından Ethernet'i seçiyoruz. <br>
+          Buradaki Type ile bu hattı hangi cinsten aldıysak onu belirtiyoruz. <br>
+          Örneğin 3G olabilir ya da DSK olabilir vs. <br>
+          Eğer GSM aldıysak 3G'yi seçebiliriz gibi. <br>
+          Biz sanalda bunu Ethernet'e bağlayarak kendi sahip olduğumuz fiziksel External'a çıkacağımız için Ethernet'i seçiyoruz ki uygulayabilelim. <br>
+          Özetle ne tür bir internet hattı aldıysak onu bu Interface ile eşleştiriyoruz ya da başka bir değişle onun üzerine tanımlıyoruz. <br>
+          Bu Interface'e bir IP atıyoruz, sanalda yaptığımız için yani simüle ettiğimiz için diğer External ile aynı Network'ten verdiğimize dikkat ediyoruz. <br>
+          Çünkü biz internete fizikselden çıkıyoruz ve fizikselden internete çıkabilen bir tane Network'ümüz var. <br>
+          Bu noktadan sonra Gateway bilgisi giriyoruz fakat aynı Network'te olduğu için aynı Gateway'i birden fazla vermiş olacağız. <br>
+          Eğer verirsek, bu bize Multiple Gateway hatası olarak geri dönecek. <br>
+          O sebeple şuanda Gateway vermiyoruz bunu başka bir yöntem ile çözeceğiz. <br>
+          Bunun sebebini şöyle hayal edebiliriz; <br>
+          Bu ikinci hattı kurmamızın sebebi diğerinin Offline olmasına karşın bir önlemdi, bu bağlamda birinin hattı koptuğu anda diğerinden çalışmasını bekliyoruz fakat bu hattın üzerinde Gateway bilgisi yok ise zaten o hat Network'ten çıkamaz anlamına geliyor. <br>
+          Bunu çözmenin yöntemi Uplink Balancing'tir.
         </p>
 
+        <h6>Uplink Balacing</h6>
         <p>
-          Ayrıca New Service Defination butonu ile burada tarif edilmemiş yeni bir Port da ekleyebiliriz. <br>
-        </p>
-
-        <p class="bg-script">
-          > Time Period Definitions
-        </p>
-
-        <p>
-          İstersek zamana bağlı olarak yazdığımız kuralları çalıştırabiliriz. <br>
-          Yani yazdığımız kuralların belli bir zaman aralığında devreye alınmasını sağlayabiliriz. <br>
-          Örneğin Internal'dan Any'e DNS ile gitmek Allow fakat from 13:00 until 17:00 on Munday, Tuesday. <br>
-          Yani Pazartesi ve Salı günleri saat 13 ile 17 arasında yukarıdaki kural geçerli olacak. 
-        </p>
-
-        <p>
-            Örnek olarak buradan yeni bir zaman tarifi uygulayarak sadece yemek saatlerini girebiliriz. <br>
-            Ya da şirketin mesai saatlerini özel bir aralık olarak buradan girebiliriz. <br>
-            Günleri ve saat aralığını seçip, kaydedebiliriz ve bu sekmede listelenir. <br>
-            Bu şekilde bir tarif yani bir tanımlama(Defination) yapmış olduk ancak bu tanımlamayı hayata geçirecek olan kuralı henüz yazmadık. <br>
-            Bu tanımlamayı çalıştıracak olan kuralı daha sonradan yazıp devreye alacağız.
+          Hizmeti devreye alıyoruz. <br>
+          Active Interface ve Standby Interface'leri tanımlayabileceğimiz iki farklı bölüm görürüz. <br>
+          Önceden sahip olduğumuz ana hattımızı Active'e tanımlarız, sonradan eklediğimiz ikinci hattı da Standby'a tanımlarız. <br>
+          Bu konumda iki hattı da Active'e alırsak, Bandwith'imizi genişletmiş oluruz yani iki hat aynı anda çalışmaya başlar. <br>
+          Fakat bizim senaryomuz yedekli çalışmak üzerine olduğu için yukarıdaki gibi yapıyoruz. <br>
+          Bu noktada Apply'a basarak yaptığımız tanımlamaları devreye alıyoruz. <br>
+          Tekrar Interfaces sekmesine döndüğümüzde yeni eklediğimiz Interface'in Down olduğunu görürüz, çünkü ana hattımız devrede ve sağlıklı bir şekilde çalışıyor. <br>
+          Bu noktada ikinci Interface'e girip Gateway verirsek, herhangi bir hata almaz. <br>
+          Çünkü zaten bu hat Down durumda kalacak, çalışma koşulu Uplink olduğu diğer Interface'in Down olması. <br>
+          Yani birinden biri zaten her zaman Down pozisyonda bekliyor olacak.
         </p>
 
 
-        <p class="bg-script">
-            > Users & Groups
-        </p>
-        
-        <p>
-          Domain'de varolan tüm User'ları ve Grup'ları burada listelenmiş olarak görürüz.
-          Active Directory'den User ya da Group oluşturduğumuz gibi aynı şekilde bu sekmenden de User oluşturabiliriz ya da ait olacağı grupları belirleyebiliriz. <br>
-          Örneğin bizim Firewall'a Log-on olduğumuz Admin hesabını kullanarak bu sekmeden "Super Admins" Grubuna gidip oraya Domain Admin'ini yani Administrators'ı eklersek, artık Domain Admin'i de Firewall'da en yetkili hesaplardan birisi olur.
-        </p>
-
-        <h4>User Portal</h4>
-        <p>
-            https://userportal.sirket0.com
-            -> Kullanıcının Firewall'a erişmek için IP girmeden doğrudan isimle girmesini sağlamak için yukarıdaki şekilde DNS'te CNAME kaydını oluşturuyoruz. <br>
-            -> Bu CNAME kaydı direkt olarak Firewall olan makinin IP'sini gösterecek.
-        </p>
-
-        <p class="bg-script">
-          > Client Authentication Program
-        </p>
-        <p>
-          Bu sekmede Allowed Networks ve Allowed Users and Groups belirlenir. <br>
-          Burada belirtilenler şu Allowed Network'lerden gelinebilsin, şu kullanıcılar gelebilsin vs. anlamına gelir. <br>
-          Örneğin Allowed Networks'e hem Internal hem External'ı eklersek ikisinden de Firewall'a erişim mümkün olur. <br>
-          Apply'a tıkladığımızda, User Portal'da EXE, MSI, DMG ve CA dosyalarına erişimlerini açar. 
-        </p>    
-        
-        <h5>User Portal'ın ne işe yaradığına bir örnek</h5>
-        <p>
-          Domain'deki bir User sabah gelip, bilgisayarını açtı ve internete doğru gitmek istiyor. <br>
-          Fakat Firewall bir kaç sebepten dolayı çıkmasını engelliyor. <br>
-          1.Sebep; Firewall bu talebi yapana "Sen kimsin?" diye sorar. <br>
-          Talebi yapan doğru kişi ise yani kurallardan geçebiliyor ise internete çıkabilir. <br>
-          Yani önce doğru kişi yani yetkisi olan bir hesap olduğunu ispatlayacak sonra talebini iletecek. <br>
-          Firewall da üzerindeki kurallara göre örneğin https ile mi geldiğini, internal'dan mı gittiğini dışarıdaki bir Network'e mi gittiğini vs. sorgular. <br>
-          Peki Client'lar doğru kişi olarak talep yaptığını nasıl kanıtlayacak? <br>
-          Ve hangi Firewall'dan çıkacaklarını nasıl anlayacaklar? <br>
-        </p>
-
-        <h5>Client'ları doğru Firewall'a yöndermenin yolları</h5>
-        <p>
-          Client'lara Gateway yazabiliriz, bütün soruları oraya sorar. <br>
-          Ya da Client'lara bir Agent yüklenir. <br>
-          Agent küçük bir program parçasıdır. <br>
-          Bunu makineye yükleriz ve o program kendisine ne emredilirse sürekli aynı işi otomatik olarak yapar. <br>
-          Yukarıda bahsettiğimiz EXE dosyası aslında Authentication için kullanılan bir programdır, Agent'tır. <br>
-          Bu programı eğer Client'e yüklersek; Firewall'ı Client'e söyler, doğrulama için giderken şu Username ve Password ile gönder şeklinde komut girildiğinde bir daha artık hiç bir şekilde bu işlem için uğraşmıyoruz. <br>
-          Fakat bu Client Domain'de değil ise daha çok işe yarayan bir yöntemdir, yani aslında makine Domain'de ise buna ihtiyaç zaten duyulmaz. <br>
-        </p>
-
-        <h5>User bu programları nasıl yükleyecek?</h5>
-        <p>
-          Bunu yapmanın da bir kaç yöntemi vardır. <br>
-          En kolayı Download MSI'ı seçerek indirmektir. <br>
-          Bu Group Policy ile Domain'deki tüm makineler MSI Programı üzerinden programı yükleyerek halledilebilir. <br>
-          Ya da sadece ihtiyacı olan bir kaç makineye kurmak istiyorsak; o zaman Portal üzerinden bu hizmeti verebiliriz.
-        </p>
-
-        <p>
-          Bu programa ihtiyacı olan User Portal'a gidip, doğrulama uygulamasını zaten Portala eriştiğinde İstemci Doğrulama sekmesinden EXE dosyasını indirebilir. <br>
-          Biz burada Firewall olarak bir markayı, Sophos'u kullandığımız için onun kendine özel bu durumlar için ürettiği bir doğrulama ajanı var ve kullanıcı bunu kendi makinesine indirebiliyor. <br>
-          Başka bir Firewall kullansaydık o da kendine özel bir doğrulama ajanı indirilmesine imkan verecekti.
-        </p>
-
-        <p>
-          Client'te bu program yüklenip, çalıştırıldığında bir kereye mahsus kullanıcıdan Authentication yapmasını ister. <br>
-          Şimdi bu makinenin Domain'e üye olmadığını düşünürsek, User makineye her Log-on olduğunda ve aynı taleple Firewall'a gittiğinde her defasında tekrar Log-on olmak zorunda kalır. <br>
-          Fakat şuanda bu programı kurup bir kere Authentication yapılacağını için artık bu işlem arkaplanda otomatik olarak yapılır. <br>
-          Yani altalanda bu işlem yine yapılır ama kullanıcı yerine Agent bu işi otomatik olarak yapar. <br>
-          Firewall her talep geldiğinde kimliğini sorgulamaya devam eder. <br>
-           Kullanıcı hesabına giriş yaparken şifresini save'ler ve makinenin başlangıçta otomatik olarak çalışmasını sağlayan tick'i seçerse, her makineyi başlattığında otomatik olarak tüm bu işlemler yapılır.
-        </p>
-
-        <p>
-          Yukarıda Portal'ın kullanım amaçlarından bir tanesine örnek vermiş olduk.
-        </p>
-
-        
-        <p class="bg-script">
-          > AWS Profiles
-        </p>
-        <p>
-          Amazon Web Service anlamına gelir. <br>
-          Amazon çok büyük bir servis sağlayıcıdır. <br>
-          Amazon servisleri Windows'un Azure Service'inden bile daha çok hizmet veriyor. <br>
-          Kiralık makineden, hazır kurulmuş Web Service'lerine kadar her türlü hizmeti veriyorlar. <br>
-          Aylık fatura şeklinde karşılığını ödeyerek servis hizmeti alınabiliyor.
-        </p>
-
-        <p>
-          Amazon ile bereber çalışacağımız bir senaryomuz var ise ondan aldığımız Service'in erişim anahtarını bu sekmeden Sophos'a girerek, birbirlerine erişmelerini sağlayabiliriz. <br>
-          Amazon kendi Domain'ine girmemizi sağlayan anahtarı bize veriyor, biz de Sophos'a giriyoruz. <br>
-          Özetle AWS ile anlaşarak kullandığımız bu Sophos'un konuşmasını sağlayabiliyoruz. 
-        </p>
-
-        <p class="bg-script">
-          > Authentication Services <br>
-          > Flush Authentication Cache
-        </p>
-        <p>
-          Yukarıdaki buton ile Authentication Cache'ini temizleyebiliriz. <br>
-          Örneğin; User'ın Password'unu Manuel olarak değiştirmiş olalım ve User yeni Password ile Log-on olsa bile Firewall hala cache'teki bilgi ile o User'ı Log-on etmeye çalışabilir. <br>
-          Dolayısıyla Authentication hatası alınabilir. <br>
-          Bu durumda Cache'i temizlersek bu problem çözülür.
-        </p>
-
-        <h5>Interfaces & Routing</h5>
-        <p>
-          Genelde Default olarak External(WAN) ve Internal(LAN) yani dış ve iç bacaklar olarak isimlendirebileceğimiz fiziksel Ethernet kartımız bulunur. 
-        </p>
-        
-        <p>
-          Interface'lerimizden birisi bozulursa, normalde buna önlem olarak TIM uygularız, bir tanesi bozulduğunda trafik öbür hattan yürür. <br>
-          Firewall üzerinde de buna benzer bir işlem yaptırabiliriz. <br>
-        </p>
-
-        <p>
-          Örnek olarak External bacağın bozulduğunu düşünelim. <br>
-          Bunun sonucu olarak Network'ten dışarıya doğru çıkılamaz yani doğal olarak internet bağlantımız olmaz. <br>
-          Ya da Interface'imiz sağlam olsa bile ISP'ye giden dış hatta kablolar kopmuş ya da bozulmuş vs olabilir. <br>
-          Buna karşın önlem olarak, başka bir ISP'den vDSL hat alabiliriz. <br>
-          Dolayısla kullandığımız ana hat üzerinde bir problem olduğunda en azından trafik bu şekilde devam eder. <br>
-          Hatta iki hattın da çalışmadığı durumda daha önceden bağladığımız GSM hattın üzerinden de trafik sağlanabilir fakat bu vDSL ya da GSM'i Stand By durumda bekletiriz.
-        </p>
-
-        <p>
-          Ayrıca istersek, iki farklı lokasyondan gelen iki farklı fiber hattı paralel olarak, iki kat fazla bant genişliğine sahip olacak şekilde konfigüre ederek sanki tek bir hatmış gibi de kullanabiliriz.
-        </p>
-
-        <p>
-          Peki bütün bu hatları bağladık fakat getirip bunu Firewall'da nasıl çalıştıracağız?
-        </p>
-
-        <p class="bg-script">
-          > Interfaces & 
-        </p>
-
-
-   
 
         
         <hr>
