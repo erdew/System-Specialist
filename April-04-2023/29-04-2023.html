@@ -625,9 +625,75 @@
           Fakat başka ICMP kullanan başka bir uygulama var ise onun geçişlerini de ICMP sekmesinden açarız. 
         </p>
 
-        <hr>
+        <h5>NAT</h5>
+        <p>
+          Firewall NAT'lama işlemini de yapabilir. <br>
+          Internal Network'lerimizde ücretsiz yani Private IP'ler kullanıyoruz. <br>
+          Yani tüm cihazlarımıza bu IP'ler dağıtılmış durumda. <br>
+          Fakat bu IP'ler normalde internete çıkamazlar, dolayısıyla bu cihazlardan internete çıkılmak istendiğinde Firewall üzerinden sahip oldukları Private IP'leri internete çıkabilen gerçek IP'imize NAT'layabiliriz. <br>
+          Zaten bu işlem yapılmadan internete çıkmak diye bir durum olamaz. <br>
+          Burada Router'ların yaptığı gibi Firewall'un da aynı hizmeti sağlayabildiğini görüyoruz.
+        </p>
+        <p>
+          Firewall kurulurken Setup'ta varsayılan olarak NAT'ı açar. <br>
+          Sophos Private IP'leri tek bir IP üzerinden dışarıya çıkartmaya NAT değil de Masquerading adını vermiştir. <br>
+          Bunu yapabilmek içinde varsayılanda Internal Network'ten Uplink Interfaces'e NAT'lama kuralını yazmıştır. <br>
+          Uplink Interfaces; bizi internete bağlayan External Interface'lerdir. <br>
+          Firewall'daki trafiği anında durdurmak istiyorsak, bu kuralı yani NAT'lama hizmetini yapan kuralı Disable edersek, artık Network'lerden kimse dışarıya çıkamaz, anında internet bağlantısı kesilir.
+        </p>
 
-        
+        <h6>NAT</h6>
+        <p>
+          SOPHOS üzerinde NAT'ın altında bir NAT sekmesi daha vardır. <br>
+          Bu isimlendirme diğer Firewall'larda bu şekilde olmayabilir. <br>
+          NAT'lama servisinin yapacağı iki iş vardır. <br>
+          Birincisi Internal'ı dışarıya çıkarmak, ikincisi ise External'ı içeriye almak. <br>
+          Son söyledeğimiz durum Negative'tir. <br>
+          Diyelim ki Internal Network'ümüzde bir tane Web Server'ımız var. <br>
+          Dışarıdan bu Web Server'a gelmemiz gerekecek, geleceğimiz yer maksimum Firewall'un dış bacağı olacaktır. <br>
+          Firewall, Web Server olmadığı için normal şartlarda gelen paketleri reddeder. <br>
+          Reddetmemesi için; Port Forwarding yani NAT'lama yapması gerekiyor. <br>
+          Yani dışarıdaki talebi iç Network'e NAT'laması gerekiyor. <br>
+          Bunu uygulayarak örneklendirebiliriz;
+        </p>
+        <p>
+          Bunun için sanalda Internal Network'e IIS kuruyoruz. <br>
+          IIS'te şirketin Binding'ine www.sirket3.com gir. <br>
+          Internal'daki DNS'te www Host haydı aç, Web Server'ın IP'sini gir. <br>
+          Şuanda Internal'dan bu Web sayfasına erişimimiz olur. <br>
+          Fakat şuanda bu Network'ün dışından birisi tarayıcıya gidip www.sirket3.com yazarsa sayfaya erişemez. <br>
+          Çünkü öncelikle bu ismi çözemez. <br>
+          Bunun için normalde bir Domain satın alınır, içine kayıt girilir vs. <br>
+          Sanal'da deneme amacıyla bununla uğraşmak için fiziksel makineye gidip;
+          This PC/C/Windows/System32/drivers/etc/hosts dosyasını Notepad ile açarız. <br>
+          Bu sayfada en alta Firewall'un External IP'sini yazarız. <br>
+          Örneğin; 10.3.34.100 www.sirket3.com
+        </p>
+        <p>
+          Şimdi yukarıda Domain'ini satın almışız gibi bir taklit yaptık, şuanda dış makineden siteye erişmek istediğimizde isim çözümlemesi yapılabilse bile erişim olmayacak. <br>
+          Çünkü Firewall bizim paketlerimizi içeriye alamıyor. <br>
+          Firewall'u yöneten Admin, Network Protection'dan NAT'ın altındaki NAT başlığına gidip; New NAT Rules'a tıklayarak aşağıdaki gibi yeni bir kural yazmalı;
+        </p>
+        <p class="bg-script">
+          > Network Protection <br>
+          > NAT <br>
+          > NAT <br>
+          > New NAT Rules <br>
+          > Rule type: DNAT -> Dynamic olarak NAT yap anlamına gelir. <br>
+          > For traffic from: Any -> Herhangi bir yerden geliyorsa... <br>
+          > Using Service: Örneğin HTTP <br>
+          > Going to External(WAN) -> Firewall'un dış bacağı. <br>
+          > Action <br>
+          -> Change the destination to: IIS -> Web Server'ın olduğu makineye götür.<br>
+          -> And the service to: HTTP -> HTTP servisi ile götür. <br>
+          [+]Automatic firewall rule
+          -> İşaretlersek yukarıdaki hizmeti gerçekleştirebilmek için otomatik olarak gerekli Firewall kuralını yazmasını sağlar. <br>
+          > Save
+        </p>
+        <p>
+          Yukarda otomatik olarak kural yazmasını seçmezsek, Rules'e gidip Manuel olarak dışarıdan Any -> 80-80 Protokolü ile -> IIS'e gidiliyorsa izin ver şeklinde bir kural yazmamız gerekirdi. <br>
+          Rules ekranında otomatik olarak yazılmış kuralları görebilmek için yukarıdaki sekmeden Automatic firewall rules veya Alls seçilebilir.
+        </p>
         
         <hr>
         
