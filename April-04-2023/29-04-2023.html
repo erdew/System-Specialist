@@ -476,6 +476,157 @@
           Eğer DHCP hizmetini Firewall üzerinden verdiysek, verilen IP'leri hangi makinelere verdiğini ne zaman verdiğini vs bu sekmede listeler.
         </p>
 
+        <h6>NTP</h6>
+        <p>
+          Network Time Protocol'dür. <br>
+          Domain'deki makinelerin saat senkronizasyonu çok önemlidir. <br>
+          Bu senkronizasyonu bir NTP Server'a göre de yapabiliriz. <br>
+          Eklemek istersek Google'dan NTP Turkey Server'larını araştırıp birisini bu konumdan ekleyebiliriz.
+        </p>
+
+        <hr>
+
+        <h4>Network Protection</h4>
+        <h5>Firewall</h5>
+        <h6>Rules</h6>
+        <p>
+          Firewall varsayılanda içeriden dışarıya, dışarıdan içeriye kimseyi, hiç bir protokolü vs hiç bir zaman almaz. <br>
+          Biz bu istinaları belirtecek kurallar vererek bu geçişlere izin veriyoruz aslında. <br>
+          Yani Firewall bizim açtıklarımıza izin verir.
+        </p>
+        <p>
+          Bu bağlamda örnek olarak; içerideki DNS'e 8.8.8.8'e gidiyorsa trafiğe izin ver şeklinde bir kural yazabiliriz;
+        </p>
+        <p class="bg-script">
+          > Network Protection <br>
+          > Firewall <br>
+          > Position: Bottom(Sıralama) <br>
+          > Source: DNS Server <br>
+          > Services: DNS <br>
+          > Destination: Google DNS Server; 8.8.8.8 <br>
+          > Action: Allow -> Trafiğe izin verir. <br>
+          > Save <br>
+          > Button'dan kural Enable edilir.
+        </p>
+        <p>
+          Burada gördüğümüz tablodaki Position asc bilgisi önemlidir. <br>
+          Numara küçükten büyüğe doğru ilerler. <br>
+          En küçük numara en yüksek öncelikli kuraldır ve öncelik azalarak, sayı arttıkça devam eder. <br>
+          Trafikler her zaman tepeden başlar kontrol yapılarak tüm kurallara ve önceliklerine göre değerlendirip öyle uygulanır. <br>
+          Yani en öncelikli kural Internal'dan Any'e DNS Allow veriyorsa, daha altlarda Reject ya da Drop'lasak bile öncelikli kural çalışıtırılacağı için trafik Allow olur.
+        </p>
+
+        <p>
+          Geçmesini istediğimiz tüm trafikleri tek tek bu şekilde kural yazarak Allow'lamamız gerekiyor. <br>
+          Yani hangi Network'ten hangi Network'e ya da Server'a vs gidilmek isteniyorsa bunu dikkatli bir şekilde belirmek gerekiyor.
+        </p>
+
+        <h6>Country Blocking</h6>
+        <p>
+          Veri trafiğini ülke bazında sınırlandırabiliriz. <br>
+          Bu Service'i Enable ettiğimizde internetten erişebileceğimiz herhangi bir ülkeye çıkışı veya dönüşü ya da her ikisini birden engelleyebiliriz.
+        </p>
+        <p>
+          To -> Gidiş yönünü yani bizim çıkışımızı engellemek için, <br>
+          From -> Dönüş, yani karşı tarafın bize gelmesini engellemek için, <br>
+          All -> İki yönlüde trafiği tamamen engellemek için seçebileceğimiz seçeneklerdir.
+        </p>
+        <p> 
+          Burada dikkat etmemiz gereken şey özellikle DNS gibi kritik hizmetleri aldığımız hatları da engellememiş olmaktır. <br>
+          Örneğin USA'ya olan trafiği engellersek ve DNS'imizi Google'a Forward etmiş durumdaysak, DNS'imiz çalışmaz 8.8.8.8 DNS'ine erişemez ve isim çözümlemesi yapamaz duruma gelebilir.
+        </p>
+        <p>
+          Özetle hangi konumu engellersek o konumdaki Server'lara erişim olmaz. <br>
+          Dolayısıyla o Server'lardan yayımlanan Web Site'lerine vs de erişemeyiz.
+        </p>
+
+        <h6>Country Blocking Exceptions</h6>
+        <p>
+          Örnek olarak bir ülkeyle olan tüm trafiğimizi engellemiş olsak fakat o ülkenin içindeki özellile sadece bir Router'a yani Network ya da Server'a vs erişmek istiyorsak bunu istisna olarak belirtebiliriz.
+        </p>
+        <p class="bg-script">
+          > Network Protection <br>
+          > Firewall <br>
+          > Add Exception List <br>
+          > Countries[Ülke seçilir] <br>
+          > For all request: going to these <br>
+          -> Host/Network[Gitmek istediğimiz Host/Network seçilir] <br>
+          > Using these <br>
+          -> Services[Örneğin FTP Service'i ile gitmeyi hariç tutuyoruz]
+        </p>
+
+        <h6>ICMP</h6>
+        <p>
+          Özellikle Ping ve test aşamasında kullanılan bir protokoldür. <br>
+          Bu ekranda 3 bölümle karşılaşırız Global ICMP Settings, Ping Settings ve Traceroute Settings.
+        </p>
+
+        <h6>Ping Settings</h6>
+        <p>
+          [+]Gateway is ping visible -> Gateway Ping'lenebilir.<br>
+          [+]Ping from gateway -> Gateway'den Ping atılabilir. <br>
+          [+]Gateway forwards pings -> Gateway aldığı Ping'i Forward edebilir. <br>
+        </p>
+        <p>
+          Internal'dan Google'a Ping atmak istediğimizde attığımız Ping'in Google'a Forward edilmesi lazım ki Firewall'un üzerinde geçebilsin. <br>
+          Bu durumda 3. olanın işaretlenmiş olması gerekir. <br>
+          Çünkü Gateway dediğimiz şey zaten Firewall kurulduğu andan itibaren Firewall'un kendisidir. <br>
+          Yukarıdaki ilk madde işaretlenmemiş olsaydı, Firewall'a yani Gateway'e Ping atılamazdı.
+        </p>
+        <p>
+          Peki Gateway'in kendisinden yani Firewall'dan bir yere nasıl Ping atacağız?
+        </p>
+        <p class="bg-script">
+          > Support <br>
+          > Tools <br>
+          > Ping Check <br>
+          -> Ping host -> Hangi makineye Ping atmak istediğimizi seçeriz. <br>
+          > Apply -> Dediğimizde Ping atmaya başlar.
+        </p>
+        <p>
+          Yukarıdaki konumdan ihtiyaç durumunda Ping testlerini de yapabiliyoruz özetle.
+        </p>
+
+        <h6>Traceroute Settings</h6>
+        <p>
+          tracert -d 8.8.8.8
+          -> Yukarıdaki komutu CMD'ye girersek, bize bizim Ping attığımız yani bu komutu yazdığımız makineden 8.8.8.8'e giderken ki tüm HOP'larını gösterir. <br>
+          Yani üzerinden geçtiği tüm Router'ları yani Network'leri özetle ayak izlerini yazdırır diyebiliriz.
+        </p>
+        <p>
+          []Gateway is traceroute visible -> İşaretlersek; Firewall'un kendisinden Traceroute yapabiliriz. <br>
+          []Gateway forwards traceroute -> İşaretlersek; Traceroute paketlerini Firewall'un üzerinde geçirir.
+        </p>
+        <p>
+          Gateway'in kendisinden Traceroute paketini nasıl atacağız?
+        </p>
+        <p class="bg-script">
+          > Support <br>
+          > Tools <br>
+          > Traceroute  <br>
+          > Traceroute host: -> Traceroute atmak istediğimiz Host'u gireriz. <br>
+          -> istersek direkt IP adresini girerek de Tracerouting yapabiliriz.
+        </p>
+
+        <p>
+          Tools'un altında ekstradan DNS Lookup adında bir sekme daha vardır. <br>
+          Bu sekme bize IP'sini girdiğimiz Domain'deki kayıt tiplerini ve kayıtları görebiliriz, tabi izin verilmişse. <br>
+          Örneğin 8.8.8.8'i girersek, Google'ın MX kaydını görebiliriz. <br>
+          Yani Google'ın Mail Server'ının ismini buradan öğrenebiliriz.
+        </p>
+
+        <h6>Global ICMP Settings</h6>
+        <p>
+          Ping dediğimiz paket ICMP protokolünün bir parçasıdır. <br>
+          Internet Control Message Protocol açılımıdır. <br>
+          Ping paketleri ICMP paketlerini kullanırlar. <br>
+          Fakat ICMP protokolünü kullanan başka uygulamalar da olabilir. <br>
+          Sadece Ping atılabilmesini istiyorsak, yukarıda uyguladığımız gibi Ping Setting'i Enable etmemiz yeterlidir. <br>
+          Fakat başka ICMP kullanan başka bir uygulama var ise onun geçişlerini de ICMP sekmesinden açarız. 
+        </p>
+
+        <hr>
+
         
         
         <hr>
