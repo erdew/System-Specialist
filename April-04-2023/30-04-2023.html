@@ -191,13 +191,26 @@
             Hepsini Block'larsak gitmeye çalışacağımız çoğu Website'a erişimimiz engellenir.
         </p>
 
+        <h6>Website</h6>
         <p>
-            Website sekmesine geçersek; Block'lamak istediğimiz Web Sitesini girebiliriz.             
+          Website sekmesine geçersek; Block'lamak istediğimiz Web Sitesini girebiliriz.             
         </p>
 
+        <h6>Downloads</h6>
         <p>
             Downloads bölümünde uzantılara göre Download edilebilecek dosyaları da Block'layabilriz. <br>
             [+]Block downloads target then 100 mb -> Dosya uzantısı yasaklı olmasa bile belirttiğimiz boyutun üstündeyse indirme Block'lanır.
+        </p>
+
+        <h6>Edit Filter Action</h6>
+        <p>
+          Antivirus sekmesini çalıştırırsak, yapılan tüm Download'lardan önce virüs taraması yapar yani Firewall, Antivirüs gibi davranır. <br>
+          İstenirse Content'te çalışmak isteyen bir JavaScript Script'i var ise bunu da engellemesi sağlanabilir.
+        </p>
+
+        <h6>Additional Options</h6>
+        <p>
+          Google, Bing gibi arama motorları için SafeSearch'ı zorunlu hale getirir.
         </p>
 
         <h5>Policy Helpdesk</h5>
@@ -208,13 +221,224 @@
         <h5>Filtering Options</h5>
         <h6>Categories</h6>
         <p>
-            Örnek olarak şirket politikası gereği belli kategorileri banlamamız gerekiyor. <br>
-            Kategori listesinden gerekli olarak başlıkları seçerek bir paket oluşturabiliyoruz. <br>
-            Bu paketi Web Filtering'in altındaki Policy'ler sekmeksinde oluşturduğumuz paketi seçip Block'layıp istediğimiz siteleri tek bir satırda Block'lamış oluruz.
+          Bu konumda örnekğin Drugs'ın alt başlıklarda 3 tane farklı kategoriye sahip olduğunu görüyoruz. <br>
+          Yani Builtin olarak Sophos'un kendi yaptığı tanımlamalar vardır.
+        </p>
+        <p>
+          İstersek kendimiz de kapsamlı bir kategori oluşturabiliriz;
+          Örnek olarak şirket politikası gereği belli kategorileri banlamamız gerekiyor. <br>
+          Kategori listesinden gerekli olarak başlıkları seçerek bir paket oluşturabiliyoruz. <br>
+          Bu paketi Web Filtering'in altındaki Policy'ler sekmeksinde oluşturduğumuz paketi seçip Block'layıp istediğimiz siteleri tek bir satırda Block'lamış oluruz. <br>
+          Gelmezse Web Fiter Profile oluşturabilirsin.
+        </p>
+
+        <h5>Application Control</h5>
+        <p>
+          Network Visiblity'i açıyoruz. <br>
+          Katergorilere göre internette mimlenmiş, girişin güvensiz Web Sitelerin listelendiğini görürüz. <br>
+          Bu listedeki Web Siteleri işaretleyip, erişime kapatabiliriz. <br>
+          Apply'a basarsak, bizi Application Control Rules sayfasına atar, biz de bu konumda tanımlanan sayfaların kuralını yazarız. <br>
+          Örneğin isim veririz, önceliğini belirleriz, block action alırız ve for: any'yi seçeriz. <br>
+          Bu şekilde bu sitelere bizim Network'ümüzden kimse erişemez.
+        </p>
+
+        <hr>
+
+        <h4>Email Protection</h4>
+        <h5>SMTP</h5>
+        <p>
+          Mail Server'lar arasındaki iletişim SMTP protokolü ile yapılır, yapılan bu trafiği Sophos üzerinden denetleyebiliriz. <br>
+          Bu denetimi Exchange'te yapabilir. <br>
+          Geriye kalan Servis'ler ücretli olabilir, kursta üzerinde durulmadı.
         </p>
         
-        
-        
+        <h4>Wireless Protection</h4>
+        <p>
+          Bu kısım tüm Wireless cihazlar için değil de Sophos'un ürettiği Wireless cihazlarını koruma için kullanılır.
+        </p>
+
+        <h4>Remote Access</h4>
+        <p>
+          Diyelimki dışarıdan, Internal Network'ümüze VPN bağlantısı yapmak istiyoruz. <br>
+          Firewall'umuz VPN Server görevi görebilir. <br>
+          Ayrı şekilde Windows VPN kurmak zorunda kalmayız, Firewall üzerinden bu işi direkt halledebiliriz. 
+        </p>
+
+        <h5>PPTP</h5>
+        <p>
+          Enable yapıyoruz. <br>
+          Authentication için iki farklı seçenek vardır. <br><br>
+
+          Local: Bağlanan kişi id pw girdiği zaman Firewall kendi üzerindeki bilgiye göre bunu değerlendirir. <br>
+          Eğer Active Directory'e entegre ise gider ona da sorar vs. <br>
+          Yani bu işi Firewall'un kendisi yapar. <br><br>
+
+          RADIUS: Gelen kişi x kişi mi, mesai saatinde mi geliyor, x protokolüyle mi geliyor şeklinde çok detaylı bir Authentication yapmak istiyorsak bu protokolü kullanmalıyız. <br>
+          RADIUS bu bağlamda genel bir kavramdır.
+        </p>
+        <p class="bg-script">
+          > Authentication via: Local <br>
+          > Users and Groups: VPN Users,(Yeni bir grup oluşturup ekleyebiliriz) <br>
+          > Assign IP address by: IP address pool -> Firewall kendi Pool'undan atar. <br>
+          || DHCP Seçersek DHCP Server'a gidip oradan Pool alır. <br>
+          -> VPN Server kendisine ve onu kullanacak olanlara bir IP atamalıdır. <br>
+          > Pool network: VPN Pool(PPTP)
+        </p>
+        <p>
+          Server olarak VPN şuanda hazır durumda. <br>
+          Client'te VPN bağlantısını yapıyoruz;
+        </p>
+        <p class="bg-script">
+          > Search: VPN Settings <br>
+          > Add a VPN connection <br>
+          > Connection name: Firewall VPN-PPTP(Kendimiz bir isim veriyoruz) <br>
+          > Server name or address: 10.3.34.100(Firewall'un dış bacağının IP'sini gireriz, yani internete çıkan Public(Real) IP'yi girmemiz gerekir.) <br>
+          > VPN type: PP2P <br>
+          > User name(optional): administrator@sirket3.com <br>
+          > Password: Password1
+        </p>
+        <p>
+          Şuanda VPN'e bağlandık fakat bağlı olmamız içeriye girebileceğimiz anlamına gelmiyor. <br>
+          Sebep şu; VPN ile bağlanmak bir aşamadır, Firewall'dan o talepleri geçirmek başka bir aşamadır. <br>
+          Bu sebeple Firewall kuralı yazmamız gerekiyor. <br>
+          VPN Pool'undan IP verdiğimiz makineler PPTP ile geliyorsa içeri girebilsin şeklinde özellikle trafiğe izin veriliyor olması gerekiyor.
+        </p>
+        <p class="bg-script">
+          > Network Protection <br>
+          > Firewall <br>
+          > Rules <br>
+          > New Rules <br>
+          > Sources: VPN Pool(PPTP) <br>
+          > Services: CIFS -> Örneğin File Server'a erişilmek isteniyorsa bu protokol kullanılmalıdır. <br>
+          -> Eğer istiyorsak RDP yapmasını da sağlamak için Microsoft Remote Desktop Protokolünü de buradan eklemeliyiz. <br>
+          -> İhtiyaca göre Protokoller bu şekilde eklenir, Any girersek fiziksele direkt erişiyormuş gibi çalışır. <br>
+          > Destinations: Erişilmek istenen makine ya da Network eklenebilir fakat ideali örneğin bir File Server'a erişilmesi gerekiyorsa sadece onu eklemektir.
+        </p>
+
+        <h5>L2TP over IPsex</h5>
+        <p>
+          Varsayalında kapalıdır önce hizmeti açıyoruz. <br>
+          PPTP kıyasla biraz daha güvenli bir protokoldür. <br>
+          Karar vermemiz gereken şey hangi Interface'ten gelen talepleri kabul edeceğidir. <br>
+          Örneğin;
+        </p>
+        <p class="bg-script">
+          > Interface: External(WAN) <br>
+          > Authentication mode: Preshared key <br>
+          > Preshared key: 123(Örneğin) <br>
+          > Repaet: 123 <br>
+          > Assign IP addressses by: IP address pool <br>
+          > Pool network: VPN Pool(L2TP) <br>
+          > Authentication via: Local <br>
+          > User and Groups <br>
+          -> VPN Users
+        </p>
+        <p>
+          Şuandan itibaren L2TP VPN Connection'ları da kabul etmeye başlar. <br>
+          Bağlantıyı yapacağımız ortamda;
+        </p>
+        <p class="bg-script">
+          > Search: VPN Settings <br>
+          > Add a VPN connection <br>
+          > Connection name: Firewall VPN-L2TP(Kendimiz bir isim veriyoruz) <br>
+          > Server name or address: 10.3.34.100(Firewall'un dış bacağının IP'sini gireriz, yani internete çıkan Public(Real) IP'yi girmemiz gerekir.) <br>
+          > VPN type: L2TP <br>
+          > Pre-shared key: 123
+        </p>
+        <p>
+          Oluşturduğumuz sanal Ethernet'in Property'lerinden Securty Tab'ına geçiyoruz. <br>
+          Allow these protocols'ü işaretleyip Microsoft CHAP'i Enable ediyoruz.
+        </p>
+        <p>
+          Bu farklı bir protokol olduğu için PP2P için olduğu gibi bunun için de yeni bir Firewall kuralı yazmalıyız. <br>
+          Ya da PP2P ile yazdığımız kuralı Edit'leyip L2TP'yi de ekleriz.
+        </p>
+
+        <h5>HTML5 VPN Portal</h5>
+        <p>
+          Bu hizmette varsayılanda kapalıdır, Enable ederiz. <br>
+          Bu da bir VPN bağlantı yöntemidir. <br>
+          Yine Connection type görüyoruz, VPN yapanların hangi yöntemle bağlanmalarını yani ne için bağlanacaklarını belirtiyoruz;
+        </p>
+        <p class="bg-script">
+          > Remote Access <br>
+          > HTML5 VPN Portal <br>
+          > Name: RDP+HTML5 <br>
+          > Connection type: Remote Desktop(Bu protokol genelde bunun için kullanılır) <br>
+          > Destination: DC01(Örneğin) <br>
+          > Allowed users(Userportal) <br>
+          -> Admin, Administrator(Bu kişiler DC01'e Userportal üzerinden RDP yapabilecekler)
+        </p>
+        <p>
+          Dışarıdan bir Network'ten Userportal'a Log-on olduğumuzda; <br>
+          HTML5 VPN Portal sekmesinin geldiğini görüyoruz. <br>
+          Bu şekilde bu konumdan çok hızlı bir şekilde RDP yapabiliriz.
+        </p>
+
+        <hr>
+
+        <h4>Site-to-Site VPN</h4>
+        <p>
+          İki tane devasa Network olduğunu düşünelim, örneğin iki farklı Domain olsun. <br>
+          Bunların içindeki bir çok makinenin her biri diğer Network'teki bir makineye bağlanmak ihtiyacı olsun. <br>
+          Bu durumda her bir makine için tek tek VPN kurmak ve bağlantısını o şekilde sağlamak, uzun ve professiyonel olmayan bir yöntemdir. <br>
+          Bunun yerine her iki Network'te bulunan Firewall'ları birbirlerine VPN ile eriştirmek daha kestirme ve professiyonel bir çözümdür. <br>
+          Yani iki Firewall'un birbirine bağlanması aslında iki Router'ın arkadalarındaki Network'lerini birbirine eriştirmesi demektir. <br>
+          Burada köprü görevi alacak olan hizmet Site-to-Site VPN'dir. <br>
+          Site-to-Site VPN'i yapmadan önce iki tarafında Firewall'ların RDP vs trafiklerinin de geçebilmesi için önce L2TP protokolünün kurulmuş olması gerekiyor. <br>
+          Çünkü Firewall'lar önce birbirinin sunduğu VPN Server'larına VPN ile bağlanmak zorundalar. <br>
+          Bunun gerçekleştirilebilmesi için de iki Firewall'da da VPN'in kurulmuş olması gerekir, yani Remote Access'te L2TP ayarı yapılmış olmalıdır. <br>
+          Daha sonra aşağıdaki örnekte olduğu gibi Site-to-Site VPN'i uygulayabiliriz;
+        </p>
+        <p class="bg-script">
+          > Site-to-Site VPN <br>
+          > IPsec <br>
+          > Remote Gateway <br>
+          -> Bize göre karşı Site'ı tarif etmemiz gerekiyor. <br>
+          -> Karşı tarafta aynı şekilde bizi tarif edecek. <br>
+          > New Remote Gateway <br>
+          > Name: Sirket0-9 <br>
+          > Gateway type: Respond only || Initiate connection <br>
+          -> Initiate connection: Kalıcı bir Site-to-Site bağlantısı yapar, bir kez ve kopmaz. <br>
+          -> Respond only: Normalde hat kapalıdır, iki taraftan herhangi biri diğerine erişmek istediğinde o anda hat açılır. <br>
+          -> Biz initiate seçebiliriz. <br>
+          > Gateway: -> Karşı taraftaki Firewall'un erişilebilecek bacağıdır. <br>
+          -> Bizde tanımlı olmadığı için tanımlarız; <br>
+          -> > Name: Sirket9 FW(Örneğin) <br>
+          -> > Type: Host <br>
+          -> > IPv4 address: 10.3.34.109(Örneğin)
+          -> > Save <br>
+          > Authentication type: Preshared key <br>
+          > Key: 123 <br>
+          > Repeat: 123 <br>
+          > VPN ID type: IP address <br>
+          > Remote networks: -> Site-to-Site bağlantı yapmak istediğimiz Firewall'un iç Network'lerini gireriz. <br>
+          > + -> Name: Sirket9 Internal(Örneğin) <br> 
+          -> > IPv4 address: 192.168.9.0 <br>
+          > Apply
+        </p>
+        <p>
+          Karşı tarafta birebir aynılarını yaptıktan sonra artık bağlantı kurulmaya hazırdır. <br>
+          Bağlantıyı yapmak için Connections sekmesine gideriz;
+        </p>
+        <p class="bg-script">
+          > New IPsec Connection <br>
+          > Name: sirket0-9(Örneğin) <br>
+          > Remote Gateway: Sirket0-9 <br>
+          -> Daha önceden tanımladığımız Remote Gateway'i burada ilişkilendiriyoruz. <br>
+          > Local interface: External(WAN) <br>
+          -> Bizim Firewall'umuzun dış bacağıdır. <br>
+          > Policy: AES-128(Örneğin) -> Bağlantıda kullanılanacak olan Encryption, karşı tarafta aynısını seçmiş olmalıdır. <br>
+          > Local Networks: Internal(Network) <br>
+          -> Kendi Internal Network'lerimizi sorar. <br>
+          > [+]Automatic firewall rules <br>
+          -> Bu bağlantı kurulduktan sonra paketlerin geçmesi için gerekli olan Firewall kurallarını otomatik olarak yazmasını sağlar.
+        </p>
+        <p>
+          Karşı taraftada aynı kuralın yazılmış olması gerekiyor. <br>
+          Direkt Site-to-site VPN menüden sekmesine tıklarsak kurduğumuz Tunnel'in Established olduğunu görüntüleriz.
+        </p>
+
         <hr>
         
         <div class="text-center container p-3 bg-script">
